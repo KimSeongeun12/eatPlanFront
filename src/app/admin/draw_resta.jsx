@@ -17,6 +17,7 @@ export default function DrawResta({leftMenu}){
 
     const openDetail =(idx)=>{
         setComponent(<RestaDetail resta_idx={idx}/>);
+        // 깃 확인용
     }
 
     // --------------------- 식당 리스트를 뽑는 함수 --------------------- //
