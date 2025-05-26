@@ -1,8 +1,21 @@
 'use client'
 import '../mainCss.css'
 import './myPageCss.css'
+import axios from "axios";
+import myPage_passwd from "@/app/mypage/myPage_passwd";
+import {useEffect, useRef, useState} from "react";
 
-export default function myInfo() {
+export default function MyInfo() {
+    const user_id = useRef('');
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+        }
+        memberInfo(user_id.current);
+    }, []);
+
     const trStyle = {
         border: '1px solid lightgray',
     }
@@ -23,6 +36,16 @@ export default function myInfo() {
         textAlign: 'left',
     }
 
+    const memberInfo = async () => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
+        console.log(data.list[0].user_id);
+        if (!data.list[0].user_id) {
+            alert("로그인이 필요한 서비스입니다.");
+            location.href = './login';
+        }
+        setUserInfo(data.list[0]);
+    }
+
     return (
         <>
             <div>
@@ -35,27 +58,27 @@ export default function myInfo() {
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td style={tdStyle}>아이디</td>
+                            <td style={tdStyle}>{userInfo?.user_id}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td style={tdStyle}>비밀번호</td>
+                            <td style={tdStyle}>{userInfo?.pass}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
-                            <td style={tdStyle}>닉네임</td>
+                            <td style={tdStyle}>{userInfo?.nickname}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
-                            <td style={tdStyle}>이메일</td>
+                            <td style={tdStyle}>{userInfo?.email}</td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
-                            <td style={tdStyle}>자기소개</td>
+                            <td style={tdStyle}>{userInfo?.bio}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
-                            <td style={tdStyle}>지역</td>
+                            <td style={tdStyle}>{userInfo?.location}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
@@ -65,7 +88,7 @@ export default function myInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span className={"secessionSpan"}>회원 탈퇴</span>
+                    <span className={"secessionSpan"} >회원 탈퇴</span>
                     <button className={"infoUpdateButton"}>회원 정보 수정</button>
                 </div>
             </div>

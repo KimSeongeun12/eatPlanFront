@@ -1,26 +1,35 @@
 'use client'
 import {Pagination, Stack} from "@mui/material";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export default function myList_write() {
     const [list, setList] = useState([]);
-    let page = useRef(1);
-    let count = [1, 2, 3, 4, 5, 6, 7];
+    const [totalPages, setTotalPages] = useState(7);
+    const page = useRef(1);
 
-    const makeList = () => {
-        let content = count.map((item) => {
-            return (
-                <tr key={item.idx}>
-                    <td className={"counseTd"}>No</td>
-                    <td>제목</td>
-                    <td>글쓴이</td>
-                    <td>작성 날짜</td>
-                    <td>조회수</td>
-                    <td>좋아요</td>
-                    <td>공개 여부</td>
-                </tr>
-            );
-        });
+    const makeList = (pageNum) => {
+        // 임시 더미 데이터
+        const dummyData = Array.from({ length: 10 }, (_, index) => ({
+            id: (pageNum - 1) * 10 + index + 1,
+            title: `제목 ${index + 1}`,
+            writer: `작성자`,
+            date: `2025-05-26`,
+            views: Math.floor(Math.random() * 100),
+            likes: Math.floor(Math.random() * 50),
+            public: Math.random() > 0.5 ? '공개' : '비공개',
+        }));
+
+        const content = dummyData.map((item, index) => (
+            <tr key={isNaN(item.id) ? `fallback-${index}` : item.id}>
+                <td className={"counseTd"}>{item.id}</td>
+                <td>{item.title}</td>
+                <td>{item.writer}</td>
+                <td>{item.date}</td>
+                <td>{item.views}</td>
+                <td>{item.likes}</td>
+                <td>{item.public}</td>
+            </tr>
+        ));
         setList(content);
     }
 
@@ -28,6 +37,10 @@ export default function myList_write() {
         page.current = val;
         makeList();
     }
+
+    useEffect(() => {
+        makeList(page.current);
+    }, []);
 
     return (
         <>
@@ -47,7 +60,7 @@ export default function myList_write() {
             </table>
             <Stack spacing={2}>
                 <Pagination
-                    count={count}
+                    count={totalPages}
                     color={"primary"}
                     variant={"outlined"}
                     shape={"rounded"}

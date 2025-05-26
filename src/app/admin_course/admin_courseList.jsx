@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import { Pagination, Stack } from '@mui/material';
 import axios from "axios";
 
-export default function CommonList() {
+export default function Admin_courseList() {
     const [page, setPage] = useState(1);
     const [items, setItems] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -33,7 +33,9 @@ export default function CommonList() {
             <div className="commonList">
                 {Array.isArray(items) && items.map((item, index) => (
                     <div key={index} className="listItem">
-                        <div className="mainImage"></div>
+                        <div className="mainImage">
+                            <input className={"admin_checkBox"} type={"checkbox"} />
+                        </div>
                         <span className="courseTitle">{item.course?.subject}</span>
                         <span className="courseComment">[{item.cmt_cnt}]</span><br />
                         <span className="courseAuthor">{item.nickname}</span>
@@ -75,6 +77,11 @@ export default function CommonList() {
                     }}
                 />
             </Stack>
+
+            <div className={"buttons"}>
+                <button className={"admin_button"}>선택 블라인드</button>
+                <button className={"admin_button_delete"}>선택 삭제</button>
+            </div>
         </>
     );
 }
