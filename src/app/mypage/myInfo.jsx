@@ -1,6 +1,7 @@
 'use client'
 import '../mainCss.css'
 import './myPageCss.css'
+import myPage_passwd from "@/app/mypage/myPage_passwd";
 
 export default function myInfo() {
     const trStyle = {
@@ -65,7 +66,7 @@ export default function myInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span className={"secessionSpan"}>회원 탈퇴</span>
+                    <span className={"secessionSpan"} >회원 탈퇴</span>
                     <button className={"infoUpdateButton"}>회원 정보 수정</button>
                 </div>
             </div>
