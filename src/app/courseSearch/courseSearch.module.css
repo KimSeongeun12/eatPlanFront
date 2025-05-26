@@ -1,0 +1,28 @@
+.searchWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.StringSearch {
+    box-sizing: border-box;
+    width: 1000px;
+    height: 52px;
+    background: #FFFFFF;
+    border: 2px solid #CC503B;
+    border-radius: 20px;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.searchBtn {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #CC503B;
+    cursor: pointer;
+    padding: 0;
+}

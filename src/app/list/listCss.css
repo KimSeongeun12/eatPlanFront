@@ -44,6 +44,10 @@ body {
     padding-left: 13px;
 }
 
+.search:hover {
+    cursor: pointer;
+}
+
 .rightMenu-bottom {
     display: flex;
 }
