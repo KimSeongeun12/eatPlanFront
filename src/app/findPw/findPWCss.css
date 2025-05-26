@@ -1,0 +1,91 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    left: 0px;
+    top: 0px;
+    padding-top: 105px;
+    box-sizing: border-box;
+    background: linear-gradient(360deg, rgba(255, 187, 0, 0.5) 0%, rgba(129, 34, 17, 0) 58.65%), #CC503B;
+}
+
+.findPWTap {
+    position: relative;
+    width: 1238px;
+    height: 863px;
+    background: #FFFFFF;
+    border-radius: 200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-top: 92px;
+}
+
+.changePWSpan {
+    position: absolute;
+    left: 376px;
+    top: 150px;
+    font-family: 'Kings';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 70px;
+    color: #000000;
+}
+
+label {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-size: 20px;
+}
+
+.idDiv  {
+    position: absolute;
+    width: 529px;
+    height: 86px;
+    left: 350px;
+    top: 320px;
+}
+
+.emailDiv {
+    position: absolute;
+    width: 529px;
+    height: 86px;
+    left: 350px;
+    top: 440px;
+}
+
+.idInput, .emailInput  {
+    box-sizing: border-box;
+    width: 529px;
+    height: 60px;
+    padding-left: 20px;
+    margin-right: 4px;
+    margin-top: 4px;
+    margin-bottom: 5px;
+    background: #FFFFFF;
+    border: 2px solid #C5C5C5;
+    border-radius: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.nextButton {
+    position: absolute;
+    width: 529px;
+    height: 60px;
+    left: 350px;
+    top: 600px;
+    background: #CC503B;
+    border-radius: 30px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #FFFFFF;
+    border: none;
+}

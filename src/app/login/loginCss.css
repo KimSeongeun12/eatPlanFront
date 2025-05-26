@@ -1,0 +1,116 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    left: 0px;
+    top: 0px;
+    padding-top: 140px;
+    box-sizing: border-box;
+    background: linear-gradient(360deg, rgba(255, 187, 0, 0.5) 0%, rgba(129, 34, 17, 0) 58.65%), #CC503B;
+}
+
+.loginTap {
+    position: relative;
+    width: 1238px;
+    height: 735px;
+    background: #FFFFFF;
+    border-radius: 200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    /*border: 1px solid black;*/
+}
+
+.loginSpan {
+    position: absolute;
+    left: 830px;
+    top: 190px;
+    width: 166px;
+    height: 70px;
+    font-family: 'Kings';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 70px;
+    color: #000000;
+}
+.IDinput {
+    position: absolute;
+    left: 680px;
+    top: 300px;
+    box-sizing: border-box;
+    width: 469px;
+    height: 52px;
+    background: #FFFFFF;
+    border: 2px solid #C5C5C5;
+    border-radius: 20px;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.PWinput {
+    position: absolute;
+    left: 680px;
+    top: 370px;
+    box-sizing: border-box;
+    width: 469px;
+    height: 52px;
+    background: #FFFFFF;
+    border: 2px solid #C5C5C5;
+    border-radius: 20px;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+input::placeholder {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #B4B4B4;
+}
+
+.loginButton {
+    position: absolute;
+    width: 469px;
+    height: 52px;
+    box-sizing: border-box;
+    left: 680px;
+    top: 450px;
+    background: #CC503B;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: #FFFFFF;
+}
+
+.joinSpan {
+    position: absolute;
+    text-align: center;
+    width: 65px;
+    height: 15px;
+    left: 800px;
+    top: 530px;
+}
+
+.findPWSpan {
+    position: absolute;
+    text-align: center;
+    width: 93px;
+    height: 15px;
+    left: 950px;
+    top: 530px;
+}
+
+.joinSpan:hover,
+.findPWSpan:hover
+{
+    text-decoration: underline;
+}
+

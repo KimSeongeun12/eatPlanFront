@@ -1,0 +1,171 @@
+.main-container {
+    display: flex;
+}
+
+.leftMenu {
+    position: relative;
+    width: 340px;
+    height: 1080px;
+    left: 0px;
+    top: 0px;
+    background: linear-gradient(360deg, rgba(255, 187, 0, 0.5) 0%, rgba(129, 34, 17, 0) 58.65%), #CC503B;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.rightMenu {
+    float: right;
+}
+
+.userIcon {
+    position: absolute;
+    width: 176.55px;
+    height: 176.55px;
+    left: 82.17px;
+    top: 70px;
+}
+
+.loginMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 300px;
+}
+
+.loginMenu img,
+.courseListMenu img,
+.mypageMenu img,
+.courseWriteMenu img,
+.noteMenu img,
+.noticeMenu img,
+.reportMenu img
+{
+    /*border: 1px solid black;*/
+    vertical-align: middle;
+}
+
+.courseListMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 390px;
+}
+
+.mypageMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 480px;
+}
+
+.courseWriteMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 570px;
+}
+
+.noteMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 660px;
+}
+
+.line {
+    position: absolute;
+    width: 302px;
+    height: 0px;
+    left: 19px;
+    top: 775px;
+    border: 1px solid #EFA36E;
+}
+
+.noticeMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 820px;
+}
+
+.reportMenu {
+    position: absolute;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-top: 18px;
+    width: 283px;
+    height: 70px;
+    /*border: 1px solid black;*/
+    left: 23px;
+    top: 910px;
+}
+
+.loginMenu:hover,
+.courseListMenu:hover,
+.mypageMenu:hover,
+.courseWriteMenu:hover,
+.noteMenu:hover,
+.noticeMenu:hover,
+.reportMenu:hover {
+    cursor: pointer;
+    background: rgba(174, 61, 41, 0.7);
+}
+
+.loginMenu > span,
+.courseListMenu > span,
+.mypageMenu > span,
+.courseWriteMenu > span,
+.noteMenu > span,
+.noticeMenu > span,
+.reportMenu > span {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 27px;
+    color: #FFFFFF;
+    margin-left: 22px;
+    /*border: 1px solid black;*/
+    vertical-align: middle;
+}
+
+/**/
+
+.loginMenu.active,
+.courseListMenu.active,
+.mypageMenu.active,
+.courseWriteMenu.active,
+.noteMenu.active,
+.noticeMenu.active,
+.reportMenu.active {
+    background: rgba(174, 61, 41, 0.7);
+}

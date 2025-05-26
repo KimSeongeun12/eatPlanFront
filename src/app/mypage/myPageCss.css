@@ -1,0 +1,175 @@
+body {
+    display: inline-flex;
+}
+
+.rightMenu {
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    border-radius: 0px 20px 20px 0px;
+    width: 1450px;
+    padding: 100px 50px 30px;
+}
+
+span {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
+    margin-right: 17px;
+}
+
+.secessionSpan:hover,
+.topMenuSpans > span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.active-span {
+    color: #CC503B;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.infoTap {
+    box-sizing: border-box;
+    width: 1450px;
+    height: 809px;
+}
+
+.profileTap {
+    text-align: center;
+    height: 210px;
+    box-sizing: border-box;
+    padding-top: 13px;
+}
+
+.userImage {
+    margin-bottom: 10px;
+}
+
+table {
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+    width: 1340px;
+    height: 575px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
+}
+
+.bioTable {
+    height: 126px;
+}
+
+.infoUpdateButton {
+    float: right;
+    box-sizing: border-box;
+    width: 205px;
+    height: 63px;
+    background: #FFFFFF;
+    border: 2px solid #CC503B;
+    border-radius: 30px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    color: #AE3D29;
+}
+
+.infoUpdateButton:hover {
+    cursor: pointer;
+    background: #CC503B;
+    color: #fff;
+    transition: 0.2s;
+}
+
+.footer {
+    height: 63px;
+}
+
+.secessionSpan {
+    position: absolute;
+    left: 400px;
+    top: 980px;
+    color: #CC503B;
+}
+
+/*myList*/
+
+.myList {
+    display: flex;
+    margin-top: 90px;
+}
+
+.courseTable {
+    width: 1350px;
+    height: 669px;
+    border-top: 4px solid black;
+}
+
+.courseTr {
+    border-bottom: 1px solid black;
+}
+
+.courseTh {
+    height: 73px;
+}
+
+.courseTd {
+    height: 73px;
+}
+
+td {
+    border-bottom: 1px solid lightgray;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.myWrite, .myLike {
+    box-sizing: border-box;
+    width: 242px;
+    height: 59px;
+    background: #FFFFFF;
+    border: 1px solid #B3B3B3;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.myWrite:hover, .myLike:hover {
+    cursor: pointer;
+}
+
+.active-div {
+    box-sizing: border-box;
+    width: 242px;
+    height: 59px;
+    color: #8e8e8e;
+    background-color: #ebebeb;
+    border: 1px solid #b3b3b3 ;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 27px;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.active-div:hover {
+    cursor: pointer;
+}
