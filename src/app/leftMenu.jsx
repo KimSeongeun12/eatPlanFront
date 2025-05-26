@@ -15,7 +15,7 @@ export default function leftMenu() {
                     <img src={"로그인 아이콘.png"} alt={"로그인 아이콘"} />
                     <span>로그인</span>
                 </div>
-                <div onClick={()=>router.push('./list')} className={`courseListMenu ${isActive('/list') || isActive('/') ? 'active' : ''}`}>
+                <div onClick={()=>router.push('./admin_course')} className={`courseListMenu ${isActive('/admin_course') ? 'active' : ''}`}>
                     <img src={"커뮤니티 아이콘.png"} alt={"코스 구경 아이콘"} />
                     <span>코스 구경</span>
                 </div>
