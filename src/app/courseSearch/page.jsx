@@ -71,6 +71,8 @@ export default function CourseSearch(){
 
                 <h3 className={"areaCate"}>지역</h3>
 
+                <div className={"cityWrapper"}>
+                <h5 className={"cityHead"}>시.도</h5>
                 <ul className={"city"}>
                     {uniqueCities.map(city => (
                         <li
@@ -80,7 +82,10 @@ export default function CourseSearch(){
                         >{city}</li>
                     ))}
                 </ul>
+                </div>
 
+                <div className={"distWrapper"}>
+                <h5 className={"distHead"}>시.군.구</h5>
                 <ul className={"dist"}>
                     {uniqueDist.map(dist => (
                         <li
@@ -90,7 +95,9 @@ export default function CourseSearch(){
                         >{dist}</li>
                     ))}
                 </ul>
+                </div>
 
+                <div className={"areaWrapper"}>
                 <ul className={"area"}>
                     {areaTag.map(at => (
                         <li
@@ -100,6 +107,7 @@ export default function CourseSearch(){
                         >{at.tag_name}</li>
                     ))}
                 </ul>
+            </div>
             </div>
 
 
