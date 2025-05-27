@@ -20,7 +20,7 @@
     position: absolute;
     width: 176.55px;
     height: 176.55px;
-    left: 82.17px;
+    left: 88px;
     top: 70px;
 }
 
@@ -46,6 +46,17 @@
 {
     /*border: 1px solid black;*/
     vertical-align: middle;
+}
+
+.logoutSpan {
+    font-size: 15px;
+    color: white;
+    margin-right: 0px;
+    margin-top: 16px;
+}
+
+.logoutSpan:hover {
+    text-decoration: underline;
 }
 
 .courseListMenu {
