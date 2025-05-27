@@ -2,10 +2,12 @@
 import '../mainCss.css'
 import './myPageCss.css'
 import axios from "axios";
-import myPage_passwd from "@/app/mypage/myPage_passwd";
+import myPage_passwd from "@/app/myPage_passwd/page";
 import {useEffect, useRef, useState} from "react";
+import {useRouter} from "next/navigation";
 
 export default function MyInfo() {
+    const router = useRouter();
     const user_id = useRef('');
     const [userInfo, setUserInfo] = useState({});
 
@@ -88,7 +90,7 @@ export default function MyInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span className={"secessionSpan"} >회원 탈퇴</span>
+                    <span onClick={() => router.push('./myPage_passwd')} className={"secessionSpan"} >회원 탈퇴</span>
                     <button className={"infoUpdateButton"}>회원 정보 수정</button>
                 </div>
             </div>
