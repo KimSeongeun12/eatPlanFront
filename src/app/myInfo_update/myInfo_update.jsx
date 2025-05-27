@@ -1,21 +1,9 @@
-'use client'
 import '../mainCss.css'
-import './myPageCss.css'
-import axios from "axios";
-import {useEffect, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
+import '../mypage/myPageCss.css'
+import './myInfo_updateCss.css'
 
-export default function MyInfo() {
-    const router = useRouter();
-    const user_id = useRef('');
-    const [userInfo, setUserInfo] = useState({});
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            user_id.current = sessionStorage.getItem('user_id');
-        }
-        memberInfo(user_id.current);
-    }, []);
+export default function MyInfoUpdate() {
+    const user_id = sessionStorage.getItem("user_id");
 
     const trStyle = {
         border: '1px solid lightgray',
@@ -31,22 +19,6 @@ export default function MyInfo() {
         paddingLeft: '30px',
     }
 
-    const tdStyle = {
-        boxSizing: 'border-box',
-        paddingLeft: '30px',
-        textAlign: 'left',
-    }
-
-    const memberInfo = async () => {
-        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
-        console.log(data.list[0].user_id);
-        if (!data.list[0].user_id) {
-            alert("로그인이 필요한 서비스입니다.");
-            location.href = './login';
-        }
-        setUserInfo(data.list[0]);
-    }
-
     return (
         <>
             <div>
@@ -59,38 +31,50 @@ export default function MyInfo() {
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td style={tdStyle}>{userInfo?.user_id}</td>
+                            <td>{user_id}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td style={tdStyle}>{userInfo?.pass}</td>
+                            <td>비밀번호 수정 컴포넌트 연결(모달)</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
-                            <td style={tdStyle}>{userInfo?.nickname}</td>
+                            <td>
+                                <input type={"text"} />
+                                <button>중복 확인</button>
+                            </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
-                            <td style={tdStyle}>{userInfo?.email}</td>
+                            <td>
+                                <input type={"text"} />
+                                <button className={"updateButton"}>중복 확인</button>
+                            </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
-                            <td style={tdStyle}>{userInfo?.bio}</td>
+                            <td>
+                                <input type={"text"} />
+                            </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
-                            <td style={tdStyle}>{userInfo?.location}</td>
+                            <td>
+                                <input type={"text"} />
+                            </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td style={tdStyle}>선호 태그</td>
+                            <td>
+                                <div></div>
+                                <button>태그 선택</button>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span onClick={() => router.push('./passwd')} className={"secessionSpan"} >회원 탈퇴</span>
-                    <button onClick={() => router.push('./myInfo_update')} className={"infoUpdateButton"}>회원 정보 수정</button>
+                    <button className={"infoUpdateButton"}>수정 완료</button>
                 </div>
             </div>
         </>

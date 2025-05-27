@@ -1,0 +1,14 @@
+.updateButton {
+    width: 154px;
+    height: 56px;
+    background: #CC503B;
+    border-radius: 20px;
+    width: 79px;
+    height: 27px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    color: #FFFFFF;
+}

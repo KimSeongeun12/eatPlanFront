@@ -53,7 +53,7 @@ export default function leftMenu() {
                     <span>코스 구경</span>
                 </div>
                 <div onClick={() => router.push('./mypage')}
-                     className={`mypageMenu ${isActive('/mypage') ? 'active' : ''}`}>
+                     className={`mypageMenu ${isActive('/mypage') || isActive('/myInfo_update') || isActive('/passwd') ? 'active' : ''}`}>
                     <img src={"사람 아이콘.png"} alt={"마이페이지 아이콘"}/>
                     <span>마이페이지</span>
                 </div>

@@ -96,7 +96,7 @@ table {
 .secessionSpan {
     position: absolute;
     left: 400px;
-    top: 980px;
+    top: 990px;
     color: #CC503B;
 }
 
@@ -109,7 +109,7 @@ table {
 
 .courseTable {
     width: 1350px;
-    height: 669px;
+    /*height: 669px;*/
     /*border: 1px solid black;*/
 }
 
@@ -118,8 +118,16 @@ table {
     background: #fff;
 }
 
+.subjectTable {
+    width: 600px;
+}
+
 th {
     border-bottom: 1px solid black;
+}
+
+tbody {
+    height: 500px;
 }
 
 .courseTd {
@@ -129,6 +137,7 @@ th {
 td {
     border-bottom: 1px solid lightgray;
     text-align: center;
+    /*height: 58px;*/
 }
 
 tr:nth-child(even) {
