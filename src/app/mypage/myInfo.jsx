@@ -2,7 +2,6 @@
 import '../mainCss.css'
 import './myPageCss.css'
 import axios from "axios";
-import myPage_passwd from "@/app/mypage/myPage_passwd";
 import {useEffect, useRef, useState} from "react";
 
 export default function MyInfo() {
