@@ -4,7 +4,7 @@
 
 .leftMenu {
     /*position: relative;*/
-    width: 340px;
+    width: 400px; /*원래 340px*/
     height: 1080px;
     left: 0px;
     top: 0px;

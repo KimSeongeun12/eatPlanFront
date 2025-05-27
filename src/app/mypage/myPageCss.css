@@ -198,6 +198,7 @@ tr:nth-child(even) {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    margin-left: 300px;
     gap: 20px;
 }
 
