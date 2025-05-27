@@ -21,7 +21,7 @@ export default function MyPagePasswd() {
 
         try {
             //1. 비밀번호 확인 API 요청
-            const {data: verify} = await axios.post('/member_pass', {password});
+            const {data: verify} = await axios.post('http://localhost/member_pass', {password});
 
             if (!verify.success) {
                 alert('비밀번호가 일치하지 않습니다.');
