@@ -173,3 +173,51 @@ tr:nth-child(even) {
 .active-div:hover {
     cursor: pointer;
 }
+
+.MyPagePasswd {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 100px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.Mypage_passwd_div {
+    width: 600px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 50px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.Mypage_passwd_div input {
+    height: 50px;
+    padding: 10px 15px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+.Mypage_passwd_div input::placeholder {
+    color: #b0b0b0;
+}
+
+.Mypage_passwd_div p {
+    font-size: 16px;
+    color: #444;
+    margin: 0;
+}
+
+.MyPagePasswd h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+}
