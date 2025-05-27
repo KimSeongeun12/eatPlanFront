@@ -60,7 +60,7 @@ export default function MyPagePasswd() {
 
     return (
         <div className={"rightMenu"}>
-            <h3>비밀번호 확인</h3>
+            <h3 className="passwd-title">비밀번호 확인</h3>
             <div className={"Mypage_passwd_div"}>
                 <input type={'password'} placeholder={"비밀번호를 입력해주세요."} value={password}
                        onChange={(e) => setPassword(e.target.value)}/>

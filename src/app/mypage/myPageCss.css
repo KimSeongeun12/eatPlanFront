@@ -1,5 +1,8 @@
 body {
-    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5; /* 연한 회색 배경 */
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .rightMenu {
@@ -67,19 +70,12 @@ table {
 }
 
 .infoUpdateButton {
-    float: right;
-    box-sizing: border-box;
-    width: 205px;
-    height: 63px;
-    background: #FFFFFF;
-    border: 2px solid #CC503B;
-    border-radius: 30px;
-    font-family: 'Noto Sans';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 27px;
-    color: #AE3D29;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    width: 150px; /* ✅ 버튼 너비 고정 */
+    margin-left: 220px;
+    text-align: center;
 }
 
 .infoUpdateButton:hover {
@@ -180,8 +176,11 @@ tr:nth-child(even) {
 }
 
 .MyPagePasswd {
-    float: right;
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* ⬅ 수평 가운데 */
+    justify-content: center; /* ⬅ 수직 가운데 */
+    height: 100vh;
 }
 
 .Mypage_passwd_div {
@@ -192,6 +191,7 @@ tr:nth-child(even) {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
     display: flex;
+    margin-top: 100px;
     flex-direction: column;
     margin-left: 300px;
     gap: 20px;
@@ -211,9 +211,10 @@ tr:nth-child(even) {
 }
 
 .Mypage_passwd_div p {
-    font-size: 16px;
-    color: #444;
+    font-size: 20px;
+    color: #333;
     margin: 0;
+    text-align: center;
 }
 
 .MyPagePasswd h3 {
@@ -221,4 +222,13 @@ tr:nth-child(even) {
     font-weight: 600;
     margin-bottom: 30px;
     color: #333;
+}
+
+.passwd-title {
+    font-size: 50px;
+    font-weight: 700;
+    margin-right: 50;
+    margin-top: 240px;
+    color: #333;
+    text-align: center;
 }
