@@ -1,73 +1,53 @@
 'use client'
 import {Pagination, Stack} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
-export default function myList_write() {
+export default function MyList_write() {
     const [list, setList] = useState([]);
     const [totalPages, setTotalPages] = useState(7);
     const page = useRef(1);
 
-    const makeList = (pageNum) => {
-        // 임시 더미 데이터
-        const dummyData = Array.from({ length: 10 }, (_, index) => ({
-            id: (pageNum - 1) * 10 + index + 1,
-            title: `제목 ${index + 1}`,
-            writer: `작성자`,
-            date: `2025-05-26`,
-            views: Math.floor(Math.random() * 100),
-            likes: Math.floor(Math.random() * 50),
-            public: Math.random() > 0.5 ? '공개' : '비공개',
-        }));
+    const makeList = async () => {
+        const user_id = sessionStorage.getItem("user_id");
+        const {data} = await axios.get(`http://localhost/my_course_list/${user_id}`)
+        console.log(data);
 
-        const content = dummyData.map((item, index) => (
-            <tr key={isNaN(item.id) ? `fallback-${index}` : item.id}>
-                <td className={"counseTd"}>{item.id}</td>
-                <td>{item.title}</td>
-                <td>{item.writer}</td>
-                <td>{item.date}</td>
-                <td>{item.views}</td>
-                <td>{item.likes}</td>
-                <td>{item.public}</td>
-            </tr>
-        ));
+        const content = data.list.map((item) => {
+            return (
+                <tr key={item.post_idx} style={{height: '60px'}}>
+                    <td>{item.post_idx}</td>
+                    <td>{item.subject}</td>
+                    <td>{item.user_id}</td>
+                    <td>{item.reg_date}</td>
+                    <td>{item.b_hit}</td>
+                    <td>{item.public === 1 ? "공개" : "비공개"}</td>
+                </tr>
+            );
+        });
         setList(content);
     }
 
-    const changePage = (e, val) => {
-        page.current = val;
-        makeList();
-    }
-
     useEffect(() => {
-        makeList(page.current);
+        makeList();
     }, []);
 
     return (
-        <>
-            <table className={"courseTable"}>
-                <tbody>
+        <div className={"courseTable"}>
+            <table>
+                <thead>
                 <tr className={"courseTr"}>
-                    <th className={"courseTh"}>No</th>
+                    <th>No</th>
                     <th>제목</th>
                     <th>글쓴이</th>
                     <th>작성 날짜</th>
                     <th>조회수</th>
-                    <th>좋아요</th>
+                    {/*<th>좋아요</th>*/}
                     <th>공개 여부</th>
                 </tr>
-                </tbody>
+                </thead>
                 <tbody>{list}</tbody>
             </table>
-            <Stack spacing={2}>
-                <Pagination
-                    count={totalPages}
-                    color={"primary"}
-                    variant={"outlined"}
-                    shape={"rounded"}
-                    siblingCount={0}
-                    onChange={changePage}
-                />
-            </Stack>
-        </>
+        </div>
     );
 }

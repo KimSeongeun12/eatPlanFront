@@ -4,7 +4,8 @@
 
 .leftMenu {
     /*position: relative;*/
-    width: 340px;
+    width: 340px; /*원래 340px*/
+    width: 320px; /*원래 340px*/
     height: 1080px;
     left: 0px;
     top: 0px;
@@ -20,7 +21,7 @@
     position: absolute;
     width: 176.55px;
     height: 176.55px;
-    left: 82.17px;
+    left: 88px;
     top: 70px;
 }
 
@@ -46,6 +47,17 @@
 {
     /*border: 1px solid black;*/
     vertical-align: middle;
+}
+
+.logoutSpan {
+    font-size: 15px;
+    color: white;
+    margin-right: 0px;
+    margin-top: 16px;
+}
+
+.logoutSpan:hover {
+    text-decoration: underline;
 }
 
 .courseListMenu {
