@@ -110,15 +110,16 @@ table {
 .courseTable {
     width: 1350px;
     height: 669px;
-    border-top: 4px solid black;
+    /*border: 1px solid black;*/
 }
 
 .courseTr {
-    border-bottom: 1px solid black;
+    height: 60px;
+    background: #fff;
 }
 
-.courseTh {
-    height: 73px;
+th {
+    border-bottom: 1px solid black;
 }
 
 .courseTd {
@@ -132,6 +133,10 @@ td {
 
 tr:nth-child(even) {
     background: #f8f8f8;
+}
+
+.list_item > td {
+    height: 100px;
 }
 
 .myWrite, .myLike {
