@@ -2,7 +2,6 @@
 import '../mainCss.css'
 import './myPageCss.css'
 import axios from "axios";
-import myPage_passwd from "@/app/myPage_passwd/page";
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 
