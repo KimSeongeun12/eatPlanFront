@@ -180,13 +180,8 @@ tr:nth-child(even) {
 }
 
 .MyPagePasswd {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 100px;
-    font-family: 'Noto Sans', sans-serif;
+    float: right;
+    border: 1px solid black;
 }
 
 .Mypage_passwd_div {
