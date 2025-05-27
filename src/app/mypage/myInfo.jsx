@@ -89,7 +89,7 @@ export default function MyInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span onClick={() => router.push('./myPage_passwd')} className={"secessionSpan"} >회원 탈퇴</span>
+                    <span onClick={() => router.push('./passwd')} className={"secessionSpan"} >회원 탈퇴</span>
                     <button className={"infoUpdateButton"}>회원 정보 수정</button>
                 </div>
             </div>
