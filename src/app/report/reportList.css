@@ -1,0 +1,86 @@
+.report-page-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    min-width: 1500px;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.report-table th,
+.report-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+
+/* 테이블 기본 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* 링크 스타일 */
+td a {
+    color: #0070f3;
+    text-decoration: none;
+    height: 200px;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+/* 페이징 버튼 스타일 */
+.pagenation {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagenation button {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.pagenation button:hover:not(:disabled) {
+    background-color: #f0f0f0;
+}
+
+.pagenation button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagenation span {
+    font-weight: bold;
+}

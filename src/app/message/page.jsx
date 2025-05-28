@@ -1,6 +1,6 @@
 import LeftMenu from "@/app/leftMenu";
 
-export default function note() {
+export default function MsgPage() {
     return (
         <>
             <LeftMenu />

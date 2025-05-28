@@ -1,10 +1,14 @@
+'use client';
+
 import LeftMenu from "@/app/leftMenu";
+import ReportList from "./reportList";
+import "./reportList.css";
 
 export default function report() {
     return (
-        <>
+        <div className="report-page-wrapper">
             <LeftMenu />
-            신고 페이지
-        </>
+            <ReportList/>
+        </div>
     );
 }
