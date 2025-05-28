@@ -73,9 +73,20 @@ table {
     padding: 8px 16px;
     font-size: 14px;
     border-radius: 20px;
-    width: 150px; /* ✅ 버튼 너비 고정 */
-    margin-left: 220px;
+    width: 205px;
+    height: 63px;
+    margin-right: 4px;
+    margin-top: 5px;
     text-align: center;
+    float: right;
+    font-size: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 27px;
+    color: #AE3D29;
+    border: 2px solid #CC503B;
 }
 
 .infoUpdateButton:hover {

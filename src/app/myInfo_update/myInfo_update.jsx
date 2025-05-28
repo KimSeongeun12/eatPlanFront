@@ -1,5 +1,3 @@
-import '../mainCss.css'
-import '../mypage/myPageCss.css'
 import './myInfo_updateCss.css'
 
 export default function MyInfoUpdate() {
@@ -7,6 +5,7 @@ export default function MyInfoUpdate() {
 
     const trStyle = {
         border: '1px solid lightgray',
+        height: '45px',
     }
 
     const thStyle = {
@@ -40,21 +39,21 @@ export default function MyInfoUpdate() {
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
                             <td>
-                                <input type={"text"} />
-                                <button>중복 확인</button>
+                                <input className={"nickname_update"} type={"text"} />
+                                <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
                             <td>
-                                <input type={"text"} />
+                                <input className={"email_update"} type={"text"} />
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
                             <td>
-                                <input type={"text"} />
+                                <input className={"bio_update"} type={"text"} />
                             </td>
                         </tr>
                         <tr style={trStyle}>
@@ -63,11 +62,11 @@ export default function MyInfoUpdate() {
                                 <input type={"text"} />
                             </td>
                         </tr>
-                        <tr style={trStyle}>
+                        <tr className={"tag_tr"} style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td>
-                                <div></div>
-                                <button>태그 선택</button>
+                            <td className={"tag_td"}>
+                                <div>태그1, 태그2, 태그3</div>
+                                <button className={"updateButton"}>태그 선택</button>
                             </td>
                         </tr>
                         </tbody>

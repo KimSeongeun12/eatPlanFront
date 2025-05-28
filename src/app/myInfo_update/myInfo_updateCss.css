@@ -1,14 +1,52 @@
 .updateButton {
     width: 154px;
-    height: 56px;
+    height: 50px;
     background: #CC503B;
     border-radius: 20px;
-    width: 79px;
-    height: 27px;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 27px;
     color: #FFFFFF;
+    border: none;
+    float: left;
+    margin-left: 10px;
+}
+
+.nickname_update
+,.email_update {
+    width: 277px;
+    height: 40px;
+    float: left;
+    margin-left: 15px;
+    background: #fff;
+    border: 1px solid #a1a1a1;
+}
+
+.bio_update {
+    width: 1045px;
+    height: 90px;
+    float: left;
+    margin-left: 15px;
+    background: #fff;
+    border: 1px solid #a1a1a1;
+}
+
+tr.tag_tr {
+    height: 45px;
+    box-sizing: border-box;
+}
+
+td.tag_td {
+    display: flex;
+    border: none;
+    margin-left: 15px;
+}
+
+td.tag_td > div {
+    color: #DE8F20;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-top: 12px;
 }
