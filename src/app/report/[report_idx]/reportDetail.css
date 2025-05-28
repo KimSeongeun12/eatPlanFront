@@ -1,0 +1,101 @@
+.detail-wrapper {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.detail-wrapper h2 {
+    margin-bottom: 16px;
+}
+
+/* 헤더 전체 */
+.report-detail-header .header-row {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* 분류 탭 영역 */
+.classification {
+    display: flex;
+    align-items: center;
+    flex: 2;
+    border-right: 1px solid #ccc;
+    padding: 0 12px;
+}
+.classification .label {
+    font-weight: bold;
+    margin-right: 12px;
+}
+.classification .tab {
+    padding: 6px 14px;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+    border-right: 1px solid #ccc;
+    font-size: 14px;
+}
+.classification .tab:last-child {
+    border-right: none;
+}
+.classification .tab.active {
+    background: #f0f0f0;
+    font-weight: bold;
+}
+
+/* 작성자·신고번호 영역 */
+.meta-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding: 0 12px;
+}
+.meta-label {
+    font-weight: bold;
+    margin-right: 6px;
+}
+.meta-value {
+    color: #333;
+}
+
+/* 폼 필드 */
+.detail-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.detail-field label {
+    width: 120px;
+    font-weight: bold;
+}
+.detail-field input,
+.detail-field textarea {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.detail-field textarea {
+    height: 160px;
+    resize: none;
+    white-space: pre-wrap;
+}
+
+/* 목록 버튼 */
+.button-wrapper {
+    text-align: center;
+    margin-top: 24px;
+}
+.button-wrapper button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #0070f3;
+    color: white;
+    cursor: pointer;
+}
+.button-wrapper button:hover {
+    background-color: #005bb5;
+}
