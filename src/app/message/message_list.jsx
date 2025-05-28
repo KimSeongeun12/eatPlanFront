@@ -8,8 +8,6 @@ export default function MessageList({type}){
 
     const [list, setList] = useState([]);
 
-    console.log("messageList 호출: ", type);
-
     useEffect(() => {
         user_id='admin';    // 테스트용 코드입니다. 배포 시 지웁니다.
         drawList();
