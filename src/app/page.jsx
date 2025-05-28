@@ -6,8 +6,8 @@ import Admin_course from "./admin_course/page";
 export default function app() {
     return (
         <>
-            {/*<List />*/}
-            <Admin_course />
+            <List />
+            {/*<Admin_course />*/}
         </>
     );
 }
