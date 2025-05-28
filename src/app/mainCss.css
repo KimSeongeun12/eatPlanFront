@@ -18,7 +18,11 @@
 
 .rightMenu {
     float: right;
+    width: 1450px;
+    height: 1080px;
+    box-sizing: border-box;
     background: #fff;
+    overflow-y: scroll;
 }
 
 .userIcon {

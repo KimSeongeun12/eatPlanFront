@@ -31,12 +31,6 @@ export default function MyInfo() {
         paddingLeft: '30px',
     }
 
-    const tdStyle = {
-        boxSizing: 'border-box',
-        paddingLeft: '30px',
-        textAlign: 'left',
-    }
-
     const memberInfo = async () => {
         const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
         console.log(data.list[0].user_id);
@@ -55,35 +49,35 @@ export default function MyInfo() {
                         <img className={"userImage"} src={"유저 아이콘_기본 프로필 사진.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
                         <label>프로필 사진</label>
                     </div>
-                    <table>
+                    <table className={"infoTable"}>
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td style={tdStyle}>{userInfo?.user_id}</td>
+                            <td className={"infoTable_td"}>{userInfo?.user_id}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td style={tdStyle}>{userInfo?.pass}</td>
+                            <td className={"infoTable_td"}>{userInfo?.pass}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
-                            <td style={tdStyle}>{userInfo?.nickname}</td>
+                            <td className={"infoTable_td"}>{userInfo?.nickname}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
-                            <td style={tdStyle}>{userInfo?.email}</td>
+                            <td className={"infoTable_td"}>{userInfo?.email}</td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
-                            <td style={tdStyle}>{userInfo?.bio}</td>
+                            <td className={"infoTable_td"}>{userInfo?.bio}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
-                            <td style={tdStyle}>{userInfo?.location}</td>
+                            <td className={"infoTable_td"}>{userInfo?.location}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td style={tdStyle}>선호 태그</td>
+                            <td className={"infoTable_td"}>선호 태그</td>
                         </tr>
                         </tbody>
                     </table>

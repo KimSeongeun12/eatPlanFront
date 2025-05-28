@@ -3,13 +3,13 @@ body {
     font-family: 'Noto Sans';
 }
 
-.rightMenu {
-    box-sizing: border-box;
-    border: 1px solid lightgray;
-    border-radius: 0px 20px 20px 0px;
-    width: 1450px;
-    padding: 100px 50px 30px;
-}
+/*.rightMenu {*/
+/*    box-sizing: border-box;*/
+/*    border: 1px solid lightgray;*/
+/*    border-radius: 0px 20px 20px 0px;*/
+/*    width: 1450px;*/
+/*    !*padding: 100px 50px 30px;*!*/
+/*}*/
 
 .topMenuSpans {
     width: 1350px;

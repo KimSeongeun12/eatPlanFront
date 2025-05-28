@@ -6,6 +6,7 @@ import {useState} from "react";
 
 import '../mainCss.css'
 import '../mypage/myPageCss.css';
+import {data} from "react-router-dom";
 
 export default function MyInfoPasswd() {
 
@@ -22,6 +23,7 @@ export default function MyInfoPasswd() {
 
         try {
             const {data : verify} = await axios.post('http://localhost/member_pass',{password});
+            console.log(verify);
 
             if(!verify.success) {
                 alert('비밀번호가 일치하지 않습니다.');

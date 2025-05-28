@@ -50,7 +50,7 @@ export default function MyList_write() {
 
     return (
         <div className={"courseTable"}>
-            <table>
+            <table className={"myList_table"}>
                 <thead>
                 <tr className={"courseTr"}>
                     <th>No</th>
