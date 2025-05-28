@@ -94,15 +94,26 @@ export default function CourseSearch(){
         setSelectedList([]);
     };
 
+    // 텍스트검색 조건 결정
+    const [searchType, setSearchType] = useState("subject"); // "subject" 또는 "user_id"
+    const [keyword, setKeyword] = useState(""); // input값 상태관리
+
     // 검색조건들 검색결과창으로 넘겨주기
     const search = () => {
         const keyword = document.querySelector('.StringSearch').value;
         console.log(keyword);
-        const query = encodeURIComponent(keyword);
+        const encodedType = encodeURIComponent(searchType);
+        const encodedKeyword  = encodeURIComponent(keyword);
+        const stringSearch = keyword ? `${encodedType}=${encodedKeyword}` : '';
 
-        const tagParams = selectedList.map(tag => `${encodeURIComponent(tag.value)}`)
+        const tagParams = selectedList.length > 0
+            ? selectedList.map(tag => `tag=${encodeURIComponent(tag.value)}`).join('&')
+            : '';
 
-        location.href="/searchResult"
+        const queryParts = [stringSearch, tagParams].filter(Boolean).join('&');
+        const url = `/searchResult${queryParts ? `?${queryParts}` : ''}`;
+
+        location.href= url;
     };
 
     return (
@@ -111,7 +122,16 @@ export default function CourseSearch(){
             <div className="searchContainer">
                 {/*텍스트 검색창*/}
                 <div className={"searchWrapper"}>
-                    <input className={"StringSearch"} type={"text"} placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
+                    <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
+                        <option value="subject">제목</option>
+                        <option value="user_id">작성자</option>
+                    </select>
+                    <input
+                        className={"StringSearch"}
+                        type={"text"}
+                        value={keyword}
+                        onChange={e => setKeyword(e.target.value)}
+                        placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
                     <button className={"searchBtn"} onClick={search}>
                         <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
                     </button>
