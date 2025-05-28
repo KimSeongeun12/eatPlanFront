@@ -13,6 +13,7 @@
 
 .report-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -39,7 +40,7 @@ th, td {
 }
 
 td {
-    height: 890px;
+    height: 91px;
 }
 
 th {
