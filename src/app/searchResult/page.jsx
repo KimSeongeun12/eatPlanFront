@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useSearchParams} from "next/navigation";
 import LeftMenu from '../leftMenu';
+import "./searchResult.css";
 
 export default function SearchResult() {
 
@@ -29,6 +30,7 @@ export default function SearchResult() {
         try {
             const {data} = await axios.get('http://localhost/search_course',{params});
             setItems(data)
+            console.log('데이터 : ',data);
         } catch (error) {
             console.log('검색 실패', error);
         }
@@ -56,11 +58,11 @@ export default function SearchResult() {
                                 <div className="mainImage">
                                 </div>
                                 <span className="courseTitle">{item.subject}</span>
-                                <span className="courseComment">[{item.cmt_cnt}]</span><br/>
+                                <span className="courseComment">[{item.total_comment_count}]</span><br/>
                                 <span className="courseAuthor">{item.nickname}</span>
                                 <span className="courseViews">조회 {item.b_hit}</span><br/>
-                                <span className="courseScope">별점 {item.star_avg}</span>
-                                <span className="courseLike">좋아요 {item.like_cnt}</span><br/>
+                                <span className="courseScope">별점 {item.star_average}</span>
+                                <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
                                 <span className="courseDate">{item.reg_date}</span>
                             </div>
                         ))}

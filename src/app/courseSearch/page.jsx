@@ -98,7 +98,7 @@ export default function CourseSearch(){
     const [searchType, setSearchType] = useState("subject"); // "subject" 또는 "user_id"
     const [keyword, setKeyword] = useState(""); // input값 상태관리
 
-    // 검색조건들 검색결과창으로 넘겨주기
+    // 검색조건들 검색결과창 url로 넘겨주기
     const search = () => {
         const keyword = document.querySelector('.StringSearch').value;
         console.log(keyword);
@@ -116,6 +116,13 @@ export default function CourseSearch(){
         location.href= url;
     };
 
+    // 텍스트검색창 엔터 기능 추가
+    const keyHandler =(e)=>{
+        if(e.key === 'Enter'){
+            search();
+        }
+    };
+
     return (
         <>
             <LeftMenu />
@@ -131,6 +138,7 @@ export default function CourseSearch(){
                         type={"text"}
                         value={keyword}
                         onChange={e => setKeyword(e.target.value)}
+                        onKeyUp={keyHandler}
                         placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
                     <button className={"searchBtn"} onClick={search}>
                         <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
