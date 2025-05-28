@@ -3,8 +3,12 @@
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useState} from "react";
+<<<<<<< HEAD:src/app/passwd/myInfoPasswd/myInfoPasswd.jsx
 import '../../mypage/myPageCss.css';
 import '../../mainCss.css'
+=======
+import '../mypage/myPageCss.css';
+>>>>>>> origin/master:src/app/myInfoPasswd/myInfoPasswd.jsx
 
 export default function MyInfoPasswd() {
 
