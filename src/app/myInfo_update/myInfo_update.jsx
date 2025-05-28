@@ -1,7 +1,37 @@
 import './myInfo_updateCss.css'
+import {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
 export default function MyInfoUpdate() {
-    const user_id = sessionStorage.getItem("user_id");
+    const user_id = useRef('');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+        }
+        getInfo(user_id.current);
+    }, []);
+
+    const [info, setInfo] = useState({
+        nickname: "",
+        email: "",
+        bio: "",
+        location: "",
+    })
+
+    const getInfo = async () => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current,});
+        console.log(data);
+        setInfo(data.list);
+    };
+
+    const input = (e) => {
+        const {name, value} = e.target;
+        setInfo({
+            ...info,
+            [name]: value,
+        })
+    }
 
     const trStyle = {
         border: '1px solid lightgray',
@@ -39,34 +69,42 @@ export default function MyInfoUpdate() {
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
                             <td>
-                                <input className={"nickname_update"} type={"text"} />
+                                <input className={"nickname_update"}
+                                       type={"text"} name={"nickname"}
+                                       value={info.nickname} onChange={input} />
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
                             <td>
-                                <input className={"email_update"} type={"text"} />
+                                <input className={"email_update"} type={"text"}/>
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
                             <td>
-                                <input className={"bio_update"} type={"text"} />
+                                <input className={"bio_update"} type={"text"}/>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
                             <td>
-                                <input type={"text"} />
+                                <select className={"locationSelect"}>
+                                    <option>지역1</option>
+                                    <option>지역2</option>
+                                    <option>지역3</option>
+                                </select>
                             </td>
                         </tr>
                         <tr className={"tag_tr"} style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td className={"tag_td"}>
-                                <div>태그1, 태그2, 태그3</div>
-                                <button className={"updateButton"}>태그 선택</button>
+                            <td className="tag_td">
+                                <div className={"tag_content"}>
+                                    <span>태그1, 태그2, 태그3</span>
+                                    <button className={"tag_updateButton"}>태그 선택</button>
+                                </div>
                             </td>
                         </tr>
                         </tbody>

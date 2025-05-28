@@ -87,6 +87,7 @@ table {
     line-height: 27px;
     color: #AE3D29;
     border: 2px solid #CC503B;
+    background: #fff;
 }
 
 .infoUpdateButton:hover {
@@ -143,8 +144,13 @@ tbody {
 
 td {
     border-bottom: 1px solid lightgray;
-    text-align: center;
     /*height: 58px;*/
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+
+.item_td {
+    text-align: center;
 }
 
 tr:nth-child(even) {

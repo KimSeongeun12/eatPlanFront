@@ -19,34 +19,69 @@
     width: 277px;
     height: 40px;
     float: left;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
+    margin-top: 3px;
     background: #fff;
-    border: 1px solid #a1a1a1;
+    border: 1px solid #c6c6c6;
 }
 
 .bio_update {
-    width: 1045px;
+    width: 1044px;
     height: 90px;
     float: left;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
     background: #fff;
-    border: 1px solid #a1a1a1;
+    border: 1px solid #c6c6c6;
 }
 
-tr.tag_tr {
+.tag_tr {
     height: 45px;
     box-sizing: border-box;
 }
 
-td.tag_td {
+.tag_content {
     display: flex;
-    border: none;
-    margin-left: 15px;
+    align-items: center;
 }
 
-td.tag_td > div {
+.tag_content > span {
     color: #DE8F20;
     font-size: 20px;
     box-sizing: border-box;
-    padding-top: 12px;
+    /*margin-left: 15px;*/
+    margin-right: 0px;
+}
+
+.tag_updateButton {
+    width: 154px;
+    height: 50px;
+    background: #CC503B;
+    border-radius: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #FFFFFF;
+    border: none;
+    margin-left: 10px;
+}
+
+.locationSelect { /*join.css 에 똑같은 이름 있음*/
+    box-sizing: border-box;
+    width: 169px;
+    height: 52.4px;
+    background: #FFFFFF;
+    border: 2px solid #C5C5C5;
+    border-radius: 20px;
+    padding-left: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    color: #000000;
+    margin-bottom: 5px;
+    margin-top: 4px;
+    appearance: none;
 }
