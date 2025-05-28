@@ -22,21 +22,22 @@ export default function MyInfoPasswd() {
         setLoading(true);
 
         try {
-            const {data : verify} = await axios.post('http://localhost/member_pass',{password});
+            const {data: verify} = await axios.post('http://localhost/member_pass', {password});
             console.log(verify);
 
-            if(!verify.success) {
+            if (!verify.success) {
                 alert('비밀번호가 일치하지 않습니다.');
-                return;
-            }
-                //비밀번호가 맞으면 회원정보 수정 페이지로 이동
+                // return;
                 router.push('/myInfo_update');
-            }catch (err){
-                console.log(err);
-                alert('오류가 발생했습니다.');
-            }finally{
-                setLoading(false);
             }
+            //비밀번호가 맞으면 회원정보 수정 페이지로 이동
+            // router.push('/myInfo_update');
+        } catch (err) {
+            console.log(err);
+            alert('오류가 발생했습니다.');
+        } finally {
+            setLoading(false);
+        }
 
     };
 

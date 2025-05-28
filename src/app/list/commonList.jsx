@@ -16,7 +16,12 @@ export default function CommonList() {
 
     const renderList = async (p) => {
         try {
-            const res = await axios.get(`http://localhost/course_list/${p}`);
+            const res = await axios.get(`http://localhost/course_list/${p}`,
+                {
+                    headers:{
+                        authorization: sessionStorage.getItem("token"),
+                    }
+                });
             const data = res.data;
             console.log('응답 데이터:', res.data);
 
