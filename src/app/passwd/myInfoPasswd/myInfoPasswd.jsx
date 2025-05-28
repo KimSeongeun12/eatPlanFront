@@ -3,6 +3,7 @@
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useState} from "react";
+import '../../mypage/myPageCss.css';
 
 export default function MyInfoPasswd() {
 
@@ -25,7 +26,7 @@ export default function MyInfoPasswd() {
                 return;
             }
                 //비밀번호가 맞으면 회원정보 수정 페이지로 이동
-                router.push('/myinfo_update');
+                router.push('/myInfo_update');
             }catch (err){
                 console.log(err);
                 alert('오류가 발생했습니다.');
