@@ -3,6 +3,7 @@ import {useEffect} from "react";
 
 export default function emailCheckPage({input, setInput, confirmPass, setConfirmPass}) {
 
+    // email 기능 백엔드에서 axios로 추가
     const style = {
         color: '#FF0000',
     }
@@ -32,7 +33,7 @@ export default function emailCheckPage({input, setInput, confirmPass, setConfirm
             <div className={"AuthCodeDiv"}>
                 <label>인증 코드<span style={style}> *</span></label><br/>
                 <input className={"authcodeInput"} type={"text"}
-                       placeholder={"인증 코드 6자리를 입력해주세요."}
+                       placeholder={"인증 코드 5자리를 입력해주세요."}
                        name={"authcode"}/>
             </div>
         </>
