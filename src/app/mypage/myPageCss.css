@@ -227,8 +227,66 @@ tr:nth-child(even) {
 .passwd-title {
     font-size: 50px;
     font-weight: 700;
-    margin-right: 50;
+    margin-right: 50px;
     margin-top: 240px;
     color: #333;
     text-align: center;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modalText {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirmBtn, .cancelBtn {
+    padding: 10px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.confirmBtn {
+    background-color: #CC503B;
+    color: white;
+}
+
+.cancelBtn {
+    background-color: #ccc;
+    color: black;
+}
+
+.confirmBtn:hover {
+    background-color: #b03f2e;
+}
+
+.cancelBtn:hover {
+    background-color: #aaa;
 }

@@ -9,6 +9,7 @@ export default function MyPagePasswd() {
 
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const router = useRouter();
 
     const checkPassword = async () => {
@@ -29,15 +30,20 @@ export default function MyPagePasswd() {
                 return;
             }
 
-            //2. 탈퇴 여부 확인
-            const confirmDelete = window.confirm('정말 회원 탈퇴하시겠습니까?');
-            if (!confirmDelete) {
-                setLoading(false);
-                return;
-            }
-            // 3. 회원탈퇴 요청
+            //모달 열기
+            setShowModal(true);
+        } catch (err) {
+            console.log(err);
+            alert('비밀번호를 확인해주세요!');
+            setLoading(false);
+        }
+    };
+    //2. 탈퇴 여부 확인
+    const handleDelete = async () => {
+        try {
             const {data: deletRes} = await axios.put('/member_secession', {password});
 
+            // 3. 회원탈퇴 요청
             if (!deletRes.success) {
                 alert('회원 탈퇴 처리 중 오류가 발생했습니다.');
                 setLoading(false);
@@ -54,6 +60,7 @@ export default function MyPagePasswd() {
             alert('오류가 발생했습니다.');
         } finally {
             setLoading(false);
+            setShowModal(false);
         }
     };
 
@@ -68,6 +75,18 @@ export default function MyPagePasswd() {
                 <button onClick={checkPassword} disabled={loading}
                         className={"infoUpdateButton"}>{loading ? '처리중...' : '비밀번호 확인'}</button>
             </div>
+            {showModal && (
+                <div className = "modalOverlay">
+                    <div className ="modalContent">
+                        <p className="modalText">정말 회원 탈퇴하시겠습니까?</p>
+                        <div className={"modalButtons"}>
+                            <button className="cancelBtn" onClick={() => setShowModal(false)}>취소</button>
+                            <button className="confirmBtn" onClick={() => setShowModal(handleDelete)}>확인</button>
+                        </div>
+                    </div>
+                </div>
+                    )}
+
         </div>
     )
 }
