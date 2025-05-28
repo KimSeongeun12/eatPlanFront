@@ -38,6 +38,10 @@ th, td {
     text-align: center;
 }
 
+td {
+    height: 1000px;
+}
+
 th {
     background-color: #f4f4f4;
     font-weight: bold;

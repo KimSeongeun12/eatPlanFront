@@ -23,6 +23,9 @@
     margin-top: 3px;
     background: #fff;
     border: 1px solid #c6c6c6;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-left: 10px;
 }
 
 .bio_update {
@@ -32,6 +35,9 @@
     /*margin-left: 15px;*/
     background: #fff;
     border: 1px solid #c6c6c6;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-left: 10px;
 }
 
 .tag_tr {

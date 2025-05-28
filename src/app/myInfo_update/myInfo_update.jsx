@@ -21,8 +21,8 @@ export default function MyInfoUpdate() {
 
     const getInfo = async () => {
         const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current,});
-        console.log(data);
-        setInfo(data.list);
+        console.log(data.list[0]);
+        setInfo(data.list[0]);
     };
 
     const input = (e) => {
@@ -60,7 +60,7 @@ export default function MyInfoUpdate() {
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td>{user_id}</td>
+                            <td>{user_id.current}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
@@ -78,14 +78,18 @@ export default function MyInfoUpdate() {
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
                             <td>
-                                <input className={"email_update"} type={"text"}/>
+                                <input className={"email_update"}
+                                       type={"text"} name={"email"}
+                                       value={info.email} onChange={input} />
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
                             <td>
-                                <input className={"bio_update"} type={"text"}/>
+                                <input className={"bio_update"}
+                                       type={"text"} name={"bio"}
+                                       value={info.bio} onChange={input}/>
                             </td>
                         </tr>
                         <tr style={trStyle}>
