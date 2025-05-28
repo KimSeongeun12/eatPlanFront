@@ -2,11 +2,16 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {Pagination, Stack} from "@mui/material";
+import './myPageCss.css'
 
 export default function myList_like() {
     const [list, setList] = useState([]);
     const [page, setPage] = useState(1); // 현재 페이지
     const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
+
+    const subject_style = {
+        width: "0px",
+    }
 
     const makeList = async (p = 1) => {
         const user_id = sessionStorage.getItem("user_id");
@@ -16,13 +21,12 @@ export default function myList_like() {
         const content = data.list.list.map((item) => {
             return (
                 <tr key={item.post_idx} style={{height: '60px'}}>
-                    <td>{item.post_idx}</td>
-                    <td>{item.subject}</td>
-                    <td>{item.user_id}</td>
-                    <td>{item.reg_date}</td>
-                    <td>{item.b_hit}</td>
-                    <td>{item.total_like_count}</td>
-                    <td>{item.public === 1 ? "공개" : "비공개"}</td>
+                    <td className={"item_td"}>{item.post_idx}</td>
+                    <td className={"item_td"} style={subject_style}>{item.subject}</td>
+                    <td className={"item_td"}>{item.user_id}</td>
+                    <td className={"item_td"}>{item.reg_date}</td>
+                    <td className={"item_td"}>{item.b_hit}</td>
+                    <td className={"item_td"}>{item.total_like_count}</td>
                 </tr>
             );
         });
@@ -31,7 +35,12 @@ export default function myList_like() {
         for (let i = 0; i < emptyRows; i++) {
             content.push(
                 <tr key={`empty-${i}`} style={{ height: '60px' }}>
-                    <td colSpan={7}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
                 </tr>
             );
         }
@@ -60,7 +69,7 @@ export default function myList_like() {
                     <th>작성 날짜</th>
                     <th>조회수</th>
                     <th>좋아요</th>
-                    <th>공개 여부</th>
+                    {/*<th>공개 여부</th>*/}
                 </tr>
                 </thead>
                 <tbody>{list}</tbody>

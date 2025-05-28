@@ -1,10 +1,11 @@
 import LeftMenu from "@/app/leftMenu";
+import CourseWrite from "./courseWrite";
 
-export default function CourseWrite() {
+export default function app() {
     return (
         <>
             <LeftMenu />
-            코스 등록 페이지
+            <CourseWrite />
         </>
     );
 }

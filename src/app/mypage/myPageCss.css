@@ -13,6 +13,18 @@ body {
     padding: 100px 50px 30px;
 }
 
+.infoTable {
+    width: 1340px;
+    box-sizing: border-box;
+}
+
+.infoTable_td {
+    box-sizing: border-box;
+    padding-left: 30px;
+    text-align: left;
+    height: 0px;
+}
+
 span {
     font-family: 'Noto Sans';
     font-style: normal;
@@ -98,17 +110,22 @@ table {
 }
 
 .footer {
+    margin-top: 10px;
     height: 63px;
 }
 
 .secessionSpan {
     position: absolute;
     left: 400px;
-    top: 990px;
+    top: 1000px;
     color: #CC503B;
 }
 
 /*myList*/
+
+.myList_table {
+    margin-top: 0px;
+}
 
 .myList {
     display: flex;
@@ -116,6 +133,7 @@ table {
 }
 
 .courseTable {
+    margin-top: 0px;
     width: 1350px;
     /*height: 669px;*/
     /*border: 1px solid black;*/
@@ -132,6 +150,10 @@ table {
 
 th {
     border-bottom: 1px solid black;
+}
+
+th, td {
+    padding: 0px;
 }
 
 tbody {
@@ -151,6 +173,8 @@ td {
 
 .item_td {
     text-align: center;
+    height: 0px;
+    box-sizing: border-box;
 }
 
 tr:nth-child(even) {
@@ -158,7 +182,7 @@ tr:nth-child(even) {
 }
 
 .list_item > td {
-    height: 100px;
+    /*height: 100px;*/
 }
 
 .myWrite, .myLike {
