@@ -3,7 +3,7 @@
 import {useRouter} from "next/navigation";
 import axios from "axios";
 import {useState} from "react";
-import '../../mypage/myPageCss.css';
+import '../mypage/myPageCss.css';
 
 export default function MyInfoPasswd() {
 
