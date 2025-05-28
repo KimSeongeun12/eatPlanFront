@@ -1,10 +1,18 @@
-.searchWrapper {
-    position:absolute;
-    display: inline-block;
+.hidden {
+    display: none !important;
+}
+
+.searchContainer {
     width: 1000px;
+    margin: 40px;
+}
+
+.searchWrapper {
+    display: inline-block;
+    position: relative;
+    width: 100%;
     height: 52px;
-    top: 300px;
-    left: 400px;
+    margin-bottom: 20px;
 }
 
 .StringSearch {
@@ -21,10 +29,10 @@
 
 .StringSearch:focus {
     outline: none;
-
 }
 
 .searchBtn {
+    box-sizing: border-box;
     position: absolute;
     top: 50%;
     right: 0;
@@ -47,11 +55,10 @@
 }
 
 .tagAreaWrapper {
-    position: absolute;
     top: 400px;
     left: 400px;
-    width: 1000px;
-    height: 500px;
+    width: 100%;
+    margin-bottom: 20px;
     /* Flexbox 추가 */
     display: flex;
     align-items: flex-start;  /* 세로 위쪽 정렬 */
@@ -62,7 +69,7 @@
 .areaCate {
     width: 100%;
     height: 40px;
-    margin: 0;
+    margin-bottom: 10px;
     font-size: 25px;
 }
 
@@ -78,11 +85,13 @@
     /* auto 혹은 고정값(px/% 등)으로 옆으로 붙게 */
     width: 200px;     /* 컨텐츠 폭만큼 */
     /* 필요 시 width: 30%; 같은 비율값도 가능 */
+    background-color: white;
 }
 .areaWrapper {
     float: none;
     display: block;
     width: 600px;
+    background-color: white;
 }
 
 .cityHead {
@@ -112,6 +121,7 @@
     padding-left: 5px;
     margin: 0;
     font-size: 20px;
+    color: #8d8d8d;
 }
 
 .distHead {
@@ -141,6 +151,12 @@
     padding-left: 5px;
     margin: 0;
     font-size: 20px;
+    color: #8d8d8d;
+}
+
+.active {
+    background: #CC503B;
+    color: white;
 }
 
 .area {
@@ -157,14 +173,109 @@
     font-size: 20px;
 }
 
+.noneActiveArea {
+    border: 1px solid #8d8d8d;
+    border-radius: 20px;
+    padding: 8px;
+    color: #8d8d8d;
+    height: 35px;
+    width: auto;
+}
+
+.activeArea {
+    background: rgba(204, 80, 59, 0.3);
+    color: #CC503B;
+    border: 1px solid #CC503B;
+    border-radius: 20px;
+    padding: 8px;
+    height: 35px;
+    width: auto;
+}
+
 .city li + li,
 .dist li + li,
 .area li{
     margin-top: 8px;
 }
 
-.tagWrapper{
-    position: absolute;
-    top: 900px;
-    left: 400px;
+
+
+
+
+.tagWrapper {
+    width: 100%;
+}
+
+.noneActiveTag {
+    border: 1px solid #8d8d8d;
+    border-radius: 20px;
+    padding: 8px;
+    color: #8d8d8d;
+    height: 35px;
+    width: auto;
+}
+
+.activeTag {
+    background: rgba(204, 80, 59, 0.3);
+    color: #CC503B;
+    border: 1px solid #CC503B;
+    border-radius: 20px;
+    padding: 8px;
+    height: 35px;
+    width: auto;
+}
+
+.tag h3 {
+    font-size: 25px;
+}
+
+.tag ul {
+    list-style: none;
+    padding: 8px;
+    border: 1px solid black;
+    background-color: white;
+    width: 1000px;
+    box-sizing: border-box;
+}
+
+.tag li {
+    display: inline-flex;
+    margin: 8px;
+    font-size: 20px;
+}
+
+.selectedList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 900px;
+    font-size: 15px;
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.selectedList span {
+    color: #CC503B;
+    border: 1px solid #CC503B;
+    border-radius: 20px;
+    padding: 8px;
+    margin: 0;
+}
+
+.resetBtn {
+    margin-bottom: 20px;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.selectedRow {
+    display: flex;
+    justify-content: space-between; /* 양쪽 정렬 */
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
 }

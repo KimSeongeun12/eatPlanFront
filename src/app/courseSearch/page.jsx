@@ -34,102 +34,177 @@ export default function CourseSearch(){
         })
     };
 
-    const [selectedCity, setSelectedCity] = useState("");
-    const [selectedDist, setSelectedDist] = useState("");
-    const [selectedArea, setSelectedArea] = useState("");
-
+    // 페이지 입장시 백에서 태그 카테고리, 태그 리스트 가져오기
     useEffect(() => {
         tagCateList();
         areaTagList();
         tagList();
     }, []);
 
+    // 지역태그 city 중복제거
     const uniqueCities = useMemo(() => {
         return [...new Set(areaTag.map(at => at.city))];
     }, [areaTag]);
-    const uniqueDist = useMemo(() =>{
-        return [...new Set(areaTag.map(at => at.dist))];
-    }, [areaTag]);
 
+    // 선택한 목록들
+    const [selectedCity, setSelectedCity] = useState(""); // 선택한 시·도
+    const [selectedDist, setSelectedDist] = useState(""); // 선택한 시·군·구
+    const [selectedArea, setSelectedArea] = useState([]); // 선택한 지역태그
+    const [selectedTag, setSelectedTag] = useState([]);   // 선택한 태그
+    const [selectedList, setSelectedList] = useState([]); // 선택한 지역,태그
+
+    // 지역태그 선택, 취소하기
+    const toggleArea = (area) => {
+        setSelectedArea(prev =>
+            prev.includes(area)
+                ? prev.filter(a => a !== area)
+                : [...prev, area]
+        );
+        setSelectedList(prev => {
+            const isSelected = selectedArea.includes(area);
+            if (isSelected) {
+                return prev.filter(entry => !(entry.type === 'area' && entry.value === area));
+            } else {
+                return [...prev, { type: 'area', value: area }];
+            }
+        });
+    };
+
+    // 태그 선택, 취소하기
+    const toggleTag = (tag) => {
+        setSelectedTag(prev =>
+            prev.includes(tag)
+                ? prev.filter(t => t !== tag)
+                : [...prev, tag]
+        );
+        setSelectedList(prev => {
+            const isSelected = selectedTag.includes(tag);
+            if (isSelected) {
+                return prev.filter(entry => !(entry.type === 'tag' && entry.value === tag));
+            } else {
+                return [...prev, { type: 'tag', value: tag }];
+            }
+        });
+    };
+
+    // 선택한 태그들 초기화
+    const resetAll = () => {
+        setSelectedArea([]);
+        setSelectedTag([]);
+        setSelectedList([]);
+    };
+
+    // 검색조건들 검색결과창으로 넘겨주기
     const search = () => {
+        const keyword = document.querySelector('.StringSearch').value;
+        console.log(keyword);
+        const query = encodeURIComponent(keyword);
+
+        const tagParams = selectedList.map(tag => `${encodeURIComponent(tag.value)}`)
+
         location.href="/searchResult"
     };
 
     return (
         <>
             <LeftMenu />
-            <div className={"searchWrapper"}>
-                <input className={"StringSearch"} type={"text"} placeholder={"검색어를 입력해주세요"}/>
-                <button className={"searchBtn"} onClick={search}>
-                    <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
-                </button>
-            </div>
-
-
-
-            <div className={"tagAreaWrapper"}>
-
-                <h3 className={"areaCate"}>지역</h3>
-
-                <div className={"cityWrapper"}>
-                <h5 className={"cityHead"}>시.도</h5>
-                <ul className={"city"}>
-                    {uniqueCities.map(city => (
-                        <li
-                            key={city}
-                            className={city === selectedCity ? "active" : ""}
-                            onClick={() => setSelectedCity(city)}
-                        >{city}</li>
-                    ))}
-                </ul>
+            <div className="searchContainer">
+                {/*텍스트 검색창*/}
+                <div className={"searchWrapper"}>
+                    <input className={"StringSearch"} type={"text"} placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
+                    <button className={"searchBtn"} onClick={search}>
+                        <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
+                    </button>
                 </div>
 
-                <div className={"distWrapper"}>
-                <h5 className={"distHead"}>시.군.구</h5>
-                <ul className={"dist"}>
-                    {uniqueDist.map(dist => (
-                        <li
-                            key={dist}
-                            className={dist === selectedDist ? "active" : ""}
-                            onClick={() => setSelectedDist(dist)}
-                        >{dist}</li>
-                    ))}
-                </ul>
+                {/*선택한 태그 리스트, 초기화 버튼*/}
+                <div className="selectedRow">
+                    <h3 className="selectedList">
+                        {selectedList.map((item, idx) => (
+                            <span key={idx}>
+                                {item.value}
+                            </span>
+                        ))}
+                    </h3>
+
+                    <button onClick={resetAll} className="resetBtn">선택 초기화</button>
                 </div>
 
-                <div className={"areaWrapper"}>
-                <ul className={"area"}>
-                    {areaTag.map(at => (
-                        <li
-                            key={at.area_tag_idx}
-                            className={at.tag_name === selectedArea ? "active" : ""}
-                            onClick={() => setSelectedArea(at.tag_name)}
-                        >{at.tag_name}</li>
-                    ))}
-                </ul>
-            </div>
-            </div>
+                <div className={"tagAreaWrapper"}>
 
+                    <h3 className={"areaCate"}>지역</h3>
 
+                    {/*도시 리스트*/}
+                    <div className={"cityWrapper"}>
+                        <h5 className={"cityHead"}>시 · 도</h5>
+                        <ul className={"city"}>
+                            {uniqueCities.map(city => (
+                                <li
+                                    key={city}
+                                    className={city === selectedCity ? "active" : ""}
+                                    onClick={() => setSelectedCity(city)}
+                                >{city}</li>
+                            ))}
+                        </ul>
+                    </div>
 
+                    {/*시군구 리스트*/}
+                    <div className={"distWrapper"}>
+                        <h5 className={"distHead"}>시 · 군 · 구</h5>
+                        <ul className={"dist"}>
+                            {areaTag
+                                .filter(distCate => distCate.city === selectedCity)
+                                .map(distName => (
+                                <li
+                                    key={distName.dist}
+                                    className={(distName.dist === selectedDist ? "active " : "") +
+                                                (distName.city === selectedCity ? "" : "hidden")}
+                                    onClick={() => setSelectedDist(distName.dist)}
+                                >{distName.dist}</li>
+                            ))}
+                        </ul>
+                    </div>
 
-            <div className="tagWrapper">
-                {tagCate
-                    .filter(cate => cate.cate_idx !== 1)
-                    .map(cate => {
-                        const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx);
-                        return (
-                            <div key={cate.cate_idx} className="category-block">
-                                <h3>{cate.cate_name}</h3>
-                                <ul>
-                                    {tagsForCate.length > 0
-                                        ? tagsForCate.map(t => <li key={t.tag_idx}>{t.tag_name}</li>)
-                                        : <li className="empty">태그가 없습니다</li>
-                                    }
-                                </ul>
-                            </div>
-                        );
-                    })}
+                    {/*지역태그 리스트*/}
+                    <div className={"areaWrapper"}>
+                        <ul className={"area"}>
+                            {areaTag
+                                .filter(areaCate => areaCate.dist === selectedDist)
+                                .map(at => (
+                                <li
+                                    key={at.area_tag_idx}
+                                    className={(selectedArea.includes(at.tag_name) ? "activeArea " : "noneActiveArea ") +
+                                                (at.city === selectedCity ? "" : "hidden")}
+                                    onClick={() => toggleArea(at.tag_name)}
+                                >{at.tag_name}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                {/*태그 리스트*/}
+                <div className="tagWrapper">
+                    {tagCate
+                        .filter(cate => cate.cate_idx !== 1)
+                        .map(cate => {
+                            const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx && t.isClass === 'course');
+                            return (
+                                <div key={cate.cate_idx} className="tag">
+                                    <h3>{cate.cate_name}</h3>
+                                    <ul>
+                                        {tagsForCate.length > 0
+                                            ? tagsForCate.map(t =>
+                                                <li key={t.tag_idx}
+                                                    className={selectedTag.includes(t.tag_name) ? "activeTag" : "noneActiveTag"}
+                                                    onClick={() => toggleTag(t.tag_name)}
+                                                    >{t.tag_name}</li>)
+                                            : <li className="empty">태그가 없습니다</li>
+                                        }
+                                    </ul>
+                                </div>
+                            );
+                        })}
+                </div>
             </div>
         </>
 );
