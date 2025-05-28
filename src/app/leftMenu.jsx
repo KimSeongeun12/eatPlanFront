@@ -29,6 +29,7 @@ export default function leftMenu() {
 
     const logout = () => {
         sessionStorage.removeItem('user_id');
+        sessionStorage.removeItem('token');
         router.push('/');
     }
 
@@ -62,7 +63,7 @@ export default function leftMenu() {
                     <img src={"연필 아이콘.png"} alt={"코스 등록 아이콘"}/>
                     <span>코스 등록</span>
                 </div>
-                <div onClick={() => router.push('./note')} className={`noteMenu ${isActive('/note') ? 'active' : ''}`}>
+                <div onClick={() => router.push('./message')} className={`noteMenu ${isActive('/message') ? 'active' : ''}`}>
                     <img src={"편지 아이콘.png"} alt={"코스 등록 아이콘"}/>
                     <span>쪽지</span>
                 </div>

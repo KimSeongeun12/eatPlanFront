@@ -51,7 +51,7 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
 
                 <label>자기소개</label><br/>
                 <textarea className={"bioarea"} name={"bio"} onChange={handleChange}
-                          value={input.bio} onChange={handleChange}/>
+                          value={input.bio} />
             </div>
 
             <div className={"right"}>
@@ -69,7 +69,7 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
                 <br/>
 
                 <label>지역</label><br/>
-                <select className={"locationSelect"} name={"location"} onChange={handleChange} value={input.location} onChange={handleChange}>
+                <select className={"locationSelect"} name={"location"} onChange={handleChange} value={input.location} >
                     <option>지역1</option>
                     <option>지역2</option>
                     <option>지역3</option>

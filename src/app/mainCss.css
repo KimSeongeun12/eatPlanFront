@@ -1,3 +1,7 @@
+/*html {*/
+/*    background-color: #fff;*/
+/*}*/
+
 .main-container {
     display: flex;
     background: #fff;
@@ -14,13 +18,14 @@
 
 .rightMenu {
     float: right;
+    background: #fff;
 }
 
 .userIcon {
     position: absolute;
     width: 176.55px;
     height: 176.55px;
-    left: 88px;
+    left: 82px;
     top: 70px;
 }
 

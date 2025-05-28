@@ -1,12 +1,41 @@
-import '../mainCss.css'
-import '../mypage/myPageCss.css'
 import './myInfo_updateCss.css'
+import {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
 export default function MyInfoUpdate() {
-    const user_id = sessionStorage.getItem("user_id");
+    const user_id = useRef('');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+        }
+        getInfo(user_id.current);
+    }, []);
+
+    const [info, setInfo] = useState({
+        nickname: "",
+        email: "",
+        bio: "",
+        location: "",
+    })
+
+    const getInfo = async () => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current,});
+        console.log(data.list[0]);
+        setInfo(data.list[0]);
+    };
+
+    const input = (e) => {
+        const {name, value} = e.target;
+        setInfo({
+            ...info,
+            [name]: value,
+        })
+    }
 
     const trStyle = {
         border: '1px solid lightgray',
+        height: '45px',
     }
 
     const thStyle = {
@@ -31,7 +60,7 @@ export default function MyInfoUpdate() {
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td>{user_id}</td>
+                            <td>{user_id.current}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
@@ -40,34 +69,46 @@ export default function MyInfoUpdate() {
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
                             <td>
-                                <input type={"text"} />
-                                <button>중복 확인</button>
+                                <input className={"nickname_update"}
+                                       type={"text"} name={"nickname"}
+                                       value={info.nickname} onChange={input} />
+                                <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
                             <td>
-                                <input type={"text"} />
+                                <input className={"email_update"}
+                                       type={"text"} name={"email"}
+                                       value={info.email} onChange={input} />
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
                             <td>
-                                <input type={"text"} />
+                                <input className={"bio_update"}
+                                       type={"text"} name={"bio"}
+                                       value={info.bio} onChange={input}/>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
                             <td>
-                                <input type={"text"} />
+                                <select className={"locationSelect"}>
+                                    <option>지역1</option>
+                                    <option>지역2</option>
+                                    <option>지역3</option>
+                                </select>
                             </td>
                         </tr>
-                        <tr style={trStyle}>
+                        <tr className={"tag_tr"} style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td>
-                                <div></div>
-                                <button>태그 선택</button>
+                            <td className="tag_td">
+                                <div className={"tag_content"}>
+                                    <span>태그1, 태그2, 태그3</span>
+                                    <button className={"tag_updateButton"}>태그 선택</button>
+                                </div>
                             </td>
                         </tr>
                         </tbody>

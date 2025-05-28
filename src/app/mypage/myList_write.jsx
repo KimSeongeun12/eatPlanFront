@@ -16,12 +16,12 @@ export default function MyList_write() {
         const content = data.list.list.map((item) => {
             return (
                 <tr key={item.post_idx} style={{height: '60px'}}>
-                    <td>{item.post_idx}</td>
-                    <td>{item.subject}</td>
-                    <td>{item.user_id}</td>
-                    <td>{item.reg_date}</td>
-                    <td>{item.b_hit}</td>
-                    <td>{item.public === 1 ? "공개" : "비공개"}</td>
+                    <td className={"item_td"}>{item.post_idx}</td>
+                    <td className={"item_td"}>{item.subject}</td>
+                    <td className={"item_td"}>{item.user_id}</td>
+                    <td className={"item_td"}>{item.reg_date}</td>
+                    <td className={"item_td"}>{item.b_hit}</td>
+                    <td className={"item_td"}>{item.public === 1 ? "공개" : "비공개"}</td>
                 </tr>
             );
         });

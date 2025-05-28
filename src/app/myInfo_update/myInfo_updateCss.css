@@ -1,14 +1,93 @@
 .updateButton {
     width: 154px;
-    height: 56px;
+    height: 50px;
     background: #CC503B;
     border-radius: 20px;
-    width: 79px;
-    height: 27px;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 27px;
     color: #FFFFFF;
+    border: none;
+    float: left;
+    margin-left: 10px;
+}
+
+.nickname_update
+,.email_update {
+    width: 277px;
+    height: 40px;
+    float: left;
+    /*margin-left: 15px;*/
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #c6c6c6;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+
+.bio_update {
+    width: 1044px;
+    height: 90px;
+    float: left;
+    /*margin-left: 15px;*/
+    background: #fff;
+    border: 1px solid #c6c6c6;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+
+.tag_tr {
+    height: 45px;
+    box-sizing: border-box;
+}
+
+.tag_content {
+    display: flex;
+    align-items: center;
+}
+
+.tag_content > span {
+    color: #DE8F20;
+    font-size: 20px;
+    box-sizing: border-box;
+    /*margin-left: 15px;*/
+    margin-right: 0px;
+}
+
+.tag_updateButton {
+    width: 154px;
+    height: 50px;
+    background: #CC503B;
+    border-radius: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #FFFFFF;
+    border: none;
+    margin-left: 10px;
+}
+
+.locationSelect { /*join.css 에 똑같은 이름 있음*/
+    box-sizing: border-box;
+    width: 169px;
+    height: 52.4px;
+    background: #FFFFFF;
+    border: 2px solid #C5C5C5;
+    border-radius: 20px;
+    padding-left: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    color: #000000;
+    margin-bottom: 5px;
+    margin-top: 4px;
+    appearance: none;
 }
