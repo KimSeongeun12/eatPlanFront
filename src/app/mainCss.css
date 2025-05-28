@@ -1,9 +1,10 @@
 .main-container {
     display: flex;
+    background: #fff;
 }
 
 .leftMenu {
-    width: 320px; /*원래 340px*/
+    width: 345px;
     height: 1080px;
     left: 0px;
     top: 0px;
