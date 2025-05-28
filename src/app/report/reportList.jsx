@@ -31,6 +31,15 @@ const handlePageChange = (newPage) => {
     }
 };
 
+const convertCategory = (code) =>{
+    switch(code){
+        case 'post' : return '게시글';
+        case 'comment' : return '댓글';
+        case 'msg' : return '쪽지';
+    }
+};
+
+
     return (
         <div className={"content-wrapper"}>
             <h2>신고목록</h2>
@@ -52,7 +61,7 @@ const handlePageChange = (newPage) => {
                             <td>{(page -1) * 10 + idx + 1}</td>
                             <td>
                                 <Link href={`/report/${report.report_idx}`}>
-                                    [{report.isClass}] {report.subject}
+                                    [{convertCategory(report.category)}] {report.subject}
                                 </Link>
                             </td>
                             <td>{report.reporter_id}</td>
