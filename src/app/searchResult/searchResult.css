@@ -1,0 +1,65 @@
+.commonList {
+    position: relative;
+    margin-left: 50px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.courseTitle {
+    font-size: 20px;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.courseComment {
+    font-size: 16px;
+    float: right;
+    color: #CC503B;
+    font-weight: bold;
+}
+
+.courseAuthor {
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.courseViews, .courseLike {
+    font-size: 16px;
+    float: right;
+    color: #a1a1a1;
+}
+
+.courseDate, .courseScope {
+    font-size: 16px;
+    color: #a1a1a1;
+}
+
+.listItem {
+    width: 194px;
+}
+
+.courseTitle,
+.courseComment,
+.courseAuthor,
+.courseViews,
+.courseScope,
+.courseLike,
+.courseDate {
+    margin-right: 0px;
+}
+
+.mainImage {
+    width: 194px;
+    height: 195px;
+    background: lightgray;
+    margin-bottom: 10px;
+}
+
+.noResult {
+    padding: 40px;
+    font-size: 18px;
+    text-align: center;
+    color: #999;
+}
