@@ -13,8 +13,8 @@ export default function MyInfo() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             user_id.current = sessionStorage.getItem('user_id');
+            memberInfo(user_id.current);
         }
-        memberInfo(user_id.current);
     }, []);
 
     const trStyle = {
@@ -33,10 +33,10 @@ export default function MyInfo() {
 
     const memberInfo = async () => {
         const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
-        console.log(data.list[0].user_id);
-        if (!data.list[0].user_id) {
+        if (!data.list || data.list.length === 0 || !data.list[0].user_id) {
             alert("로그인이 필요한 서비스입니다.");
-            location.href = './login';
+            location.href = '/login';
+            return;
         }
         setUserInfo(data.list[0]);
     }

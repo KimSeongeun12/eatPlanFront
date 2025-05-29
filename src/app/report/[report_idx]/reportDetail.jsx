@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 
 export default function ReportDetail() {
+
     const router = useRouter();
     const {report_idx} = useParams();
     const searchParams = useSearchParams();
@@ -45,10 +46,10 @@ export default function ReportDetail() {
     const categoryText = categoryMap[detail.class] || '기타';
 
     return (
-        <div className="detail-wrapper">
+        <div className={"report_container"}>
             <h2>신고 상세보기</h2>
 
-            <table className="report-detail-table">
+            <table className="report_detail_table">
                 <tbody>
                 {/* 1. 헤더 행 */}
                 <tr>
