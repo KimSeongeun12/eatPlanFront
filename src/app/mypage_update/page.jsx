@@ -1,14 +1,18 @@
 'use client'
 import LeftMenu from "../leftMenu";
-import MyInfoUpdate from "./myInfo_update";
-import {useState} from "react";
+import Update from "./update";
+import {useEffect, useState} from "react";
 import MyInfo from "@/app/mypage/myInfo";
 import MyList from "@/app/mypage/myList";
 
 export default function Page() {
-    const [visible, setVisible] = useState('myInfo_update');
+    const [visible, setVisible] = useState('');
 
-    // const showMyInfoUpdate = () => {setVisible('myInfo_update')}
+    useEffect(() => {
+        setVisible('update');
+    }, []);
+
+    // const showMyInfoUpdate = () => {setVisible('mypage_update')}
     const showMyInfo = () => {setVisible('myInfo')}
     const showMyList = () => {setVisible('myList')}
 
@@ -28,7 +32,7 @@ export default function Page() {
                 <hr/>
                 {visible === 'myInfo' && <MyInfo/>}
                 {visible === 'myList' && <MyList/>}
-                {visible === 'myInfo_update' && <MyInfoUpdate/>}
+                {visible === 'update' && <Update/>}
             </div>
         </>
     );

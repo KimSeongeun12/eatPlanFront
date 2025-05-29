@@ -18,6 +18,7 @@ export default function ReportList() {
 
     const fetchReports = (pageNum) => {
         axios.get(`http://localhost/report_list/${pageNum}`).then(res => {
+            console.log(res.data.list[1]);
             setReportList(res.data.list);
             setTotalPage(res.data.pages);
     }).catch(err => {
@@ -31,13 +32,18 @@ const handlePageChange = (newPage) => {
     }
 };
 
-const convertCategory = (code) =>{
-    switch(code){
-        case 'post' : return '게시글';
-        case 'comment' : return '댓글';
-        case 'msg' : return '쪽지';
-    }
-};
+    const convertCategory = (code) => {
+        switch (code) {
+            case 'course':
+                return '게시글';
+            case 'comment':
+                return '댓글';
+            case 'message':
+                return '쪽지';
+            default:
+                return '기타';
+        }
+    };
 
 
     return (
@@ -60,8 +66,11 @@ const convertCategory = (code) =>{
                         <tr key={report.report_idx}>
                             <td>{(page -1) * 10 + idx + 1}</td>
                             <td>
-                                <Link href={`/report/${report.report_idx}`}>
-                                    [{convertCategory(report.category)}] {report.subject}
+                                <Link href={{
+                                    pathname : `/report/${report.report_idx}`,
+                                    query : {index : (page-1)*10 + idx + 1}
+                                }}>
+                                    [{convertCategory(report.isClass)}] {report.subject}
                                 </Link>
                             </td>
                             <td>{report.reporter_id}</td>

@@ -25,7 +25,7 @@ export default function List() {
                         </select>
                     )}
                     <div className={"search"}>
-                        <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
+                        <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                     </div>
                 </div>
                 <hr/>

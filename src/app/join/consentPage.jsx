@@ -4,7 +4,7 @@ export default function consentPage({select, onChange}) {
     return (
         <>
             <div className={"consentTitle"}>
-                <img src={"체크 아이콘.png"} alt={"체크 아이콘"}></img>
+                <img src={"checkIcon.png"} alt={"체크 아이콘"}></img>
                 <span className={"consentSpan"}>개인정보 수집 및 이용</span>
             </div>
             <div className={"consentForm"}>

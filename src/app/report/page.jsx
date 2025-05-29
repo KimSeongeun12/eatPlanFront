@@ -1,14 +1,16 @@
 'use client';
 
-import LeftMenu from "@/app/leftMenu";
-import ReportList from "./reportList";
-import "./reportList.css";
+import LeftMenu from '@/app/leftMenu';
+import ReportList from './reportList';
+import './reportList.css';
 
-export default function report() {
+export default function ReportListPage() {
     return (
-        <div className="report-page-wrapper">
-            <LeftMenu />
-            <ReportList/>
+        <div className="main-container">
+            <LeftMenu/>
+            <div className="rightMenu">
+                <ReportList/>
+            </div>
         </div>
     );
 }
