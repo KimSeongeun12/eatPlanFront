@@ -7,7 +7,7 @@ export default function WritePage() {
 
     let user_id = sessionStorage.getItem('user_id');
     const token = sessionStorage.getItem('token');
-    const [info, setInfo] = useState({'sender': 'admin', 'recip': 'admin', 'subject': '', 'content': ''});
+    const [info, setInfo] = useState({'sender': 'admin', 'recip': 'user01', 'subject': '', 'content': ''});
 
     const send = async () => {
 
