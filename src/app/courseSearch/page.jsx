@@ -141,7 +141,7 @@ export default function CourseSearch(){
                         onKeyUp={keyHandler}
                         placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
                     <button className={"searchBtn"} onClick={search}>
-                        <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
+                        <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                     </button>
                 </div>
 

@@ -27,7 +27,7 @@ export default function List() {
                     )}
                     <Link href="/courseSearch">
                         <div className={"search"}>
-                            <img src={"돋보기 아이콘.png"} alt={"돋보기 아이콘"}/>
+                            <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                         </div>
                     </Link>
                 </div>

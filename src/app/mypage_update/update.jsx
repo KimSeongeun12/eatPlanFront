@@ -48,7 +48,7 @@ export default function Update() {
             <div>
                 <div className={"infoTap"}>
                     <div className={"profileTap"}>
-                        <img className={"userImage"} src={"유저 아이콘_기본 프로필 사진.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
+                        <img className={"userImage"} src={"userIcon_default_profile.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
                         <label>프로필 사진</label>
                     </div>
                     <table className={"infoTable"}>

@@ -77,8 +77,8 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
 
                 <label>프로필 사진</label><br/>
                 <div className={"profile"}>
-                    <img src={"유저 아이콘_기본 프로필 사진.png"} alt={"기본 프로필 사진"}/>
-                    <img className={"cameraIcon"} src={"카메라 아이콘.png"} alt={"카메라 아이콘"}/>
+                    <img src={"userIcon_default_profile.png"} alt={"기본 프로필 사진"}/>
+                    <img className={"cameraIcon"} src={"cameraIcon.png"} alt={"카메라 아이콘"}/>
                     <span className={"deleteSpan"}>사진 삭제</span>
                 </div>
             </div>

@@ -62,7 +62,7 @@ export default function LoginPage() {
     return (
         <>
             <div className={"loginTap"}>
-                <img src={"로그인 페이지 이미지.png"} alt={"로그인 페이지 이미지"}/>
+                <img src={"login_background.png"} alt={"로그인 페이지 이미지"}/>
                 <span className={"loginSpan"}>LOGIN</span>
 
                 <input className={"IDinput"} type={"text"} name={"user_id"} value={info.user_id}
