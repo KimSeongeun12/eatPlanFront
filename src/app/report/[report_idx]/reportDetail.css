@@ -1,35 +1,31 @@
 .detail-wrapper {
     flex: 1;
-    padding: 20px;
+
     box-sizing: border-box;
 }
 
 .detail-wrapper h2 {
-    margin-bottom: 16px;
+    margin-left: 10px;
 }
 
 .report-detail-table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     margin-bottom: 24px;
 }
 
-.report-detail-table th,
-.report-detail-table td
+.report-detail-table
 {
-    text-align: center !important;      /* 가로 중앙 */
-    vertical-align: middle !important; /* 세로 중앙 */
     border: 1px solid #ccc;
-    padding: 8px 20px;
+    padding: 6px;
 }
-
 
 /* 2. 신고 대상자 / 제목 input 스타일 */
 .report-detail-table input {
     width: 100%;
-    padding: 6px;
+    padding: 12px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 3px solid #ccc;
     border-radius: 4px;
 }
 
