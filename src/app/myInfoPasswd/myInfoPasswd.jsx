@@ -6,12 +6,11 @@ import {useState} from "react";
 
 import '../mainCss.css'
 import '../mypage/myPageCss.css';
-import {data} from "react-router-dom";
 
 export default function MyInfoPasswd() {
 
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const checkPassword = async () => {
@@ -19,26 +18,35 @@ export default function MyInfoPasswd() {
             alert('비밀번호를 입력해주세요.');
             return;
         }
-        setLoading(true);
+
+        const user_id = sessionStorage.getItem("user_id");
+        if (!user_id) {
+            alert("로그인이 필요한 서비스입니다.");
+            return;
+        }
+        // setLoading(true);
 
         try {
-            const {data: verify} = await axios.post('http://localhost/member_pass', {password});
-            console.log(verify);
+            const {data} = await axios.post('http://localhost/member_pass', {
+                user_id,
+                pass: password,
+            });
+            console.log(data);
 
-            if (!verify.success) {
+            if (!data.success) {
                 alert('비밀번호가 일치하지 않습니다.');
-                // return;
-                router.push('/myInfo_update');
+                // setLoading(false);
+                return;
             }
-            //비밀번호가 맞으면 회원정보 수정 페이지로 이동
-            // router.push('/myInfo_update');
-        } catch (err) {
-            console.log(err);
-            alert('오류가 발생했습니다.');
-        } finally {
-            setLoading(false);
-        }
+            console.log("비밀번호 일치 -> 페이지 이동 중");
+            router.push('/mypage_update');
+            // router.push('/login');
 
+        } catch (error) {
+            console.log(error);
+            alert('오류가 발생했습니다.');
+            // setLoading(false);
+        }
     };
 
     return (
@@ -51,10 +59,11 @@ export default function MyInfoPasswd() {
                 <p>회원 정보 수정을 위한 비밀번호 확인 절차입니다.</p>
                 <button
                     onClick={checkPassword}
-                    disabled={loading}
+                    // disabled={loading}
                     className="infoUpdateButton"
                 >
-                    {loading ? '처리중...' : '비밀번호 확인'}
+                    비밀번호 확인
+                    {/*{loading ? '처리중...' : '비밀번호 확인'}*/}
                 </button>
             </div>
         </div>
