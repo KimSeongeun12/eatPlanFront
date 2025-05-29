@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './reportDetail.css';
@@ -8,22 +8,24 @@ import './reportDetail.css';
 export default function ReportDetail() {
     const router = useRouter();
     const { report_idx } = useParams();
+    const searchParams = useSearchParams();
 
-    const [detail, setDetail] = useState(null);
+    const [detail, setDetail]     = useState(null);
+    const [listIndex, setListIndex] = useState(null);
 
-    // 분류 코드 → 한글 매핑
-    const categoryMap = {
-        course:  '게시글',
-        comment: '댓글',
-        message: '쪽지',
-    };
+    // 1) 리스트에서 넘긴 index 쿼리 파라 읽어오기
+    useEffect(() => {
+        const idx = searchParams.get('index');
+        if (idx) setListIndex(idx);
+    }, [searchParams]);
 
+    // 2) 백엔드에서 신고 상세 가져오기
     useEffect(() => {
         if (!report_idx) return;
-
         axios
             .get(`http://localhost/report_detail/${report_idx}`)
             .then(({ data }) => {
+                console.log('▶신고 상세보기',data.detail);
                 setDetail(data.detail);
             })
             .catch((err) => console.error('신고 상세 불러오기 실패', err));
@@ -33,60 +35,87 @@ export default function ReportDetail() {
         return <div className="detail-wrapper">로딩 중…</div>;
     }
 
-    // 현재 탭 텍스트
-    const currentTab = categoryMap[detail.class] || '기타';
+    // 3) 분류 코드 → 한글 매핑
+    const categoryMap = {
+        course:  '게시글',
+        comment: '댓글',
+        message: '쪽지',
+    };
+
+    // 4) 실제 화면에 보여줄 분류 텍스트
+    const categoryText = categoryMap[detail.class] || '기타';
 
     return (
         <div className="detail-wrapper">
             <h2>신고 상세보기</h2>
 
-            {/* ── 상단 헤더: 분류 탭 + 작성자·신고번호 ── */}
-            <div className="report-detail-header">
-                <div className="header-row">
-                    {/* 분류 탭 */}
-                    <div className="classification">
-                        <span className="label">분류</span>
-                        {['댓글', '게시글', '쪽지'].map((tab) => (
-                            <button
-                                key={tab}
-                                className={tab === currentTab ? 'tab active' : 'tab'}
-                            >
-                                {tab}
-                            </button>
-                        ))}
-                    </div>
+            <table className="report-detail-table">
+                <tbody>
+                {/* 1. 헤더 행 */}
+                <tr>
+                    <th>분류</th>
+                    <td>{categoryMap[detail.isClass] || '기타'}</td>
+                    <th>작성자</th>
+                    <td
+                        style={{
+                            textAlign: 'center',
+                            verticalAlign: 'middle',
+                        }}>{detail.reporter_id}</td>
+                    <th>신고번호</th>
+                    <td>{listIndex ?? detail.report_idx}</td>
+                </tr>
 
-                    {/* 작성자 */}
-                    <div className="meta-item">
-                        <span className="meta-label">작성자</span>
-                        <span className="meta-value">{detail.reporter_id}</span>
-                    </div>
+                {/* 2. 신고 대상자 */}
+                <tr>
+                    <th>신고대상자</th>
+                    <td colSpan={5}>
+                        <input type="text" value={detail.suspect_id} readOnly />
+                    </td>
+                </tr>
 
-                    {/* 신고번호 */}
-                    <div className="meta-item">
-                        <span className="meta-label">신고번호</span>
-                        <span className="meta-value">{detail.report_idx}</span>
-                    </div>
-                </div>
-            </div>
+                {/* 3. 제목 */}
+                <tr>
+                    <th>제목</th>
+                    <td colSpan={5}>
+                        <input type="text" value={detail.subject} readOnly />
+                    </td>
+                </tr>
 
-            {/* ── 신고 대상자 / 제목 / 내용 폼 ── */}
-            <div className="detail-field">
-                <label>신고 대상자</label>
-                <input type="text" value={detail.suspect_id} readOnly />
-            </div>
+                {/* 4. 내용 레이블 */}
+                <tr>
+                    <th colSpan={6} className="content-label">내용 *</th>
+                </tr>
 
-            <div className="detail-field">
-                <label>제목</label>
-                <input type="text" value={detail.subject} readOnly />
-            </div>
+                {/* 5. 내용 텍스트영역 */}
+                <tr>
+                    <td colSpan={6}>
+                        <textarea value={detail.content} readOnly />
+                    </td>
+                </tr>
 
-            <div className="detail-field">
-                <label>내용</label>
-                <textarea value={detail.content} readOnly />
-            </div>
+                {detail.files && detail.files.length > 0 && (
+                    <tr>
+                        <th>첨부파일</th>
+                        <td colSpan={5}>
+                            <ul className="attachments">
+                                {detail.files.map((file) => (
+                                    <li key={file.img_idx}>
+                                        <a
+                                            href={`http://localhost/files/${file.new_filename}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {file.originalFileName}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
 
-            {/* ── 목록 버튼 ── */}
             <div className="button-wrapper">
                 <button onClick={() => router.push('/report')}>목록</button>
             </div>
