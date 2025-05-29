@@ -18,7 +18,6 @@ export default function MessagePage() {
     return (
         <>
             <LeftMenu />
-
             <div className={"rightMenu"}>
                 <div className={"topMenuSpans"}>
                     <span onClick={inboxClick} className={'active-span'}>Inbox</span>
@@ -26,6 +25,7 @@ export default function MessagePage() {
                 </div>
                 <hr/>
                 <MessageList type={type}/>
+
             </div>
         </>
     );
