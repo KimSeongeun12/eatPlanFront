@@ -1,3 +1,4 @@
+'use client'
 import './myInfo_updateCss.css'
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
@@ -5,11 +6,22 @@ import axios from "axios";
 export default function Update() {
     const user_id = useRef('');
 
+    useEffect(() => {
+        const storedId = sessionStorage.getItem('user_id');
+        if (storedId) {
+            user_id.current = storedId;
+            getInfo();
+        } else {
+            console.warn('sessionStorage에 user_id 없음');
+        }
+    }, []);
+
+
     const [info, setInfo] = useState({
-        nickname: "",
-        email: "",
-        bio: "",
-        location: "",
+        nickname: '',
+        email: '',
+        bio: '',
+        location: '',
     })
 
     const getInfo = async () => {
@@ -48,7 +60,7 @@ export default function Update() {
             <div>
                 <div className={"infoTap"}>
                     <div className={"profileTap"}>
-                        <img className={"userImage"} src={"userIcon_default_profile.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
+                        <img className={"userImage"} src={"/userIcon_default_profile.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
                         <label>프로필 사진</label>
                     </div>
                     <table className={"infoTable"}>
@@ -66,7 +78,7 @@ export default function Update() {
                             <td className={"infoTable_td"}>
                                 <input className={"nickname_update"}
                                        type={"text"} name={"nickname"}
-                                       value={info.nickname} onChange={input}/>
+                                       value={info?.nickname || ''} onChange={input}/>
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
@@ -75,7 +87,7 @@ export default function Update() {
                             <td className={"infoTable_td"}>
                                 <input className={"email_update"}
                                        type={"text"} name={"email"}
-                                       value={info.email} onChange={input}/>
+                                       value={info?.email || ''} onChange={input}/>
                                 <button className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
@@ -84,7 +96,7 @@ export default function Update() {
                             <td className={"infoTable_td"}>
                                 <input className={"bio_update"}
                                        type={"text"} name={"bio"}
-                                       value={info.bio} onChange={input}/>
+                                       value={info?.bio || ''} onChange={input}/>
                             </td>
                         </tr>
                         <tr style={trStyle}>
