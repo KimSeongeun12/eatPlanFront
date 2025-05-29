@@ -11,7 +11,7 @@ export default function MyList_write() {
     const makeList = async (p = 1) => {
         const user_id = sessionStorage.getItem("user_id");
         const {data} = await axios.get(`http://localhost/my_course_list/${user_id}/${p}`)
-        console.log(data.list.totalCount);
+        console.log(data);
 
         const content = data.list.list.map((item) => {
             return (
@@ -30,7 +30,12 @@ export default function MyList_write() {
         for (let i = 0; i < emptyRows; i++) {
             content.push(
                 <tr key={`empty-${i}`} style={{ height: '60px' }}>
-                    <td colSpan={6}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
+                    <td className={"item_td"}></td>
                 </tr>
             );
         }

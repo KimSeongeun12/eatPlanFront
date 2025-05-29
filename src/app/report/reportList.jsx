@@ -47,7 +47,7 @@ const handlePageChange = (newPage) => {
 
 
     return (
-        <div className={"content-wrapper"}>
+        <div>
             <h2>신고목록</h2>
             <table className="report-table">
                 <thead>
