@@ -1,15 +1,21 @@
 'use client'
 import LeftMenu from "@/app/leftMenu";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function WritePage({recip}) {
+export default function WritePage(props) {
 
     let user_id = sessionStorage.getItem('user_id');
     const token = sessionStorage.getItem('token');
+    const [info, setInfo] = useState({'sender': user_id, 'recip': '', 'subject': '', 'content': ''});
 
-    // recip는 props에서 받아와야해요~
-    const [info, setInfo] = useState({'sender': user_id, 'recip': 'user01', 'subject': '', 'content': ''});
+    useEffect(() => {
+        const to=props.params.slug;
+        setInfo({...info, recip: to});
+    },[]);
+
+    // recip는 외부에서 받아와야해요~
+
 
     const send = async () => {
 
@@ -34,7 +40,7 @@ export default function WritePage({recip}) {
                         <th>보내는 사람</th>
                         <td>{user_id}</td>
                         <th>받는사람</th>
-                        <td>*receiver</td>
+                        <td>{info.recip}</td>
                     </tr>
                     <tr>
                         <th>제목</th>
