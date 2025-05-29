@@ -4,13 +4,14 @@ import axios from "axios";
 import Link from "next/link";
 
 export default function MessageList({type}) {
-    let user_id = 'admin'// 테스트용 코드입니다. 로그인 적용 시 변경합니다.
+    let user_id = sessionStorage.getItem('user_id');
     const token = sessionStorage.getItem('token');
 
     const [list, setList] = useState([]);
     const [selected, setSelected] = useState([]);
 
     useEffect(() => {
+        console.log(user_id);
         drawList();
     }, [type]);
 
@@ -40,7 +41,6 @@ export default function MessageList({type}) {
             });
         }
 
-        // console.log(data);
     }
 
     return (
