@@ -7,6 +7,10 @@ export default function changePW() {
         color: '#FF0000',
     }
 
+    // findPw와 changePw에 이메일 요청을 넣어야 함!
+    // 새 비밀번호 찾기 기능이므로 스프링의 EmailController에서 이 링크로 들어올 권한을 준다
+
+
     const completed = () => {
         alert('비밀번호가 변경되었습니다.');
         location.href='./login'
