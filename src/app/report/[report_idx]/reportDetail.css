@@ -1,6 +1,9 @@
+.content-wrapper {
+    /*width: 1350px;*/
+}
+
 .detail-wrapper {
     flex: 1;
-
     box-sizing: border-box;
 }
 
@@ -9,7 +12,7 @@
 }
 
 .report-detail-table {
-    width: 80%;
+    /*width: 500px;*/
     border-collapse: collapse;
     margin-bottom: 24px;
 }
@@ -22,7 +25,7 @@
 
 /* 2. 신고 대상자 / 제목 input 스타일 */
 .report-detail-table input {
-    width: 100%;
+    width: 1260px;
     padding: 12px;
     box-sizing: border-box;
     border: 3px solid #ccc;
@@ -31,7 +34,7 @@
 
 /* 3. 내용 textarea 스타일 */
 .report-detail-table textarea {
-    width: 1500px;
+    width: 1380px;
     height: 580px;
     padding: 6px;
     box-sizing: border-box;
