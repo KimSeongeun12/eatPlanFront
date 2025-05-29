@@ -5,6 +5,11 @@ import axios from "axios";
 
 export default function Update() {
     const user_id = useRef('');
+    const [ori_nickname, setOri_nickname] = useState('');
+    const [ori_email, setOri_email] = useState('');
+
+    const [nicknameChk, setNicknameChk] = useState(false);
+    const [emailChk, setEmailChk] = useState(false);
 
     useEffect(() => {
         const storedId = sessionStorage.getItem('user_id');
@@ -12,7 +17,7 @@ export default function Update() {
             user_id.current = storedId;
             getInfo();
         } else {
-            console.warn('sessionStorage에 user_id 없음');
+            console.log('sessionStorage에 user_id 없음');
         }
     }, []);
 
@@ -30,6 +35,8 @@ export default function Update() {
         });
         console.log(data.list[0]);
         setInfo(data.list[0]);
+        setOri_nickname(data.list[0].nickname);
+        setOri_email(data.list[0].email);
     };
 
     const input = (e) => {
@@ -38,6 +45,65 @@ export default function Update() {
             ...info,
             [name]: value,
         })
+    }
+
+    // 중복 확인 - 닉네임
+    const nickname_overlay = async() => {
+        if (info.nickname === ori_nickname) {
+            alert("변경된 내용이 없습니다.");
+            setNicknameChk(true);
+            return;
+        }
+        const {data} = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`)
+        // console.log(data);
+        if (data.use === false) {
+            alert("이미 사용 중인 닉네임입니다.");
+            setNicknameChk(false);
+        } else {
+            alert("사용 가능한 닉네임입니다.");
+            setNicknameChk(true);
+        }
+    }
+    
+    // 중복 확인 - 이메일
+    const email_overlay = async () => {
+        if (info.email === ori_email) {
+            alert("변경된 내용이 없습니다.");
+            setEmailChk(true);
+            return;
+        }
+        const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
+        // console.log(data);
+        if (data.use === false) {
+            alert("이미 사용 중인 이메일입니다.");
+            setEmailChk(false);
+        } else {
+            alert("사용 가능한 이메일입니다.");
+            setEmailChk(true);
+        }
+    }
+
+    // 회원 정보 수정
+    const mypage_update = async () => {
+        const {data} = await axios.put('http://localhost/member_update', {
+            user_id: user_id.current,
+            email: info.email,
+            bio: info.bio,
+            location: info.location,
+            nickname: info.nickname,
+        })
+        console.log(data);
+        if (data.success === true) {
+            alert("회원 정보 수정에 성공했습니다.");
+            location.href = './mypage';
+        } else {
+            if (nicknameChk === false) {
+                alert("닉네임 중복 확인을 진행해주세요.");
+            }
+            if (emailChk === false) {
+                alert("이메일 중복 확인을 진행해주세요.");
+            }
+        }
     }
 
     const trStyle = {
@@ -79,7 +145,7 @@ export default function Update() {
                                 <input className={"nickname_update"}
                                        type={"text"} name={"nickname"}
                                        value={info?.nickname || ''} onChange={input}/>
-                                <button className={"updateButton"}>중복 확인</button>
+                                <button onClick={nickname_overlay} className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr style={trStyle}>
@@ -88,7 +154,7 @@ export default function Update() {
                                 <input className={"email_update"}
                                        type={"text"} name={"email"}
                                        value={info?.email || ''} onChange={input}/>
-                                <button className={"updateButton"}>중복 확인</button>
+                                <button onClick={email_overlay} className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
@@ -122,7 +188,7 @@ export default function Update() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <button className={"infoUpdateButton"}>수정 완료</button>
+                    <button onClick={mypage_update} className={"infoUpdateButton"}>수정 완료</button>
                 </div>
             </div>
         </>
