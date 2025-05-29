@@ -1,10 +1,11 @@
 'use client'
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import store from "./redux/store";
+import Link from "next/link";
+import SelectedModel from "@/app/message/selected";
 
 export default function MessageList({type}) {
-    let user_id = 'admin'// 테스트용 코드입니다. 로그인 적용 시 변경합니다.
+    let user_id = sessionStorage.getItem('user_id');
     const token = sessionStorage.getItem('token');
 
     const [list, setList] = useState([]);
@@ -19,12 +20,18 @@ export default function MessageList({type}) {
         console.log('selected: ', selected);
     }
 
+
     const drawList = async () => {
         if (type === 'inbox') {
             axios.get(`http://localhost/${user_id}/recip_msg`, /*{headers: {Authorization: token}}*/).then(({data}) => {
                 let content = data.recip_msg.map((item) => {
                     return (
-                        <div key={item.msg_idx}><Item item={item} user_id={user_id} drawList={drawList}/></div>
+                        <div key={item.msg_idx}>
+                            <InboxItem item={item}
+                                       user_id={user_id}
+                                       drawList={drawList}
+                            />
+                        </div>
                     );
                 });
                 setList(content);
@@ -33,44 +40,84 @@ export default function MessageList({type}) {
             axios.get(`http://localhost/${user_id}/send_msg`, /*{headers: {Authorization: token}}*/).then(({data}) => {
                 let content = data.send_msg.map((item) => {
                     return (
-                        <div key={item.msg_idx}><Item item={item} user_id={user_id} drawList={drawList}/></div>
+                        <div key={item.msg_idx}>
+                            <OutboxItem item={item}
+                                        user_id={user_id}
+                                        drawList={drawList}
+                            />
+                        </div>
                     );
                 });
                 setList(content);
             });
         }
 
-        // console.log(data);
     }
 
     return (
         <div>
             {list}
             <br/>
-            <button>선택삭제(아직안만듬)</button>
         </div>
 
     );
 }
 
-function Item({item, user_id, drawList}) {
+function InboxItem({item, user_id, drawList}) {
+
+    // ------------------ 모달창위치정하기 ---------------//
+    const [open, setOpen] = useState(false);
+    const [pos, setPos] = useState({x: 0, y: 0});
+    const popup = (e) => {
+        setOpen(!open);
+    }
 
     const del = async (msg_idx) => {
         let {data} = await axios.put(`http://localhost/${user_id}/${msg_idx}/recip_del`);
-        console.log(user_id, msg_idx, data);
-        drawList();
+        if (data.success) {
+            drawList();
+        }
     }
-
     return (
-        <div className={"messageItem"} style={{width:'800px'}}>
-            {/*쪽지 상세보기, 유저 클릭 링크 추가, css는 임시방편*/}
+        <div className={"messageItem"} style={{width: '800px'}}>
+            {/*클릭 링크 추가, css는 임시방편*/}
             {item.msg_idx} &nbsp;
             <input type={"checkbox"} value={item.msg_idx}/>
-            {item.content} &nbsp;&nbsp;
+            <Link href={`/message/detail/${item.msg_idx}`}>{item.subject}</Link>  &nbsp;&nbsp;
             {item.recip} &nbsp;&nbsp;
-            {item.sender}
-            <span style={{fontSize:"small", position:"absolute", right:"40px"}}
-                  onClick={()=>del(item.msg_idx)}>[개별삭제(임시)]</span>
+            <span onClick={(e)=>{popup(e)}}>{item.sender}</span> &nbsp;&nbsp;
+            {open ? <SelectedModel target_user={item.sender} /> : null}
+            <span style={{fontSize: "small", position: "absolute", right: "40px"}}
+                  onClick={() => del(item.msg_idx)}>[개별삭제(임시)]</span>
+        </div>
+    );
+}
+
+function OutboxItem({item, user_id, drawList}) {
+
+    // ------------------ 모달창위치정하기 ---------------//
+    const [open, setOpen] = useState(false);
+    const [pos, setPos] = useState({x: 0, y: 0});
+    const popup = (e) => {
+        setOpen(!open);
+    }
+    const del = async (msg_idx) => {
+        let {data} = await axios.put(`http://localhost/${user_id}/${msg_idx}/send_del`);
+        if (data.success) {
+            drawList();
+        }
+    }
+    return (
+        <div className={"messageItem"} style={{width: '800px'}}>
+            {/*클릭 링크 추가, css는 임시방편*/}
+            {item.msg_idx} &nbsp;
+            <input type={"checkbox"} value={item.msg_idx}/>
+            <Link href={`/message/detail/${item.msg_idx}`}>{item.subject}</Link>  &nbsp;&nbsp;
+            <span onClick={(e)=>{popup(e)}}>{item.recip}</span>  &nbsp;&nbsp;
+            {open ? <SelectedModel target_user={item.recip} /> : null}
+            {item.sender} &nbsp;&nbsp;
+            <span style={{fontSize: "small", position: "absolute", right: "40px"}}
+                  onClick={() => del(item.msg_idx)}>[개별삭제(임시)]</span>
         </div>
     );
 }

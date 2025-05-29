@@ -13,8 +13,8 @@ export default function MyInfo() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             user_id.current = sessionStorage.getItem('user_id');
+            memberInfo(user_id.current);
         }
-        memberInfo(user_id.current);
     }, []);
 
     const trStyle = {
@@ -33,10 +33,10 @@ export default function MyInfo() {
 
     const memberInfo = async () => {
         const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
-        console.log(data.list[0].user_id);
-        if (!data.list[0].user_id) {
+        if (!data.list || data.list.length === 0 || !data.list[0].user_id) {
             alert("로그인이 필요한 서비스입니다.");
-            location.href = './login';
+            location.href = '/login';
+            return;
         }
         setUserInfo(data.list[0]);
     }
@@ -83,7 +83,7 @@ export default function MyInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span onClick={() => router.push('./passwd/MyPagePasswd')} className={"secessionSpan"} >회원 탈퇴</span>
+                    <span onClick={() => router.push('/passwd')} className={"secessionSpan"} >회원 탈퇴</span>
                     <button onClick={() => router.push('/myInfoPasswd')} className={"infoUpdateButton"}>회원 정보 수정</button>
                 </div>
             </div>

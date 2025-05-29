@@ -17,16 +17,23 @@ export default function MyPagePasswd() {
             alert('비밀번호를 입력해주세요.');
             return;
         }
-        setLoading(true);
 
+        const user_id = sessionStorage.getItem("user_id");
+        if (!user_id) {
+            alert("로그인이 필요한 서비스입니다.");
+            return;
+        }
 
         try {
-            //1. 비밀번호 확인 API 요청
-            const {data: verify} = await axios.post('http://localhost/member_pass', {password});
+            const {data} = await axios.post('http://localhost/member_pass', {
+                user_id,
+                pass: password,
+            });
+            console.log(data);
 
-            if (!verify.success) {
+            if (!data.success) {
                 alert('비밀번호가 일치하지 않습니다.');
-                setLoading(false);
+                // setLoading(false);
                 return;
             }
 
@@ -35,9 +42,10 @@ export default function MyPagePasswd() {
         } catch (err) {
             console.log(err);
             alert('비밀번호를 확인해주세요!');
-            setLoading(false);
+            // setLoading(false);
         }
     };
+
     //2. 탈퇴 여부 확인
     const handleDelete = async () => {
         try {

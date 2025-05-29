@@ -1,16 +1,16 @@
 'use client';
 
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import {useParams, useRouter, useSearchParams} from 'next/navigation';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
-import './reportDetail.css';
 
 export default function ReportDetail() {
+
     const router = useRouter();
-    const { report_idx } = useParams();
+    const {report_idx} = useParams();
     const searchParams = useSearchParams();
 
-    const [detail, setDetail]     = useState(null);
+    const [detail, setDetail] = useState(null);
     const [listIndex, setListIndex] = useState(null);
 
     // 1) 리스트에서 넘긴 index 쿼리 파라 읽어오기
@@ -24,8 +24,8 @@ export default function ReportDetail() {
         if (!report_idx) return;
         axios
             .get(`http://localhost/report_detail/${report_idx}`)
-            .then(({ data }) => {
-                console.log('▶신고 상세보기',data.detail);
+            .then(({data}) => {
+                console.log('▶신고 상세보기', data.detail);
                 setDetail(data.detail);
             })
             .catch((err) => console.error('신고 상세 불러오기 실패', err));
@@ -37,7 +37,7 @@ export default function ReportDetail() {
 
     // 3) 분류 코드 → 한글 매핑
     const categoryMap = {
-        course:  '게시글',
+        course: '게시글',
         comment: '댓글',
         message: '쪽지',
     };
@@ -46,10 +46,10 @@ export default function ReportDetail() {
     const categoryText = categoryMap[detail.class] || '기타';
 
     return (
-        <div className="detail-wrapper">
+        <div className={"report_container"}>
             <h2>신고 상세보기</h2>
 
-            <table className="report-detail-table">
+            <table className="report_detail_table">
                 <tbody>
                 {/* 1. 헤더 행 */}
                 <tr>
@@ -69,7 +69,7 @@ export default function ReportDetail() {
                 <tr>
                     <th>신고대상자</th>
                     <td colSpan={5}>
-                        <input type="text" value={detail.suspect_id} readOnly />
+                        <input type="text" value={detail.suspect_id} readOnly/>
                     </td>
                 </tr>
 
@@ -77,7 +77,7 @@ export default function ReportDetail() {
                 <tr>
                     <th>제목</th>
                     <td colSpan={5}>
-                        <input type="text" value={detail.subject} readOnly />
+                        <input type="text" value={detail.subject} readOnly/>
                     </td>
                 </tr>
 
@@ -89,7 +89,7 @@ export default function ReportDetail() {
                 {/* 5. 내용 텍스트영역 */}
                 <tr>
                     <td colSpan={6}>
-                        <textarea value={detail.content} readOnly />
+                        <textarea value={detail.content} readOnly/>
                     </td>
                 </tr>
 

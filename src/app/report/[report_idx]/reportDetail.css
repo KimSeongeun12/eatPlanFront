@@ -1,6 +1,13 @@
+.report_conteiner {
+    position: absolute;
+}
+
+.content-wrapper {
+    /*width: 1350px;*/
+}
+
 .detail-wrapper {
     flex: 1;
-
     box-sizing: border-box;
 }
 
@@ -8,21 +15,9 @@
     margin-left: 10px;
 }
 
-.report-detail-table {
-    width: 80%;
-    border-collapse: collapse;
-    margin-bottom: 24px;
-}
-
-.report-detail-table
-{
-    border: 1px solid #ccc;
-    padding: 6px;
-}
-
 /* 2. 신고 대상자 / 제목 input 스타일 */
-.report-detail-table input {
-    width: 100%;
+.report_detail_table input {
+    width: 1190px;
     padding: 12px;
     box-sizing: border-box;
     border: 3px solid #ccc;
@@ -30,9 +25,9 @@
 }
 
 /* 3. 내용 textarea 스타일 */
-.report-detail-table textarea {
-    width: 1500px;
-    height: 580px;
+.report_detail_table textarea {
+    width: 1310px;
+    height: 520px;
     padding: 6px;
     box-sizing: border-box;
     border: 1px solid #ccc;
@@ -45,12 +40,15 @@
     text-align: center;
     background: #f7f7f7;
     font-weight: bold;
+    height: 10px;
 }
 
 /* 5. 목록 버튼 */
 .button-wrapper {
     text-align: center;
+    margin-top: 15px;
 }
+
 .button-wrapper button {
     background: transparent;         /* 배경 없애고 */
     border: 1px solid #ff4d4f;       /* 원하시는 빨간 계열 테두리 색 */
