@@ -3,15 +3,16 @@ import LeftMenu from "@/app/leftMenu";
 import {useState} from "react";
 import axios from "axios";
 
-export default function WritePage() {
+export default function WritePage({recip}) {
 
     let user_id = sessionStorage.getItem('user_id');
     const token = sessionStorage.getItem('token');
-    const [info, setInfo] = useState({'sender': 'admin', 'recip': 'user01', 'subject': '', 'content': ''});
+
+    // recip는 props에서 받아와야해요~
+    const [info, setInfo] = useState({'sender': user_id, 'recip': 'user01', 'subject': '', 'content': ''});
 
     const send = async () => {
 
-        user_id='admin';     // 테스트용 코드입니다. 배포 시 지웁니다.
         let {data} = await axios.post(`http://localhost/${user_id}/write_msg`, info, /*{headers: {Authorization: token}}*/);
 
         if(data.success){
@@ -31,7 +32,7 @@ export default function WritePage() {
                     </tr>
                     <tr>
                         <th>보내는 사람</th>
-                        <td>*sender</td>
+                        <td>{user_id}</td>
                         <th>받는사람</th>
                         <td>*receiver</td>
                     </tr>

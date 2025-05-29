@@ -47,7 +47,7 @@ export default function MessageList({type}) {
         <div>
             {list}
             <br/>
-            <button>선택삭제(아직안만듬)</button>
+            <Link href={'/message/write'}><button>쪽지쓰기(임시)</button></Link>
         </div>
 
     );
@@ -80,6 +80,7 @@ function Item({item, user_id, drawList, type}) {
             {item.sender}
             <span style={{fontSize:"small", position:"absolute", right:"40px"}}
                   onClick={()=>del(item.msg_idx)}>[개별삭제(임시)]</span>
+            <span>css너무어려워요</span>
         </div>
     );
 }
