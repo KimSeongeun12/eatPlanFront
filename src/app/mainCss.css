@@ -22,12 +22,7 @@ html, body {
     left: 0px;
     top: 0px;
     background: linear-gradient(360deg, rgba(255, 187, 0, 0.5) 0%, rgba(129, 34, 17, 0) 58.65%), #CC503B;
-<<<<<<< HEAD
-   /* border-radius: 20px 0px 0px 20px;*/
-
-=======
     border-radius: 20px 0px 0px 20px;
->>>>>>> origin/master
 }
 
 .rightMenu {
