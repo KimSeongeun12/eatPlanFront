@@ -11,7 +11,7 @@ export default function CourseSearch(){
     const [tagCate, setTagCate] = useState([]);
     const tagCateList = () => {
         axios.get("http://localhost/list_tagcate").then(({data}) =>{
-            setTagCate(data.list_tagcate);
+            setTagCate(data?.list_tagcate ?? []);
             console.log('태그 카테고리 리스트 : ',data.list_tagcate);
         })
     };
@@ -20,7 +20,7 @@ export default function CourseSearch(){
     const [areaTag, setAreaTag] = useState([]);
     const areaTagList = () => {
         axios.get("http://localhost/list_tag_area").then(({data}) => {
-            setAreaTag(data.list_area);
+            setAreaTag(data?.list_area ?? []);
             console.log('지역태그 리스트 : ',data.list_area);
         })
     };
@@ -29,7 +29,7 @@ export default function CourseSearch(){
     const [tag, setTag] = useState([]);
     const tagList = () => {
         axios.get("http://localhost/list_tag").then(({data}) => {
-            setTag(data.list_tag_whole);
+            setTag(data?.list_tag_whole ?? []);
             console.log('태그 리스트 : ',data.list_tag_whole);
         })
     };
@@ -43,6 +43,7 @@ export default function CourseSearch(){
 
     // 지역태그 city 중복제거
     const uniqueCities = useMemo(() => {
+        if (!Array.isArray(areaTag)) return [];
         return [...new Set(areaTag.map(at => at.city))];
     }, [areaTag]);
 
@@ -95,7 +96,7 @@ export default function CourseSearch(){
     };
 
     // 텍스트검색 조건 결정
-    const [searchType, setSearchType] = useState("subject"); // "subject" 또는 "user_id"
+    const [searchType, setSearchType] = useState("subject"); // "subject" 또는 "nickname"
     const [keyword, setKeyword] = useState(""); // input값 상태관리
 
     // 검색조건들 검색결과창 url로 넘겨주기
@@ -131,7 +132,7 @@ export default function CourseSearch(){
                 <div className={"searchWrapper"}>
                     <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
                         <option value="subject">제목</option>
-                        <option value="user_id">작성자</option>
+                        <option value="nickname">작성자</option>
                     </select>
                     <input
                         className={"StringSearch"}
