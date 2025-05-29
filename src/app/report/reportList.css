@@ -1,18 +1,22 @@
+h2 {
+    margin: 0px;
+}
+
 .report-page-wrapper {
     display: flex;
-    width: 100%;
+    /*width: 100%;*/
     min-height: 100vh;
 }
 
 .content-wrapper {
     flex: 1;
-    padding: 20px;
+    padding: 0px 20px 20px;
     box-sizing: border-box;
-    min-width: 1500px;
+    /*min-width: 1500px;*/
 }
 
 .report-table {
-    width: 100%;
+    /*width: 100%;*/
     table-layout: fixed;
     border-collapse: collapse;
     margin-top: 20px;
@@ -28,7 +32,7 @@
 
 /* 테이블 기본 스타일 */
 table {
-    width: 100%;
+    /*width: 100%;*/
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -40,7 +44,7 @@ th, td {
 }
 
 td {
-    height: 91px;
+    height: 75px;
 }
 
 th {
