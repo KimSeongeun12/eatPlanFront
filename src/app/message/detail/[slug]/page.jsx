@@ -1,22 +1,22 @@
 'use client'
 import LeftMenu from "@/app/leftMenu";
-import {useState} from "react";
+import {useEffect} from "react";
 import axios from "axios";
 
-export default function WritePage() {
 
-    let user_id = sessionStorage.getItem('user_id');
-    const token = sessionStorage.getItem('token');
-    const [info, setInfo] = useState({'sender': 'admin', 'recip': 'user01', 'subject': '', 'content': ''});
+export default function DetailPage(props) {
 
-    const send = async () => {
+    const user_id='admin';  // 로그인 시 바꿀 코드
+    const token=sessionStorage.getItem("token");
 
-        user_id='admin';     // 테스트용 코드입니다. 배포 시 지웁니다.
-        let {data} = await axios.post(`http://localhost/${user_id}/write_msg`, info, /*{headers: {Authorization: token}}*/);
+    useEffect(() => {
+        const msg_idx=props.params.slug;
+        drawDetail(msg_idx);
+    }, []);
 
-        if(data.success){
-            location.href="/message";
-        }
+    const drawDetail = async (msg_idx) => {
+        let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`);
+        console.log(data);
     }
 
     return (
@@ -38,9 +38,7 @@ export default function WritePage() {
                     <tr>
                         <th>제목</th>
                         <td>
-                            <input type={"text"} value={info.subject} onChange={(e) => {
-                                setInfo({...info, subject: e.target.value})
-                            }}/>
+                            제목들어갈자리
                         </td>
                     </tr>
                     <tr>
@@ -52,19 +50,14 @@ export default function WritePage() {
                                       style={{
                                           width: "630px", height: "300px"
                                       }}
-                                      value={info.content}
-                                      onChange={(e) => {
-                                          setInfo({...info, content: e.target.value})
-                                      }}
                             ></textarea>
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <br/>
-                <button onClick={send}>보내기</button>
+                <button>돌아가기</button>
             </div>
         </>
-
     );
 }
