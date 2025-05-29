@@ -69,7 +69,7 @@ function InboxItem({item, user_id, drawList}) {
     const [open, setOpen] = useState(false);
     const [pos, setPos] = useState({x: 0, y: 0});
     const popup = (e) => {
-        setOpen(true);
+        setOpen(!open);
     }
 
     const del = async (msg_idx) => {
@@ -99,7 +99,7 @@ function OutboxItem({item, user_id, drawList}) {
     const [open, setOpen] = useState(false);
     const [pos, setPos] = useState({x: 0, y: 0});
     const popup = (e) => {
-        setOpen(true);
+        setOpen(!open);
     }
     const del = async (msg_idx) => {
         let {data} = await axios.put(`http://localhost/${user_id}/${msg_idx}/send_del`);
