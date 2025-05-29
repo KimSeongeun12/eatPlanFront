@@ -1,13 +1,16 @@
 'use client'
 import LeftMenu from "@/app/leftMenu";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
+import Link from "next/link";
 
 
 export default function DetailPage(props) {
 
     const user_id='admin';  // 로그인 시 바꿀 코드
     const token=sessionStorage.getItem("token");
+
+    const [info,setInfo]=useState({});
 
     useEffect(() => {
         const msg_idx=props.params.slug;
@@ -16,7 +19,9 @@ export default function DetailPage(props) {
 
     const drawDetail = async (msg_idx) => {
         let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`);
-        console.log(data);
+        if(data.success){
+            setInfo(data.message);
+        }
     }
 
     return (
@@ -27,36 +32,30 @@ export default function DetailPage(props) {
                     <tbody>
                     <tr>
                         <th>작성일</th>
-                        <td>2025-05-28*</td>
+                        <td>{info.msg_date}</td>
                     </tr>
                     <tr>
                         <th>보내는 사람</th>
-                        <td>*sender</td>
+                        <td>{info.sender}</td>
                         <th>받는사람</th>
-                        <td>*receiver</td>
+                        <td>{info.recip}</td>
                     </tr>
                     <tr>
                         <th>제목</th>
                         <td>
-                            제목들어갈자리
+                            {info.subject}
                         </td>
                     </tr>
                     <tr>
                         <th colSpan={4}>내용</th>
-                    </tr>
-                    <tr>
                         <td>
-                            <textarea placeholder={"내용을 입력하세요."}
-                                      style={{
-                                          width: "630px", height: "300px"
-                                      }}
-                            ></textarea>
+                            {info.content}
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <br/>
-                <button>돌아가기</button>
+                <Link href={`/message`}><button>돌아가기</button></Link>
             </div>
         </>
     );
