@@ -75,7 +75,7 @@ export default function SearchResult(){
 
     // 코스 디테일 보기
     const courseDetail = (post_idx) => {
-        location.href = `/courseDetail?post_idx=${post_idx}`;
+        location.href = `/courseDetail/${post_idx}`;
     }
 
     return(

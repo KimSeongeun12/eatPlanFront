@@ -1,35 +1,35 @@
 'use client'
 
-export default function CourseDetail() {
+export default function CourseDetail({post_idx}) {
     return (
         <>
             <div className={"courseContainer"}>
                 <span className={"noHead"}>글 번호</span>
-                <span className={"noBody"}></span>
+                <span className={"noBody"}>{post_idx}</span>
                 <span className={"reg_dateHead"}>작성일</span>
-                <span className={"reg_dateBody"}></span>
+                <span className={"reg_dateBody"}>2025-05-31</span>
 
                 <span className={"nicknameHead"}>작성자</span>
-                <span className={"nicknameBody"}></span>
+                <span className={"nicknameBody"}>글쓴이에용</span>
                 <span className={"b_hitHead"}>조회수</span>
-                <span className={"b_hitBody"}></span>
+                <span className={"b_hitBody"}>0</span>
 
                 <span className={"starAvgHead"}>평점</span>
-                <span className={"starAvgBody"}></span>
+                <span className={"starAvgBody"}>0</span>
                 <span className={"likeCntHead"}>좋아요</span>
-                <span className={"likeCntBody"}></span>
+                <span className={"likeCntBody"}>0</span>
 
                 <span className={"subjectHead"}>코스 제목</span>
-                <span className={"subjectBody"}></span>
+                <span className={"subjectBody"}>술을 마셔보자</span>
 
                 <span className={"timelineHead"}>코스 내용</span>
-                <span className={"timelineBody"}></span>
+                <span className={"timelineBody"}>--ㅣ---ㅣ----</span>
 
                 <span className={"mapHead"}>식당 위치 정보</span>
-                <span className={"mapBody"}></span>
+                <span className={"mapBody"}>지도...</span>
 
                 <span className={"courseCmtHead"}>코스 코멘트</span>
-                <span className={"courseCmtBody"}></span>
+                <span className={"courseCmtBody"}>정말 재밌었어요</span>
 
                 <div className={"btns"}>
                     <span className={"report"}>신고</span>
