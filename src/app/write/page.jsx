@@ -46,8 +46,6 @@ export default function WritePage() {
     return (
         <>
             <LeftMenu />
-            {/*<button onClick={() => setShowModal(true)}>+ 코스 작성</button>*/}
-
             {showModal && (
                 <StepModal
                     onClose={() => setShowModal(false)}
@@ -58,8 +56,8 @@ export default function WritePage() {
             {formData && (
                 <div style={{ marginTop: '20px' }}>
                     <h2>✅ 입력한 코스 정보</h2>
-                    <p><strong>제목:</strong> {formData.title}</p>
-                    <p><strong>설명:</strong> {formData.description}</p>
+                    <p><strong>제목:</strong> {formData.timelineStart}</p>
+                    <p><strong>설명:</strong> {formData.timelineFinish}</p>
                 </div>
             )}
         </>

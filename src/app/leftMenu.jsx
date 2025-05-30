@@ -41,39 +41,39 @@ export default function leftMenu() {
                     {isLoggedIn
                         ? <><span style={welcomeStyle}>환영합니다, {userId} 님!</span><span className={"logoutSpan"} onClick={logout}>로그아웃</span></>
                         : <>
-                            <div onClick={() => router.push('./login')}
+                            <div onClick={() => router.push('/login')}
                                  className={`loginMenu ${isActive('/login') ? 'active' : ''}`}>
                                 <img src={"/loginIcon.png"} alt={"로그인 아이콘"}/>
                                 <span>로그인</span>
                             </div>
                         </>}
                 </div>
-                <div onClick={() => router.push('./admin_course')}
+                <div onClick={() => router.push('/admin_course')}
                      className={`courseListMenu ${isActive('/admin_course') ? 'active' : ''}`}>
                     <img src={"/communityIcon.png"} alt={"코스 구경 아이콘"}/>
                     <span>코스 구경</span>
                 </div>
-                <div onClick={() => router.push('./mypage')}
+                <div onClick={() => router.push('/mypage')}
                      className={`mypageMenu ${isActive('/mypage') || isActive('/mypage_update') || isActive('/passwd') ? 'active' : ''}`}>
                     <img src={"/personIcon.png"} alt={"마이페이지 아이콘"}/>
                     <span>마이페이지</span>
                 </div>
-                <div onClick={() => router.push('./write')}
+                <div onClick={() => router.push('/write')}
                      className={`courseWriteMenu ${isActive('/write') ? 'active' : ''}`}>
                     <img src={"/pencil.png"} alt={"코스 등록 아이콘"}/>
                     <span>코스 등록</span>
                 </div>
-                <div onClick={() => router.push('./message')} className={`noteMenu ${isActive('/message') ? 'active' : ''}`}>
+                <div onClick={() => router.push('/message')} className={`noteMenu ${isActive('/message') ? 'active' : ''}`}>
                     <img src={"/letterIcon.png"} alt={"코스 등록 아이콘"}/>
                     <span>쪽지</span>
                 </div>
                 <div className={"line"}></div>
-                <div onClick={() => router.push('./notice')}
+                <div onClick={() => router.push('/notice')}
                      className={`noticeMenu ${isActive('/notice') ? 'active' : ''}`}>
                     <img src={"/bellIcon.png"} alt={"공지사항 아이콘"}/>
                     <span>공지사항</span>
                 </div>
-                <div onClick={() => router.push('./report')}
+                <div onClick={() => router.push('/report')}
                      className={`reportMenu ${isActive('/report') ? 'active' : ''}`}>
                     <img src={"/reportIcon.png"} alt={"신고 아이콘"}/>
                     <span>신고</span>
