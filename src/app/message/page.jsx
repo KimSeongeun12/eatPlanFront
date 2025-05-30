@@ -20,8 +20,8 @@ export default function MessagePage() {
             <LeftMenu />
             <div className={"rightMenu"}>
                 <div className={"topMenuSpans"}>
-                    <span onClick={inboxClick} className={'active-span'}>Inbox</span>
-                    <span onClick={outboxClick} className={'active-span'}>Outbox</span>
+                    <span onClick={inboxClick} className={'active-span'}>수신함</span>
+                    <span onClick={outboxClick} className={'active-span'}>발신함</span>
                 </div>
                 <hr/>
                 <MessageList type={type}/>

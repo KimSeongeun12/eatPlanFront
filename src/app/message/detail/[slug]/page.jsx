@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function DetailPage(props) {
 
-    const user_id='admin';  // 로그인 시 바꿀 코드
+    const user_id=sessionStorage.getItem("user_id");
     const token=sessionStorage.getItem("token");
 
     const [info,setInfo]=useState({});
