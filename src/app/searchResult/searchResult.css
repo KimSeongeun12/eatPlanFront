@@ -138,6 +138,11 @@
     background: lightgray;
     margin-bottom: 10px;
 }
+.mainImage img{
+    width: 194px;
+    height: 195px;
+    margin-bottom: 10px;
+}
 
 .courseStack {
     grid-column: 1 / -1; /* 전체 열 너비 차지 */

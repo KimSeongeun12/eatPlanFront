@@ -8,7 +8,6 @@ import LeftMenu from '../leftMenu';
 import "./searchResult.css";
 import Link from "next/link";
 import qs from "qs";
-// import qs from "qs";
 
 
 export default function SearchResult() {
@@ -17,6 +16,7 @@ export default function SearchResult() {
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
     const [items, setItems] = useState([]);
+    const [photo, setPhoto] = useState("");
 
     // url로 넘어온 검색조건들을 이어붙이고 요청 보내기
     const fetchSearchKeywords = async() => {
@@ -37,7 +37,7 @@ export default function SearchResult() {
                 params,
                 paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })});
             setItems(Array.isArray(data) ? data : []);
-            console.log('데이터 : ',data);
+            console.log('데이터: ',data);
         } catch (error) {
             console.log('검색 실패', error);
         }
@@ -46,7 +46,6 @@ export default function SearchResult() {
     // 페이지 입장시 최초 1회 실행
     useEffect(() => {
         fetchSearchKeywords();
-        photoList();
     },[]);
 
     // 받아온 리스트 기준에 따라 정렬하기
@@ -77,13 +76,6 @@ export default function SearchResult() {
     const courseDetail = (post_idx) => {
         location.href = `/courseDetail?post_idx=${post_idx}`;
     }
-
-    // 사진 불러오기
-    //let file_idx = currentItems.photo_idx;
-    const photoList = async () => {
-       let {data} = await axios.get("http://localhost/image/1")
-        console.log("받아온 사진 : ",data);
-    };
 
     return (
         <>
@@ -118,7 +110,7 @@ export default function SearchResult() {
                                     <div className="mainImage">
                                         {/*이미지 여기입니다 여기에요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
                                         <img
-                                            src={'http://localhost/images/' + item.thumbnail}
+                                            src={`http://localhost/image/${item.thumbnail}`}
                                             alt="썸네일"
                                         />
                                     </div>
@@ -171,3 +163,19 @@ export default function SearchResult() {
         </>
     );
 }
+
+/*
+function PhotoList({thumbnail}){
+    let content =
+                <div key={thumbnail}>
+                    <img
+                        src={`http://localhost/image/${thumbnail}`}
+                        alt="썸네일"
+                    />
+                </div>
+
+    console.log("썸네일 : ",thumbnail);
+    return(
+        <>{content}</>
+    );
+}*/
