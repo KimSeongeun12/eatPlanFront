@@ -130,10 +130,6 @@ export default function CourseSearch(){
             <div className="searchContainer">
                 {/*텍스트 검색창*/}
                 <div className={"searchWrapper"}>
-                    <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
-                        <option value="subject">제목</option>
-                        <option value="nickname">작성자</option>
-                    </select>
                     <input
                         className={"StringSearch"}
                         type={"text"}
@@ -141,6 +137,10 @@ export default function CourseSearch(){
                         onChange={e => setKeyword(e.target.value)}
                         onKeyUp={keyHandler}
                         placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
+                    <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
+                        <option value="subject">제목</option>
+                        <option value="nickname">작성자</option>
+                    </select>
                     <button className={"searchBtn"} onClick={search}>
                         <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                     </button>
@@ -150,7 +150,16 @@ export default function CourseSearch(){
                 <div className="selectedRow">
                     <h3 className="selectedList">
                         {selectedList.map((item, idx) => (
-                            <span key={idx}>
+                            <span key={idx}
+                                  onClick={() => {
+                                      setSelectedList(prev => prev.filter(entry => entry.value !== item.value));
+                                      if (item.type === 'area') {
+                                          setSelectedArea(prev => prev.filter(a => a !== item.value));
+                                      }
+                                      if (item.type === 'tag') {
+                                          setSelectedTag(prev => prev.filter(t => t !== item.value));
+                                      }
+                                  }}>
                                 {item.value}
                             </span>
                         ))}
@@ -227,7 +236,7 @@ export default function CourseSearch(){
                                                     className={selectedTag.includes(t.tag_name) ? "activeTag" : "noneActiveTag"}
                                                     onClick={() => toggleTag(t.tag_name)}
                                                     >{t.tag_name}</li>)
-                                            : <li className="empty">태그가 없습니다</li>
+                                            : <li className="empty">태그가 없습니다.</li>
                                         }
                                     </ul>
                                 </div>
