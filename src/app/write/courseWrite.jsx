@@ -1,7 +1,14 @@
 'use client'
 import './courseWriteCss.css'
+import {useState} from "react";
+import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
 
-export default function CourseWrite() {
+export default function CourseWrite({data}) {
+
+    const {timelineStart, timelineFinish} = data || {};
+
+    const [showAddModal, setShowAddModal] = useState(false);
+
     const style = {
         color: '#FF0000',
     }
@@ -24,12 +31,21 @@ export default function CourseWrite() {
                     </tr>
                     <tr>
                         <td colSpan={2} className={"courseWrite_td"}>
-                            <div className={"courseWrite_uploadDiv"}></div>
+                            <div className={"courseWrite_uploadDiv"}>
+                                <div className={"courseWrite_timeline_line"}>
+                                    <span className={"courseWrite_timeline_startSpan"}>{timelineStart}</span>
+                                    <span className={"courseWrite_timeline_finishSpan"}>{timelineFinish}</span>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <button className={"courseWrite_button"}>코스 추가</button>
+
+                <button onClick={()=>{setShowAddModal(true)}} className={"courseWrite_button"}>코스 추가</button>
+
+                {showAddModal && <CourseAdd_modal onClose={() => setShowAddModal(false)} />}
+
                 <table className={"courseWrite_table_two"}>
                     <tbody>
                     <tr>

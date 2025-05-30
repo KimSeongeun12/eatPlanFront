@@ -89,7 +89,6 @@ export default function StepModal({onComplete}) {
                     )}
                 </div>
             </div>
-            <CourseWrite/>
         </>
     );
 }

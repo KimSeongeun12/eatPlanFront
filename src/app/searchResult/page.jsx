@@ -7,7 +7,7 @@ import {useSearchParams} from "next/navigation";
 import LeftMenu from '../leftMenu';
 import "./searchResult.css";
 import Link from "next/link";
-import qs from "qs";
+// import qs from "qs";
 
 
 export default function SearchResult() {

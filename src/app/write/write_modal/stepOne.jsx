@@ -1,6 +1,7 @@
 'use client'
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import CourseWrite from "@/app/write/courseWrite";
 
 export default function StepOne({onNext, setData}) {
     const [timelineStart, setTimelineStart] = useState('');

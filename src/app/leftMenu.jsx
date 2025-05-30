@@ -48,8 +48,8 @@ export default function leftMenu() {
                             </div>
                         </>}
                 </div>
-                <div onClick={() => router.push('/admin_course')}
-                     className={`courseListMenu ${isActive('/admin_course') ? 'active' : ''}`}>
+                <div onClick={() => router.push('/list')}
+                     className={`courseListMenu ${isActive('/list') || isActive('/courseSearch') || isActive('/searchResult') ? 'active' : ''}`}>
                     <img src={"/communityIcon.png"} alt={"코스 구경 아이콘"}/>
                     <span>코스 구경</span>
                 </div>

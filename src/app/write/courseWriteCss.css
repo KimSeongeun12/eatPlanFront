@@ -1,4 +1,5 @@
 .course_rightMenu {
+    position: relative;
     float: right;
     box-sizing: border-box;
     background: #fff;
@@ -105,4 +106,40 @@ table {
     background: #CC503B;
     color: #fff;
     transition: 0.2s;
+}
+
+/* 세부 디자인 */
+
+.courseWrite_uploadDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 706px;
+}
+
+.courseWrite_timeline_line {
+    position: relative;
+    width: 1200px;
+    height: 15px;
+    background: #CC503B;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.courseWrite_timeline_startSpan {
+    position: absolute;
+    left: -1%;
+    top: 200%;
+    color: #CC503B;
+    font-weight: bold;
+}
+
+.courseWrite_timeline_finishSpan {
+    position: absolute;
+    margin-right: 0px;
+    width: 70px;
+    left: 95%;
+    top: 200%;
+    color: #CC503B;
+    font-weight: bold;
 }
