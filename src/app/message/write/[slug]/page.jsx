@@ -10,7 +10,11 @@ export default function WritePage(props) {
     const [info, setInfo] = useState({'sender': user_id, 'recip': '', 'subject': '', 'content': ''});
 
     useEffect(() => {
-        const to=props.params.slug;
+        let to='';
+        props.params.then(({slug})=>{
+            // axios 로 slug 를 가지고 해당 상세 정보를 서버에 요청
+            to=slug;
+        });
         setInfo({...info, recip: to});
     },[]);
 

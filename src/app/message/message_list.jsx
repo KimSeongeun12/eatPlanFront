@@ -20,6 +20,12 @@ export default function MessageList({type}) {
         console.log('selected: ', selected);
     }
 
+    // ------------------------------ 이미지 테스트 --------------------//
+    const  drawPhoto=async ()=>{
+        let {data}=await axios.get(`http://localhost/photo/2`,{headers: {Authorization: token}});
+        console.log(data);
+    }
+
     const drawList = async () => {
         if (type === 'inbox') {
             axios.get(`http://localhost/${user_id}/recip_msg`, {headers: {Authorization: token}}).then(({data}) => {
@@ -86,7 +92,7 @@ function InboxItem({item, user_id, drawList}) {
             <input type={"checkbox"} value={item.msg_idx}/>
             <Link href={`/message/detail/${item.msg_idx}`}>{item.subject}</Link>  &nbsp;&nbsp;
             {item.recip} &nbsp;&nbsp;
-            <span onClick={(e)=>{popup(e)}}>{item.sender}</span> &nbsp;&nbsp;
+            <span style={{cursor:"pointer"}} onClick={(e)=>{popup(e)}}>{item.sender}</span> &nbsp;&nbsp;
             {open ? <SelectedModel target_user={item.sender} /> : null}
             <span style={{fontSize: "small", position: "absolute", right: "40px", cursor:"pointer"}}
                   onClick={() => del(item.msg_idx)}>[개별삭제(임시)]</span>
@@ -116,7 +122,7 @@ function OutboxItem({item, user_id, drawList}) {
             {item.msg_idx} &nbsp;
             <input type={"checkbox"} value={item.msg_idx}/>
             <Link href={`/message/detail/${item.msg_idx}`}>{item.subject}</Link>  &nbsp;&nbsp;
-            <span onClick={(e)=>{popup(e)}}>{item.recip}</span>  &nbsp;&nbsp;
+            <span style={{cursor:"pointer"}} onClick={(e)=>{popup(e)}}>{item.recip}</span>  &nbsp;&nbsp;
             {open ? <SelectedModel target_user={item.recip} /> : null}
             {item.sender} &nbsp;&nbsp;
             <span style={{fontSize: "small", position: "absolute", right: "40px", cursor:"pointer"}}

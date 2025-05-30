@@ -13,8 +13,9 @@ export default function DetailPage(props) {
     const [info,setInfo]=useState({});
 
     useEffect(() => {
-        const msg_idx=props.params.slug;
-        drawDetail(msg_idx);
+        props.params.then(({slug})=>{
+            drawDetail(slug);
+        })
     }, []);
 
     const drawDetail = async (msg_idx) => {
