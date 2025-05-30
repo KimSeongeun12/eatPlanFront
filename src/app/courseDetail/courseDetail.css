@@ -1,19 +1,4 @@
-.pageContainer {
-    display: flex;
-    position: relative;
-}
-
-.leftMenu {
-    width: 1450px;
-    height: 1080px;
-}
-
-.rightMenu {
-    flex: 1;
-    padding: 20px;
-    /*float: right;
-    width: 1450px;
-    height: 1080px;*/
-    box-sizing: border-box;
-    background: #fff;
+.courseContainer {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
 }

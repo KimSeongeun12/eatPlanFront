@@ -45,6 +45,7 @@ export default function SearchResult() {
     // 페이지 입장시 최초 1회 실행
     useEffect(() => {
         fetchSearchKeywords();
+        photoList();
     },[]);
 
     // 받아온 리스트 기준에 따라 정렬하기
@@ -75,6 +76,13 @@ export default function SearchResult() {
     const courseDetail = (post_idx) => {
         location.href = `/courseDetail?post_idx=${post_idx}`;
     }
+
+    // 사진 불러오기
+    //let file_idx = currentItems.photo_idx;
+    const photoList = async () => {
+       let {data} = await axios.get("http://localhost/image/1")
+        console.log("받아온 사진 : ",data);
+    };
 
     return (
         <>
@@ -108,7 +116,10 @@ export default function SearchResult() {
                                 <div key={index} className="listItem">
                                     <div className="mainImage">
                                         {/*이미지 여기입니다 여기에요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
-                                        <img src={`C:/upload/${item.photos.new_filename}`} alt="썸네일" />
+                                        <img
+                                            src={'http://localhost/images/' + item.thumbnail}
+                                            alt="썸네일"
+                                        />
                                     </div>
                                     <span className="courseTitle"
                                           onClick={()=>courseDetail(item.post_idx)}>{item.subject}</span>

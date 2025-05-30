@@ -8,12 +8,8 @@ export default function CourseDetailPage() {
 
     return (
         <>
-            <div className={"pageContainer"}>
-                <LeftMenu />
-                <div className={"rightMenu"}>
-                    <CourseDetail />
-                </div>
-            </div>
+            <LeftMenu />
+            <CourseDetail />
         </>
     );
 }
