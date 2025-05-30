@@ -5,12 +5,15 @@ import LeftMenu from '../leftMenu';
 import BestList from '../list/bestList';
 import {useState} from "react";
 import Admin_courseList from "@/app/admin_course/admin_courseList";
+import {useRouter} from "next/navigation";
 
 export default function List() {
     const [visible, setVisible] = useState('bestList');
 
     const showBestList = () => {setVisible('bestList')}
     const showAdmin_courseList = () => {setVisible('admin_courseList')}
+
+    const router = useRouter();
 
     return (
         <>
@@ -24,7 +27,7 @@ export default function List() {
                             <option>최신순</option>
                         </select>
                     )}
-                    <div className={"search"}>
+                    <div className={"search"} onClick={() => router.push('/courseSearch')}>
                         <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                     </div>
                 </div>

@@ -6,12 +6,15 @@ import BestList from './bestList';
 import CommonList from './commonList';
 import {useState} from "react";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 export default function List() {
     const [visible, setVisible] = useState('bestList');
 
     const showBestList = () => {setVisible('bestList')}
     const showCommonList = () => {setVisible('commonList')}
+
+    const router = useRouter();
 
     return (
         <>
@@ -26,7 +29,7 @@ export default function List() {
                         </select>
                     )}
                     <Link href="/courseSearch">
-                        <div className={"search"}>
+                        <div className={"search"} onClick={() => router.push('/courseSearch')}>
                             <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
                         </div>
                     </Link>

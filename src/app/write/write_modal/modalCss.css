@@ -75,7 +75,7 @@
 
 .timeline_startSpan {
     position: absolute;
-    left: -5%;
+    left: -1%;
     top: 200%;
     color: #CC503B;
     font-weight: bold;
@@ -83,18 +83,21 @@
 
 .timeline_finishSpan {
     position: absolute;
-    margin-right: 0px;
+    /*margin-right: 0px;*/
     width: 70px;
-    left: 95%;
+    left: 91%;
     top: 200%;
     color: #CC503B;
     font-weight: bold;
 }
 
-.timeline_grid_one {
+.timeline_grid_one
+, .timeline_grid_two
+, .timeline_grid_three
+, .timeline_grid_four
+, .timeline_grid_five {
     position: absolute;
     top: -70%;
-    left: 10%;
     width: 16px;
     height: 16px;
     background: #FFFFFF;
@@ -102,46 +105,12 @@
     border-radius: 50px;
 }
 
-.timeline_grid_two {
-    position: absolute;
-    top: -70%;
-    left: 28%;
-    width: 16px;
-    height: 16px;
-    background: #FFFFFF;
-    border: 10px solid #CC503B;
-    border-radius: 50px;
-}
+.timeline_grid_one {left: 10%;}
 
-.timeline_grid_three {
-    position: absolute;
-    top: -70%;
-    left: 47%;
-    width: 16px;
-    height: 16px;
-    background: #FFFFFF;
-    border: 10px solid #CC503B;
-    border-radius: 50px;
-}
+.timeline_grid_two {left: 28%;}
 
-.timeline_grid_four {
-    position: absolute;
-    top: -70%;
-    left: 66%;
-    width: 16px;
-    height: 16px;
-    background: #FFFFFF;
-    border: 10px solid #CC503B;
-    border-radius: 50px;
-}
+.timeline_grid_three {left: 47%;}
 
-.timeline_grid_five {
-    position: absolute;
-    top: -70%;
-    left: 84%;
-    width: 16px;
-    height: 16px;
-    background: #FFFFFF;
-    border: 10px solid #CC503B;
-    border-radius: 50px;
-}
+.timeline_grid_four {left: 66%;}
+
+.timeline_grid_five {left: 84%;}
