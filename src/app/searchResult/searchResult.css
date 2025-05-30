@@ -7,11 +7,22 @@
     flex-shrink: 0;
 }
 
-.resultContainer {
+/*.resultContainer {
     display: block;
     flex-grow: 1;
     padding: 0 50px;
+}*/
+
+.resultContainer {
+    flex: 1;
+    padding: 20px;
+    float: right;
+    width: 1450px;
+    height: 1080px;
+    box-sizing: border-box;
+    background: #fff;
 }
+
 
 .commonList {
     position: relative;
@@ -84,6 +95,7 @@
     text-overflow: ellipsis;      /* 말줄임표 (...) 처리 */
     display: inline-block;        /* 또는 block/flex도 가능 */
     max-width: 150px;             /* 제목이 너무 길어질 경우 기준 너비 */
+    cursor: pointer;
 }
 
 .courseComment {
