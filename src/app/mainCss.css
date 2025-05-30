@@ -18,10 +18,15 @@ html, body {
     width: 345px;
     flex: 0 0 345px;
     height: 100vh;
+    min-height: 1073px;
     left: 0px;
     top: 0px;
     background: linear-gradient(360deg, rgba(255, 187, 0, 0.5) 0%, rgba(129, 34, 17, 0) 58.65%), #CC503B;
     border-radius: 20px 0px 0px 20px;
+    display: flex; /* ✅ 추가 */
+    flex-direction: column; /* ✅ 추가 */
+    align-items: center; /* ✅ 선택사항: 가운데 정렬 */
+    padding-top: 70px; /* ✅ userIcon 아래 여백 */
 }
 
 .rightMenu {
@@ -36,24 +41,27 @@ html, body {
     background: #fff;
 }
 
-.userIcon {
-    position: absolute;
-    width: 176.55px;
-    height: 176.55px;
-    left: 82px;
-    top: 70px;
+.loginMenu,
+.courseListMenu,
+.mypageMenu,
+.courseWriteMenu,
+.noteMenu,
+.noticeMenu,
+.reportMenu {
+    /* ✅ 공통 스타일 */
+    width: 300px;
+    height: 70px;
+    padding: 18px 0 18px 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
 
-.loginMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 283px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 300px;
+.userIcon {
+    width: 176.55px;
+    height: 176.55px;
 }
 
 .loginMenu img,
@@ -79,85 +87,12 @@ html, body {
     text-decoration: underline;
 }
 
-.courseListMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 390px;
-}
-
-.mypageMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 480px;
-}
-
-.courseWriteMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 570px;
-}
-
-.noteMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 660px;
-}
-
 .line {
-    position: absolute;
     width: 302px;
     height: 0px;
-    left: 19px;
-    top: 775px;
     border: 1px solid #EFA36E;
-}
-
-.noticeMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 820px;
-}
-
-.reportMenu {
-    position: absolute;
-    box-sizing: border-box;
-    padding-left: 20px;
-    padding-top: 18px;
-    width: 300px;
-    height: 70px;
-    /*border: 1px solid black;*/
-    left: 23px;
-    top: 910px;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .loginMenu:hover,
