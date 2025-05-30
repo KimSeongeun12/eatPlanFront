@@ -107,6 +107,8 @@ export default function SearchResult() {
                             {currentItems.map((item, index) => (
                                 <div key={index} className="listItem">
                                     <div className="mainImage">
+                                        {/*이미지 여기입니다 여기에요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
+                                        <img src={`C:/upload/${item.photos.new_filename}`} alt="썸네일" />
                                     </div>
                                     <span className="courseTitle"
                                           onClick={()=>courseDetail(item.post_idx)}>{item.subject}</span>
