@@ -7,11 +7,11 @@ import './reportDetail.css';
 
 export default function ReportDetailPage() {
     return (
-        <div className="main-container">
+        <>
             <LeftMenu/>
             <div className="rightMenu">
                 <ReportDetail/>
             </div>
-        </div>
+        </>
     );
 }

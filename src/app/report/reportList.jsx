@@ -4,7 +4,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Link from "next/link";
-import './reportList.css';
+// import './reportList.css';
 
 export default function ReportList() {
 
@@ -47,7 +47,7 @@ const handlePageChange = (newPage) => {
 
 
     return (
-        <div>
+        <>
             <h2>신고목록</h2>
             <table className="report-table">
                 <thead>
@@ -99,6 +99,6 @@ const handlePageChange = (newPage) => {
                     다음
                 </button>
             </div>
-        </div>
+        </>
     );
 }
