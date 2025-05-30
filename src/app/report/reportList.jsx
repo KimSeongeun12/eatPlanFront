@@ -66,10 +66,9 @@ const handlePageChange = (newPage) => {
                         <tr key={report.report_idx}>
                             <td>{(page -1) * 10 + idx + 1}</td>
                             <td>
-                                <Link href={{
-                                    pathname : `/report/${report.report_idx}`,
-                                    query : {index : (page-1)*10 + idx + 1}
-                                }}>
+                                <Link href={`/report/${report.report_idx}?index=${
+                                    (page - 1) * 10 + idx + 1
+                                }`}>
                                     [{convertCategory(report.isClass)}] {report.subject}
                                 </Link>
                             </td>

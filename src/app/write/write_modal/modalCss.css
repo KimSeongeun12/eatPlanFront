@@ -20,7 +20,7 @@
 .modal_title {
     display: inline-block;
     text-align: center;
-    width: 384px;
+    /*width: 384px;*/
     height: 27px;
     font-family: 'Noto Sans';
     font-style: normal;
@@ -58,4 +58,90 @@
     float: right;
     margin-left: 12px;
     margin-right: 8px;
+}
+
+.preview {
+    font-size: 26px;
+}
+
+.timeline_line {
+    position: relative;
+    width: 600px;
+    height: 15px;
+    background: #CC503B;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.timeline_startSpan {
+    position: absolute;
+    left: -5%;
+    top: 200%;
+    color: #CC503B;
+    font-weight: bold;
+}
+
+.timeline_finishSpan {
+    position: absolute;
+    margin-right: 0px;
+    width: 70px;
+    left: 95%;
+    top: 200%;
+    color: #CC503B;
+    font-weight: bold;
+}
+
+.timeline_grid_one {
+    position: absolute;
+    top: -70%;
+    left: 10%;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 10px solid #CC503B;
+    border-radius: 50px;
+}
+
+.timeline_grid_two {
+    position: absolute;
+    top: -70%;
+    left: 28%;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 10px solid #CC503B;
+    border-radius: 50px;
+}
+
+.timeline_grid_three {
+    position: absolute;
+    top: -70%;
+    left: 47%;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 10px solid #CC503B;
+    border-radius: 50px;
+}
+
+.timeline_grid_four {
+    position: absolute;
+    top: -70%;
+    left: 66%;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 10px solid #CC503B;
+    border-radius: 50px;
+}
+
+.timeline_grid_five {
+    position: absolute;
+    top: -70%;
+    left: 84%;
+    width: 16px;
+    height: 16px;
+    background: #FFFFFF;
+    border: 10px solid #CC503B;
+    border-radius: 50px;
 }

@@ -45,6 +45,12 @@ export default function LoginPage() {
         });
     }
 
+    const enter=(e)=>{
+        if(e.key==='Enter'){
+            login();
+        }
+    }
+
     const login = async () => {
         // console.log(info);
         const {data} = await axios.post('http://localhost/login', info);
@@ -66,9 +72,9 @@ export default function LoginPage() {
                 <span className={"loginSpan"}>LOGIN</span>
 
                 <input className={"IDinput"} type={"text"} name={"user_id"} value={info.user_id}
-                       placeholder={"아이디를 입력해주세요."} onChange={input} />
+                       placeholder={"아이디를 입력해주세요."} onChange={input} onKeyUp={(e)=>enter(e)}/>
                 <input className={"PWinput"} type={"password"} name={"pass"} value={info.pass}
-                       placeholder={"비밀번호를 입력해주세요."} onChange={input} />
+                       placeholder={"비밀번호를 입력해주세요."} onChange={input} onKeyUp={(e)=>enter(e)}/>
 
                 <button className={"loginButton"} onClick={login}>로그인</button>
                 <span className={"joinSpan"} style={style} onClick={join}>회원가입</span>

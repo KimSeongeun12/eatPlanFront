@@ -1,0 +1,84 @@
+/* wrapper for absolute positioning */
+.report-write-wrapper {
+    position: relative;
+    padding: 1.5rem;
+}
+
+/* 전체 폼 */
+.report-form {
+    width: 100%;
+    margin-top: -4rem;
+}
+
+/* 테이블 레이아웃 고정 */
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.report-table th,
+.report-table td {
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+}
+
+.report-table th {
+    background: #f5f5f5;
+    vertical-align: top;
+    font-weight: 600;
+}
+
+/* 입력 요소 */
+.report-table input[type="text"],
+.report-table select{
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.report-table textarea {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 300px;    /* 원하는 높이(px)로 조정하세요 */
+    resize: none;     /* 사용자가 드래그로 크기 변경 불가 */
+}
+
+
+/* 라디오 간격 */
+.radio-spacer {
+    margin-left: 1rem;
+}
+
+/* 필수 표시 */
+.required {
+    color: red;
+}
+
+/* 플로팅 등록 버튼 */
+.submit-area {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+
+.btn-submit {
+    background: transparent;     /* 배경 없앰 */
+    border: 2px solid #ff4d4f;   /* 진한 핑크 테두리 */
+    color: #ff4d4f;                /* 텍스트 색상 */
+    border-radius: 20px;         /* pill 모양 */
+    padding: 1.5rem 3rem;      /* 높이·너비 조절 */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-submit:hover {
+    background: #ff4d4f;           /* hover 시 채워짐 */
+    color: #fff;
+}

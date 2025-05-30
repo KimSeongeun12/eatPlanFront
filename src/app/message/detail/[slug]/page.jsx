@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function DetailPage(props) {
 
-    const user_id='admin';  // 로그인 시 바꿀 코드
+    const user_id=sessionStorage.getItem("user_id");
     const token=sessionStorage.getItem("token");
 
     const [info,setInfo]=useState({});
@@ -18,7 +18,7 @@ export default function DetailPage(props) {
     }, []);
 
     const drawDetail = async (msg_idx) => {
-        let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`);
+        let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`, {headers: {Authorization: token}});
         if(data.success){
             setInfo(data.message);
         }
