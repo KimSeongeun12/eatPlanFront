@@ -10,9 +10,7 @@ export default function CourseAdd_modal({onClose}) {
                 </div>
 
                 <div className="courseAdd_modal_buttons">
-                    <button onClick={onClose} className="courseAdd_modal_button">
-                        취소
-                    </button>
+                    <button onClick={onClose} className="courseAdd_modal_button">취소</button>
                     <button className="courseAdd_modal_button confirm">다음</button>
                 </div>
             </div>

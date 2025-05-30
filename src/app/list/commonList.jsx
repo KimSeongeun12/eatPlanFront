@@ -1,36 +1,25 @@
-'use client';
-import {useEffect, useState} from 'react';
-import { Pagination, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 import axios from "axios";
+import { Pagination, Stack } from '@mui/material';
 
 export default function CommonList() {
     const [page, setPage] = useState(1);
     const [items, setItems] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
-    const count = 10;
 
     useEffect(() => {
         renderList(page);
-        console.log('totalItems: ', totalItems);
     }, [page]);
 
     const renderList = async (p) => {
         try {
-            const res = await axios.get(`http://localhost/course_list/${p}`,
-                {
-                    headers:{
-                        authorization: sessionStorage.getItem("token"),
-                    }
-                });
+            const res = await axios.get(`http://localhost/course_list/${p}`);
             const data = res.data;
-            console.log('응답 데이터:', res.data);
-
             setItems(data.list);
-            setTotalItems(data.pages); // ✅ 서버에서 받은 전체 항목 수로 교체
+            setTotalItems(data.pages);
         } catch (error) {
             console.error('데이터 로딩 실패:', error);
         }
-
     };
 
     return (
@@ -49,10 +38,9 @@ export default function CommonList() {
                     </div>
                 ))}
             </div>
-
-            <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
+            <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"} alignItems="center">
                 <Pagination
-                    count={totalItems} // ✅ 동적으로 계산된 총 페이지 수
+                    count={totalItems}
                     page={page}
                     onChange={(e, value) => setPage(value)}
                     variant="outlined"

@@ -25,7 +25,9 @@ export default function List() {
                     <span onClick={showBestList} className={visible === 'bestList' ? 'active-span' : ''}>베스트 코스</span>
                     {visible === 'commonList' && (
                         <select className={"alignSelect"}>
-                            <option>조회수 많은 순</option>
+                            <option value={"b_hit"}>조회수 많은 순</option>
+                            <option value={"total_like_count"}>좋아요 많은 순</option>
+                            <option value={"reg_date"}>작성일</option>
                         </select>
                     )}
                     <Link href="/courseSearch">
@@ -36,7 +38,7 @@ export default function List() {
                 </div>
                 <hr/>
                 {visible === 'bestList' && <BestList/>}
-                {visible === 'commonList' && <CommonList/>}
+                {visible === 'commonList' && <CommonList />}
             </div>
         </>
     );
