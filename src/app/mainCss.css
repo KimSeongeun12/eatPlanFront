@@ -15,6 +15,7 @@ html, body {
 }
 
 .leftMenu {
+    box-sizing: border-box;
     width: 345px;
     flex: 0 0 345px;
     height: 100vh;
@@ -28,6 +29,7 @@ html, body {
     align-items: center; /* ✅ 선택사항: 가운데 정렬 */
     padding-top: 70px; /* ✅ userIcon 아래 여백 */
 }
+
 
 .rightMenu {
     flex: 1;
