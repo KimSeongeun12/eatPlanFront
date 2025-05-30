@@ -63,7 +63,7 @@ import StepThree from './stepThree';
 import './modalCss.css';
 import CourseWrite from "@/app/write/courseWrite";
 
-export default function StepModal({onClose, onComplete}) {
+export default function StepModal({onComplete}) {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({});
 
@@ -84,6 +84,7 @@ export default function StepModal({onClose, onComplete}) {
                         <StepThree
                             onPrev={prevStep}
                             onSubmit={() => onComplete(formData)}  // write/page.jsx로 데이터 전달
+                            data={formData}
                         />
                     )}
                 </div>

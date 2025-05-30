@@ -3,20 +3,24 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 
 export default function StepOne({onNext, setData}) {
-    const [title, setTitle] = useState('');
+    const [timelineStart, setTimelineStart] = useState('');
     const router = useRouter();
 
     const handleNext = () => {
-        setData({title});  // 상위로 데이터 전달
+        if (!timelineStart) {
+            alert("시작 시각을 선택해주세요.");
+            return;
+        }
+        setData({timelineStart});  // 상위로 데이터 전달
         onNext();
     };
 
     const handleCancel = () => {
-        router.back();  // ✅ 이전 페이지로 이동
+        router.back();
     };
 
     const buttonClick = (value) => {
-        setTitle(value);
+        setTimelineStart(value);
     }
 
     // 버튼 목록
@@ -53,8 +57,8 @@ export default function StepOne({onNext, setData}) {
                                 height: '55px',
                                 margin: '5px',
                                 padding: '10px',
-                                backgroundColor: title === btnText ? '#c3c3c3' : '#fff',
-                                color: title === btnText ? '#fff' : '#a1a1a1',
+                                backgroundColor: timelineStart === btnText ? '#c3c3c3' : '#fff',
+                                color: timelineStart === btnText ? '#fff' : '#a1a1a1',
                                 fontSize: '24px',
                                 border: '1px solid #c3c3c3',
                                 borderRadius: '30px',
@@ -83,8 +87,8 @@ export default function StepOne({onNext, setData}) {
                                 height: '55px',
                                 margin: '5px',
                                 padding: '10px',
-                                backgroundColor: title === btnText ? '#c3c3c3' : '#fff',
-                                color: title === btnText ? '#fff' : '#a1a1a1',
+                                backgroundColor: timelineStart === btnText ? '#c3c3c3' : '#fff',
+                                color: timelineStart === btnText ? '#fff' : '#a1a1a1',
                                 fontSize: '24px',
                                 border: '1px solid #c3c3c3',
                                 borderRadius: '30px',
