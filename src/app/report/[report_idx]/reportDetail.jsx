@@ -22,13 +22,19 @@ export default function ReportDetail() {
     // 2) 백엔드에서 신고 상세 가져오기
     useEffect(() => {
         if (!report_idx) return;
-        axios
-            .get(`http://localhost/report_detail/${report_idx}`)
-            .then(({data}) => {
-                console.log('▶신고 상세보기', data.detail);
-                setDetail(data.detail);
+        console.log("report_idx:", report_idx);
+        axios.get(`http://localhost/report_detail/${report_idx}`)
+            .then(res => {
+                if(res.data.error){
+                    alert(res.data.error);
+                    return;
+                }
+                setDetail(res.data.detail);
             })
-            .catch((err) => console.error('신고 상세 불러오기 실패', err));
+            .catch((err) => {
+                console.error(err);
+                alert("서버 오류가 발생했습니다.");
+            });
     }, [report_idx]);
 
     if (!detail) {
@@ -117,7 +123,9 @@ export default function ReportDetail() {
             </table>
 
             <div className="button-wrapper">
-                <button onClick={() => router.push('/report')}>목록</button>
+                <a href="/report">
+                <button>목록</button>
+                </a>
             </div>
         </div>
     );
