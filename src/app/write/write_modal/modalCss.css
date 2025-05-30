@@ -9,9 +9,53 @@
 }
 
 .modal-content {
-    width: 400px;
+    width: 668px;
+    height: 760px;
     margin: 10% auto;
     background: white;
     padding: 20px;
     border-radius: 8px;
+}
+
+.modal_title {
+    display: inline-block;
+    text-align: center;
+    width: 384px;
+    height: 27px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 33px;
+    color: #000000;
+    margin: 15px auto 35px auto;
+}
+
+.modal_time_select {
+    box-sizing: border-box;
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: #B3B3B3;
+    padding-top: 25px;
+    padding-bottom: 30px;
+}
+
+.modal_button {
+    box-sizing: border-box;
+    width: 147px;
+    height: 55px;
+    background: #FFFFFF;
+    border: 2px solid #CC503B;
+    border-radius: 30px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 30px;
+    align-items: center;
+    text-align: center;
+    color: #CC503B;
+    float: right;
+    margin-left: 12px;
+    margin-right: 8px;
 }

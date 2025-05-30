@@ -56,13 +56,14 @@
 // }
 
 'use client';
-import { useState } from 'react';
+import {useState} from 'react';
 import StepOne from './stepOne';
 import StepTwo from './stepTwo';
 import StepThree from './stepThree';
 import './modalCss.css';
+import CourseWrite from "@/app/write/courseWrite";
 
-export default function StepModal({ onClose, onComplete }) {
+export default function StepModal({onClose, onComplete}) {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({});
 
@@ -70,29 +71,24 @@ export default function StepModal({ onClose, onComplete }) {
     const prevStep = () => setStep((prev) => prev - 1);
 
     const updateFormData = (data) => {
-        setFormData((prev) => ({ ...prev, ...data }));
+        setFormData((prev) => ({...prev, ...data}));
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                {/*/!* 닫기 버튼 추가 *!/*/}
-                {/*<div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>*/}
-                {/*    <h2>코스 작성</h2>*/}
-                {/*    <button onClick={onClose} style={{ fontSize: '16px', border: 'none', background: 'none', cursor: 'pointer' }}>*/}
-                {/*        ❌*/}
-                {/*    </button>*/}
-                {/*</div>*/}
-
-                {step === 1 && <StepOne onNext={nextStep} setData={updateFormData} />}
-                {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData} />}
-                {step === 3 && (
-                    <StepThree
-                        onPrev={prevStep}
-                        onSubmit={() => onComplete(formData)}  // write/page.jsx로 데이터 전달
-                    />
-                )}
+        <>
+            <div className="modal">
+                <div className="modal-content">
+                    {step === 1 && <StepOne onNext={nextStep} setData={updateFormData}/>}
+                    {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData}/>}
+                    {step === 3 && (
+                        <StepThree
+                            onPrev={prevStep}
+                            onSubmit={() => onComplete(formData)}  // write/page.jsx로 데이터 전달
+                        />
+                    )}
+                </div>
             </div>
-        </div>
+            <CourseWrite/>
+        </>
     );
 }
