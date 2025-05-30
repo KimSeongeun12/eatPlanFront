@@ -1,29 +1,36 @@
-.pageContainer {
-    display: flex;
-}
-
-.leftMenu {
-    width: 345px; /* LeftMenu의 실제 너비 */
-    flex-shrink: 0;
-}
-
-.resultContainer {
+/*.resultContainer {
     display: block;
     flex-grow: 1;
     padding: 0 50px;
+}*/
+
+.resultContainer {
+    flex: 1;
+    padding: 100px;
+    float: right;
+    margin: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    min-height: 1073px;
+    box-sizing: border-box;
+    background: #fff;
+    overflow-y: scroll;
 }
 
+
 .commonList {
-    position: relative;
-    margin-left: 0px;
+    margin-left: 0;
     margin-top: 50px;
+    padding-left: 5px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     grid-template-rows: auto auto auto 1fr;  /* 마지막 줄에 여유 공간을 둠 */
     height: 100vh;  /* 전체 높이 채우기 */
-    min-width: 1000px;
-    width: 100%;
+    min-width: 1073px;
+    width: 1073px;
+    box-sizing: border-box;
 }
 
 .topMenu {
@@ -34,8 +41,9 @@
     margin-top: 50px;
     padding-bottom: 15px;
     border-bottom: 3px solid black;
-    min-width: 1000px;
-    width: 100%;
+    min-width: 1073px;
+    width: 1073px;
+    box-sizing: border-box;
 }
 
 .leftGroup {
@@ -84,6 +92,7 @@
     text-overflow: ellipsis;      /* 말줄임표 (...) 처리 */
     display: inline-block;        /* 또는 block/flex도 가능 */
     max-width: 150px;             /* 제목이 너무 길어질 경우 기준 너비 */
+    cursor: pointer;
 }
 
 .courseComment {

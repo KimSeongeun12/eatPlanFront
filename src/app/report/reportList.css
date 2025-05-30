@@ -17,7 +17,7 @@ h2 {
 
 .report-table {
     /*width: 100%;*/
-    table-layout: fixed;
+    /*table-layout: fixed;*/
     border-collapse: collapse;
     margin-top: 20px;
 }

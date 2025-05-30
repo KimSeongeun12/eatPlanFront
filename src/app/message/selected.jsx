@@ -6,7 +6,7 @@ export default function SelectedModel({target_user}){
     console.log(target_user);
 
 return(
-    <div style={{backgroundColor:"lightgray", width:"200px"}}>
+    <div style={{border:"1px solid red",backgroundColor:"white", width:"200px"}}>
         <Link href={`/message/write/${target_user}`}><span style={{fontSize:"small"}}>쪽지 보내기</span></Link>
         <br/>
         <span style={{fontSize:"small"}}>신고하기(아직링크안넣음)</span>

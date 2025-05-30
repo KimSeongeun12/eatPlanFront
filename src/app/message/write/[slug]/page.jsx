@@ -19,7 +19,7 @@ export default function WritePage(props) {
 
     const send = async () => {
 
-        let {data} = await axios.post(`http://localhost/${user_id}/write_msg`, info, /*{headers: {Authorization: token}}*/);
+        let {data} = await axios.post(`http://localhost/${user_id}/write_msg`, info, {headers: {Authorization: token}});
 
         if(data.success){
             location.href="/message";

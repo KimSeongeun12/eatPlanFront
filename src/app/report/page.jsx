@@ -7,9 +7,9 @@ import './reportList.css';
 export default function Report() {
     return (
         <div className="main-container">
-            <LeftMenu />
+            <LeftMenu/>
             <div className="rightMenu">
-                <ReportList />
+                <ReportList/>
             </div>
         </div>
     );

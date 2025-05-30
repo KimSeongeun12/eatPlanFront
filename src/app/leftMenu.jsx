@@ -37,7 +37,7 @@ export default function leftMenu() {
         <>
             <div className={"leftMenu"}>
                 <img className={"userIcon"} src={"/userIcon.png"} alt={"프로필 사진"}/>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '285px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px'}}>
                     {isLoggedIn
                         ? <><span style={welcomeStyle}>환영합니다, {userId} 님!</span><span className={"logoutSpan"} onClick={logout}>로그아웃</span></>
                         : <>

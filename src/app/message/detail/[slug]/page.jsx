@@ -18,7 +18,7 @@ export default function DetailPage(props) {
     }, []);
 
     const drawDetail = async (msg_idx) => {
-        let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`);
+        let {data}= await axios.get(`http://localhost/${user_id}/${msg_idx}/msg_detail`, {headers: {Authorization: token}});
         if(data.success){
             setInfo(data.message);
         }
