@@ -4,21 +4,59 @@
     box-sizing: border-box;
     gap: 0;
     background: white;
-    outline: 1px solid lightgray;
-    height: auto;
+    height: 100%;
+    max-height: 900px;
     width: auto;
     max-width: 1450px;
+    overflow-y: scroll;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .courseContainer span, input {
     box-sizing: border-box;
-    outline: 1px solid lightgray;
     padding: 10px;
 }
 
 [class$="Head"] {
     width: auto;
     background: #e8e8e8;
+    border-top: 2px solid lightgray;
+    border-left: 2px solid lightgray;
+}
+
+[class$="Body"] {
+    border-top: 2px solid lightgray;
+    border-left: 2px solid lightgray;
+}
+
+.reg_dateBody,
+.b_hitBody,
+.likeCntBody,
+.tagBody,
+.timelineHead,
+.timelineBody,
+.mapBody,
+.mapHead,
+.courseCmtBody,
+.courseCmtHead {
+    border-right: 2px solid lightgray;
+}
+
+.courseCmtBody {
+    border-bottom: 2px solid lightgray;
+}
+
+.rates {
+    border-top: 2px solid lightgray;
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+}
+
+.comment,
+.commentList {
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
 }
 
 .timelineHead,
@@ -61,11 +99,11 @@
 
 .commentList {
     display: flex;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 2px solid lightgray;
 }
 
 .courseContainer > .commentList:last-of-type {
-    margin-bottom: 20px;
+
 }
 
 .btns,
