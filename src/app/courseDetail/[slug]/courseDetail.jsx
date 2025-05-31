@@ -21,6 +21,8 @@ export default function CourseDetail({post_idx}) {
 
                 <span className={"subjectHead"}>코스 제목</span>
                 <span className={"subjectBody"}>술을 마셔보자</span>
+                <span className={"tagHead"}>태그</span>
+                <span className={"tagBody"}>#가성비 좋은 #파티</span>
 
                 <span className={"timelineHead"}>코스 내용</span>
                 <span className={"timelineBody"}>--ㅣ---ㅣ----</span>
@@ -41,11 +43,13 @@ export default function CourseDetail({post_idx}) {
                 <div className={"rates"}>
                     <span className={"like"}>❤️좋아요</span>
                     <span className={"scrollToCmt"}>💬댓글 작성(0)</span>
-                    <label><input className={"star"} type={"radio"} value={1}/>⭐</label>
-                    <label><input className={"star"} type={"radio"} value={2}/>⭐⭐</label>
-                    <label><input className={"star"} type={"radio"} value={3}/>⭐⭐⭐</label>
-                    <label><input className={"star"} type={"radio"} value={4}/>⭐⭐⭐⭐</label>
-                    <label><input className={"star"} type={"radio"} value={5}/>⭐⭐⭐⭐⭐</label>
+                    <div className={"stars"}>
+                        <label><input className={"star"} type={"radio"} value={1}/>⭐</label>
+                        <label><input className={"star"} type={"radio"} value={2}/>⭐⭐</label>
+                        <label><input className={"star"} type={"radio"} value={3}/>⭐⭐⭐</label>
+                        <label><input className={"star"} type={"radio"} value={4}/>⭐⭐⭐⭐</label>
+                        <label><input className={"star"} type={"radio"} value={5}/>⭐⭐⭐⭐⭐</label>
+                    </div>
                 </div>
 
                 <div className={"comment"}>
@@ -56,7 +60,7 @@ export default function CourseDetail({post_idx}) {
                 </div>
 
                 <div className={"commentList"}>
-                    <div className={"comment"}>
+                    <div className={"comment2"}>
                         <span className={"nickname"}>닉네임</span>
                         <span className={"commentContent"}>댓글내용</span>
                         <span className={"reg_date"}>2025-05-29</span>
