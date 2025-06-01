@@ -6,8 +6,9 @@
     background: white;
     height: 100%;
     max-height: 900px;
-    width: auto;
+    width: 100vw;
     max-width: 1450px;
+    min-width: 1300px;
     overflow-y: scroll;
     padding-left: 10px;
     padding-right: 10px;
@@ -30,6 +31,24 @@
     border-left: 2px solid lightgray;
 }
 
+.mapBody {
+    padding-left: 60px !important;
+    padding-right: 60px !important;;
+}
+
+.kakaoWrapper {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border: 2px solid lightgray;
+}
+
+.timelineBody,
+.courseCmtBody {
+    height: max-content;
+    min-height: 500px;
+}
+
 .reg_dateBody,
 .b_hitBody,
 .likeCntBody,
@@ -45,6 +64,7 @@
 
 .courseCmtBody {
     border-bottom: 2px solid lightgray;
+    padding: 40px !important;
 }
 
 .rates {
@@ -84,6 +104,7 @@
 
 .stars {
     margin-left: auto;
+    margin-right: 10px;
     margin-top: auto;
 }
 
@@ -94,16 +115,46 @@
 }
 
 .commentBox {
-    margin: 0 10px 0 10px;
+    margin: 10px 10px 0 10px;
 }
 
 .commentList {
     display: flex;
-    border-bottom: 2px solid lightgray;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.commentLineWrapper {
+    display: flex;
+    flex-basis: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.commentLine {
+    height: 2px;
+    width: 95%;
+    background-color: lightgray;
 }
 
 .courseContainer > .commentList:last-of-type {
+    border-bottom: 2px solid lightgray;
+}
 
+.nickname {
+    padding: 10px 10px 0 10px !important;
+    font-weight: bold;
+}
+
+.commentContent {
+    padding: 10px 18px 10px 18px !important;
+}
+
+.reg_date {
+    color: #8e8e8e;
+    font-weight: lighter;
 }
 
 .btns,
@@ -118,3 +169,41 @@
 .commentBtn {
     margin-top: 20px;
 }
+
+
+div[class*="Outline"] {
+    background-color: #CC503B !important;
+}
+
+div[class*="TimelineMainWrapper"] {
+    left: 25% !important;
+}
+
+button[class*="Shape"] {
+    border: 3px solid #CC503B !important;
+    background: white !important;
+}
+
+div[class*="title"] {
+    color: #CC503B !important;
+}
+
+div[class*="active"]{
+    color: #CC503B !important;
+}
+
+article[class*="TimelineItemContentWrapper"]{
+    max-width: 500px !important;
+    min-width: 500px !important;
+}
+
+[class*="TimelineContentDetailsWrapper"]::after {
+    content: none !important;
+    background: none !important;
+    height: 0 !important;
+}
+
+[class*=MediaWrapper] {
+    background: white !important;
+}
+
