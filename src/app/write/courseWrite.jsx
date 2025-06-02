@@ -11,11 +11,14 @@ export default function CourseWrite({ data }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseList, setCourseList] = useState([]);
 
-    const {timeline_resta_name, selectedRestaurant, timeline_time, timeline_coment} = data ||
-    {timeline_resta_name: ""
-        , selectedRestaurant: ""
-        , timeline_time: ""
-        , timeline_coment: ""};
+    const {timeline_resta_name, resta, noResta, timeline_time, timeline_coment}
+        = data || {
+        timeline_resta_name: "",
+        resta: "",
+        noResta: "선택 안됨",
+        timeline_time: "",
+        timeline_coment: "",
+    };
 
     const style = {
         color: '#FF0000',
@@ -57,7 +60,13 @@ export default function CourseWrite({ data }) {
                         <td colSpan={2} className="courseWrite_td">
                             <div className="courseWrite_uploadDiv">
                                 <Timeline timelineStart={timelineStart}
-                                          timelineFinish={timelineFinish} />
+                                          timelineFinish={timelineFinish}
+                                          timelineRestaName={timeline_resta_name}
+                                          resta={resta}
+                                          noResta={noResta}
+                                          timelineTime={timeline_time}
+                                          timelineComent={timeline_coment}
+                                />
                             </div>
                         </td>
                     </tr>
@@ -74,10 +83,6 @@ export default function CourseWrite({ data }) {
                         onSubmit={handleAddCourse}
                     />
                 )}
-                <Timeline timeline_resta_name={timeline_resta_name}
-                          selectedRestaurant={selectedRestaurant} // 식당 없는 건 noResta, 식당 있는 건 resta
-                          timeline_time={timeline_time}
-                          timeline_coment={timeline_coment} />
 
                 <table className="courseWrite_table_two">
                     <tbody>
