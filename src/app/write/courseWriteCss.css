@@ -70,7 +70,6 @@ table {
     background: #FFFFFF;
     border: 1px solid #dfdfdf;
     font-size: 25px;
-    box-sizing: border-box;
     padding: 10px;
     float: right;
 }
@@ -142,4 +141,75 @@ table {
     top: 200%;
     color: #CC503B;
     font-weight: bold;
+}
+
+/**/
+
+div[class*="Outline"] {
+    background-color: #CC503B !important;
+    height: 8px !important;
+    width: 95% !important;
+    border-left: 10px solid #000000;
+    border-right: 10px solid #000000;
+    border-radius: 10px;
+}
+
+ul[class*="horizontal"] {
+    display: flex !important;
+    justify-content: space-between !important;  /* 핵심: 좌우 정렬 */
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+/* 2. li 항목은 동일한 너비로 분배 */
+ul[class*="horizontal"] > li {
+    flex: 1 1 0 !important;    /* 균등 분배 */
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center;        /* 필요시 가운데 정렬 */
+}
+
+button[class*="Shape"] {
+    border: 3px solid #CC503B !important;
+    background: white !important;
+}
+
+div[class*="title"] {
+    color: #CC503B !important;
+}
+
+div[class*="active"]{
+    color: #CC503B !important;
+}
+
+article[class*="TimelineItemContentWrapper"]{
+    max-width: 500px !important;
+    min-width: 500px !important;
+}
+
+[class*="TimelineContentDetailsWrapper"]::after {
+    content: none !important;
+    background: none !important;
+    height: 0 !important;
+}
+
+[class*=TimelineHorizontalWrapper] {
+    padding: 0 !important;
+}
+
+ul[class*="horizontal"] > li {
+    flex: 1 1 0 !important;
+    width: auto !important;
+}
+
+[class*=MediaWrapper] {
+    background: white !important;
+}
+
+[class*=TimelineMain] {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 1450px !important;
 }
