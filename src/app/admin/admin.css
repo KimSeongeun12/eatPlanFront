@@ -1,0 +1,46 @@
+span{
+    margin:10px;
+}
+
+.topMenuSpans{
+    font-size:20px;
+    padding:10px;
+}
+
+.list{
+    width: 90%;
+    font-size:15px;
+    display: flex;
+    flex-direction: row;
+    border-bottom: #c6c6c6 1px solid;
+    padding: 5px;
+}
+
+.button{
+    padding:5px;
+    border: 1px solid red;
+    margin:5px;
+    cursor:pointer;
+}
+
+.buttons{
+    position: absolute;
+    right: 5px;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+}
+
+.member span{
+    font-weight: normal;
+    width: 130px;
+}
+
+.admin {
+    background-color: #d1d1d1;
+    border: solid 1px #d1d1d1;
+}
+
+input[type="checkbox"]{
+    width: 20px;
+}
