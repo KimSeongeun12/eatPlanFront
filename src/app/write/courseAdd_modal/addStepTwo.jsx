@@ -16,21 +16,13 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
     }
 
     const handleSelectRestaurant = (restaurant) => {
-        setFormData({
-            ...formData,
-            selectedRestaurant: restaurant, // 여기 추가!
-        });
+        setFormData(prev => ({
+            ...prev,
+            resta: restaurant || null,
+            noResta: restaurant ? "" : "선택 안됨",
+        }));
     };
 
-    const labelStyle = (value) => ({
-        cursor: "pointer",
-        border: formData.visualCategory === value ? "3px solid black" : "2px solid transparent",
-        borderRadius: "10px",
-        padding: "4px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    });
 
     return (
         <div className={"courseAdd_search_div"}>
@@ -63,7 +55,7 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
                                 marginBottom: "10px",
                                 cursor: "pointer",
                                 backgroundColor:
-                                    formData.selectedRestaurant?.resta_idx === item.resta_idx
+                                    formData.resta?.resta_idx === item.resta_idx
                                         ? "#f0f8ff"
                                         : "#fff",
                             }}
@@ -79,41 +71,6 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
                     <p>검색 결과가 없습니다.</p>
                 )}
             </div>
-
-            {/*<div style={{ marginBottom: "20px" }}>*/}
-            {/*    /!* 빨간 스타일 *!/*/}
-            {/*    /!*map 으로 돌리고*!/*/}
-            {/*    <label style={labelStyle("red")} onClick={() => handleSelect("red")}>*/}
-            {/*        <input*/}
-            {/*            type="radio"*/}
-            {/*            name="visualCategory"*/}
-            {/*            checked={formData.visualCategory === "red"}*/}
-            {/*            onChange={() => handleSelect("red")}*/}
-            {/*            style={{ display: "none" }}*/}
-            {/*        />*/}
-            {/*        <div>*/}
-            {/*            <div className="course_img style-red" />*/}
-            {/*            <div className="course_line style-red" />*/}
-            {/*            <div className="course_triangle-down style-red" />*/}
-            {/*        </div>*/}
-            {/*    </label>*/}
-
-            {/*    /!* 파란 스타일 *!/*/}
-            {/*    <label style={labelStyle("blue")} onClick={() => handleSelect("blue")}>*/}
-            {/*        <input*/}
-            {/*            type="radio"*/}
-            {/*            name="visualCategory"*/}
-            {/*            checked={formData.visualCategory === "blue"}*/}
-            {/*            onChange={() => handleSelect("blue")}*/}
-            {/*            style={{ display: "none" }}*/}
-            {/*        />*/}
-            {/*        <div>*/}
-            {/*            <div className="course_triangle-up style-blue" />*/}
-            {/*            <div className="course_line style-blue" />*/}
-            {/*            <div className="course_img style-blue" />*/}
-            {/*        </div>*/}
-            {/*    </label>*/}
-            {/*</div>*/}
 
             <br />
             <button onClick={prevStep}>이전</button>

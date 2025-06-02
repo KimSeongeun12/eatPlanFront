@@ -8,8 +8,11 @@ import './courseAdd_modalCss.css';
 const CourseAddModal = ({ onClose, onSubmit }) => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
-        name: "",
-        description: "",
+        timeline_resta_name: "",
+        resta: "",
+        noResta: "선택 안됨",
+        timeline_time: "",
+        timeline_coment: "",
     });
 
     const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
