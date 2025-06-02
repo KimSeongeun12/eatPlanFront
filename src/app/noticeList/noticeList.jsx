@@ -33,7 +33,7 @@ export default function NoticeList() {
 
     useEffect(() => {
         // (1) 관리자 여부 확인
-        const adminFlag = sessionStorage.getItem('isAdmin') === 'true';
+        const adminFlag = sessionStorage.getItem('isAdmin') === '1';
         setIsAdmin(adminFlag);
 
         // (2) 현재 페이지 데이터 불러오기
@@ -124,7 +124,6 @@ export default function NoticeList() {
             {isAdmin && (
                 <div className="write-button-wrapper">
                     <Link href="/noticewrite">
-                        {/* 이 부분도 <a> 제거 후 텍스트만 */}
                         <button className="write-btn">작성</button>
                     </Link>
                 </div>
