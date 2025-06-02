@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddStepOne from "./addStepOne";
 import AddStepTwo from "./addStepTwo";
 import AddStepThree from "./addStepThree";
+import AddStepFour from "@/app/write/courseAdd_modal/addStepFour";
 import './courseAdd_modalCss.css';
 
 const CourseAddModal = ({ onClose, onSubmit }) => {
@@ -11,7 +12,7 @@ const CourseAddModal = ({ onClose, onSubmit }) => {
         description: "",
     });
 
-    const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
+    const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
     return (
@@ -35,6 +36,14 @@ const CourseAddModal = ({ onClose, onSubmit }) => {
                 )}
                 {step === 3 && (
                     <AddStepThree
+                        nextStep={nextStep}
+                        prevStep={prevStep}
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                )}
+                {step === 4 && (
+                    <AddStepFour
                         prevStep={prevStep}
                         formData={formData}
                         onSubmit={() => onSubmit(formData)}

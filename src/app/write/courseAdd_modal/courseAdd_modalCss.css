@@ -158,3 +158,10 @@
 .style-blue.course_triangle-down {
     border-top-color: #CC503B;
 }
+
+/**/
+
+.courseAdd_search_div {
+    height: 780px;
+    overflow-y: scroll;
+}
