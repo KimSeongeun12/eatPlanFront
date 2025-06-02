@@ -1,0 +1,25 @@
+div .tab{
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+}
+
+.tab div{
+    width:150px;
+    margin: 1px;
+    background-color: lightgray;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.box{
+    border: 1px solid #ffffff;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}

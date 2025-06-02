@@ -1,12 +1,11 @@
 'use client'
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import Link from "next/link";
 import SelectedModel from "@/app/message/selected";
+import '../mainCss.css';
 
-export default function MessageList({type}) {
-    let user_id = sessionStorage.getItem('user_id');
-    const token = sessionStorage.getItem('token');
+export default function MessageList({type, user_id, token}) {
 
     const [list, setList] = useState([]);
     const [selected, setSelected] = useState([]);
@@ -18,12 +17,6 @@ export default function MessageList({type}) {
     // --------------------몰러 일괄삭제 어떻게 하냐 ---------------------//
     const selectDel = (e) => {
         console.log('selected: ', selected);
-    }
-
-    // ------------------------------ 이미지 테스트 --------------------//
-    const  drawPhoto=async ()=>{
-        let {data}=await axios.get(`http://localhost/photo/2`,{headers: {Authorization: token}});
-        console.log(data);
     }
 
     const drawList = async () => {

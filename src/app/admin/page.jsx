@@ -2,9 +2,10 @@
 import LeftMenu from "@/app/leftMenu";
 import {useEffect, useRef, useState} from "react";
 import MemberList from "@/app/admin/memberList";
+import TagManagement from "@/app/admin/tagManagement";
+import ReportHistory from "@/app/admin/reportHistory";
 import './admin.css';
 import '../mainCss.css'
-import TagManagement from "@/app/admin/tagManagement";
 
 export default function AdminPage() {
 
@@ -20,18 +21,21 @@ export default function AdminPage() {
         token.current = sessionStorage.getItem('token');
     }, []);
 
-    const clickTab = (e) => {
-        tabName.current = e.target.id;
-        toggleTab();
-    }
 
-    const toggleTab = () => {
-        switch (tabName.current) {
+    const toggleTab = (e) => {
+        console.log(tabName.current);
+        switch (e.target.id) {
             case 'memberList':
+                tabName.current = e.target.id;
                 setComponent(<MemberList />);
                 break;
             case 'tagManage':
+                tabName.current = e.target.id;
                 setComponent(<TagManagement />);
+                break;
+            case 'report':
+                tabName.current = e.target.id;
+                setComponent(<ReportHistory />);
                 break;
         }
     }
@@ -42,15 +46,15 @@ export default function AdminPage() {
             <div className={"rightMenu"}>
                 <div className={"topMenuSpans"}>
                     <span id={'myPage'} className={tabName.current === 'myPage' ? 'active-span' : ''}
-                          onClick={(e) => clickTab(e)}>내 정보 열람</span>
+                          onClick={(e) => toggleTab(e)}>내 정보 열람</span>
                     <span id={'myCourse'} className={tabName.current === 'myCourse' ? 'active-span' : ''}
-                          onClick={(e) => clickTab(e)}>내 코스 모아보기</span>
+                          onClick={(e) => toggleTab(e)}>내 코스 모아보기</span>
                     <span id={'memberList'} className={tabName.current === 'memberList' ? 'active-span' : ''}
-                          onClick={(e) => clickTab(e)}>회원 리스트</span>
+                          onClick={(e) => toggleTab(e)}>회원 리스트</span>
                     <span id={'tagManage'} className={tabName.current === 'tagManage' ? 'active-span' : ''}
-                          onClick={(e) => clickTab(e)}>태그 관리</span>
+                          onClick={(e) => toggleTab(e)}>태그 관리</span>
                     <span id={'report'} className={tabName.current === 'report' ? 'active-span' : ''}
-                          onClick={(e) => clickTab(e)}>신고 내역 확인</span>
+                          onClick={(e) => toggleTab(e)}>신고 내역 확인</span>
                 </div>
                 {component}
             </div>

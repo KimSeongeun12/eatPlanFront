@@ -30,7 +30,7 @@ export default function leftMenu() {
     const logout = () => {
         sessionStorage.removeItem('user_id');
         sessionStorage.removeItem('token');
-        router.push('/');
+        location.href="/";
     }
 
     return (
