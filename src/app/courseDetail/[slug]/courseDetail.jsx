@@ -1,12 +1,57 @@
 'use client'
 
-import { Chrono } from "react-chrono";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
+import axios from "axios";
 
 export default function CourseDetail({post_idx}) {
 
     const container = useRef(null);
+    const [detail, setDetail] = useState({
+        "b_hit":0,
+        "post_cmt":"",
+        "reg_date":"",
+        "star_average":0,
+        "subject":"",
+        "blind":false,
+        "tmp":false,
+        "total_like_count":0,
+        "total_comment_count":0,
+        "nickname":"",
+        "content_detail_cmt":[],
+        "content_detail_resta":[],
+        "tag_name":[],
+        "tag_name_area": [],
+        "time":{"start":"", "end":""}});
+
+    // 디테일 정보 가져오기
+    const getDetail = () => {
+        axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
+            console.log(data);
+            let d = data.detail;
+            setDetail(
+                {
+                    "b_hit":d.content.b_hit,
+                    "post_cmt":d.content.post_cmt,
+                    "reg_date":d.content.reg_date,
+                    "star_average":d.content.star_average,
+                    "subject":d.content.subject,
+                    "blind":d.content.blind,
+                    "tmp":d.content.tmp,
+                    "total_like_count":d.content.total_like_count,
+                    "total_comment_count":d.content.total_comment_count,
+                    "nickname":d.nickname.nickname,
+                    "content_detail_cmt":d.content_detail_cmt,
+                    "content_detail_resta":d.content_detail_resta,
+                    "tag_name":d.tag_name,
+                    "tag_name_area": d.tag_name_area,
+                    "time":{
+                        "start":d.time.start,
+                        "end":d.time.end
+                    }}
+            );
+        });
+    };
 
     useEffect(() => {
 
@@ -37,6 +82,7 @@ export default function CourseDetail({post_idx}) {
             });
 
         });
+        getDetail();
     }, []);
 
     return (
@@ -45,25 +91,34 @@ export default function CourseDetail({post_idx}) {
                 <span className={"noHead"}>글 번호</span>
                 <span className={"noBody"}>{post_idx}</span>
                 <span className={"reg_dateHead"}>작성일</span>
-                <span className={"reg_dateBody"}>2025-05-31</span>
+                <span className={"reg_dateBody"}>{detail.reg_date.replace("T", " ").substring(0, 16)}</span>
 
                 <span className={"nicknameHead"}>작성자</span>
-                <span className={"nicknameBody"}>글쓴이에용</span>
+                <span className={"nicknameBody"}>{detail.nickname}</span>
                 <span className={"b_hitHead"}>조회수</span>
-                <span className={"b_hitBody"}>0</span>
+                <span className={"b_hitBody"}>{detail.b_hit}</span>
 
                 <span className={"starAvgHead"}>평점</span>
-                <span className={"starAvgBody"}>0</span>
+                <span className={"starAvgBody"}>{detail.star_average}</span>
                 <span className={"likeCntHead"}>좋아요</span>
-                <span className={"likeCntBody"}>0</span>
+                <span className={"likeCntBody"}>{detail.total_like_count}</span>
 
                 <span className={"subjectHead"}>코스 제목</span>
-                <span className={"subjectBody"}>술을 마셔보자</span>
+                <span className={"subjectBody"}>{detail.subject}</span>
                 <span className={"tagHead"}>태그</span>
-                <span className={"tagBody"}>#가성비 좋은 #파티</span>
+                <span className={"tagBody"}>
+                    {detail.tag_name_area.map(tag => tag.tag_name).join(" ")}
+                    {" "}
+                    {detail.tag_name.map(tag => tag.tag_name).join(" ")}
+                </span>
 
                 <span className={"timelineHead"}>코스 내용</span>
-                <span className={"timelineBody"}><Timeline/></span>
+                <span className={"timelineBody"}>
+                    <Timeline timelineStart={detail.time.start}
+                              timelineFinish={detail.time.end}
+                              noResta = {detail.content_detail_cmt}
+                              resta = {detail.content_detail_resta}/>
+                </span>
 
                 <span className={"mapHead"}>식당 위치 정보</span>
                 <span className={"mapBody"}>
@@ -73,7 +128,7 @@ export default function CourseDetail({post_idx}) {
                 </span>
 
                 <span className={"courseCmtHead"}>코스 코멘트</span>
-                <span className={"courseCmtBody"}>정말 재밌었어요</span>
+                <span className={"courseCmtBody"}>{detail.post_cmt}</span>
 
                 <div className={"btns"}>
                     <span className={"report"}>신고</span>
@@ -83,8 +138,8 @@ export default function CourseDetail({post_idx}) {
                 </div>
 
                 <div className={"rates"}>
-                    <span className={"like"}>❤️좋아요</span>
-                    <span className={"scrollToCmt"}>💬댓글 작성(0)</span>
+                    <span className={"like"}>❤️좋아요({detail.total_like_count})</span>
+                    <span className={"scrollToCmt"}>💬댓글 작성({detail.total_comment_count})</span>
                     <div className={"stars"}>
                         <label><input className={"star"} type={"radio"} value={1}/>⭐</label>
                         <label><input className={"star"} type={"radio"} value={2}/>⭐⭐</label>

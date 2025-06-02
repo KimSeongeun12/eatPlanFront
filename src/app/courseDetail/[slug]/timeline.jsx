@@ -3,7 +3,7 @@
 import {Chrono} from "react-chrono";
 import {useEffect, useState} from "react";
 
-export default function Timeline ({timelineStart, timelineFinish}) {
+export default function Timeline ({timelineStart, timelineFinish, noResta, resta}) {
 
     const [start, setStart] = useState("");
     const [finish, setFinish] = useState("");
