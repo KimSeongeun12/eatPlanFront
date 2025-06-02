@@ -1,10 +1,15 @@
+'use client';
+
 import LeftMenu from "@/app/leftMenu";
+import NoticeList from "./noticeList";
 
 export default function notice() {
     return (
         <>
             <LeftMenu />
-            공지사항 페이지
+            <div className="rightMenu">
+            <NoticeList />
+            </div>
         </>
     );
 }

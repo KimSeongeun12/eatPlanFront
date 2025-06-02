@@ -68,8 +68,8 @@ export default function leftMenu() {
                     <span>쪽지</span>
                 </div>
                 <div className={"line"}></div>
-                <div onClick={() => router.push('/notice')}
-                     className={`noticeMenu ${isActive('/notice') ? 'active' : ''}`}>
+                <div onClick={() => router.push('/noticeList')}
+                     className={`noticeMenu ${isActive('/noticeList') ? 'active' : ''}`}>
                     <img src={"/bellIcon.png"} alt={"공지사항 아이콘"}/>
                     <span>공지사항</span>
                 </div>
