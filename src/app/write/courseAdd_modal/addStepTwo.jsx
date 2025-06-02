@@ -1,12 +1,16 @@
 import axios from "axios";
 import {useState} from "react";
 import './courseAdd_modalCss.css';
+import TagAddModal from "@/app/write/courseAdd_modal/tagAddModal";
 
 const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
 
     const [results, setResults] = useState([]);
 
-    // 식당 이름 검색
+    // 태그 검색 모달 열고 닫기
+    const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+
+    // 식당 이름 검색 (axios)
     const search = async () => {
         const {data} = await axios.post('http://localhost/search_resta', formData.searchQuery, {
             headers: {"Content-Type": "text/plain"},
@@ -20,9 +24,9 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
             ...prev,
             resta: restaurant || null,
             noResta: restaurant ? "" : "선택 안됨",
+            url: restaurant?.url || "",
         }));
     };
-
 
     return (
         <div className={"courseAdd_search_div"}>
@@ -42,6 +46,8 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
                 <button onClick={search} style={{ marginLeft: "10px" }}>
                     검색
                 </button>
+                <div>태그 검색란</div>
+                <button onClick={() => setIsTagModalOpen(true)}>태그 더보기</button>
             </div>
             
             <div style={{ marginTop: "20px" }}>
@@ -61,10 +67,13 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
                             }}
                             onClick={() => handleSelectRestaurant(item)} // 클릭 시 선택
                         >
+                            <p><strong>이미지:</strong> {item.img_idx}</p>
                             <p><strong>식당 이름:</strong> {item.resta_name}</p>
-                            <p><strong>주소:</strong> {item.address}</p>
-                            <p><strong>url:</strong> {item.url}</p>
                             <p><strong>소개:</strong> {item.resta_bio}</p>
+                            <p><strong>url:</strong> <a href={item.url.startsWith('http') ? item.url : `https://${item.url}`}
+                                                        target="_blank" rel="noopener noreferrer">{item.url}</a></p>
+                            <p><strong>주소:</strong> {item.address}</p>
+                            {/*태그 들어갈 곳*/}
                         </div>
                     ))
                 ) : (
@@ -75,6 +84,9 @@ const AddStepTwo = ({ nextStep, prevStep, formData, setFormData }) => {
             <br />
             <button onClick={prevStep}>이전</button>
             <button onClick={nextStep}>다음</button>
+
+            {isTagModalOpen && <TagAddModal onClose={() => setIsTagModalOpen(false)} />}
+
         </div>
     );
 };

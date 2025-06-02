@@ -3,13 +3,13 @@ import './courseWriteCss.css';
 import './courseAdd_modal/courseAdd_modalCss.css';
 import {useEffect, useState} from 'react';
 import CourseAdd_modal from './courseAdd_modal/page';
-import {Chrono} from "react-chrono";
 import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
 
-export default function CourseWrite({ data }) {
-    const { timelineStart, timelineFinish } = data || {timelineStart: "00:00", timelineFinish: "23:00"};
+export default function CourseWrite({data}) {
+    const {timelineStart, timelineFinish} = data || {timelineStart: "00:00", timelineFinish: "23:00"};
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseList, setCourseList] = useState([]);
+    const [timelineData, setTimelineData] = useState({});
 
     const {timeline_resta_name, resta, noResta, timeline_time, timeline_coment}
         = data || {
@@ -24,16 +24,25 @@ export default function CourseWrite({ data }) {
         color: '#FF0000',
     };
 
+    // 코스 추가 핸들러 (모달에서 넘겨받은 formData를 courseList에 추가)
     const handleAddCourse = (formData) => {
         setCourseList((prev) => [
             ...prev,
             {
-                description: formData.description || '설명 없음',
-                visualCategory: formData.visualCategory || 'red',
-            },
+                timeline_resta_name: formData.timeline_resta_name || '코스 이름 없음',
+                resta: formData.resta || null,
+                noResta: formData.noResta || '',
+                timeline_time: formData.timeline_time || '',
+                timeline_coment: formData.timeline_coment || '',
+                // new_filename: formData.new_filename || null,
+            }
         ]);
         setIsModalOpen(false);
     };
+
+    useEffect(() => {
+        console.log("courseList가 업데이트 됐어요:", courseList);
+    }, [courseList]);
 
     return (
         <>
@@ -48,7 +57,7 @@ export default function CourseWrite({ data }) {
                             제목<span style={style}> *</span>
                         </td>
                         <td className="courseWrite_td">
-                            <input type="text" className="courseWrite_subject" />
+                            <input type="text" className="courseWrite_subject"/>
                         </td>
                     </tr>
                     <tr>
@@ -61,11 +70,8 @@ export default function CourseWrite({ data }) {
                             <div className="courseWrite_uploadDiv">
                                 <Timeline timelineStart={timelineStart}
                                           timelineFinish={timelineFinish}
-                                          timelineRestaName={timeline_resta_name}
-                                          resta={resta}
-                                          noResta={noResta}
-                                          timelineTime={timeline_time}
-                                          timelineComent={timeline_coment}
+
+                                          courseList={courseList}
                                 />
                             </div>
                         </td>
@@ -101,7 +107,7 @@ export default function CourseWrite({ data }) {
                     </tr>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
-                            <textarea className="courseWrite_textarea" />
+                            <textarea className="courseWrite_textarea"/>
                         </td>
                     </tr>
                     <tr>
@@ -109,8 +115,8 @@ export default function CourseWrite({ data }) {
                             공개 및 비공개 여부<span style={style}> *</span>
                         </td>
                         <td className="courseWrite_td_radio">
-                            <input type="radio" />공개&nbsp;
-                            <input type="radio" />비공개
+                            <input type="radio"/>공개&nbsp;
+                            <input type="radio"/>비공개
                         </td>
                     </tr>
                     <tr>

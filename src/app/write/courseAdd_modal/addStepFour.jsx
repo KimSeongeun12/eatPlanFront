@@ -6,6 +6,7 @@ const AddStepFour = ({ prevStep, formData, onSubmit }) => {
             <p><strong>선택된 식당:</strong> {formData.resta?.resta_name || formData.noResta}</p>
             <p><strong>시간:</strong> {formData.timeline_time}</p>
             <p><strong>상세 설명:</strong> {formData.timeline_coment}</p>
+            <p><strong>url:</strong> {formData.url}</p>
             <button onClick={prevStep}>이전</button>
             <button onClick={onSubmit}>제출</button>
         </div>
