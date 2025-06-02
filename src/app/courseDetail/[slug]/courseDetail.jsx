@@ -8,6 +8,7 @@ export default function CourseDetail({post_idx}) {
 
     const container = useRef(null);
     const [detail, setDetail] = useState({
+        "post_idx":0,
         "b_hit":0,
         "post_cmt":"",
         "reg_date":"",
@@ -31,6 +32,7 @@ export default function CourseDetail({post_idx}) {
             let d = data.detail;
             setDetail(
                 {
+                    "post_idx":d.content.post_idx,
                     "b_hit":d.content.b_hit,
                     "post_cmt":d.content.post_cmt,
                     "reg_date":d.content.reg_date,
@@ -53,37 +55,97 @@ export default function CourseDetail({post_idx}) {
         });
     };
 
+    // 페이지 입장시 디테일정보 가져오기
     useEffect(() => {
-
-        kakao.maps.load(()=>{
-            const mapOption = {
-                center: new kakao.maps.LatLng(37.57190029146425, 126.98715765847491), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
-            };
-
-            // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-            let map = new kakao.maps.Map(container.current, mapOption);
-
-            // 최초 마커 등록
-            let marker = new kakao.maps.Marker({
-                position: map.getCenter(),
-            });
-
-            marker.setMap(map);
-
-            // 이벤트 등록
-            kakao.maps.event.addListener(map, 'click', function (event) {
-                console.log('evt',event);
-                let latLan = event.latLng;
-                marker.setPosition(latLan); // 특정 위도 경도록 마커 이동
-                let msg = '클릭한 위치의 위도는 '+latLan.getLat()+',  경도는 '+latLan.getLng()+'  입니다.';
-                //document.getElementById('msg').innerHTML = msg;
-                setMsg(msg);
-            });
-
-        });
         getDetail();
     }, []);
+
+    // 디테일정보가 들어오면 맵에 마커찍기
+    useEffect(() => {
+        kakao.maps.load(() => {
+            const containerEl = container.current;
+
+            // 지도 생성 기본 옵션
+            let mapOption = {
+                center: new kakao.maps.LatLng(37.570377, 126.985409), // 기본 중심: 종각역
+                level: 3
+            };
+
+            const map = new kakao.maps.Map(containerEl, mapOption);
+            const bounds = new kakao.maps.LatLngBounds();
+
+            const restaInfoList = detail.content_detail_resta.map(r => r.resta?.[0]).filter(Boolean);
+
+            if (restaInfoList.length > 0) {
+                restaInfoList.forEach(restaInfo => {
+                    if (restaInfo?.lat && restaInfo?.lng) {
+                        const position = new kakao.maps.LatLng(restaInfo.lat, restaInfo.lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position,
+                            map
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">${restaInfo.resta_name}</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        bounds.extend(position);
+                    }
+                });
+
+                // 모든 마커 포함되도록 범위 설정
+                map.setBounds(bounds);
+            } else {
+                // ✅ 식당 정보 없을 경우 종각역에 기본 마커 표시
+                const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
+                const marker = new kakao.maps.Marker({
+                    position: defaultPosition,
+                    map,
+                    title: "종각역"
+                });
+
+                const infoWindow = new kakao.maps.InfoWindow({
+                    position: defaultPosition,
+                    content: `<div style="padding:5px;font-size:13px;font-weight:bold;">종각역 근처</div>`
+                });
+
+                infoWindow.open(map, marker);
+            }
+        });
+    }, [detail]);
+
+    // 코스 신고버튼
+    const courseReport = (detail) => {
+        const queryParts = ["isClass=course", `idx=${detail.post_idx}`, `nickname=${detail.nickname}`].join("&");
+        const url = `/courseWrite?${queryParts}`
+        location.href = url;
+    };
+
+    // 코스 수정버튼
+    const courseUpdate = (detail) => {
+        const url = `/courseUpdate?post_idx=${detail.post_idx}`;
+        location.href = url;
+    };
+
+    // 코스 삭제버튼
+    const courseDelete = (detail) => {
+        axios.delete("http://localhost/delete/",{data:[{post_idx: detail.post_idx}]}).then(({data}) => {
+            if (data.success) {
+                location.href = "/list";
+                alert("코스를 삭제 했습니다.")
+            }else{
+                alert("삭제에 실패 했습니다.")
+            }
+        });
+    }
+
+    // 리스트로 돌아가기버튼
+    const toList = () => {
+        location.href = "/list";
+    };
 
     return (
         <>
@@ -131,15 +193,14 @@ export default function CourseDetail({post_idx}) {
                 <span className={"courseCmtBody"}>{detail.post_cmt}</span>
 
                 <div className={"btns"}>
-                    <span className={"report"}>신고</span>
-                    <span className={"update"}>수정</span>
-                    <span className={"delete"}>삭제</span>
-                    <span className={"toList"}>리스트</span>
+                    <span className={"report"} onClick={()=>courseReport(detail)}>신고</span>
+                    <span className={"update"} onClick={()=>courseUpdate(detail)}>수정</span>
+                    <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
+                    <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
                 </div>
 
                 <div className={"rates"}>
                     <span className={"like"}>❤️좋아요({detail.total_like_count})</span>
-                    <span className={"scrollToCmt"}>💬댓글 작성({detail.total_comment_count})</span>
                     <div className={"stars"}>
                         <label><input className={"star"} type={"radio"} value={1}/>⭐</label>
                         <label><input className={"star"} type={"radio"} value={2}/>⭐⭐</label>
