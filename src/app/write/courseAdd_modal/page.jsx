@@ -1,19 +1,48 @@
-import './courseAdd_modal.css';
+import React, { useState } from "react";
+import AddStepOne from "./addStepOne";
+import AddStepTwo from "./addStepTwo";
+import AddStepThree from "./addStepThree";
+import './courseAdd_modalCss.css';
 
-export default function CourseAdd_modal({onClose}) {
+const CourseAddModal = ({ onClose, onSubmit }) => {
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+    });
+
+    const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
+    const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
     return (
-        <div className="courseAdd_modal_overlay">
-            <div className="courseAdd_modal_content">
-
-                <div className="courseAdd_modal_body">
-                    <span>타임라인 세부 요소의 모양을 선택해주세요.</span>
-                </div>
-
-                <div className="courseAdd_modal_buttons">
-                    <button onClick={onClose} className="courseAdd_modal_button">취소</button>
-                    <button className="courseAdd_modal_button confirm">다음</button>
-                </div>
+        <div className="modal-background">
+            <div className="modal-content">
+                {step === 1 && (
+                    <AddStepOne
+                        nextStep={nextStep}
+                        formData={formData}
+                        setFormData={setFormData}
+                        onClose={onClose}
+                    />
+                )}
+                {step === 2 && (
+                    <AddStepTwo
+                        nextStep={nextStep}
+                        prevStep={prevStep}
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+                )}
+                {step === 3 && (
+                    <AddStepThree
+                        prevStep={prevStep}
+                        formData={formData}
+                        onSubmit={() => onSubmit(formData)}
+                    />
+                )}
             </div>
         </div>
     );
-}
+};
+
+export default CourseAddModal;

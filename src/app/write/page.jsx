@@ -9,6 +9,13 @@ export default function WritePage() {
     const [showModal, setShowModal] = useState(true);
     const [formData, setFormData] = useState(null);  // 모달 입력값 저장
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [courseList, setCourseList] = useState([]);
+
+    const handleAddCourse = (newCourse) => {
+        setCourseList(prev => [...prev, newCourse]);
+    };
+
     const handleComplete = (data) => {
         setFormData(data);       // 저장
         setShowModal(false);     // 모달 닫기
