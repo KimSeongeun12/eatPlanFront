@@ -3,11 +3,11 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import './admin.css'
-import {data} from "react-router-dom";
 
-export default function MemberList({filter, align}){
+export default function MemberList({filter, align, check, setCheck}){
 
     const [list, setList] = useState([]);
+
 
     useEffect(() => {
         drawlist();
@@ -20,12 +20,16 @@ export default function MemberList({filter, align}){
         });
     }
 
+    const insertCheck=(e)=>{
+
+    }
+
     const drawlist=async ()=>{
         let {data}=await axios.get(`http://localhost/admember_list/${align}/${filter}`);
         const member=data.list.map((item)=>{
             return(
                 <div className={"member list"} key={item.user_id}>
-                    <input type={"checkbox"}/>
+                    <input type={"checkbox"} id={item.user_id} onChange={(e)=>insertCheck(e)}/>
                     <span>{item.user_id}</span>
                     {/*아래에 유저 페이지 이동*/}
                     <span>{item.nickname}</span>
