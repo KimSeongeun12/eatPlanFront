@@ -1,0 +1,161 @@
+.rightMenu {
+    padding: 24px;
+    background-color: #fafafa;
+    min-height: 100vh;
+}
+
+/* 공지목록 전체 컨테이너 */
+.notice-list-container {
+    padding: 24px;
+    background-color: #ffffff;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 제목 영역 */
+.notice-title {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #d74930;
+}
+
+/* ────────────────────────────────────────────────── */
+/* 테이블 기본 스타일 */
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.notice-table th,
+.notice-table td {
+    text-align: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notice-table thead th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+/* 컬럼별 너비 (colgroup 설정) */
+.col-no {
+    width: 8%;
+}
+.col-subject {
+    width: 52%;
+}
+.col-writer {
+    width: 15%;
+}
+.col-date {
+    width: 15%;
+}
+.col-hit {
+    width: 10%;
+}
+
+/* ────────────────────────────────────────────────── */
+/* 필독 공지(하이라이트) 행 스타일 */
+.highlight-row {
+    background-color: #FFF7D6; /* 옅은 노란색 */
+}
+
+/* “L1” 라벨 스타일 */
+.label-highlight {
+    display: inline-block;
+    background-color: #f4c542;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    margin-right: 6px;
+    border-radius: 4px;
+}
+
+/* 일반 공지(흰색 배경) */
+.normal-row {
+    background-color: #ffffff;
+}
+
+/* 제목 링크 스타일 */
+.cell-title .title-link {
+    color: #d74930;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cell-title .title-link:hover {
+    text-decoration: underline;
+}
+
+/* ────────────────────────────────────────────────── */
+/* 페이지네이션 */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.page-btn {
+    width: 32px;
+    height: 32px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+}
+
+.page-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.page-btn.disabled {
+    border-color: #eee;
+    color: #ccc;
+    cursor: default;
+    background-color: #fafafa;
+}
+
+.page-btn.active {
+    background-color: #d74930;
+    color: #ffffff;
+    border-color: #d74930;
+}
+
+/* ────────────────────────────────────────────────── */
+/* 관리자 작성 버튼 영역 */
+.write-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.write-btn {
+    background-color: #d74930;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.write-btn:hover {
+    background-color: #b63f29;
+}
+
+/* ────────────────────────────────────────────────── */
+/* 로딩 중 표시 */
+.notice-loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+}
