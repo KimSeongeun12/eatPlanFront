@@ -17,6 +17,13 @@ export default function AdminPage(){
         token.current=sessionStorage.getItem('token');
     }, []);
 
+    const [check, setCheck] = useState([
+        {id:'admin', checked: true},
+    ]);
+
+    const checkAll=()=>{
+
+    }
 
     return(
         <>
@@ -30,9 +37,7 @@ export default function AdminPage(){
                     <span className={'active-span'}>신고 내역 확인</span>
                 </div>
                 <div className={"adminMember"} style={{borderBottom:"2px solid grey", borderTop:"2px solid grey", padding:"6px"}}>
-                    <input type={"checkbox"} style={{margin:"10px"}}/>
-                    <span>정지</span>
-                    <span>관리자 부여</span>
+                    <input type={"checkbox"} style={{margin:"10px", width:"20px"}}/>
                     <span style={{marginLeft:"10px"}}>필터: </span>
                     <select style={{margin:"10px", height:"30px"}} name={"filter"} onChange={(e)=>setFilter(e.target.options[e.target.selectedIndex].value)}>
                         <option value={"all"}>모든 회원</option>
@@ -48,7 +53,7 @@ export default function AdminPage(){
                         <option value={"reg_date"}>가입일자</option>
                     </select>
                 </div>
-                <MemberList filter={filter} align={align}/>
+                <MemberList filter={filter} align={align} check={check} setCheck={setCheck}/>
             </div>
         </>
     );

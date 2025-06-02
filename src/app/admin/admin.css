@@ -40,3 +40,7 @@ span{
     background-color: #d1d1d1;
     border: solid 1px #d1d1d1;
 }
+
+input[type="checkbox"]{
+    width: 20px;
+}
