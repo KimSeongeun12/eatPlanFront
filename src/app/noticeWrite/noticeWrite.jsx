@@ -3,17 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import {
-    Box,
-    TextField,
-    FormControl,
-    FormLabel,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    Button,
-    Typography,
-} from '@mui/material';
+import { Box, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio,
+    Button, Typography,} from '@mui/material';
 import './noticeWrite.css';
 
 export default function NoticeWrite() {
