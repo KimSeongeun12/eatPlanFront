@@ -1,0 +1,49 @@
+.banPopup{
+    position: fixed;
+    left: 50%;
+    top: 30%;
+    background-color: white;
+    border: solid 2px #ff2d00;
+    text-align: center;
+    padding: 10px;
+    height: 400px;
+    width: 300px;
+    align-content: center;
+}
+
+.x{
+    position: absolute;
+    right: 5px;
+    top:5px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.period{
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    top: 30%;
+    font-weight: bold;
+}
+
+h3{
+    margin: 5px;
+}
+
+.top{
+    position: relative;
+    top: -40%;
+    text-align: center;
+}
+
+button{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border:1px solid red;
+    background-color: white;
+    width: 70px;
+    height: 40px;
+    border-radius: 7px;
+}
