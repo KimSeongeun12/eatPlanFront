@@ -25,7 +25,6 @@ export default function MessagePage() {
                 </div>
                 <hr/>
                 <MessageList type={type}/>
-
             </div>
         </>
     );
