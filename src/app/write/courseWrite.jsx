@@ -1,11 +1,13 @@
 'use client'
 import './courseWriteCss.css';
 import './courseAdd_modal/courseAdd_modalCss.css';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import CourseAdd_modal from './courseAdd_modal/page';
+import {Chrono} from "react-chrono";
+import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
 
 export default function CourseWrite({ data }) {
-    const { timelineStart, timelineFinish } = data || {};
+    const { timelineStart, timelineFinish } = data || {timelineStart: "00:00", timelineFinish: "23:00"};
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseList, setCourseList] = useState([]);
 
@@ -48,13 +50,11 @@ export default function CourseWrite({ data }) {
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
                             <div className="courseWrite_uploadDiv">
-                                <div className="courseWrite_timeline_line">
-                                    <span className="courseWrite_timeline_startSpan">{timelineStart}</span>
-                                    <span className="courseWrite_timeline_finishSpan">{timelineFinish}</span>
-
-
-
-                                </div>
+                                {/*<div className="courseWrite_timeline_line">*/}
+                                {/*    <span className="courseWrite_timeline_startSpan">{timelineStart}</span>*/}
+                                {/*    <span className="courseWrite_timeline_finishSpan">{timelineFinish}</span>*/}
+                                {/*</div>*/}
+                                <Timeline timelineStart={timelineStart} timelineFinish={timelineFinish} />
                             </div>
                         </td>
                     </tr>

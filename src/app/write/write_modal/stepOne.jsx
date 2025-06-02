@@ -13,6 +13,7 @@ export default function StepOne({onNext, setData}) {
             return;
         }
         setData({timelineStart});  // 상위로 데이터 전달
+        // console.log(timelineStart);
         onNext();
     };
 
