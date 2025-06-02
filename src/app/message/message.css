@@ -1,0 +1,9 @@
+.active-span{
+    font-weight: bold;
+}
+
+.topMenuSpans span{
+    font-size: x-large;
+    padding:10px;
+    cursor: pointer;
+}

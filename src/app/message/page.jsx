@@ -3,6 +3,7 @@ import LeftMenu from "@/app/leftMenu";
 import {useRef, useState} from "react";
 import MessageList from "@/app/message/message_list";
 import '../mainCss.css'
+import './message.css'
 
 export default function MessagePage() {
 
