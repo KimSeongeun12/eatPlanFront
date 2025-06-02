@@ -69,7 +69,7 @@ export default function NoticeList() {
                     >
                         <td>{item.notice_idx}</td>
                         <td className="cell-title">
-                            <Link href={`/noticeDetail/${item.notice_idx}`}>
+                            <Link href={`/noticeDetail?id=${item.notice_idx}`}>
                                 <span className="title-link">{item.subject}</span>
                             </Link>
                         </td>
