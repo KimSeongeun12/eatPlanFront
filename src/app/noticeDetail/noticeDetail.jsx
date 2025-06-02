@@ -29,7 +29,7 @@ export default function NoticeDetail() {
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem('user_id');
-        const adminFlag = sessionStorage.getItem('isAdmin') === 'true';
+        const adminFlag = sessionStorage.getItem('isAdmin') === '1';
         setCurrentUser(storedUser);
         setIsAdmin(adminFlag);
 
