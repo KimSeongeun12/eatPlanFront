@@ -27,7 +27,7 @@ export default function Timeline ({timelineStart, timelineFinish, noResta, resta
                 media: {
                     type: "IMAGE",
                     source: {
-                        url: `http://localhost/image/rest${restaInfo.new_filename}`
+                        url: `http://localhost/image/${restaInfo.photo.new_filename}`
                     }
                 }
             };
