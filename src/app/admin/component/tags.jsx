@@ -10,7 +10,6 @@ export default function Tags({idx, isClass}) {
 
     const [list, setList] = useState([]);
 
-
     useEffect(() => {
         // console.log('isCourse:', isClass);
         if(isClass==='course') {
@@ -27,7 +26,7 @@ export default function Tags({idx, isClass}) {
             if (item.isClass === '코스') {
                 // console.log('코스: ', data);
                 return (
-                    <div key={item.tag_idx}><Tag name={item.tag_name}/></div>
+                    <div key={item.tag_idx}><Tag isClass={isClass} name={item.tag_name} drawCourseTags={drawCourseTags}/></div>
                 )
             }
         });
@@ -40,7 +39,7 @@ export default function Tags({idx, isClass}) {
             if (item.isClass === '식당') {
                 // console.log('식당: ', data);
                 return (
-                    <div key={item.tag_idx}><Tag name={item.tag_name}/></div>
+                    <div key={item.tag_idx}><Tag isClass={isClass} name={item.tag_name} drawRestaTags={drawRestaTags}/></div>
                 )
             }
         });
@@ -60,14 +59,25 @@ export default function Tags({idx, isClass}) {
 }
 
 // 태그하나하나하나하나
-function Tag({idx, name}) {
+function Tag({name, isClass, drawCourseTags, drawRestaTags}) {
 
-    const del=(idx)=>{
+    const del=async ()=>{
         // #태그 지우는 delete 요청 추가
+        console.log('del clicked', name);
+        if(isClass==='course') {
+            let {data}= await axios.post(`http://localhost/delTag`, {tag_name:name, isClass:'코스'});
+            drawCourseTags();
+            console.log('del result:', data);
+        }
+        else{
+            let {data}=await axios.post('http://localhost/delTag', {tag_name:name, isClass:'식당'});
+            drawRestaTags();
+            console.log('del result:', data);
+        }
     }
 
     return (
-            <div className={"tag-component"} id={idx}>
+            <div className={"tag-component"}>
               <div className={"tag-name"}>{name}</div>&nbsp;
               <div id={"x"} onClick={()=>del()}>X</div>
             </div>
