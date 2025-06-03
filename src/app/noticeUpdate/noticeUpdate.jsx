@@ -87,7 +87,7 @@ export default function noticeUpdate() {
                 content: content,
                 highlight: highlight === 'true'
             };
-            
+
             const res = await axios.put(`http://localhost/notice_update`, payload);
 
             if (res.data.success) {

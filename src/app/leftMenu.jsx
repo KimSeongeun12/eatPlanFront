@@ -37,6 +37,14 @@ export default function leftMenu() {
     return (
         <>
             <div className={"leftMenu"}>
+                <div
+                    className="logo-container"
+                    onClick={() => router.push('/')}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <img src="/logo.png" alt="EatPlan 로고" className="logo-img" />
+                </div>
+
                 <img className={"userIcon"} src={"/userIcon.png"} alt={"프로필 사진"}/>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px'}}>
                     {isLoggedIn
