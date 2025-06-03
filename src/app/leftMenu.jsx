@@ -30,6 +30,7 @@ export default function leftMenu() {
     const logout = () => {
         sessionStorage.removeItem('user_id');
         sessionStorage.removeItem('token');
+        sessionStorage.removeItem('admin');
         location.href="/";
     }
 
