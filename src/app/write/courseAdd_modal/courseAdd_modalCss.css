@@ -186,3 +186,14 @@
     padding: 20px;
     border-radius: 10px;
 }
+
+.tagTap {
+    margin-right: 10px;
+    border: 1px solid black;
+    border-bottom: none;
+    padding: 10px;
+}
+
+.tagTap:hover {
+    background: lightgray;
+}

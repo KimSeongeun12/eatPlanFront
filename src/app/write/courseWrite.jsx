@@ -8,41 +8,46 @@ import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
 export default function CourseWrite({data}) {
     const {timelineStart, timelineFinish} = data || {timelineStart: "00:00", timelineFinish: "23:00"};
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [courseList, setCourseList] = useState([]);
-    const [timelineData, setTimelineData] = useState({});
 
-    const {timeline_resta_name, resta, noResta, timeline_time, timeline_coment}
-        = data || {
-        timeline_resta_name: "",
-        resta: "",
-        noResta: "선택 안됨",
-        timeline_time: "",
-        timeline_coment: "",
-    };
+    // const [courseList, setCourseList] = useState([]); // 필요 없음
+    const [resta, setResta] = useState([]);
+    const [noResta, setNoResta] = useState([]);
 
     const style = {
         color: '#FF0000',
     };
 
-    // 코스 추가 핸들러 (모달에서 넘겨받은 formData를 courseList에 추가)
+    // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
-        setCourseList((prev) => [
-            ...prev,
-            {
-                timeline_resta_name: formData.timeline_resta_name || '코스 이름 없음',
-                resta: formData.resta || null,
-                noResta: formData.noResta || '',
-                timeline_time: formData.timeline_time || '',
-                timeline_coment: formData.timeline_coment || '',
-                // new_filename: formData.new_filename || null,
-            }
-        ]);
+        if (formData.resta_name && formData.resta_name.trim() !== "") {
+            // timeline_resta_name 에 값이 존재할 경우
+            // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
+            setResta(prev => [
+                ...prev,
+                {
+                    resta: [
+                        {
+                            resta_name: formData.resta_name,
+                            url: formData.url || '',
+                            // 이미지
+                            start: formData.start || '',
+                            comment: formData.comment || '',
+                        }
+                    ]
+                }
+            ]);
+        } else {
+            // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
+            setNoResta(prev => [
+                ...prev,
+                {
+                    start: formData.start || '',
+                    comment: formData.comment || '',
+                }
+            ]);
+        }
         setIsModalOpen(false);
-    };
-
-    useEffect(() => {
-        console.log("courseList가 업데이트 됐어요:", courseList);
-    }, [courseList]);
+    }
 
     return (
         <>
@@ -70,8 +75,8 @@ export default function CourseWrite({data}) {
                             <div className="courseWrite_uploadDiv">
                                 <Timeline timelineStart={timelineStart}
                                           timelineFinish={timelineFinish}
-
-                                          courseList={courseList}
+                                          resta={resta}
+                                          noResta={noResta}
                                 />
                             </div>
                         </td>
