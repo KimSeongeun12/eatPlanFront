@@ -50,9 +50,9 @@ export default function Tags({idx, isClass}) {
     return (
         <div className={"right-tags"}>
             <div style={{border:"1px solid lightgrey", padding:"5px", position:"relative", left:"400px"}}>
-                <TagInsert isClass={isClass} cate_idx={idx}/>
+                <TagInsert isClass={isClass} cate_idx={idx} drawCourseTags={drawCourseTags} drawRestaTags={drawRestaTags} />
             </div>
-            <div>
+            <div className={"tagArea"}>
                 {list}
             </div>
         </div>

@@ -19,8 +19,6 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     const clickCate=(idx)=>{
         cate_idx.current=idx;
         setComponent(<Tags idx={idx} isClass={isClass}/>);    //Tags set
-        console.log('selected Category: ', cate_idx.current);
-        console.log('selected Class:', isClass);
     }
 
     const drawList = async () => {
@@ -37,9 +35,14 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     }
 
     return (
-        <div className={"tag list"}>
-            <div className={"left-tag"}>{list}</div>
-            {component}
+        <div>
+            <div className={"tag list"}>
+                <div className={"left-tag"}>{list}</div>
+                {component}
+            </div>
+            <br/>
+            temp: {isClass}
         </div>
+
     );
 }

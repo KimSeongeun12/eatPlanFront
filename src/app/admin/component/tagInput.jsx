@@ -1,54 +1,39 @@
 'use client'
 
-import {useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function TagInsert({isClass, cate_idx}) {
+export default function TagInsert({isClass, cate_idx, drawCourseTags, drawRestaTags}) {
 
-    const [input, setInput] = useState('');
+    const [tag, setTag] = useState({});
     // 넣을거
-    const [tag, setTag] = useState({cate_idx: cate_idx, isClass: isClass, tag_name: ''});
 
-    const overlay = async (className) => {
-        let {data} = await axios.post(`http://localhost/overlayTag`, {isClass: className, tag_name: input});
-        console.log(data.usable);
-        return data.usable;
-    }
+    useEffect(() => {
+        if(isClass==='restaurant') {
+            setTag({cate_idx: cate_idx, isClass: '식당', tag_name:''});
+        }
+        else if(isClass==='course') {
+            setTag({cate_idx: cate_idx, isClass: '코스', tag_name:''});
+        }
+    }, [cate_idx, isClass]);
+
 
     //-----------------태그입력---------------
-    const insert=()=>{
-        if(input===''){
-            alert('공백');
-        }
-        else{
-            if(isClass==='course'&&overlay('코스')){
-                setTag({cate_idx:cate_idx, isClass:'코스', tag_name: input});
-                axios.post('http://localhost/addTag', tag).then(({data}) => {
-                    if(data.success){
-                        setTag({tag_name:''});
-                    }
-                });
-            }
-            else if(isClass==='restaurant'&&overlay('식당')){
-                setTag({cate_idx:cate_idx, isClass:'식당', tag_name: input});
-                axios.post('http://localhost/addTag',tag).then(({data}) => {
-                    if(data.success){
-                        setTag({tag_name:''});
-                    }
-                });
-            }
-        }
+    const insert= async ()=>{
+        console.log(tag);
+        setTag({...tag, tag_name:''});
+        let {data}=await axios.post('http://localhost/addTag', tag);
+        if(tag.isClass==='식당')  drawRestaTags();
+        else  drawCourseTags();
+        console.log(data);
     }
 
 
     // 버리고다시만들어야함
     return (
         <div className="tag-input" style={{padding: "5px", display: "flex", flexDirection: "row"}}>
-            <input type="text" style={{fontSize: "18px"}} value={input} onChange={(e) => {
-                console.log(e.target.value);
-                setInput(e.target.value)
-            }}/>
-            <div onClick={()=>insert()}
+            <input type="text" style={{fontSize: "18px"}} value={tag.tag_name} onChange={(e) => {setTag({...tag, tag_name:e.target.value})}}/>
+            <div onClick={insert}
                  style={{
                      marginLeft: "5px",
                      padding: "10px",
