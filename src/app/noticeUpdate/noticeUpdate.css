@@ -1,22 +1,22 @@
-/* app/noticeWrite/noticeWrite.css */
+/* app/noticeUpdate/noticeUpdate.css */
 
 /* ─────────────────────────────────────────────
    1) 페이지 전체 컨테이너
    ───────────────────────────────────────────── */
-.notice-write-container {
-    position: relative;        /* 내부 버튼을 바닥 우측에 절대위치로 배치하기 위해 relative */
+.notice-update-container {
+    position: relative;        /* 버튼 그룹을 absolute로 배치하려면 필요 */
     max-width: 900px;
     margin: 40px auto;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Noto Sans KR', sans-serif;
-    padding-bottom: 80px;      /* 버튼 크기만큼 여백 추가 */
+    padding-bottom: 80px;      /* 버튼 높이만큼 여백 */
     overflow: hidden;
 }
 
 /* ─────────────────────────────────────────────
-   2) 공통 컬러 변수
+   2) 공통 변수
    ───────────────────────────────────────────── */
 :root {
     --primary-red: #e53935;
@@ -30,32 +30,32 @@
 /* ─────────────────────────────────────────────
    3) 폼 테이블 스타일
    ───────────────────────────────────────────── */
-.notice-form-table {
+.update-form-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 0;  /* 바로 위에 여백 없이 */
+    margin-top: 0;
 }
 
-/* th(레이블) 스타일: 고정 너비, 배경 회색, 위쪽 정렬 */
-.notice-form-table th {
+/* th(레이블) 스타일 */
+.update-form-table th {
     width: 120px;
     background-color: var(--bg-gray);
     padding: 12px 12px 8px 12px;
     font-weight: 600;
-    vertical-align: top;       /* 라벨을 위쪽으로 붙이기 위해 */
+    vertical-align: top;       /* 레이블을 위로 정렬 */
     border-bottom: 1px solid var(--border-gray);
     font-size: var(--font-size-base);
     box-sizing: border-box;
 }
 
-/* “내용 *” 레이블(2번째 행 th)은 약간 더 진한 회색 배경 */
-.notice-form-table tr:nth-child(2) th {
+/* “내용 *” 레이블 배경 강조 */
+.update-form-table tr:nth-child(2) th {
     background-color: var(--bg-header);
-    padding-bottom: 8px; /* 위쪽 텍스트와 textarea 사이 간격 */
+    padding-bottom: 8px;
 }
 
 /* td(입력 칸) 스타일 */
-.notice-form-table td {
+.update-form-table td {
     padding: 8px 12px 8px 12px;
     border-bottom: 1px solid var(--border-gray);
     box-sizing: border-box;
@@ -64,7 +64,7 @@
 /* ─────────────────────────────────────────────
    4) 제목 입력(input) 스타일
    ───────────────────────────────────────────── */
-.notice-input-title {
+.update-input-title {
     width: 100%;
     height: 36px;
     padding: 6px 10px;
@@ -75,9 +75,9 @@
 }
 
 /* ─────────────────────────────────────────────
-   5) 본문 입력(textarea) 스타일 (고정 높이)
+   5) 본문 입력(textarea) 스타일
    ───────────────────────────────────────────── */
-.notice-textarea-content {
+.update-textarea-content {
     width: 100%;
     height: 350px;             /* 고정 높이 */
     padding: 10px;
@@ -86,14 +86,14 @@
     border-radius: 4px;
     box-sizing: border-box;
     font-family: inherit;
-    resize: none;              /* 리사이즈 불가 */
-    overflow-y: auto;          /* 내용이 많으면 스크롤 */
+    resize: none;              /* 크기 변경 못 하도록 */
+    overflow-y: auto;          /* 내용 많으면 스크롤 */
 }
 
 /* ─────────────────────────────────────────────
    6) 중요 공지 설정 (라디오 그룹)
    ───────────────────────────────────────────── */
-.bottom-radio-group {
+.update-radio-group {
     display: flex;
     align-items: center;
     padding: 12px;
@@ -102,34 +102,34 @@
     background-color: #ffffff;
 }
 
-.bottom-radio-group .radio-label {
+.update-radio-group .radio-label {
     margin-right: 16px;
     font-weight: 600;
 }
 
-.bottom-radio-group .radio-item {
+.update-radio-group .radio-item {
     margin-right: 12px;
     display: flex;
     align-items: center;
 }
 
-.bottom-radio-group input[type="radio"] {
+.update-radio-group input[type="radio"] {
     margin-right: 4px;
 }
 
 /* ─────────────────────────────────────────────
-   7) 등록/취소 버튼 그룹 (폼 컨테이너 바닥 우측에 절대위치)
+   7) 수정/취소 버튼 그룹 (컨테이너 바닥 우측 고정)
    ───────────────────────────────────────────── */
-.button-group {
+.update-button-group {
     position: absolute;
-    bottom: 16px;             /* 컨테이너 바닥에서 약간 위 */
-    right: 16px;              /* 컨테이너 우측에서 약간 안쪽 */
+    bottom: 16px;
+    right: 16px;
     display: flex;
     gap: 12px;
 }
 
 /* 버튼 공통 스타일 */
-.button-group button {
+.update-button-group button {
     font-size: var(--font-size-base);
     padding: 8px 20px;
     border-radius: 20px;
@@ -137,23 +137,23 @@
     outline: none;
 }
 
-/* 등록 버튼 스타일 */
-.btn-submit {
+/* 수정(Submit) 버튼 */
+.update-btn.submit {
     background-color: var(--primary-red);
     color: #fff;
     border: none;
 }
-.btn-submit:hover {
+.update-btn.submit:hover {
     background-color: var(--primary-red-dark);
 }
 
-/* 취소 버튼 스타일 */
-.btn-cancel {
+/* 취소 버튼 */
+.update-btn.cancel {
     background-color: #fff;
     color: var(--primary-red);
     border: 1px solid var(--primary-red);
 }
-.btn-cancel:hover {
+.update-btn.cancel:hover {
     background-color: #f5f5f5;
 }
 
