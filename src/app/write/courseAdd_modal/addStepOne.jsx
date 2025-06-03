@@ -25,6 +25,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
             img_idx: restaurant?.img_idx,
             resta_name: restaurant?.resta_name || null,
             url: restaurant?.url || "",
+            media: restaurant?.img_idx ? `http://localhost/imageIdx/${restaurant.img_idx}` : null,
         }));
     };
 
@@ -65,7 +66,10 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
                             }}
                             onClick={() => handleSelectRestaurant(item)} // 클릭 시 선택
                         >
-                            <p><strong>이미지:</strong> {item.img_idx}</p>
+                            <p>
+                                <strong>이미지:</strong><br />
+                                <img src={`http://localhost/imageIdx/${item.img_idx}`} alt={"이미지 안 뜸"} />
+                            </p>
                             <p><strong>식당 이름:</strong> {item.resta_name}</p>
                             <p><strong>소개:</strong> {item.resta_bio}</p>
                             <p><strong>url:</strong> <a href={item.url.startsWith('http') ? item.url : `https://${item.url}`}
