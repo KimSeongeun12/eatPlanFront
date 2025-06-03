@@ -25,7 +25,7 @@ div .tab{
 }
 
 .right-tags{
-    display: flex;
+    display: inline-block;
     padding: 10px;
 }
 
@@ -39,9 +39,10 @@ div .tab{
     border: 1px solid lightgray;
     border-radius: 20px;
     text-align: center;
+    margin: 5px;
 }
 
 #x {
-    /*css는 알아서해주세요...*/
+    /*css는 알아서해주세요*/
     cursor: pointer;
 }
