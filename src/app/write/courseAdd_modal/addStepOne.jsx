@@ -66,6 +66,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
                             }}
                             onClick={() => handleSelectRestaurant(item)} // 클릭 시 선택
                         >
+                            <p><strong>식당 idx:</strong> {item.resta_idx}</p>
                             <p>
                                 <strong>이미지:</strong><br />
                                 <img src={`http://localhost/imageIdx/${item.img_idx}`} alt={"이미지 안 뜸"} />

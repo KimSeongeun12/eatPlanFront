@@ -1,21 +1,114 @@
 'use client'
 import './courseWriteCss.css';
 import './courseAdd_modal/courseAdd_modalCss.css';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import CourseAdd_modal from './courseAdd_modal/page';
 import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
+import KakaoMap from "@/app/write/kakaoMap";
+import TagComponent from "@/app/write/tagComponent";
+import axios from "axios";
 
 export default function CourseWrite({data}) {
-    const {timelineStart, timelineFinish} = data || {timelineStart: "00:00", timelineFinish: "23:00"};
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // const [courseList, setCourseList] = useState([]); // 필요 없음
-    const [resta, setResta] = useState([]);
-    const [noResta, setNoResta] = useState([]);
+    // user_id 받아옴
+    const user_id = useRef('');
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+        }
+    }, []);
+
+    const [coursePost, setCoursePost] = useState({
+        user_id: user_id,
+        subject: '',
+        post_cmt: '',
+        isPublic: false,
+    });
+
+    const input = (e) => {
+        const { name, value, type } = e.target;
+        setCoursePost(prev => ({
+            ...prev,
+            [name]: type === 'radio' ? value === 'true' : value
+        }));
+    };
+
+    const [restaIdxList, setRestaIdxList] = useState([]);
+
+    const handelCourseSubmit = async () => {
+        // const payload = {
+        //     content: {
+        //         user_id: user_id.current,
+        //         subject: coursePost.subject,
+        //         post_cmt: coursePost.post_cmt,
+        //         isPublic: coursePost.isPublic,
+        //         tmp: false // 필요 시
+        //     },
+        //     content_detail_resta: resta.map((item, idx) => ({
+        //         resta_idx: restaIdxList[idx], // 선택된 식당 idx
+        //         comment: item.comment || '',
+        //         start: item.start || ''
+        //     })),
+        //     content_detail_cmt: noResta.map(item => ({
+        //         comment: item.comment || '',
+        //         start: item.start || ''
+        //     })),
+        //     tags: [], // 태그 리스트
+        //     time: {
+        //         start: timelineStart,
+        //         end: timelineFinish
+        //     }
+        // }
+        //
+        // console.log("보낼 데이터:", payload); // 👈 이거 꼭 확인
+
+        // axios 로 서버로 전송
+        // const {data} = await axios.post('http://localhost/regist_write', payload);
+        // console.log(data);
+        try {
+            const payload = {
+                content: {
+                    user_id: user_id.current,
+                    subject: coursePost.subject,
+                    post_cmt: coursePost.post_cmt,
+                    isPublic: coursePost.isPublic,
+                    tmp: false // 필요 시
+                },
+                content_detail_resta: resta.map((item, idx) => ({
+                    resta_idx: restaIdxList[idx], // 선택된 식당 idx
+                    comment: item.comment || '',
+                    start: item.start || ''
+                })),
+                content_detail_cmt: noResta.map(item => ({
+                    comment: item.comment || '',
+                    start: item.start || ''
+                })),
+                tags: [], // 태그 리스트
+                time: {
+                    start: timelineStart,
+                    end: timelineFinish
+                }
+            }; // 기존 payload
+            const response = await axios.post('http://localhost/regist_write', payload);
+            console.log("성공했으면 이걸 띄우고", response.data);
+        } catch (error) {
+            console.error("실패했으면 이걸 띄운다", error);
+        }
+    }
 
     const style = {
         color: '#FF0000',
     };
+
+    const {timelineStart, timelineFinish} = data || {
+        timelineStart: "00:00",
+        timelineFinish: "23:00"
+    };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [resta, setResta] = useState([]);
+    const [noResta, setNoResta] = useState([]);
 
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
@@ -36,6 +129,7 @@ export default function CourseWrite({data}) {
                     comment: formData.comment || '',
                 }
             ]);
+            setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
         } else {
             // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
             setNoResta(prev => [
@@ -62,7 +156,11 @@ export default function CourseWrite({data}) {
                             제목<span style={style}> *</span>
                         </td>
                         <td className="courseWrite_td">
-                            <input type="text" className="courseWrite_subject"/>
+                            <input type="text"
+                                   name={"subject"}
+                                   value={coursePost.subject}
+                                   onChange={input}
+                                   className="courseWrite_subject"/>
                         </td>
                     </tr>
                     <tr>
@@ -104,7 +202,11 @@ export default function CourseWrite({data}) {
                     </tr>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
-                            <div className="courseWrite_uploadDiv"></div>
+                            <div className="courseWrite_uploadDiv">
+                                {/*{resta.length > 0 && (*/}
+                                {/*    <KakaoMap address={resta[0].resta[0].resta_name} />*/}
+                                {/*)}*/}
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -112,7 +214,10 @@ export default function CourseWrite({data}) {
                     </tr>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
-                            <textarea className="courseWrite_textarea"/>
+                            <textarea className="courseWrite_textarea"
+                                      name={"post_cmt"}
+                                      value={coursePost.post_cmt}
+                                      onChange={input} />
                         </td>
                     </tr>
                     <tr>
@@ -120,8 +225,16 @@ export default function CourseWrite({data}) {
                             공개 및 비공개 여부<span style={style}> *</span>
                         </td>
                         <td className="courseWrite_td_radio">
-                            <input type="radio"/>공개&nbsp;
-                            <input type="radio"/>비공개
+                            <input type="radio"
+                                   name={"isPublic"}
+                                   value={"true"}
+                                   checked={coursePost.isPublic === true}
+                                   onChange={input} />공개&nbsp;
+                            <input type="radio"
+                                   name={"isPublic"}
+                                   value={"false"}
+                                   checked={coursePost.isPublic === false}
+                                   onChange={input} />비공개
                         </td>
                     </tr>
                     <tr>
@@ -131,13 +244,15 @@ export default function CourseWrite({data}) {
                     </tr>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
-                            <div className="courseWrite_uploadDiv"></div>
+                            <div className="courseWrite_uploadDiv_">
+                                <TagComponent />
+                            </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <button className="courseWrite_button">코스 등록</button>
+                <button onClick={handelCourseSubmit} className="courseWrite_button">코스 등록</button>
             </div>
         </>
     );
