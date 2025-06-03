@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import './admin.css'
-import MemberItem from "@/app/admin/memberItem";
+import MemberItem from "@/app/admin/component/memberItem";
 
 export default function MemberList({check, setCheck}){
 

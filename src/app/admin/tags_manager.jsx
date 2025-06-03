@@ -1,26 +1,26 @@
 'use client'
 import './tagManager.css'
 import {useState} from "react";
-import CourseTagManager from "@/app/admin/tags_course";
-import RestaTagManager from "@/app/admin/tags_resta";
+import DrawLeftTags from "@/app/admin/draw_tagcate";
+import DrawResta from "@/app/admin/draw_resta";
 
 export default function TagsManager() {
 
     const [component, setComponent] = useState(null);
 
     const toggle = (e) => {
-        console.log(e.target.id);
+        // console.log(e.target.id);
         switch (e.target.id) {
             case "course":
-                setComponent(<CourseTagManager/>);
+                setComponent(<DrawLeftTags isClass={'course'} leftMenu={e.target.id}/>);
                 break;
             case "restaurant":
-                setComponent(<RestaTagManager/>);
+                setComponent(<DrawLeftTags isClass={'restaurant'} leftMenu={e.target.id}/>);
                 break;
             case "restaurant_tags":
+                setComponent(<DrawResta leftMenu={e.target.id}/>)
                 break;
         }
-
     }
 
     return (
