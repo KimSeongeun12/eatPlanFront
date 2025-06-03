@@ -23,3 +23,25 @@ div .tab{
     padding: 10px;
     cursor: pointer;
 }
+
+.right-tags{
+    display: flex;
+    padding: 10px;
+}
+
+.tag-component{
+    font-weight: bold;
+    font-size: 16px;
+    padding: 15px;
+    width: 70px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#x {
+    /*css는 알아서해주세요...*/
+    cursor: pointer;
+}

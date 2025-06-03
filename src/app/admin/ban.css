@@ -20,6 +20,7 @@
 }
 
 .period{
+
     padding: 10px;
     position: absolute;
     text-align: left;
@@ -47,3 +48,4 @@ button{
     height: 40px;
     border-radius: 7px;
 }
+
