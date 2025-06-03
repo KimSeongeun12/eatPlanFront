@@ -24,12 +24,15 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
                 url: restaInfo.url,
                 cardSubtitle: item.start,
                 cardDetailedText: item.comment,
-                // media: {
-                //     type: "IMAGE",
-                //     source: {
-                //         url: `http://localhost/image/${restaInfo.photo.new_filename}`
-                //     }
-                // }
+                media: {
+                    type: "IMAGE",
+                    source: {
+                        url: restaInfo.photo?.new_filename
+                            ? `http://localhost/image/${restaInfo.photo.new_filename}`
+                            : restaInfo.media
+                        // 좀 바꾸긴 햇는데 링크 손상은 안 시켯거든요 제가 사진을 http://localhost/imageIdx/2 이걸로 받아와서
+                    }
+                }
             };
         })
     ].sort((a, b) => a.cardSubtitle.localeCompare(b.cardSubtitle));

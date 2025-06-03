@@ -29,11 +29,11 @@ export default function CourseWrite({data}) {
                         {
                             resta_name: formData.resta_name,
                             url: formData.url || '',
-                            // 이미지
-                            start: formData.start || '',
-                            comment: formData.comment || '',
+                            media: formData.media || '',
                         }
-                    ]
+                    ],
+                    start: formData.start || '',
+                    comment: formData.comment || '',
                 }
             ]);
         } else {

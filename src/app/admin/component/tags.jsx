@@ -27,7 +27,7 @@ export default function Tags({idx, isClass}) {
             if (item.isClass === '코스') {
                 // console.log('코스: ', data);
                 return (
-                    <div key={item.id}><Tag name={item.tag_name}/></div>
+                    <div key={item.tag_idx}><Tag name={item.tag_name}/></div>
                 )
             }
         });
@@ -40,7 +40,7 @@ export default function Tags({idx, isClass}) {
             if (item.isClass === '식당') {
                 // console.log('식당: ', data);
                 return (
-                    <div key={item.id}><Tag name={item.tag_name}/></div>
+                    <div key={item.tag_idx}><Tag name={item.tag_name}/></div>
                 )
             }
         });
@@ -50,9 +50,9 @@ export default function Tags({idx, isClass}) {
     return (
         <div className={"right-tags"}>
             <div style={{border:"1px solid lightgrey", padding:"5px", position:"relative", left:"400px"}}>
-                <TagInsert isClass={isClass} cate_idx={idx}/>
+                <TagInsert isClass={isClass} cate_idx={idx} drawCourseTags={drawCourseTags} drawRestaTags={drawRestaTags} />
             </div>
-            <div>
+            <div className={"tagArea"}>
                 {list}
             </div>
         </div>

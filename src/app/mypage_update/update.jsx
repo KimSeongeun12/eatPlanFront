@@ -2,6 +2,7 @@
 import './myInfo_updateCss.css'
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
+import ChangePW from "@/app/mypage_update/changePW";
 
 export default function Update() {
     const user_id = useRef('');
@@ -10,6 +11,8 @@ export default function Update() {
 
     const [nicknameChk, setNicknameChk] = useState(false);
     const [emailChk, setEmailChk] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const storedId = sessionStorage.getItem('user_id');
@@ -20,7 +23,6 @@ export default function Update() {
             console.log('sessionStorage에 user_id 없음');
         }
     }, []);
-
 
     const [info, setInfo] = useState({
         nickname: '',
@@ -137,7 +139,7 @@ export default function Update() {
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td className={"infoTable_td"}>비밀번호 수정 컴포넌트 연결(모달)</td>
+                            <td onClick={()=>{setShowModal(true)}} className={"infoTable_td_pw"}>비밀번호 수정</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
@@ -190,7 +192,11 @@ export default function Update() {
                 <div className={"footer"}>
                     <button onClick={mypage_update} className={"infoUpdateButton"}>수정 완료</button>
                 </div>
+                {/*{visibleComponent === 'changePW' && <ChangePW onShowModal={() => setShowModal(true)} />}*/}
             </div>
+
+            {showModal && <ChangePW onClose={() => setShowModal(false)} />}
+
         </>
     );
 }

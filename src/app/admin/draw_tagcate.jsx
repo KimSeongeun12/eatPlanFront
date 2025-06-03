@@ -35,9 +35,14 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     }
 
     return (
-        <div className={"tag list"}>
-            <div className={"left-tag"}>{list}</div>
-            {component}
+        <div>
+            <div className={"tag list"}>
+                <div className={"left-tag"}>{list}</div>
+                {component}
+            </div>
+            <br/>
+            temp: {isClass}
         </div>
+
     );
 }

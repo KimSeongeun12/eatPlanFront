@@ -44,5 +44,11 @@ div .tab{
 
 #x {
     /*css는 알아서해주세요*/
+    color: red;
     cursor: pointer;
+}
+
+.tagArea{
+    display: flex;
+    flex-direction: row;
 }

@@ -9,6 +9,6 @@ export default function DrawResta({leftMenu}){
     }, [leftMenu]);
 
     return(
-        <>끼야아아아아앙!!!</>
+        <>Tlqkf</>
     );
 }
