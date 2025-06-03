@@ -11,6 +11,7 @@ export default function CourseDetail({post_idx}) {
     const itemsPerPage = 10;
     const [cmt, setCmt] = useState([]);
     const container = useRef(null);
+    const [totalCmtCount, setTotalCmtCount] = useState(0);
     const [detail, setDetail] = useState({
         "post_idx":0,
         "b_hit":0,
@@ -168,7 +169,7 @@ export default function CourseDetail({post_idx}) {
     const checkCommentLikeStatus = async (cmt_idx) => {
         const { data } = await axios.get(`http://localhost/like/check`, {
             params: {
-                user_id: currentUserId,
+                user_id: "test_user",
                 isClass: 'comment',
                 cmt_idx: cmt_idx
             }
@@ -230,14 +231,13 @@ export default function CourseDetail({post_idx}) {
         axios.get(`http://localhost/comment_list?post_idx=${post_idx}&page=${page}`)
             .then(({data}) => {
                 setCmt(Array.isArray(data.list.comments) ? data.list.comments : []);
-                console.log("댓글목록 : ",data);
+                setTotalCmtCount(data.totalCount);
             })
     };
 
-    // 페이지당 댓글 갯수
-    const indexOfLastItem = page * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentCmt = cmt.slice(indexOfFirstItem, indexOfLastItem);
+    useEffect(() => {
+        cmtList(post_idx, page);
+    }, [page]);
 
     // 댓글 신고 버튼
     const cmtReport = (item) => {
@@ -276,7 +276,8 @@ export default function CourseDetail({post_idx}) {
                 if (data.success) {
                     alert("댓글이 등록되었습니다.")
                     setCmtContent("");
-                    cmtList(detail.post_idx);
+                    cmtList(detail.post_idx, 1);
+                    setPage(1);
                 }
             })
     };
@@ -397,12 +398,15 @@ export default function CourseDetail({post_idx}) {
                 <div className={"commentList"}>
                     {cmt.length > 0? (
                             <>
-                                {currentCmt.map((item, index) => (
+                                {cmt.map((item, index) => (
                                     <div className={"comment2"} key={index}>
                                         <span className={"nickname"}>{item.nickname}</span>
                                         <span className={"commentContent"}>{item.content}</span>
                                         <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
                                         <div className={"commentBtns"}>
+                                            <span className={"like"} onClick={()=>cmtLikeToggle()}>
+                                                {cmtLikedByMe ? "❤️ 좋아요" : "🤍 좋아요"}(0)
+                                            </span>
                                             <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
                                             <span className={"cmtDelete"} onClick={()=>cmtDel(item)}>삭제</span>
                                             <span className={"cmtUpdate"} onClick={()=>cmtUpdate(item)}>수정</span>
@@ -414,7 +418,7 @@ export default function CourseDetail({post_idx}) {
                                     ))}
                                 <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
                                     <Pagination
-                                        count={Math.ceil(cmt.length / itemsPerPage)}
+                                        count={Math.ceil(totalCmtCount / itemsPerPage)}
                                         page={page}
                                         onChange={(e, value) => setPage(value)}
                                         variant="outlined"
