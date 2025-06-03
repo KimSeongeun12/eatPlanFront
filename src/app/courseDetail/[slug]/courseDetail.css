@@ -114,8 +114,22 @@
     flex-direction: column;
 }
 
+.comment2 {
+    width: 100%;
+}
+
 .commentBox {
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
     margin: 10px 10px 0 10px;
+    resize: none;
+    font-size: 17px;
+    width: calc(100% - 20px);
+}
+
+.commentBox-focus {
+    outline: none;
 }
 
 .commentList {
@@ -168,6 +182,22 @@
 .btns,
 .commentBtn {
     margin-top: 20px;
+}
+
+.noResult {
+    grid-column: 1 / -1;
+    padding: 40px;
+    font-size: 20px;
+    text-align: center;
+    color: #999;
+    margin : 0 auto;
+}
+
+.courseStack {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px 0;
+    margin: 0 auto;
 }
 
 div[class*="Outline"] {

@@ -33,37 +33,37 @@ export default function CourseDetail({post_idx}) {
     const getDetail = () => {
         axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
             console.log(data);
-            let d = data.detail;
-            setDetail(
+            const d = data.detail;
+            const newDetail =
                 {
-                    "post_idx":d.content.post_idx,
-                    "b_hit":d.content.b_hit,
-                    "post_cmt":d.content.post_cmt,
-                    "reg_date":d.content.reg_date,
-                    "star_average":d.content.star_average,
-                    "subject":d.content.subject,
-                    "blind":d.content.blind,
-                    "tmp":d.content.tmp,
-                    "total_like_count":d.content.total_like_count,
-                    "total_comment_count":d.content.total_comment_count,
-                    "nickname":d.nickname.nickname,
-                    "content_detail_cmt":d.content_detail_cmt,
-                    "content_detail_resta":d.content_detail_resta,
-                    "tag_name":d.tag_name,
-                    "tag_name_area": d.tag_name_area,
-                    "time":{
-                        "start":d.time.start,
-                        "end":d.time.end
-                    }}
-            );
+                "post_idx":d.content.post_idx,
+                "b_hit":d.content.b_hit,
+                "post_cmt":d.content.post_cmt,
+                "reg_date":d.content.reg_date,
+                "star_average":d.content.star_average,
+                "subject":d.content.subject,
+                "blind":d.content.blind,
+                "tmp":d.content.tmp,
+                "total_like_count":d.content.total_like_count,
+                "total_comment_count":d.content.total_comment_count,
+                "nickname":d.nickname.nickname,
+                "content_detail_cmt":d.content_detail_cmt,
+                "content_detail_resta":d.content_detail_resta,
+                "tag_name":d.tag_name,
+                "tag_name_area": d.tag_name_area,
+                "time":{
+                    "start":d.time.start,
+                    "end":d.time.end
+                }}
+            setDetail(newDetail);
+            checkLikeStatus(d.content.post_idx);
+            cmtList(d.content.post_idx);
         });
     };
 
     // 페이지 입장시 디테일정보 가져오기
     useEffect(() => {
         getDetail();
-        checkLikeStatus();
-        cmtList();
     }, []);
 
     // 디테일정보가 들어오면 맵에 마커찍기
@@ -156,8 +156,8 @@ export default function CourseDetail({post_idx}) {
     // 좋아요 체크
     // 게시글일 경우
     const [likedByMe, setLikedByMe] = useState(false);
-    const checkLikeStatus = () => {
-        axios.get(`http://localhost/like/check?post_idx=${detail.post_idx}&user_id=${수정필요}&isClass=course`)
+    const checkLikeStatus = (post_idx) => {
+        axios.get(`http://localhost/like_check?post_idx=${post_idx}&user_id=test_user&isClass=course`)
             .then(({data}) => {
                 setLikedByMe(data.liked === true);
             });
@@ -181,18 +181,26 @@ export default function CourseDetail({post_idx}) {
 
     // 좋아요 누르기
     const likeToggle = () => {
-        axios.post("http://localhost/like",{data:{user_id:수정필요, isClass:"course", post_idx:detail.post_idx}})
+        axios.post("http://localhost/like",{user_id:"test_user", isClass:"course", post_idx:detail.post_idx})
             .then(({data}) => {
                 if (data.success) {
                     setLikedByMe(prev => !prev);
+                    setDetail(prev => ({
+                        ...prev,
+                        total_like_count: prev.total_like_count + (likedByMe ? -1 : 1)
+                    }));
                 }
             })
     };
     const cmtLikeToggle = (cmt_idx) => {
-        axios.post("http://localhost/like",{data:{user_id:수정필요, isClass:"comment", cmt_idx:cmt_idx}})
+        axios.post("http://localhost/like",{data:{user_id:"test_user", isClass:"comment", cmt_idx:cmt_idx}})
             .then(({data}) => {
                 if (data.success) {
-                    setCmtLikedByMe(prev => !prev);
+                    setLikedByMe(prev => !prev);
+                    setDetail(prev => ({
+                        ...prev,
+                        total_like_count: prev.total_like_count + (likedByMe ? -1 : 1)
+                    }));
                 }
             })
     };
@@ -209,14 +217,20 @@ export default function CourseDetail({post_idx}) {
             alert("별점을 선택해주세요!");
             return;
         }
-        axios.post("http://localhost/star",{data:{user_id:수정필요, post_idx:detail.post_idx, star:selectedStar}})
+        axios.post("http://localhost/star",{user_id:"test_user", post_idx:detail.post_idx, star:selectedStar})
+            .then(({data}) => {
+                if (data.success) {
+                    alert("별점이 등록됐습니다. 갱신된 평균을 보려면 새로고침하세요!")
+                }
+            })
     };
 
     // 댓글 불러오기
-    const cmtList = () => {
-        axios.get(`http://localhost/comment_list?${detail.post_idx}/${page}`)
+    const cmtList = (post_idx) => {
+        axios.get(`http://localhost/comment_list?post_idx=${post_idx}&page=${page}`)
             .then(({data}) => {
-                setCmt(Array.isArray(data) ? data : []);
+                setCmt(Array.isArray(data.list.comments) ? data.list.comments : []);
+                console.log("댓글목록 : ",data);
             })
     };
 
@@ -234,9 +248,9 @@ export default function CourseDetail({post_idx}) {
 
     // 댓글 삭제 버튼
     const cmtDel = (item) => {
-        axios.delete(`http://localhost/comment_del?${item.comment_idx}`).then(({data}) => {
+        axios.delete(`http://localhost/comment_del?comment_idx=${item.comment_idx}`).then(({data}) => {
             if (data.success) {
-                location.href = "/list";
+                cmtList(post_idx);
                 alert("댓글을 삭제 했습니다.")
             }else{
                 alert("삭제에 실패 했습니다.")
@@ -247,6 +261,24 @@ export default function CourseDetail({post_idx}) {
     // 댓글 수정 버튼
     const cmtUpdate = (item) => {
 
+    };
+
+    // 댓글 작성 버튼
+    const [cmtContent, setCmtContent] = useState("");
+    const submitCmt = () => {
+        if (cmtContent.trim() === "") {
+            alert("댓글을 입력해주세요");
+            return;
+        }
+        axios.post("http://localhost/comment_insert"
+            ,{user_id:"test_user", post_idx:detail.post_idx, content:cmtContent})
+            .then(({data}) => {
+                if (data.success) {
+                    alert("댓글이 등록되었습니다.")
+                    setCmtContent("");
+                    cmtList(detail.post_idx);
+                }
+            })
     };
 
     return (
@@ -351,10 +383,15 @@ export default function CourseDetail({post_idx}) {
                 </div>
 
                 <div className={"comment"}>
-                    <input className={"commentBox"}
-                           type={"text"}
-                           placeholder={"댓글을 입력해 보세요."}/>
-                    <span className={"commentBtn"}>등록</span>
+                    <textarea
+                        className={"commentBox"}
+                        placeholder="댓글을 입력하세요."
+                        rows="3"
+                        name={"cmtContent"}
+                        value={cmtContent}
+                        onChange={(e) => setCmtContent(e.target.value)}>
+                    </textarea>
+                    <span className={"commentBtn"} onClick={()=>submitCmt()}>등록</span>
                 </div>
 
                 <div className={"commentList"}>
@@ -377,7 +414,7 @@ export default function CourseDetail({post_idx}) {
                                     ))}
                                 <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
                                     <Pagination
-                                        count={Math.ceil(items.length / itemsPerPage)}
+                                        count={Math.ceil(cmt.length / itemsPerPage)}
                                         page={page}
                                         onChange={(e, value) => setPage(value)}
                                         variant="outlined"
