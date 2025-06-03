@@ -19,6 +19,8 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     const clickCate=(idx)=>{
         cate_idx.current=idx;
         setComponent(<Tags idx={idx} isClass={isClass}/>);    //Tags set
+        console.log('selected Category: ', cate_idx.current);
+        console.log('selected Class:', isClass);
     }
 
     const drawList = async () => {
