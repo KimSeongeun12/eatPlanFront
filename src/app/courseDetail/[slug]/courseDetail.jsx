@@ -3,9 +3,13 @@
 import {useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import {Pagination, Stack} from "@mui/material";
 
 export default function CourseDetail({post_idx}) {
 
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 10;
+    const [cmt, setCmt] = useState([]);
     const container = useRef(null);
     const [detail, setDetail] = useState({
         "post_idx":0,
@@ -58,6 +62,8 @@ export default function CourseDetail({post_idx}) {
     // 페이지 입장시 디테일정보 가져오기
     useEffect(() => {
         getDetail();
+        checkLikeStatus();
+        cmtList();
     }, []);
 
     // 디테일정보가 들어오면 맵에 마커찍기
@@ -120,7 +126,7 @@ export default function CourseDetail({post_idx}) {
     // 코스 신고버튼
     const courseReport = (detail) => {
         const queryParts = ["isClass=course", `idx=${detail.post_idx}`, `nickname=${detail.nickname}`].join("&");
-        const url = `/courseWrite?${queryParts}`
+        const url = `/reportWrite?${queryParts}`
         location.href = url;
     };
 
@@ -147,11 +153,107 @@ export default function CourseDetail({post_idx}) {
         location.href = "/list";
     };
 
+    // 좋아요 체크
+    // 게시글일 경우
+    const [likedByMe, setLikedByMe] = useState(false);
+    const checkLikeStatus = () => {
+        axios.get(`http://localhost/like/check?post_idx=${detail.post_idx}&user_id=${수정필요}&isClass=course`)
+            .then(({data}) => {
+                setLikedByMe(data.liked === true);
+            });
+    };
+
+    // 댓글일경우
+    const [cmtLikedByMe, setCmtLikedByMe] = useState(false);
+    const checkCommentLikeStatus = async (cmt_idx) => {
+        const { data } = await axios.get(`http://localhost/like/check`, {
+            params: {
+                user_id: currentUserId,
+                isClass: 'comment',
+                cmt_idx: cmt_idx
+            }
+        }).then(({data}) => {
+            setCmtLikedByMe(data.liked === true);
+        });
+
+        return data.liked === true;
+    };
+
+    // 좋아요 누르기
+    const likeToggle = () => {
+        axios.post("http://localhost/like",{data:{user_id:수정필요, isClass:"course", post_idx:detail.post_idx}})
+            .then(({data}) => {
+                if (data.success) {
+                    setLikedByMe(prev => !prev);
+                }
+            })
+    };
+    const cmtLikeToggle = (cmt_idx) => {
+        axios.post("http://localhost/like",{data:{user_id:수정필요, isClass:"comment", cmt_idx:cmt_idx}})
+            .then(({data}) => {
+                if (data.success) {
+                    setCmtLikedByMe(prev => !prev);
+                }
+            })
+    };
+
+    // 별점 밸류 가져오기
+    const [selectedStar, setSelectedStar] = useState(null);
+    const starValue = (e) => {
+        setSelectedStar(Number(e.target.value));
+    };
+
+    // 별점 먹이기
+    const submitStar = () => {
+        if (selectedStar == null) {
+            alert("별점을 선택해주세요!");
+            return;
+        }
+        axios.post("http://localhost/star",{data:{user_id:수정필요, post_idx:detail.post_idx, star:selectedStar}})
+    };
+
+    // 댓글 불러오기
+    const cmtList = () => {
+        axios.get(`http://localhost/comment_list?${detail.post_idx}/${page}`)
+            .then(({data}) => {
+                setCmt(Array.isArray(data) ? data : []);
+            })
+    };
+
+    // 페이지당 댓글 갯수
+    const indexOfLastItem = page * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentCmt = cmt.slice(indexOfFirstItem, indexOfLastItem);
+
+    // 댓글 신고 버튼
+    const cmtReport = (item) => {
+        const queryParts = ["isClass=comment", `idx=${item.comment_idx}`, `nickname=${item.nickname}`].join("&");
+        const url = `/reportWrite?${queryParts}`
+        location.href = url;
+    };
+
+    // 댓글 삭제 버튼
+    const cmtDel = (item) => {
+        axios.delete(`http://localhost/comment_del?${item.comment_idx}`).then(({data}) => {
+            if (data.success) {
+                location.href = "/list";
+                alert("댓글을 삭제 했습니다.")
+            }else{
+                alert("삭제에 실패 했습니다.")
+            }
+        });
+    };
+
+    // 댓글 수정 버튼
+    const cmtUpdate = (item) => {
+
+    };
+
     return (
         <>
             <div className={"courseContainer"}>
                 <span className={"noHead"}>글 번호</span>
-                <span className={"noBody"}>{post_idx}</span>
+                <span className={"noBody"}>{detail.post_idx}</span>
                 <span className={"reg_dateHead"}>작성일</span>
                 <span className={"reg_dateBody"}>{detail.reg_date.replace("T", " ").substring(0, 16)}</span>
 
@@ -200,13 +302,51 @@ export default function CourseDetail({post_idx}) {
                 </div>
 
                 <div className={"rates"}>
-                    <span className={"like"}>❤️좋아요({detail.total_like_count})</span>
+                    <span className={"like"} onClick={()=>likeToggle()}>
+                        {likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({detail.total_like_count})
+                    </span>
                     <div className={"stars"}>
-                        <label><input className={"star"} type={"radio"} value={1}/>⭐</label>
-                        <label><input className={"star"} type={"radio"} value={2}/>⭐⭐</label>
-                        <label><input className={"star"} type={"radio"} value={3}/>⭐⭐⭐</label>
-                        <label><input className={"star"} type={"radio"} value={4}/>⭐⭐⭐⭐</label>
-                        <label><input className={"star"} type={"radio"} value={5}/>⭐⭐⭐⭐⭐</label>
+                        <label>
+                            <input
+                                className={"star"}
+                                type={"radio"}
+                                name={"starRating"}
+                                value={1}
+                                onChange={starValue}/>⭐
+                        </label>
+                        <label>
+                            <input
+                                className={"star"}
+                                type={"radio"}
+                                name={"starRating"}
+                                value={2}
+                                onChange={starValue}/>⭐⭐
+                        </label>
+                        <label>
+                            <input
+                                className={"star"}
+                                type={"radio"}
+                                name={"starRating"}
+                                value={3}
+                                onChange={starValue}/>⭐⭐⭐
+                        </label>
+                        <label>
+                            <input
+                                className={"star"}
+                                type={"radio"}
+                                name={"starRating"}
+                                value={4}
+                                onChange={starValue}/>⭐⭐⭐⭐
+                        </label>
+                        <label>
+                            <input
+                                className={"star"}
+                                type={"radio"}
+                                name={"starRating"}
+                                value={5}
+                                onChange={starValue}/>⭐⭐⭐⭐⭐
+                        </label>
+                        <span onClick={()=>submitStar()}>별점주기</span>
                     </div>
                 </div>
 
@@ -218,19 +358,57 @@ export default function CourseDetail({post_idx}) {
                 </div>
 
                 <div className={"commentList"}>
-                    <div className={"comment2"}>
-                        <span className={"nickname"}>의심이많은아이</span>
-                        <span className={"commentContent"}>진짜로 재밌었음? 재미없어보이는데 만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?만약 댓글 내용이 길다면?</span>
-                        <span className={"reg_date"}>2025-05-29</span>
-                    </div>
-                    <div className={"commentBtns"}>
-                        <span className={"cmtReport"}>신고</span>
-                        <span className={"cmtDelete"}>삭제</span>
-                        <span className={"cmtUpdate"}>수정</span>
-                    </div>
-                    <div className={"commentLineWrapper"}>
-                        <div className={"commentLine"}></div>
-                    </div>
+                    {cmt.length > 0? (
+                            <>
+                                {currentCmt.map((item, index) => (
+                                    <div className={"comment2"} key={index}>
+                                        <span className={"nickname"}>{item.nickname}</span>
+                                        <span className={"commentContent"}>{item.content}</span>
+                                        <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
+                                        <div className={"commentBtns"}>
+                                            <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
+                                            <span className={"cmtDelete"} onClick={()=>cmtDel(item)}>삭제</span>
+                                            <span className={"cmtUpdate"} onClick={()=>cmtUpdate(item)}>수정</span>
+                                        </div>
+                                        <div className={"commentLineWrapper"}>
+                                            <div className={"commentLine"}></div>
+                                        </div>
+                                    </div>
+                                    ))}
+                                <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
+                                    <Pagination
+                                        count={Math.ceil(items.length / itemsPerPage)}
+                                        page={page}
+                                        onChange={(e, value) => setPage(value)}
+                                        variant="outlined"
+                                        shape="rounded"
+                                        siblingCount={1}
+                                        boundaryCount={1}
+                                        showFirstButton
+                                        showLastButton
+                                        sx={{
+                                            '& .MuiPaginationItem-root': {
+                                                color: '#c9c9c9',
+                                                borderColor: '#d29292',
+                                                border: 3,
+                                                borderRadius: '10px',
+                                                minWidth: '50px',
+                                                height: '50px',
+                                                padding: '10px',
+                                                fontSize: '20px',
+                                            },
+                                            '& .Mui-selected': {
+                                                backgroundColor: 'rgba(42,205,175,0.5)',
+                                                color: '#a17070',
+                                                borderColor: '#d29292',
+                                            },
+                                        }}
+                                    />
+                                </Stack>
+                            </>
+                    ):(
+                        <p className="noResult">아직 댓글이 없습니다.</p>
+                    )}
                 </div>
             </div>
         </>
