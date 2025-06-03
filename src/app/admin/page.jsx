@@ -2,10 +2,11 @@
 import LeftMenu from "@/app/leftMenu";
 import {useEffect, useRef, useState} from "react";
 import MemberList from "@/app/admin/memberList";
-import TagManagement from "@/app/admin/tagManagement";
+import Tags_course from "@/app/admin/tags_manager";
 import ReportHistory from "@/app/admin/reportHistory";
 import './admin.css';
 import '../mainCss.css'
+import TagsManager from "@/app/admin/tags_manager";
 
 export default function AdminPage() {
 
@@ -31,7 +32,7 @@ export default function AdminPage() {
                 break;
             case 'tagManage':
                 tabName.current = e.target.id;
-                setComponent(<TagManagement />);
+                setComponent(<TagsManager />);
                 break;
             case 'report':
                 tabName.current = e.target.id;

@@ -1,28 +1,14 @@
-const AddStepThree = ({ nextStep, prevStep, formData, setFormData }) => {
+const AddStepThree = ({ prevStep, formData, onSubmit }) => {
     return (
         <div>
-            <div style={{ marginBottom: "20px" }}>
-                <label>
-                    시간 입력
-                    <input
-                        type="time"
-                        value={formData.timeline_time || ""}
-                        onChange={(e) => setFormData({ ...formData, timeline_time: e.target.value })}
-                    />
-                </label>
-            </div>
-            <div style={{ marginBottom: "20px" }}>
-                <label>
-                    상세 설명 입력
-                    <textarea
-                        value={formData.timeline_coment || ""}
-                        onChange={(e) => setFormData({ ...formData, timeline_coment: e.target.value })}
-                        placeholder="선택한 코스에 대한 상세 설명을 기입해주세요."
-                    />
-                </label>
-            </div>
+            <h2>4단계: 확인</h2>
+            <p><strong>이미지:</strong> {formData.img_idx}</p>
+            <p><strong>선택된 식당:</strong> {formData.resta_name}</p>
+            <p><strong>시간:</strong> {formData.start}</p>
+            <p><strong>상세 설명:</strong> {formData.comment}</p>
+            <p><strong>url:</strong> {formData.url}</p>
             <button onClick={prevStep}>이전</button>
-            <button onClick={nextStep}>다음</button>
+            <button onClick={onSubmit}>제출</button>
         </div>
     );
 };

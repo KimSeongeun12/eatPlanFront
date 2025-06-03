@@ -1,6 +1,6 @@
 'use client'
 import {useState} from "react";
-import Ban from "@/app/admin/ban";
+import Ban from "@/app/admin/component/ban";
 
 export default function MemberItem({item, adminClick}){
 

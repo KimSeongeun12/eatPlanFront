@@ -31,6 +31,31 @@ html, body {
 }
 
 
+
+/* ───────────────────────────────────────
+   2) 로고 컨테이너 (좌측 상단에 배치)
+   ─────────────────────────────────────── */
+.logo-container {
+    width: 80px;            /* 로고 너비 (원하는 값으로 조정) */
+    height: auto;
+    /* 사이드바 왼쪽에 붙이기 위해 별도 margin-left 불필요,
+       부모 .leftMenu 에서 padding-left: 16px 처리 */
+    margin-bottom: 24px;
+    align-self: flex-start; /* 로고를 왼쪽으로 붙임 (부모 align-items와 상관없이) */
+    cursor: pointer;        /* 클릭 가능 커서 */
+}
+
+/* ───────────────────────────────────────
+   3) 로고 이미지 (컨테이너 너비에 맞춰 축소)
+   ─────────────────────────────────────── */
+.logo-img {
+    width: 100%;            /* 컨테이너 너비(80px)에 맞춰 줄어듦 */
+    height: auto;           /* 비율 유지 */
+    display: block;
+    margin-left: 15px;
+    margin-top: -15px;
+}
+
 .rightMenu {
     flex: 1;
     padding: 100px 50px 30px;

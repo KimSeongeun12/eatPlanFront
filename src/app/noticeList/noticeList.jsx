@@ -123,7 +123,7 @@ export default function NoticeList() {
 
             {isAdmin && (
                 <div className="write-button-wrapper">
-                    <Link href="/noticewrite">
+                    <Link href="/noticeWrite">
                         <button className="write-btn">작성</button>
                     </Link>
                 </div>
