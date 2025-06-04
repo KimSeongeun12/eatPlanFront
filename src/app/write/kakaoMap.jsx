@@ -2,39 +2,61 @@
 import { useEffect, useRef } from 'react';
 
 export default function KakaoMap({ address }) {
-    const mapRef = useRef(null);
-
     useEffect(() => {
-        if (!window.kakao || !window.kakao.maps || !window.kakao.maps.load) {
-            console.error('Kakao SDK가 아직 로드되지 않았습니다.');
-            return;
-        }
+        kakao.maps.load(() => {
+            const containerEl = container.current;
 
-        window.kakao.maps.load(() => {
-            const container = mapRef.current;
-            const options = {
-                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            // 지도 생성 기본 옵션
+            let mapOption = {
+                center: new kakao.maps.LatLng(37.570377, 126.985409), // 기본 중심: 종각역
                 level: 3
             };
 
-            const map = new window.kakao.maps.Map(container, options);
+            const map = new kakao.maps.Map(containerEl, mapOption);
+            const bounds = new kakao.maps.LatLngBounds();
 
-            // ✅ Geocoder 인스턴스 생성 전에 존재 여부 확인
-            if (window.kakao.maps.services) {
-                const geocoder = new window.kakao.maps.services.Geocoder();
+            const restaInfoList = detail.content_detail_resta.map(r => r.resta?.[0]).filter(Boolean);
 
-                geocoder.addressSearch(address, (result, status) => {
-                    if (status === window.kakao.maps.services.Status.OK) {
-                        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                        map.setCenter(coords);
-                        new window.kakao.maps.Marker({ map, position: coords });
+            if (restaInfoList.length > 0) {
+                restaInfoList.forEach(restaInfo => {
+                    if (restaInfo?.lat && restaInfo?.lng) {
+                        const position = new kakao.maps.LatLng(restaInfo.lat, restaInfo.lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position,
+                            map
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">${restaInfo.resta_name}</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        bounds.extend(position);
                     }
                 });
+
+                // 모든 마커 포함되도록 범위 설정
+                map.setBounds(bounds);
             } else {
-                console.error('Geocoder 서비스가 존재하지 않습니다. SDK에 libraries=services 포함 여부 확인');
+                // ✅ 식당 정보 없을 경우 종각역에 기본 마커 표시
+                const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
+                const marker = new kakao.maps.Marker({
+                    position: defaultPosition,
+                    map,
+                    title: "종각역"
+                });
+
+                const infoWindow = new kakao.maps.InfoWindow({
+                    position: defaultPosition,
+                    content: `<div style="padding:5px;font-size:13px;font-weight:bold;">종각역 근처</div>`
+                });
+
+                infoWindow.open(map, marker);
             }
         });
-    }, [address]);
+    }, [detail]);
 
     return <div ref={mapRef} style={{ width: '100%', height: '100%' }} />;
 }

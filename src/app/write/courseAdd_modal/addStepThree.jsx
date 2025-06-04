@@ -9,6 +9,10 @@ const AddStepThree = ({ prevStep, formData, onSubmit }) => {
                 <p>이미지가 없습니다.</p>
             )}
             <p><strong>선택된 식당 idx:</strong> {formData.selectedRestaIdx}</p>
+            <p><strong>선택된 태그:</strong> {formData.selectedTags && formData.selectedTags.length > 0
+                ? formData.selectedTags.map(tag => `#${tag.value}`).join(', ')
+                : "선택된 태그가 없습니다."}
+            </p>
             <p><strong>선택된 식당:</strong> {formData.resta_name}</p>
             <p><strong>시간:</strong> {formData.start}</p>
             <p><strong>상세 설명:</strong> {formData.comment}</p>

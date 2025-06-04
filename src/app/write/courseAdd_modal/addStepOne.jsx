@@ -10,6 +10,8 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
     // 태그 검색 모달 열고 닫기
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
+    const [selectedTags, setSelectedTags] = useState([]);
+
     // 식당 이름 검색 (axios)
     const search = async () => {
         const {data} = await axios.post('http://localhost/search_resta', formData.searchQuery, {
@@ -29,6 +31,15 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
         }));
     };
 
+    const handleTagSelect = (tags) => {
+        console.log(selectedTags);
+        setSelectedTags(tags);
+        setFormData(prev => ({
+            ...prev,
+            selectedTags: tags
+        }));
+    };
+
     return (
         <div className={"courseAdd_search_div"}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
@@ -45,9 +56,20 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
                 <button onClick={search} style={{ marginLeft: "10px" }}>
                     검색
                 </button>
-                <div>태그 검색란</div>
                 <button onClick={() => setIsTagModalOpen(true)}>태그 더보기</button>
             </div>
+
+            {Array.isArray(selectedTags) && selectedTags.length > 0 && (
+                <div style={{ marginTop: "20px" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                        {selectedTags.map((tag, index) => (
+                            <div key={index} style={{ color: "#dfb500"}}>
+                                #{tag.value}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <div style={{ marginTop: "20px" }}>
                 {results.length > 0 ? (
@@ -89,7 +111,9 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
             <button onClick={nextStep}>다음</button>
 
             {/*태그 더보기 모달*/}
-            {isTagModalOpen && <TagAddModal onClose={() => setIsTagModalOpen(false)} />}
+            {isTagModalOpen && <TagAddModal
+                onClose={() => setIsTagModalOpen(false)}
+                onSelect={handleTagSelect} />}
 
         </div>
     );

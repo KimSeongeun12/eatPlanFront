@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
 
     const findPw = () => {
-        location.href="/findPw";
+        location.href="/findChangePw";
     }
 
     const [info, setInfo] = useState({

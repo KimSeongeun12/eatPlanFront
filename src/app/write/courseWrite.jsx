@@ -186,9 +186,9 @@ export default function CourseWrite({data}) {
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
                             <div className="courseWrite_uploadDiv">
-                                {/*{resta.length > 0 && (*/}
-                                {/*    <KakaoMap address={resta[0].resta[0].resta_name} />*/}
-                                {/*)}*/}
+                                {resta.length > 0 && (
+                                    <KakaoMap address={resta[0].resta[0].resta_name} />
+                                )}
                             </div>
                         </td>
                     </tr>

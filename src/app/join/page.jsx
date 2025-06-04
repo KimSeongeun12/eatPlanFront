@@ -30,7 +30,7 @@ export default function JoinPage() {
         email: '',
         bio: '',
         location: '',
-        // 태그
+        tags: [],
         // 프로필 사진
     });
 
@@ -71,7 +71,7 @@ export default function JoinPage() {
         if (visible === 'consentPage') {
             showSecond();
         } else if (visible === 'infoInput') {
-            console.log(input);
+            console.log("이전 페이지에서 전송한 데이터:", input);
 
             // 비밀번호 일치/불일치 체크
             const confirmPass = confirmRef.current?.value;
@@ -117,14 +117,32 @@ export default function JoinPage() {
                 alert("user_id가 비어 있습니다.");
                 return;
             }
+            
+            const finalPayload = {
+                dto: {
+                    user_id: input.user_id,
+                    pass: input.pass,
+                    nickname: input.nickname,
+                    email: input.email,
+                    bio: input.bio,
+                    location: input.location,
+                },
+                tags: input.tags.map(tag => ({
+                    idx: tag.idx,
+                    isClass: tag.isClass,
+                    user_id: input.user_id,
+                }))
+            }
 
             try {
-                const response = await axios.post('http://localhost/join', input);
+                const response = await axios.post('http://localhost/join', finalPayload);
                 console.log(response);
+                alert("회원 가입에 성공했습니다.");
+                location.href = '/login';
             } catch (error) {
                 console.error(error);
                 alert("서버 오류가 발생했습니다.");
-                console.log("최종 전송 데이터:", input);
+                console.log("가입 실패 데이터:", finalPayload);
             }
         }
     }

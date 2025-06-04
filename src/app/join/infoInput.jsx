@@ -1,6 +1,16 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import JoinTagAddModal from "@/app/join/joinTagAddModal";
+import axios from "axios";
 
-export default function infoInput({input, setInput, confirmPass, overlayId, overlayNickname, confirmref, setConfirmPass}) {
+export default function infoInput({
+                                      input,
+                                      setInput,
+                                      confirmPass,
+                                      overlayId,
+                                      overlayNickname,
+                                      confirmref,
+                                      setConfirmPass
+                                  }) {
     const style = {
         color: '#FF0000',
     }
@@ -32,6 +42,31 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
         }));
     };
 
+    const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+
+    const handleTagSelect = (tags) => {
+        setInput(prev => ({
+            ...prev,
+            tags
+        }));
+        setIsTagModalOpen(false);
+    };
+
+    // 지역 태그 리스트 불러오기
+    const [locationTagList, setLocationTagList] = useState([]);
+    useEffect(() => {
+        const fetchLocationTags = async () => {
+            try {
+                const {data} = await axios.get("http://localhost/list_tag_area");
+                setLocationTagList(data.list_area);
+            } catch (error) {
+                console.error("지역 태그 불러오기 실패:", error);
+            }
+        };
+
+        fetchLocationTags();
+    }, []);
+
     return (
         <>
             <div className={"left"}>
@@ -47,11 +82,13 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
 
                 <label>비밀번호 확인<span style={style}> *</span></label><br/>
                 <input type={"password"} placeholder={"비밀번호 재확인"}
-                       className={"pwAgainInput"} ref={confirmref} value={confirmPass} onChange={(e)=>{setConfirmPass(e.target.value)}}/><br/>
+                       className={"pwAgainInput"} ref={confirmref} value={confirmPass} onChange={(e) => {
+                    setConfirmPass(e.target.value)
+                }}/><br/>
 
                 <label>자기소개</label><br/>
                 <textarea className={"bioarea"} name={"bio"} onChange={handleChange}
-                          value={input.bio} />
+                          value={input.bio}/>
             </div>
 
             <div className={"right"}>
@@ -63,25 +100,42 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
 
                 <label>선호 카테고리 (3개 이하)<span style={style}> *</span></label>
                 <div className={"tags"}>
-                    <span className={"tagName"}>태그 1, 태그 2, 태그 3</span>
+                    <span className={"tagName"}>
+                    {input.tags && input.tags.length > 0
+                        ? input.tags.map(tag => `#${tag.value}`).join(', ')
+                        : '선택된 태그가 없습니다.'}
+                </span>
                 </div>
-                <button style={buttonStyle}>태그 선택</button>
+                <button style={buttonStyle} onClick={() => setIsTagModalOpen(true)}>태그 선택</button>
                 <br/>
 
                 <label>지역</label><br/>
-                <select className={"locationSelect"} name={"location"} onChange={handleChange} value={input.location} >
-                    <option>지역1</option>
-                    <option>지역2</option>
-                    <option>지역3</option>
+                <select
+                    className={"locationSelect"}
+                    name={"location"}
+                    onChange={handleChange}
+                    value={input.location}>
+                    <option value="">지역을 선택하세요</option>
+                    {locationTagList.map(area => (
+                        <option key={area.area_tag_idx} value={area.tag_name}>
+                            {area.tag_name}
+                        </option>
+                    ))}
                 </select><br/>
 
-                <label>프로필 사진</label><br/>
-                <div className={"profile"}>
-                    <img src={"userIcon_default_profile.png"} alt={"기본 프로필 사진"}/>
-                    <img className={"cameraIcon"} src={"cameraIcon.png"} alt={"카메라 아이콘"}/>
-                    <span className={"deleteSpan"}>사진 삭제</span>
-                </div>
+                {/*<label>프로필 사진</label><br/>*/}
+                {/*<div className={"profile"}>*/}
+                {/*    <img src={"userIcon_default_profile.png"} alt={"기본 프로필 사진"}/>*/}
+                {/*    <img className={"cameraIcon"} src={"cameraIcon.png"} alt={"카메라 아이콘"}/>*/}
+                {/*    <span className={"deleteSpan"}>사진 삭제</span>*/}
+                {/*</div>*/}
             </div>
+
+            {/*태그 더보기 모달*/}
+            {isTagModalOpen && <JoinTagAddModal
+                onClose={() => setIsTagModalOpen(false)}
+                onSelect={handleTagSelect}/>}
+
         </>
     );
 }

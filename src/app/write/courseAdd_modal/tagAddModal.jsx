@@ -3,7 +3,7 @@
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
-const TagAddModal = ({onClose}) => {
+const TagAddModal = ({onClose, onSelect}) => {
     // 페이지 입장시 백에서 태그 카테고리, 태그 리스트 가져오기
     useEffect(() => {
         locationTagList();
@@ -71,6 +71,12 @@ const TagAddModal = ({onClose}) => {
         });
     };
 
+    // 선택 버튼 클릭 시 선택된 태그들 전달
+    const handleSelect = () => {
+        onSelect(selectedList);
+        onClose();
+    }
+
     return (
         <>
             <div className="modal-tagTap">
@@ -86,20 +92,6 @@ const TagAddModal = ({onClose}) => {
                             ))}
                         </div>
                     )}
-                </div>
-
-                {/* 지역태그 전체 리스트 */}
-                <h3>지역</h3>
-                <div className="location-column">
-                    {locationTag.map(at => (
-                        <div
-                            key={at.area_tag_idx}
-                            onClick={() => toggleArea(at.tag_name)}
-                            className={`tag-item ${selectedArea.includes(at.tag_name) ? "selected" : ""}`}
-                        >
-                            # {at.tag_name}
-                        </div>
-                    ))}
                 </div>
 
                 {/* 태그 카테고리 전체 */}
@@ -127,8 +119,23 @@ const TagAddModal = ({onClose}) => {
                             );
                         })}
                 </div>
+
+                {/* 지역태그 전체 리스트 */}
+                <h3>지역</h3>
+                <div className="location-column">
+                    {locationTag.map(at => (
+                        <div
+                            key={at.area_tag_idx}
+                            onClick={() => toggleArea(at.tag_name)}
+                            className={`tag-item ${selectedArea.includes(at.tag_name) ? "selected" : ""}`}
+                        >
+                            # {at.tag_name}
+                        </div>
+                    ))}
+                </div>
+
                 <button onClick={onClose}>닫기</button>
-                <button>선택</button>
+                <button onClick={handleSelect}>선택</button>
             </div>
         </>
     );
