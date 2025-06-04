@@ -20,19 +20,26 @@ export default function TagInsert({isClass, cate_idx, drawCourseTags, drawRestaT
 
     //-----------------태그입력---------------
     const insert= async ()=>{
-        console.log(tag);
         setTag({...tag, tag_name:''});
         let {data}=await axios.post('http://localhost/addTag', tag);
         if(tag.isClass==='식당')  drawRestaTags();
         else  drawCourseTags();
-        console.log(data);
+    }
+
+    // ----------------- 귀찮으니 엔터로 해결! -------------//
+    const enterHandler=(e)=>{
+        if(e.key === 'Enter'){
+            insert();
+        }
     }
 
 
-    // 버리고다시만들어야함
     return (
         <div className="tag-input" style={{padding: "5px", display: "flex", flexDirection: "row"}}>
-            <input type="text" style={{fontSize: "18px"}} value={tag.tag_name} onChange={(e) => {setTag({...tag, tag_name:e.target.value})}}/>
+            <input type="text" style={{fontSize: "18px"}}
+                   value={tag.tag_name}
+                   onKeyUp={(e)=>{enterHandler(e)}}
+                   onChange={(e) => {setTag({...tag, tag_name:e.target.value})}}/>
             <div onClick={insert}
                  style={{
                      marginLeft: "5px",

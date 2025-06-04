@@ -20,13 +20,18 @@ export default function Tags({idx, isClass}) {
         }
     }, [idx, isClass]);
 
+
     const drawCourseTags = async () => {
         let {data} = await axios.get(`http://localhost/list_tag/${idx}`);
         const tags = data.list_tag.map((item) => {
             if (item.isClass === '코스') {
                 // console.log('코스: ', data);
                 return (
-                    <div key={item.tag_idx}><Tag isClass={isClass} name={item.tag_name} drawCourseTags={drawCourseTags}/></div>
+                    <div key={item.tag_idx}>
+                        <Tag isClass={isClass}
+                             name={item.tag_name}
+                             drawCourseTags={drawCourseTags}/>
+                    </div>
                 )
             }
         });
@@ -39,7 +44,12 @@ export default function Tags({idx, isClass}) {
             if (item.isClass === '식당') {
                 // console.log('식당: ', data);
                 return (
-                    <div key={item.tag_idx}><Tag isClass={isClass} name={item.tag_name} drawRestaTags={drawRestaTags}/></div>
+                    <div key={item.tag_idx}>
+                        <Tag isClass={isClass}
+                             name={item.tag_name}
+                             drawRestaTags={drawRestaTags}
+                        />
+                    </div>
                 )
             }
         });
@@ -49,7 +59,10 @@ export default function Tags({idx, isClass}) {
     return (
         <div className={"right-tags"}>
             <div style={{border:"1px solid lightgrey", padding:"5px", position:"relative", left:"400px"}}>
-                <TagInsert isClass={isClass} cate_idx={idx} drawCourseTags={drawCourseTags} drawRestaTags={drawRestaTags} />
+                <TagInsert isClass={isClass}
+                           cate_idx={idx}
+                           drawCourseTags={drawCourseTags}
+                           drawRestaTags={drawRestaTags} />
             </div>
             <div className={"tagArea"}>
                 {list}
@@ -67,12 +80,10 @@ function Tag({name, isClass, drawCourseTags, drawRestaTags}) {
         if(isClass==='course') {
             let {data}= await axios.post(`http://localhost/delTag`, {tag_name:name, isClass:'코스'});
             drawCourseTags();
-            console.log('del result:', data);
         }
         else{
             let {data}=await axios.post('http://localhost/delTag', {tag_name:name, isClass:'식당'});
             drawRestaTags();
-            console.log('del result:', data);
         }
     }
 
