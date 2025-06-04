@@ -5,11 +5,11 @@ import './reportDetail.css';
 
 export default function ReportDetailPage() {
     return (
-        <>
+        <div className="page-wrapper">
             <LeftMenu/>
             <div className="rightMenu">
                 <ReportDetail/>
             </div>
-        </>
+        </div>
     );
 }

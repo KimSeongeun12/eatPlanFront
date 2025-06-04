@@ -1,3 +1,4 @@
+/* MyPagePasswd.css (혹은 전역 CSS) */
 html,
 body {
     margin: 0;
@@ -9,11 +10,11 @@ body {
 }
 
 .rightMenu {
-    margin-left: 240px;
+    margin-left: 240px;            /* LeftMenu 의 너비만큼 밀어주기 */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: center;       /* 자식(MyPagePasswd)이 수평으로 가운데 */
+    align-items: center;           /* 자식이 수직으로도 가운데 */
+    height: 100vh;                 /* 화면 높이만큼 잡아야 수직 중앙 정렬됨 */
     background-color: #f5f5f5;
     box-sizing: border-box;
 }
