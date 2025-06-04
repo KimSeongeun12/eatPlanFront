@@ -9,20 +9,26 @@ import TagComponent from "@/app/write/tagComponent";
 import axios from "axios";
 
 export default function CourseWrite({data}) {
+    const style = {
+        color: '#FF0000',
+    };
 
-    // user_id 받아옴
     const user_id = useRef('');
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            user_id.current = sessionStorage.getItem('user_id');
-        }
+        user_id.current = sessionStorage.getItem('user_id');
     }, []);
 
     const [coursePost, setCoursePost] = useState({
         user_id: user_id,
         subject: '',
         post_cmt: '',
-        isPublic: false,
+        isPublic: true,
+    });
+
+    const [selectedTags, setSelectedTags] = useState({
+        area: [],
+        tag: [],
+        combined: []
     });
 
     const input = (e) => {
@@ -36,35 +42,6 @@ export default function CourseWrite({data}) {
     const [restaIdxList, setRestaIdxList] = useState([]);
 
     const handelCourseSubmit = async () => {
-        // const payload = {
-        //     content: {
-        //         user_id: user_id.current,
-        //         subject: coursePost.subject,
-        //         post_cmt: coursePost.post_cmt,
-        //         isPublic: coursePost.isPublic,
-        //         tmp: false // 필요 시
-        //     },
-        //     content_detail_resta: resta.map((item, idx) => ({
-        //         resta_idx: restaIdxList[idx], // 선택된 식당 idx
-        //         comment: item.comment || '',
-        //         start: item.start || ''
-        //     })),
-        //     content_detail_cmt: noResta.map(item => ({
-        //         comment: item.comment || '',
-        //         start: item.start || ''
-        //     })),
-        //     tags: [], // 태그 리스트
-        //     time: {
-        //         start: timelineStart,
-        //         end: timelineFinish
-        //     }
-        // }
-        //
-        // console.log("보낼 데이터:", payload); // 👈 이거 꼭 확인
-
-        // axios 로 서버로 전송
-        // const {data} = await axios.post('http://localhost/regist_write', payload);
-        // console.log(data);
         try {
             const payload = {
                 content: {
@@ -83,21 +60,27 @@ export default function CourseWrite({data}) {
                     comment: item.comment || '',
                     start: item.start || ''
                 })),
-                tags: [], // 태그 리스트
+                tags: selectedTags.combined, // 태그 리스트
                 time: {
                     start: timelineStart,
                     end: timelineFinish
                 }
-            }; // 기존 payload
+            };
             const response = await axios.post('http://localhost/regist_write', payload);
-            console.log("성공했으면 이걸 띄우고", response.data);
+            console.log("코스 등록 성공: ", response.data);
+            if (response.data.success === true) {
+                alert("코스 등록에 성공했습니다.");
+                location.href="./list/commonList";
+            }
         } catch (error) {
-            console.error("실패했으면 이걸 띄운다", error);
+            console.error("코스 등록 실패: ", error);
+            alert("코스 등록에 실패했습니다.");
         }
     }
 
-    const style = {
-        color: '#FF0000',
+    const handleTagChange = (selection) => {
+        setSelectedTags(selection);
+        console.log("선택한 태그:", selection);
     };
 
     const {timelineStart, timelineFinish} = data || {
@@ -245,7 +228,7 @@ export default function CourseWrite({data}) {
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
                             <div className="courseWrite_uploadDiv_">
-                                <TagComponent />
+                                <TagComponent selectTag={handleTagChange} />
                             </div>
                         </td>
                     </tr>
