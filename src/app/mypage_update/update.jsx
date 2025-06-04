@@ -1,8 +1,10 @@
 'use client'
 import './myInfo_updateCss.css'
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import ChangePW from "@/app/mypage_update/changePW";
+import JoinTagSelectModal from "@/app/join/joinTagSelectModal";
+import MypageTagSelectModal from "@/app/mypage_update/mypageTagSelectModal";
 
 export default function Update() {
     const user_id = useRef('');
@@ -43,14 +45,14 @@ export default function Update() {
 
     const input = (e) => {
         const {name, value} = e.target;
-        setInfo({
-            ...info,
+        setInfo((prev) => ({
+            ...prev,
             [name]: value,
-        })
+        }));
     }
 
     // 중복 확인 - 닉네임
-    const nickname_overlay = async() => {
+    const nickname_overlay = async () => {
         if (info.nickname === ori_nickname) {
             alert("변경된 내용이 없습니다.");
             setNicknameChk(true);
@@ -66,7 +68,7 @@ export default function Update() {
             setNicknameChk(true);
         }
     }
-    
+
     // 중복 확인 - 이메일
     const email_overlay = async () => {
         if (info.email === ori_email) {
@@ -123,12 +125,40 @@ export default function Update() {
         paddingLeft: '30px',
     }
 
+    // 지역 태그 리스트 불러오기
+    const [locationTagList, setLocationTagList] = useState([]);
+    useEffect(() => {
+        const fetchLocationTags = async () => {
+            try {
+                const {data} = await axios.get("http://localhost/list_tag_area");
+                setLocationTagList(data.list_area);
+            } catch (error) {
+                console.error("지역 태그 불러오기 실패:", error);
+            }
+        };
+
+        fetchLocationTags();
+    }, []);
+
+    const [isTagModalOpen, setIsTagModalOpen] = useState(false);
+
+    const handleTagSelect = (tags) => {
+        setInfo(prev => ({
+            ...prev,
+            tags
+        }));
+        setIsTagModalOpen(false);
+    };
+
+    // user_id 에 맞는 태그 불러오기
+
     return (
         <>
             <div>
                 <div className={"infoTap"}>
                     <div className={"profileTap"}>
-                        <img className={"userImage"} src={"/userIcon_default_profile.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
+                        <img className={"userImage"} src={"/userIcon_default_profile.png"}
+                             alt={"유저 아이콘 기본 프로필 사진"}/><br/>
                         <label>프로필 사진</label>
                     </div>
                     <table className={"infoTable"}>
@@ -139,7 +169,10 @@ export default function Update() {
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td onClick={()=>{setShowModal(true)}} className={"infoTable_td_pw"}>비밀번호 수정</td>
+                            <td onClick={() => {
+                                setShowModal(true)
+                            }} className={"infoTable_td_pw"}>비밀번호 수정
+                            </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
@@ -170,10 +203,17 @@ export default function Update() {
                         <tr style={trStyle}>
                             <th style={thStyle}>지역</th>
                             <td className={"infoTable_td"}>
-                                <select className={"locationSelect"}>
-                                    <option>지역1</option>
-                                    <option>지역2</option>
-                                    <option>지역3</option>
+                                <select
+                                    className={"locationSelect"}
+                                    name={"location"}
+                                    onChange={input}
+                                    value={input.location}>
+                                    <option value="">지역을 선택하세요</option>
+                                    {locationTagList.map(area => (
+                                        <option key={area.area_tag_idx} value={area.tag_name}>
+                                            {area.tag_name}
+                                        </option>
+                                    ))}
                                 </select>
                             </td>
                         </tr>
@@ -181,8 +221,14 @@ export default function Update() {
                             <th style={thStyle}>선호 태그</th>
                             <td className={"infoTable_td"}>
                                 <div className={"tag_content"}>
-                                    <span>태그1, 태그2, 태그3</span>
-                                    <button className={"tag_updateButton"}>태그 선택</button>
+                                    <span className={"tagName"}>
+                    {info.tags && info.tags.length > 0
+                        ? info.tags.map(tag => `#${tag.value}`).join(', ')
+                        : '선택된 태그가 없습니다.'}
+                </span>
+                                    <button onClick={() => setIsTagModalOpen(true)}
+                                            className={"tag_updateButton"}>태그 선택
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -192,10 +238,12 @@ export default function Update() {
                 <div className={"footer"}>
                     <button onClick={mypage_update} className={"infoUpdateButton"}>수정 완료</button>
                 </div>
-                {/*{visibleComponent === 'changePW' && <ChangePW onShowModal={() => setShowModal(true)} />}*/}
             </div>
 
-            {showModal && <ChangePW onClose={() => setShowModal(false)} />}
+            {isTagModalOpen && <MypageTagSelectModal
+                onClose={() => setIsTagModalOpen(false)}
+                onSelect={handleTagSelect}/>}
+            {showModal && <ChangePW onClose={() => setShowModal(false)}/>}
 
         </>
     );

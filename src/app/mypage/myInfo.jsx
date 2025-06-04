@@ -41,6 +41,20 @@ export default function MyInfo() {
         setUserInfo(data.list[0]);
     }
 
+    // 태그 리스트 불러오기
+    const [tags, setTags] = useState([]);
+    const member_tagList = async () => {
+        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: user_id.current});
+        console.log(data.taglist);
+        if (data?.taglist) {
+            setTags(data.taglist);
+        }
+    }
+
+    useEffect(() => {
+        member_tagList();
+    }, []);
+
     return (
         <>
             <div>
@@ -77,7 +91,11 @@ export default function MyInfo() {
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
-                            <td className={"infoTable_td"}>선호 태그</td>
+                            <td className={"infoTable_td"}>
+                                {tags.map((item, idx) => (
+                                    <div key={idx}>#{item.isClass}</div>
+                                ))}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
