@@ -213,3 +213,32 @@ ul[class*="horizontal"] > li {
     width: 100% !important;
     max-width: 1450px !important;
 }
+
+/**/
+
+.selected {
+    font-weight: bold;
+    background-color: #ddd;
+    /*border-radius: 4px;*/
+}
+
+.area-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 600px;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.tag-item.selected {
+    background-color: #ddd;
+    font-weight: bold;
+}

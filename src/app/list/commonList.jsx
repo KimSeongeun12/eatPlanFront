@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Pagination, Stack } from '@mui/material';
+import Link from "next/link";
 
 export default function CommonList() {
     const [page, setPage] = useState(1);
@@ -15,6 +16,7 @@ export default function CommonList() {
         try {
             const res = await axios.get(`http://localhost/course_list/${p}`);
             const data = res.data;
+            console.log(data.list[0].course.post_idx);
             setItems(data.list);
             setTotalItems(data.pages);
         } catch (error) {
@@ -25,10 +27,14 @@ export default function CommonList() {
     return (
         <>
             <div className="commonList">
-                {Array.isArray(items) && items.map((item, index) => (
-                    <div key={index} className="listItem">
+                {Array.isArray(items) && items.map((item) => (
+                    <div key={item.course.post_idx} className="listItem">
                         <div className="mainImage"></div>
-                        <span className="courseTitle">{item.course?.subject}</span>
+                        <span className="courseTitle">
+                            <Link href={`/courseDetail/${item.course.post_idx}`}>
+                                {item.course?.subject}
+                            </Link>
+                        </span>
                         <span className="courseComment">[{item.cmt_cnt}]</span><br />
                         <span className="courseAuthor">{item.nickname}</span>
                         <span className="courseViews">조회 {item.course?.b_hit}</span><br />
