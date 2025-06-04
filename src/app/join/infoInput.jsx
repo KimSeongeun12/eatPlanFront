@@ -5,15 +5,6 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
         color: '#FF0000',
     }
 
-    // input onChange
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setInput((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
     const buttonStyle = {
         boxSizing: 'border-box',
         width: '126px',
@@ -31,6 +22,15 @@ export default function infoInput({input, setInput, confirmPass, overlayId, over
         textAlign: 'center',
         color: 'white',
     }
+
+    // input onChange
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setInput((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     return (
         <>

@@ -66,46 +66,67 @@ export default function JoinPage() {
         }
     }
 
-    const showThird = () => {
-        console.log(input);
+    // 회원 가입 완료
+    const showThird = async () => {
+        if (visible === 'consentPage') {
+            showSecond();
+        } else if (visible === 'infoInput') {
+            console.log(input);
 
-        // 비밀번호 일치/불일치 체크
-        const confirmPass = confirmRef.current?.value;
-        if (!isPassConfirmed) { // 아직 확인이 안 됐으면 검사
-            if (input.pass !== confirmPass) {
-                alert("비밀번호가 일치하지 않습니다.");
-                if (confirmRef.current) {
-                    confirmRef.current.value = '';
-                    confirmRef.current.focus();
+            // 비밀번호 일치/불일치 체크
+            const confirmPass = confirmRef.current?.value;
+            if (!isPassConfirmed) {
+                if (input.pass !== confirmPass) {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    if (confirmRef.current) {
+                        confirmRef.current.value = '';
+                        confirmRef.current.focus();
+                    }
+                    return;
                 }
+                setIsPassConfirmed(true); // 일치하면 확인 완료
+            }
+
+            // 필수 입력 항목 검사
+            const requiredFields = ['user_id', 'pass', 'nickname'];
+            const allRequiredFilled = requiredFields.every(
+                (key) => typeof input[key] === 'string' &&
+                    input[key].trim() !== ''
+            );
+            if (!allRequiredFilled) {
+                alert("아이디, 비밀번호, 닉네임은 필수 입력 항목입니다.");
+                // console.log(input);
                 return;
             }
-            setIsPassConfirmed(true); // 일치하면 확인 완료
-        }
 
-        // 필수 입력 항목 검사
-        const requiredFields = ['user_id', 'pass', 'nickname'];
-        const allRequiredFilled = requiredFields.every(
-            (key) => typeof input[key] === 'string' && input[key].trim() !== ''
-        );
-        if (!allRequiredFilled) {
-            alert("아이디, 비밀번호, 닉네임은 필수 입력 항목입니다.");
-            console.log(input);
-            return;
-        }
+            // 중복 체크 if
+            if (!idChk) {
+                alert("아이디 중복 체크를 해주세요.");
+                return;
+            }
+            if (!nicknameChk) {
+                alert("닉네임 중복 체크를 해주세요.");
+                return;
+            }
 
-        // 중복 체크 if
-        if (!idChk) {
-            alert("아이디 중복 체크를 해주세요.");
-            return;
-        }
-        if (!nicknameChk) {
-            alert("닉네임 중복 체크를 해주세요.");
-            return;
-        }
+            // 다음 페이지로 이동
+            setVisible('emailCheckPage');
+        } else if (visible === 'emailCheckPage') {
+            // 서버 전송 전 검증
+            if (!input.user_id || input.user_id.trim() === '') {
+                alert("user_id가 비어 있습니다.");
+                return;
+            }
 
-        // 다음 페이지로 이동
-        setVisible('emailCheckPage');
+            try {
+                const response = await axios.post('http://localhost/join', input);
+                console.log(response);
+            } catch (error) {
+                console.error(error);
+                alert("서버 오류가 발생했습니다.");
+                console.log("최종 전송 데이터:", input);
+            }
+        }
     }
 
     return (
@@ -131,8 +152,10 @@ export default function JoinPage() {
                 {visible === 'consentPage'
                     ? <button onClick={showSecond}
                               className={"nextButton"}>다음 단계</button> :
-                    <button onClick={showThird}
-                            className={"nextButton"}>{visible === 'emailCheckPage' ? "가입 완료" : "다음 단계"}</button>}
+                    <button onClick={showThird} className={"nextButton"}>
+                        {visible === 'emailCheckPage' ? "가입 완료" : "다음 단계"}
+                    </button>
+                }
             </div>
         </>
     );

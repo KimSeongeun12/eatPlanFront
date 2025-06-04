@@ -1,97 +1,81 @@
-/* MyPagePasswd.css (혹은 전역 CSS) */
+/* MyPagePasswd.css */
+
+/* ■■■ 전역 영역을 회색(#f5f5f5)으로 덮어쓴다 ■■■ */
 html,
-body {
+body,
+#__next {
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
     height: 100%;
-    font-family: 'Noto Sans KR', sans-serif;
-    box-sizing: border-box;
+    background-color: #f5f5f5;  /* 페이지 전체 배경을 연한 회색으로 덮음 */
 }
 
-.rightMenu {
-    margin-left: 240px;            /* LeftMenu 의 너비만큼 밀어주기 */
-    display: flex;
-    justify-content: center;       /* 자식(MyPagePasswd)이 수평으로 가운데 */
-    align-items: center;           /* 자식이 수직으로도 가운데 */
-    height: 100vh;                 /* 화면 높이만큼 잡아야 수직 중앙 정렬됨 */
-    background-color: #f5f5f5;
-    box-sizing: border-box;
-}
+/* ── 오른쪽 컨테이너 전체 배경을 동일하게 ── */
 
-.passwd-card {
+/* ── 비밀번호 확인 카드(흰색 박스) ── */
+.passwd-passwdCard {
+    width: 600px;
+    max-width: 100%;
     background-color: #ffffff;
-    width: 100%;
-    max-width: 680px;
-    padding: 50px 60px;
+    padding: 60px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    box-sizing: border-box;
+    margin: 480px
 }
 
+/* ── 카드 내부 제목 ── */
 .passwd-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #333333;
+    margin: 0;
     text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: #333333;
     margin-bottom: 40px;
 }
 
+/* ── 입력 폼과 설명, 버튼 묶음 ── */
 .Mypage_passwd_div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
 }
 
-.Mypage_passwd_div input[type='password'] {
+/* ── 비밀번호 입력창 ── */
+.Mypage_passwd_div input[type="password"] {
     width: 100%;
-    max-width: 560px;
-    height: 54px;
-    padding: 0 16px;
-    font-size: 1rem;
+    max-width: 520px;
+    height: 50px;
+    padding: 0 15px;
+    font-size: 16px;
     border: 1px solid #cccccc;
     border-radius: 4px;
-    color: #333333;
-    transition: border-color 0.2s ease;
+    margin-bottom: 20px;
     box-sizing: border-box;
 }
 
-.Mypage_passwd_div input[type='password']::placeholder {
-    color: #aaaaaa;
-    font-size: 0.95rem;
-}
-
-.Mypage_passwd_div input[type='password']:focus {
-    border-color: #8888ff;
-    outline: none;
-}
-
+/* ── 안내 문구 ── */
 .Mypage_passwd_div p {
-    font-size: 1rem;
-    color: #444444;
     margin: 0;
+    margin-bottom: 30px;
+    color: #666666;
+    font-size: 14px;
     text-align: center;
 }
 
-.infoUpdateButton {
+/* ── 확인 버튼 ── */
+.passwd-infoUpdateButton {
     width: 200px;
-    height: 52px;
-    background-color: #d14f36;
-    border: none;
-    border-radius: 26px;
-    font-size: 1rem;
-    font-weight: 500;
+    height: 50px;
+    background-color: #d95735;
     color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
-.infoUpdateButton:hover {
-    background-color: #b43e2b;
-}
-
-.infoUpdateButton:disabled {
-    background-color: #e38b7d;
-    cursor: not-allowed;
+/* ── 버튼 호버 효과 ── */
+.passwd-infoUpdateButton:hover {
+    background-color: #c04b2e;
 }

@@ -8,7 +8,7 @@ export default function PasswdPage() {
     return (
         <>
             <LeftMenu/>
-            <div className='rightMenu'>
+            <div className="passwd-rightMenu">
             <MyPagePasswd/>
             </div>
         </>
