@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import Tags from "@/app/admin/component/tags";
 import './tagManager.css'
+import CategoryInput from "@/app/admin/component/categoryInput";
 
 export default function DrawLeftTags({isClass, leftMenu}) {
 
@@ -21,6 +22,13 @@ export default function DrawLeftTags({isClass, leftMenu}) {
         setComponent(<Tags idx={idx} isClass={isClass}/>);    //Tags set
     }
 
+    // 태그 카테고리 삭제
+    const del = async (cate_idx)=>{
+        let {data}= await axios.delete(`http://localhost/adtag_cate_del`, {data: {'cate_idx': cate_idx}});
+        // console.log(data);
+        await drawList();
+    }
+
     const drawList = async () => {
         let {data} = await axios.get('http://localhost/list_tagcate');
         const tags = data.list_tagcate.map((item) => {
@@ -28,6 +36,7 @@ export default function DrawLeftTags({isClass, leftMenu}) {
                     <div key={item.cate_idx} className={"box"}
                          onClick={() => {clickCate(item.cate_idx)}}>
                         {item.cate_name}
+                        <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div>
                     </div>
                 );
         })
@@ -41,7 +50,8 @@ export default function DrawLeftTags({isClass, leftMenu}) {
                 {component}
             </div>
             <br/>
-            temp: {isClass}
+            <CategoryInput drawList={drawList}/>
+            ▲태그카테고리 Enter로 추가하세요 | 현재탭: {isClass}
         </div>
 
     );
