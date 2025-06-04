@@ -155,32 +155,16 @@ export default function CourseDetail({post_idx}) {
     };
 
     // 좋아요 체크
-    // 게시글일 경우
     const [likedByMe, setLikedByMe] = useState(false);
     const checkLikeStatus = (post_idx) => {
-        axios.get(`http://localhost/like_check?post_idx=${post_idx}&user_id=test_user&isClass=course`)
+        axios.get(`http://localhost/like_check?post_idx=${post_idx}&user_id=test_user`)
             .then(({data}) => {
                 setLikedByMe(data.liked === true);
             });
     };
 
-    // 댓글일경우
-    const [cmtLikedByMe, setCmtLikedByMe] = useState(false);
-    const checkCommentLikeStatus = async (cmt_idx) => {
-        const { data } = await axios.get(`http://localhost/like/check`, {
-            params: {
-                user_id: "test_user",
-                isClass: 'comment',
-                cmt_idx: cmt_idx
-            }
-        }).then(({data}) => {
-            setCmtLikedByMe(data.liked === true);
-        });
-
-        return data.liked === true;
-    };
-
     // 좋아요 누르기
+    // 코스
     const likeToggle = () => {
         axios.post("http://localhost/like",{user_id:"test_user", isClass:"course", post_idx:detail.post_idx})
             .then(({data}) => {
@@ -193,15 +177,25 @@ export default function CourseDetail({post_idx}) {
                 }
             })
     };
-    const cmtLikeToggle = (cmt_idx) => {
-        axios.post("http://localhost/like",{data:{user_id:"test_user", isClass:"comment", cmt_idx:cmt_idx}})
+    // 댓글
+    const cmtLikeToggle = (comment_idx) => {
+        axios.post("http://localhost/like"
+            ,{user_id:"test_user", isClass:"comment", cmt_idx:comment_idx, post_idx:post_idx})
             .then(({data}) => {
                 if (data.success) {
-                    setLikedByMe(prev => !prev);
-                    setDetail(prev => ({
-                        ...prev,
-                        total_like_count: prev.total_like_count + (likedByMe ? -1 : 1)
-                    }));
+                    setCmt(prev =>
+                        prev.map(cmt => {
+                            if (cmt.comment_idx === comment_idx) {
+                                const likedNow = !cmt.likedByMe;
+                                return {
+                                    ...cmt,
+                                    likedByMe: likedNow,
+                                    cmt_like_cnt: cmt.cmt_like_cnt + (likedNow ? 1 : -1)
+                                };
+                            }
+                            return cmt;
+                        })
+                    );
                 }
             })
     };
@@ -227,12 +221,35 @@ export default function CourseDetail({post_idx}) {
     };
 
     // 댓글 불러오기
-    const cmtList = (post_idx) => {
-        axios.get(`http://localhost/comment_list?post_idx=${post_idx}&page=${page}`)
-            .then(({data}) => {
-                setCmt(Array.isArray(data.list.comments) ? data.list.comments : []);
-                setTotalCmtCount(data.totalCount);
-            })
+    const cmtList = async (post_idx) => {
+        const { data } = await axios.get(`http://localhost/comment_list?post_idx=${post_idx}&page=${page}`);
+        const comments = Array.isArray(data.list.comments) ? data.list.comments : [];
+        setTotalCmtCount(data.totalCount);
+
+        const cmtIdxList = comments.map(cmt => cmt.comment_idx);
+
+        // 댓글 좋아요 여부 체크
+        const likedMapRes = await axios.post("http://localhost/like_check_cmt", {
+            user_id: "test_user",
+            cmt_idx_list: cmtIdxList
+        });
+
+        const likedRaw = likedMapRes.data.likeCheckCmt;
+
+        const likedMap = Array.isArray(likedRaw)
+            ? likedRaw.reduce((acc, cur) => {
+                acc[cur.cmt_idx] = cur.liked;
+                return acc;
+            }, {})
+            : { [likedRaw.cmt_idx]: likedRaw.liked };
+
+        const updatedComments = comments.map(cmt => ({
+            ...cmt,
+            likedByMe: likedMap[cmt.comment_idx] === true
+        }));
+
+        setCmt(updatedComments);
+        console.log(cmt);
     };
 
     useEffect(() => {
@@ -281,6 +298,8 @@ export default function CourseDetail({post_idx}) {
                 }
             })
     };
+
+    // 댓글 좋아요 버튼
 
     return (
         <>
@@ -404,8 +423,8 @@ export default function CourseDetail({post_idx}) {
                                         <span className={"commentContent"}>{item.content}</span>
                                         <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
                                         <div className={"commentBtns"}>
-                                            <span className={"like"} onClick={()=>cmtLikeToggle()}>
-                                                {cmtLikedByMe ? "❤️ 좋아요" : "🤍 좋아요"}(0)
+                                            <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
+                                                {item.likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({item.cmt_like_cnt})
                                             </span>
                                             <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
                                             <span className={"cmtDelete"} onClick={()=>cmtDel(item)}>삭제</span>
