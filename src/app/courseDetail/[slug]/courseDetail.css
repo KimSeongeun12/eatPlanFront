@@ -31,6 +31,17 @@
     border-left: 2px solid lightgray;
 }
 
+input[class$="Body"] {
+    border-bottom: none;
+    border-right: none;
+    font-size: 17px;
+}
+
+textarea[class$="Body"] {
+    resize: none;
+    font-size: 17px;
+}
+
 .mapBody {
     padding-left: 60px !important;
     padding-right: 60px !important;;
@@ -365,4 +376,9 @@ ul[class*="horizontal"] > li {
     box-sizing: border-box !important;
     width: 100% !important;
     max-width: 1450px !important;
+    overflow: unset !important;
+}
+
+.tagAdd {
+    margin-left: 10px;
 }

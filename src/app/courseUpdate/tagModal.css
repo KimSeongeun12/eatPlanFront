@@ -1,0 +1,248 @@
+/* 모달 전체 배경 오버레이 */
+.tagModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 모달 콘텐츠 */
+.tagModalContent {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 모달 하단 버튼 영역 */
+.tagModalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.tagModalFooter button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.applyBtn {
+    background-color: #2acdaf;
+    color: white;
+    font-weight: bold;
+}
+
+.cancelBtn {
+    background-color: #ccc;
+    color: #333;
+}
+
+/* 전체 검색 컨테이너 */
+.searchContainer {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+/* 검색창 + 셀렉트 + 버튼 */
+.searchWrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.StringSearch {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.searchFilter {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.searchBtn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.searchBtn img {
+    width: 100%;
+    height: auto;
+}
+
+/* 선택된 태그 행 */
+.selectedRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.selectedList span {
+    display: inline-block;
+    background: #2acdaf;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.resetBtn {
+    padding: 6px 12px;
+    background-color: #f08080;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* 지역태그 전체 묶음 */
+.tagAreaWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+}
+
+/* 각 리스트 섹션 */
+.cityWrapper,
+.distWrapper,
+.areaWrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.cityHead,
+.distHead,
+.areaCate {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* 리스트 공통 */
+ul.city,
+ul.dist,
+ul.area {
+    list-style: none;
+    padding: 0;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+ul li {
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+}
+
+/* 선택 상태 */
+.activeModal {
+    background: #2acdaf;
+    color: white;
+    font-weight: bold;
+}
+
+.activeArea {
+    background: #2acdaf;
+    color: white;
+    font-weight: bold;
+}
+
+.noneActiveArea {
+    background: #f1f1f1;
+    color: #333;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 태그 섹션 */
+.tagWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.tag {
+    flex: 1;
+    min-width: 250px;
+}
+
+.tag h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.tag ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tag ul li {
+    display: inline-block;
+    margin: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 16px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.activeTag {
+    background: #f08080;
+    color: white;
+    border-color: #f08080;
+    font-weight: bold;
+}
+
+.noneActiveTag {
+    background: #eee;
+    color: #333;
+}
+
+.empty {
+    font-style: italic;
+    color: #888;
+    padding: 6px;
+}
