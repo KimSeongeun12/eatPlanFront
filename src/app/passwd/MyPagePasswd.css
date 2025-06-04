@@ -11,15 +11,6 @@ body,
 }
 
 /* ── 오른쪽 컨테이너 전체 배경을 동일하게 ── */
-.passwd-rightMenu {
-    flex: 1;
-    background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    box-sizing: border-box;
-}
 
 /* ── 비밀번호 확인 카드(흰색 박스) ── */
 .passwd-passwdCard {
@@ -29,6 +20,7 @@ body,
     padding: 60px 40px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    margin: 480px
 }
 
 /* ── 카드 내부 제목 ── */
