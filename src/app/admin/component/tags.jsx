@@ -11,9 +11,8 @@ export default function Tags({idx, isClass}) {
     const [list, setList] = useState([]);
 
     useEffect(() => {
-        // console.log('isCourse:', isClass);
         if(isClass==='course') {
-            drawCourseTags();
+            drawRestaTags();
         }
         else if(isClass==='restaurant') {
             drawRestaTags();
