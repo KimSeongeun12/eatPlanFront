@@ -23,6 +23,7 @@ export default function CourseDetail({post_idx}) {
         "tmp":false,
         "total_like_count":0,
         "total_comment_count":0,
+        "user_id" : "",
         "nickname":"",
         "content_detail_cmt":[],
         "content_detail_resta":[],
@@ -47,6 +48,7 @@ export default function CourseDetail({post_idx}) {
                 "tmp":d.content.tmp,
                 "total_like_count":d.content.total_like_count,
                 "total_comment_count":d.content.total_comment_count,
+                    "user_id" : d.content.user_id,
                 "nickname":d.nickname.nickname,
                 "content_detail_cmt":d.content_detail_cmt,
                 "content_detail_resta":d.content_detail_resta,
@@ -126,7 +128,8 @@ export default function CourseDetail({post_idx}) {
 
     // 코스 신고버튼
     const courseReport = (detail) => {
-        const queryParts = ["isClass=course", `idx=${detail.post_idx}`, `nickname=${detail.nickname}`].join("&");
+        console.log("courseReport -> detail :",detail);
+        const queryParts = ["isClass=course", `idx=${detail.post_idx}`,`suspect=${detail.user_id}`,`nickname=${detail.nickname}`].join("&");
         const url = `/reportWrite?${queryParts}`
         location.href = url;
     };
@@ -260,7 +263,7 @@ export default function CourseDetail({post_idx}) {
 
     // 댓글 신고 버튼
     const cmtReport = (item) => {
-        const queryParts = ["isClass=comment", `idx=${item.comment_idx}`, `nickname=${item.nickname}`].join("&");
+        const queryParts = ["isClass=comment", `idx=${item.comment_idx}`,`suspect=${item.user_id}` ,`nickname=${item.nickname}`].join("&");
         const url = `/reportWrite?${queryParts}`
         location.href = url;
     };

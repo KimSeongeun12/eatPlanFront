@@ -1,11 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import {useState, useEffect} from 'react'
+import {useRouter, useSearchParams} from 'next/navigation'
 import axios from 'axios'
 import './reportWrite.css'
-
-axios.defaults.baseURL = 'http://localhost' // 스프링이 80번 포트라면 이렇게
 
 export default function ReportWrite() {
     const router = useRouter()
@@ -16,8 +14,11 @@ export default function ReportWrite() {
         setReporterId(id)
     }, [])
 
+    const searchParams = useSearchParams() ;
+    const initialSuspect = searchParams.get('suspect') || '';
+
     const [classification, setClassification] = useState('course')
-    const [suspectId, setSuspectId] = useState('')
+    const [suspectId, setSuspectId] = useState(initialSuspect);
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState([])
@@ -48,7 +49,7 @@ export default function ReportWrite() {
             const res = await axios.post(
                 '/report_write',  // baseURL=http://localhost(=80) 로 프록시됨
                 formData,
-                { headers: { 'Content-Type': 'multipart/form-data' } }
+                {headers: {'Content-Type': 'multipart/form-data'}}
             )
             if (res.data.success) {
                 router.push('/report')
@@ -65,10 +66,10 @@ export default function ReportWrite() {
         <form onSubmit={handleSubmit} className="report-form">
             <table className="report-table">
                 <colgroup>
-                    <col style={{ width: 120 }} />
-                    <col />
-                    <col style={{ width: 120 }} />
-                    <col />
+                    <col style={{width: 120}}/>
+                    <col/>
+                    <col style={{width: 120}}/>
+                    <col/>
                 </colgroup>
                 <tbody>
                 {/* 1. 분류 / 작성자 */}
@@ -88,7 +89,7 @@ export default function ReportWrite() {
                     </td>
                     <th>작성자</th>
                     <td>
-                        <input type="text" value={reporterId} readOnly />
+                        <input type="text" value={reporterId} readOnly/>
                     </td>
                 </tr>
 
@@ -99,9 +100,8 @@ export default function ReportWrite() {
                         <input
                             type="text"
                             value={suspectId}
-                            onChange={e => setSuspectId(e.target.value)}
                             placeholder="신고 대상자 아이디"
-                            required
+                            readOnly
                         />
                     </td>
                 </tr>

@@ -34,7 +34,7 @@
 
 /* 4) 테이블을 동적으로 너비 100%로 채우기 */
 .report_detail_table {
-    width: 100%;                   /* 우측 영역 가득 채우도록 */
+    width: 100%; /* 우측 영역 가득 채우도록 */
     border-collapse: collapse;
     table-layout: fixed;           /* 열 너비 균일 배분 (필요 시) */
 }
