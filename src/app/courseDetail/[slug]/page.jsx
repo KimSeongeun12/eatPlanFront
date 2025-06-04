@@ -3,10 +3,11 @@
 import LeftMenu from "@/app/leftMenu";
 import "./courseDetail.css";
 import CourseDetail from "@/app/courseDetail/[slug]/courseDetail";
+import {use} from "react";
 
 export default function CourseDetailPage({params}) {
 
-    const {slug} = params;
+    const {slug} = use (params);
 
     return (
         <>
