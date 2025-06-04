@@ -1,9 +1,179 @@
-.active-span{
-    font-weight: bold;
+/* message.css */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Layout and Container Styles
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 오른쪽 컨텐츠(쪽지 리스트)를 감싸는 영역 */
+.rightMenu {
+    margin-left: 240px;            /* 왼쪽 메뉴 넓이에 맞춘 여백 */
+    padding: 20px;                 /* 상하좌우 여백 */
+    background-color: #f5f5f5;     /* 전체 배경색 (메인 컨텐츠 배경) */
+    min-height: 100vh;             /* 왼쪽 메뉴 높이에 맞춰 화면 전체 높이 유지 */
+    box-sizing: border-box;
 }
 
-.topMenuSpans span{
-    font-size: x-large;
-    padding:10px;
+/* 상단 “수신함/발신함” 토글 스팬을 감싸는 영역 */
+.topMenuSpans {
+    display: flex;
+    gap: 30px;                     /* 스팬 간 간격 */
+    margin-bottom: 10px;           /* 아래 구분선과의 여백 */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   “수신함 / 발신함” 토글 스팬 스타일
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 기본 스팬 텍스트 스타일 */
+.topMenuSpans span {
+    font-size: 1.25rem;            /* x-large 정도 크기 */
+    padding: 8px;
     cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+/* 활성화된 탭에 적용될 스타일 */
+.topMenuSpans .active-span {
+    font-weight: bold;
+    color: #e74c3c;                /* 포인트 컬러 (빨간) */
+    border-bottom: 2px solid #e74c3c;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   쪽지 아이템(메시지 목록) 스타일
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 개별 쪽지 항목 컨테이너 */
+.messageItem {
+    width: 800px;                       /* 너비 고정 */
+    margin: 0 auto;                    /* 화면 중앙 정렬 */
+    display: grid;
+    grid-template-columns:
+    50px   /* No(쪽지 번호) */
+    30px   /* 체크박스 */
+    1fr    /* 제목(링크) */
+    100px  /* 발신자/수신자 */
+    120px  /* 작성 날짜 */
+    60px;  /* 개별 삭제(임시) */
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    position: relative;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+/* 홀수/짝수 배경색 구분(선택 사항) */
+.messageItem:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* 체크박스 위치 보정 */
+.messageItem input[type="checkbox"] {
+    margin: 0;
+    justify-self: center;     /* 그리드 중앙에서 정렬 */
+}
+
+/* 제목(링크) 스타일 */
+.messageItem a {
+    color: #333;
+    text-decoration: none;
+    justify-self: start;
+}
+
+.messageItem a:hover {
+    text-decoration: underline;
+    color: #e74c3c;
+}
+
+/* 발신자/수신자 텍스트(팝업 링크) */
+.messageItem .user-name {
+    color: #333;
+    cursor: pointer;
+    justify-self: start;
+}
+
+/* 작성 날짜 */
+.messageItem .msg-date {
+    color: #666;
+    justify-self: center;
+}
+
+/* 개별 삭제 span (코드에서 inline 스타일로 처리된 경우가 많으므로
+   그 위에 덮어쓸 수도 있지만, 필요 시 클래스 부여해서 사용 가능) */
+.messageItem .delete-link {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    cursor: pointer;
+    justify-self: end;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   모달(SelectedModel) 스타일
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 모달 외곽 컨테이너 */
+.selected-modal-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    background-color: #fff;
+    border: 1px solid #e74c3c;
+    border-radius: 4px;
+    width: 180px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 8px 0;
+}
+
+/* 모달 내부 링크/텍스트 */
+.selected-modal-container a,
+.selected-modal-container span {
+    display: block;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.selected-modal-container a:hover,
+.selected-modal-container span:hover {
+    background-color: #f5f5f5;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   버튼, 인터랙티브 요소 공통 스타일
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 예시: “선택 삭제” 버튼을 message.css 에도 포함시키고 싶다면 */
+.select-delete-button {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid #e74c3c;
+    border-radius: 20px;
+    color: #e74c3c;
+    background-color: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.select-delete-button:hover {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   추가: “수신함 / 발신함” 토글에 대한 재강조
+   (이미 상단 .topMenuSpans span 및 .active-span 에서 처리했으나,
+    필요 시 좀 더 세밀한 조정 가능)
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* 토글 스팬에 마우스 올렸을 때 */
+.topMenuSpans span:hover {
+    color: #e74c3c;
 }
