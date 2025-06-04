@@ -1,43 +1,51 @@
 import './myInfo_updateCss.css'
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 export default function ChangePW({onClose}) {
-    const user_id = useRef('');
-
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            user_id.current = sessionStorage.getItem('user_id');
+        const user_id = sessionStorage.getItem('user_id');
+        if (user_id) {
+            setInfo(prev => ({
+                ...prev,
+                user_id: user_id
+            }));
         }
     }, []);
 
-    const [password, setPassword] = useState({
-        user_id: user_id,
-        pass: "",
-    }); // 백엔드 코드 고쳐야 함??
+    const [info, setInfo] = useState({
+        user_id: '',
+        existing_pass: '',
+        new_pass: '',
+        confirm_pass: '',
+    });
 
-    // onChange
     const input = (e) => {
         const {name, value} = e.target;
-        setPassword({
-            ...password,
-            [name]: value
-        })
+        setInfo({
+            ...info,
+            [name]: value,
+        });
     }
 
     const changePassword = async () => {
-        if (!password.pass || !password.newPass || !password.newPass2) {
+        const { user_id, existing_pass, new_pass, confirm_pass } = info;
+
+        if (!existing_pass || !new_pass || !confirm_pass) {
             alert("모든 필드를 입력해주세요.");
             return;
         }
 
-        if (password.newPass !== password.newPass2) {
+        if (new_pass !== confirm_pass) {
             alert("새 비밀번호가 일치하지 않습니다.");
-            setPassword({...password, newPass: '', newPass2: '' });
             return;
         }
 
-        const {data} = await axios.put('http://localhost/updatePassword', password);
+        const {data} = await axios.put('http://localhost/mypage_updatePassword', {
+            user_id,
+            existing_pass,
+            new_pass
+        });
         console.log(data);
         if (data.success === true) {
             alert("비밀번호가 변경되었습니다.");
@@ -55,19 +63,21 @@ export default function ChangePW({onClose}) {
                 
                 <label>현재 비밀번호</label>
                 <input type="password"
-                       name={"pass"}
-                       value={password.pass}
+                       name={"existing_pass"}
+                       value={info.existing_pass}
                        onChange={input}
                        placeholder="현재 비밀번호를 입력해주세요." />
                 
                 <label>새 비밀번호</label>
                 <input type="password"
-                       name={"newPass"}
+                       name={"new_pass"}
+                       value={info.new_pass}
                        onChange={input}
                        placeholder="새 비밀번호를 입력해주세요." />
 
                 <input type="password"
-                       name={"newPass2"}
+                       name={"confirm_pass"}
+                       value={info.confirm_pass}
                        onChange={input}
                        placeholder="새 비밀번호 확인" />
 

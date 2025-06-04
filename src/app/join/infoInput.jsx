@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import JoinTagAddModal from "@/app/join/joinTagAddModal";
+import JoinTagSelectModal from "@/app/join/joinTagSelectModal";
 import axios from "axios";
 
 export default function infoInput({
@@ -94,18 +94,19 @@ export default function infoInput({
             <div className={"right"}>
                 <label>닉네임<span style={style}> *</span></label><br/>
                 <input type={"text"} placeholder={"닉네임을 입력해주세요."}
-                       className={"nickInput"} name={"nickname"} onChange={handleChange}/>
+                       className={"nickInput"} name={"nickname"} value={input.nickname} onChange={handleChange}/>
                 <button style={buttonStyle} onClick={overlayNickname}>중복 확인</button>
                 <br/>
 
                 <label>선호 카테고리 (3개 이하)<span style={style}> *</span></label>
                 <div className={"tags"}>
-                    <span className={"tagName"}>
-                    {input.tags && input.tags.length > 0
-                        ? input.tags.map(tag => `#${tag.value}`).join(', ')
-                        : '선택된 태그가 없습니다.'}
-                </span>
+  <span className={"tagName"}>
+    {input.tags && input.tags.length > 0
+        ? input.tags.map(tag => `#${tag.value.tag_name}`).join(', ')
+        : '선택된 태그가 없습니다.'}
+  </span>
                 </div>
+
                 <button style={buttonStyle} onClick={() => setIsTagModalOpen(true)}>태그 선택</button>
                 <br/>
 
@@ -132,7 +133,7 @@ export default function infoInput({
             </div>
 
             {/*태그 더보기 모달*/}
-            {isTagModalOpen && <JoinTagAddModal
+            {isTagModalOpen && <JoinTagSelectModal
                 onClose={() => setIsTagModalOpen(false)}
                 onSelect={handleTagSelect}/>}
 

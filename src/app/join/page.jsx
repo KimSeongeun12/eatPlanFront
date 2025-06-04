@@ -117,7 +117,7 @@ export default function JoinPage() {
                 alert("user_id가 비어 있습니다.");
                 return;
             }
-            
+
             const finalPayload = {
                 dto: {
                     user_id: input.user_id,
@@ -128,8 +128,8 @@ export default function JoinPage() {
                     location: input.location,
                 },
                 tags: input.tags.map(tag => ({
-                    idx: tag.idx,
-                    isClass: tag.isClass,
+                    idx: tag.value.tag_idx ?? tag.value.area_tag_idx,  // tag_idx가 없으면 area_tag_idx 사용
+                    isClass: tag.type === 'tag' ? '일반' : '지역',
                     user_id: input.user_id,
                 }))
             }

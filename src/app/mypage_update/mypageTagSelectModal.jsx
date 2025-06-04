@@ -1,9 +1,7 @@
-'use client';
-
-import { useEffect, useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
-const JoinTagAddModal = ({ onClose, onSelect }) => {
+export default function MypageTagSelectModal({ onClose, onSelect }) {
     // 선택한 태그 (지역 + 일반)
     const [selectedList, setSelectedList] = useState([]);
 
@@ -142,6 +140,4 @@ const JoinTagAddModal = ({ onClose, onSelect }) => {
             <button onClick={handleSelect}>선택</button>
         </div>
     );
-};
-
-export default JoinTagAddModal;
+}
