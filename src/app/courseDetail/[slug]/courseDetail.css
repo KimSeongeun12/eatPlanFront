@@ -128,6 +128,17 @@
     width: calc(100% - 20px);
 }
 
+.updateCommentBox {
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin: 10px 10px 0 10px;
+    resize: none;
+    font-size: 17px;
+    width: calc(100% - 20px);
+    height: 200px;
+}
+
 .commentBox-focus {
     outline: none;
 }
@@ -179,6 +190,14 @@
     margin-left: auto;
 }
 
+.commentBtns {
+    padding-right: 10px;
+}
+
+.commentBtn {
+    margin-right: 10px;
+}
+
 .btns,
 .commentBtn {
     margin-top: 20px;
@@ -198,6 +217,85 @@
     justify-content: center;
     padding: 20px 0;
     margin: 0 auto;
+}
+
+.commentBtns span {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 12px;
+    border: 1px solid #d29292;
+    border-radius: 8px;
+    background-color: #fff7f7;
+    color: #a17070;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+}
+
+.commentBtns span:hover {
+    background-color: #ffdada;
+    color: #6a3a3a;
+}
+
+.commentBtns span:active {
+    background-color: #f5c4c4;
+    transform: scale(0.96);
+}
+
+.btns span {
+    display: inline-block;
+    margin: 8px 10px 8px 0;
+    padding: 6px 14px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    color: #5a5a5a;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.btns span:hover {
+    background-color: #e0e0e0;
+    color: #2a2a2a;
+}
+
+.btns span:active {
+    background-color: #d0d0d0;
+    transform: scale(0.97);
+}
+
+/* 별점주기 버튼 */
+.stars span,
+.commentBtn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #f6f6f6;
+    color: #444;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    user-select: none;
+    text-align: center;
+}
+
+/* 공통 hover 효과 */
+.stars span:hover,
+.commentBtn:hover {
+    background-color: #eaeaea;
+    color: #222;
+}
+
+/* 클릭 시 약간 눌리는 느낌 */
+.stars span:active,
+.commentBtn:active {
+    transform: scale(0.96);
+    background-color: #ddd;
 }
 
 div[class*="Outline"] {

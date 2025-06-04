@@ -276,8 +276,28 @@ export default function CourseDetail({post_idx}) {
     };
 
     // 댓글 수정 버튼
+    const [editingCommentIdx, setEditingCommentIdx] = useState(null);
+    const [editedContent, setEditedContent] = useState("");
+    // 댓글 수정창 띄우기
     const cmtUpdate = (item) => {
+        setEditingCommentIdx(item.comment_idx);
+        setEditedContent(item.content);
+    };
 
+    // 댓글 수정내용 저장
+    const saveUpdatedComment = (comment_idx) => {
+        axios.put("http://localhost/comment_update", {
+            comment_idx,
+            content: editedContent
+        }).then(({data}) => {
+            if (data.success) {
+                alert("댓글이 수정되었습니다.");
+                setEditingCommentIdx(null);
+                cmtList(post_idx); // 최신 댓글 다시 가져오기
+            } else {
+                alert("수정에 실패했습니다.");
+            }
+        });
     };
 
     // 댓글 작성 버튼
@@ -298,8 +318,6 @@ export default function CourseDetail({post_idx}) {
                 }
             })
     };
-
-    // 댓글 좋아요 버튼
 
     return (
         <>
@@ -420,7 +438,15 @@ export default function CourseDetail({post_idx}) {
                                 {cmt.map((item, index) => (
                                     <div className={"comment2"} key={index}>
                                         <span className={"nickname"}>{item.nickname}</span>
-                                        <span className={"commentContent"}>{item.content}</span>
+                                        {editingCommentIdx === item.comment_idx ? (
+                                            <textarea
+                                                className={"updateCommentBox"}
+                                                value={editedContent}
+                                                onChange={(e) => setEditedContent(e.target.value)}
+                                                rows="3"
+                                            />
+                                        ) : (
+                                        <span className={"commentContent"}>{item.content}</span>)}
                                         <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
                                         <div className={"commentBtns"}>
                                             <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
@@ -428,7 +454,11 @@ export default function CourseDetail({post_idx}) {
                                             </span>
                                             <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
                                             <span className={"cmtDelete"} onClick={()=>cmtDel(item)}>삭제</span>
-                                            <span className={"cmtUpdate"} onClick={()=>cmtUpdate(item)}>수정</span>
+                                            {editingCommentIdx === item.comment_idx ? (
+                                                <span className={"cmtUpdate"} onClick={() => saveUpdatedComment(item.comment_idx)}>저장</span>
+                                            ) : (
+                                                <span className={"cmtUpdate"} onClick={() => cmtUpdate(item)}>수정</span>
+                                            )}
                                         </div>
                                         <div className={"commentLineWrapper"}>
                                             <div className={"commentLine"}></div>
