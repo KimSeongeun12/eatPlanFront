@@ -1,95 +1,190 @@
-h2 {
-    margin: 0px;
-}
+/* ────────────────────────────────────────────────────
+   reportList.css (필요한 부분만 발췌한 최종본)
 
-.report-page-wrapper {
+   • .rightMenu { padding-top: 180px; } 로 전체 콘텐츠를 아래로 내림
+   • h2 { margin:0; } 으로 추가 여백 제거
+   • 테이블/페이징은 기존 대로 유지
+───────────────────────────────────────────────────────── */
+
+/* 1) 메인 컨테이너: 왼쪽 메뉴 + 오른쪽 콘텐츠 */
+.main-container {
     display: flex;
-    /*width: 100%;*/
     min-height: 100vh;
+    /* justify-content: flex-start;  기본값 flex-start라 생략 가능 */
 }
 
-.content-wrapper {
+/* 2) LeftMenu (이미 width가 지정되어 있다고 가정) */
+.leftMenu {
+    width: 260px;       /* 실제 LeftMenu 너비와 동일하게 설정하세요 */
+    flex-shrink: 0;
+}
+
+/* 3) rightMenu: padding-top으로 세로 위치 조정 */
+.rightMenu {
+    /* flex:1으로 남은 공간을 차지하면서, */
+    /* LeftMenu 바로 오른쪽에서 시작합니다. margin-left가 절대 필요 없습니다. */
     flex: 1;
-    padding: 0px 20px 20px;
+
+    /* ← ① 여기서 세로 여백(padding-top)으로 전체 콘텐츠를 내립니다. */
+    padding-top: 180px;   /* ← 이 값을 왼쪽 메뉴 프로필 높이에 맞춰 조절 */
+
+    /* 내부 좌우 여백 20px */
+    padding-left: 20px;
+    padding-right: 20px;
     box-sizing: border-box;
-    /*min-width: 1500px;*/
+
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
 }
 
+/* 3-1) 제목(h2) */
+.rightMenu h2 {
+    width: 100%;
+    margin: 0;                /* ← 기본 위쪽 마진 제거 */
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #000;
+    text-align: left;
+}
+
+/* 4) 신고 리스트 테이블 */
 .report-table {
-    /*width: 100%;*/
-    /*table-layout: fixed;*/
+    width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    table-layout: auto;
 }
-
-.report-table th,
+.report-table thead {
+    border-bottom: 1px solid #ccc;
+}
+.report-table th {
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    background-color: #fff;
+}
 .report-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
     text-align: center;
+    padding: 12px 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #d64545;
+    vertical-align: middle;
+    word-wrap: break-word;
 }
-
-
-/* 테이블 기본 스타일 */
-table {
-    /*width: 100%;*/
-    border-collapse: collapse;
-    margin-top: 20px;
+/* 만약 “제목” 컬럼도 가운데 정렬을 원하면 아래 규칙을 넣으세요 */
+/*
+.report-table td:nth-child(2) {
+  text-align: center;
 }
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
+*/
+.report-table tbody tr + tr td {
+    border-top: 1px solid #eee;
 }
-
-td {
-    height: 75px;
+.report-table tbody tr:hover {
+    background-color: #f5f5f5;
 }
-
-th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-/* 링크 스타일 */
-td a {
-    color: #0070f3;
+.report-table td a {
+    color: #d64545;
     text-decoration: none;
-    height: 200px;
+    font-weight: 500;
+    font-size: 15px;
 }
-
-td a:hover {
+.report-table td a:hover {
     text-decoration: underline;
 }
 
-/* 페이징 버튼 스타일 */
+/* 5) 페이징(.pagenation) */
+/* ────────────────────────────────────────────────────────────
+   reportList.css: 페이징 요소를 모두 고정 폭으로 만드는 최종 예시
+──────────────────────────────────────────────────────────── */
+
+/* 1) pagenation 컨테이너는 flex, 가로 중앙 정렬 */
 .pagenation {
-    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    margin: 50px 0 0 0;   /* 원하는 만큼 위쪽 여백 */
+    gap: 8px;             /* 버튼 사이 간격 */
+    /* 굳이 전체 width를 고정할 필요는 없습니다.
+       내부 요소를 모두 고정 폭(32px)으로 만들면,
+       컨테이너 너비가 절대 흔들리지 않습니다. */
+    white-space: nowrap;  /* 혹시 줄바꿈이 발생하지 않도록 방지 */
 }
 
-.pagenation button {
-    padding: 6px 12px;
-    border: 1px solid #ddd;
+/* 2) 화살표 버튼: 32×32, 고정 */
+.arrow-btn {
+    flex: 0 0 32px;        /* flex-grow:0, flex-shrink:0, flex-basis:32px */
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
     background-color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;            /* 기본 버튼 padding 제거 */
+    box-sizing: border-box;
 }
-
-.pagenation button:hover:not(:disabled) {
-    background-color: #f0f0f0;
+.arrow-btn:hover:not(:disabled) {
+    background-color: #f4f4f4;
 }
-
-.pagenation button:disabled {
-    cursor: not-allowed;
+.arrow-btn:disabled {
     opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.pagenation span {
-    font-weight: bold;
+/* 3) 페이지 번호 버튼: 32×32, 고정 */
+.page-btn {
+    flex: 0 0 32px;        /* flex-grow:0, flex-shrink:0, flex-basis:32px */
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;            /* 텍스트 중앙에 맞추기 위해 padding 제거 */
+    box-sizing: border-box;
+}
+.page-btn:hover:not(.active):not(:disabled) {
+    background-color: #f4f4f4;
+}
+.page-btn.active {
+    background-color: #f8e2e2;
+    border-color: #d64545;
+    color: #d64545;
+}
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 4) Ellipsis(“…”)를 감싸는 요소: 동일하게 32×32 고정 */
+.ellipsis {
+    flex: 0 0 32px;           /* flex-grow:0, flex-shrink:0, flex-basis:32px */
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;          /* … 글자 크기 */
+    color: #555;              /* 원하시는 색으로 조정 */
+    box-sizing: border-box;
 }
