@@ -139,6 +139,8 @@ export default function CourseDetail({post_idx}) {
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
+        const confirmDelete = window.confirm("정말로 코스를 삭제하시겠습니까?");
+        if (!confirmDelete) return;
         axios.delete("http://localhost/delete/",{data:[{post_idx: detail.post_idx}]}).then(({data}) => {
             if (data.success) {
                 location.href = "/list";
@@ -265,6 +267,8 @@ export default function CourseDetail({post_idx}) {
 
     // 댓글 삭제 버튼
     const cmtDel = (item) => {
+        const confirmDelete = window.confirm("정말로 댓글을 삭제하시겠습니까?");
+        if (!confirmDelete) return;
         axios.delete(`http://localhost/comment_del?comment_idx=${item.comment_idx}`).then(({data}) => {
             if (data.success) {
                 cmtList(post_idx);

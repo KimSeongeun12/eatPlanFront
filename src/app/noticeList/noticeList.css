@@ -1,9 +1,3 @@
-.rightMenu {
-    padding: 24px;
-    background-color: #fafafa;
-    min-height: 100vh;
-}
-
 /* 공지목록 전체 컨테이너 */
 .notice-list-container {
     padding: 24px;

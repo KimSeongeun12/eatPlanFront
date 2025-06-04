@@ -6,7 +6,7 @@ export default function PasswdPage() {
     return (
         <>
             <LeftMenu/>
-            <div className="rightMenu">
+            <div className="myInfoPasswd-rightMenu">
             <MyInfoPasswd/>
             </div>
         </>

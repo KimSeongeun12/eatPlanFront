@@ -4,8 +4,8 @@ import { Chrono } from "react-chrono";
 
 export default function Timeline({timelineStart, timelineFinish, resta, noResta}) {
 
-    console.log('resta:', resta);
-    console.log('noResta:', noResta);
+/*    console.log('resta:', resta);
+    console.log('noResta:', noResta);*/
 
     // 세부일정 배열 꺼내고 합친다음 시간순으로 정렬
     const nodes = [
@@ -41,7 +41,8 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
     const items = [
         {
             title: `시작 ${timelineStart}`,
-            cardSubtitle: "플랜 시작 시간"
+            cardSubtitle: "플랜 시작 시간",
+            cardContent: <p>제발좀</p>
         },
         ...nodes,
         {
@@ -52,7 +53,7 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
 
     return (
         <Chrono
-            key={JSON.stringify(items)}
+            key={resta.length + "-" + noResta.length}
             items={items}
             mode="HORIZONTAL"
             disableToolbar

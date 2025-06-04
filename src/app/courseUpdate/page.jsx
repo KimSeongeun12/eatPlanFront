@@ -2,6 +2,7 @@
 
 import LeftMenu from "@/app/leftMenu";
 import CourseUpdate from "@/app/courseUpdate/courseUpdate";
+import "../courseDetail/[slug]/courseDetail.css";
 
 export default function CourseUpdatePage() {
 
