@@ -2,15 +2,14 @@ import './joinCss.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function emailCheckPage({input, setInput, confirmPass, setConfirmPass}) {
+export default function emailCheckPage({input, setInput, confirmPass, setEmailAuth}) {
 
     // email 기능 백엔드에서 axios로 추가
     const style = {
         color: '#FF0000',
     }
 
-    // ----------이메일 인증 기능-------------//
-    const [auth, setAuth] = useState(false);    // 인증번호가 맞는지 식별하는 state
+    // ----------이메일 인증 기능-------------//   // 인증번호가 맞는지 식별하는 state
     const sendEmail=async ()=>{
         console.log(input.email);
         let {data}=await axios.post(`http://localhost/sendNumber`, {'email':input.email});
@@ -22,9 +21,10 @@ export default function emailCheckPage({input, setInput, confirmPass, setConfirm
         console.log(data);
         if(data.success){
             alert('인증되었습니다.');
-            setAuth(true);
+            setEmailAuth(true);
         }else{
             alert('인증번호가 다릅니다. 다시 시도해 주세요.');
+            setEmailAuth(false);
         }
     }
     const insertNum=(e)=>{

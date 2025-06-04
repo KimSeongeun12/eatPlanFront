@@ -15,6 +15,9 @@ export default function JoinPage() {
 
     const [select, setSelect] = useState(null);
 
+    // 이메일 체크 추가
+    const [emailAuth, setEmailAuth] = useState(false);
+
     const showSecond = () => {
         if (!select) {
             alert("개인정보 수집 및 이용에 동의해주세요.");
@@ -134,16 +137,24 @@ export default function JoinPage() {
                 }))
             }
 
-            try {
-                const response = await axios.post('http://localhost/join', finalPayload);
-                console.log(response);
-                alert("회원 가입에 성공했습니다.");
-                location.href = '/login';
-            } catch (error) {
-                console.error(error);
-                alert("서버 오류가 발생했습니다.");
-                console.log("가입 실패 데이터:", finalPayload);
+            if(emailAuth) {
+                console.log("emailAuth", emailAuth);
+                try {
+                    const response = await axios.post('http://localhost/join', finalPayload);
+                    console.log(response);
+                    alert("회원 가입에 성공했습니다.");
+                    location.href = '/login';
+                } catch (error) {
+                    console.error(error);
+                    alert("서버 오류가 발생했습니다.");
+                    console.log("가입 실패 데이터:", finalPayload);
+                }
+            }else{
+                console.log("emailAuth", emailAuth);
+                alert('인증번호 확인을 진행해주세요.');
             }
+
+
         }
     }
 
@@ -163,7 +174,8 @@ export default function JoinPage() {
                     {visible === 'emailCheckPage' && <EmailCheckPage input={input}
                                                                      setInput={setInput}
                                                                      confirmPass={confirmPass}
-                                                                     setConfirmPass={setConfirmPass}
+                                                                     emailAuth={emailAuth}
+                                                                     setEmailAuth={setEmailAuth}
                                                                      overlayId={overlay_id}
                                                                      overlayNickname={overlay_nickname}/>}
                 </>

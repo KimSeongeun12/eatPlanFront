@@ -6,6 +6,7 @@ import axios from "axios";
 export default function DrawResta({leftMenu}){
 
     useEffect(() => {
+
     }, [leftMenu]);
 
     const [list,setList] = useState([]); //식당 리스트
@@ -21,7 +22,7 @@ export default function DrawResta({leftMenu}){
     }
 
     // --------------------- 리스트 기능 --------------------- //
-    const drawResta=async (e)=>{
+    const drawResta = async (e)=>{
         sortList(e);
         let {data}=await axios.get(`http://localhost/adtag_restaList/${page.current}/${sort.current}`);
 
