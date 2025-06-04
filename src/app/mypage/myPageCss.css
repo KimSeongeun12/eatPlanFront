@@ -219,55 +219,6 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
-.MyPagePasswd {
-    display: flex;
-    flex-direction: column;
-    align-items: center;     /* ⬅ 수평 가운데 */
-    justify-content: center; /* ⬅ 수직 가운데 */
-    height: 100vh;
-}
-
-/*.Mypage_passwd_div {*/
-/*    width: 600px;*/
-/*    background-color: #ffffff;*/
-/*    border: 1px solid #e0e0e0;*/
-/*    padding: 50px;*/
-/*    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);*/
-/*    border-radius: 10px;*/
-/*    display: flex;*/
-/*    margin-top: 100px;*/
-/*    flex-direction: column;*/
-/*    margin-left: 300px;*/
-/*    gap: 20px;*/
-/*}*/
-
-/*.Mypage_passwd_div input {*/
-/*    height: 50px;*/
-/*    padding: 10px 15px;*/
-/*    font-size: 18px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 6px;*/
-/*    outline: none;*/
-/*}*/
-
-/*.Mypage_passwd_div input::placeholder {*/
-/*    color: #b0b0b0;*/
-/*}*/
-
-/*.Mypage_passwd_div p {*/
-/*    font-size: 20px;*/
-/*    color: #333;*/
-/*    margin: 0;*/
-/*    text-align: center;*/
-/*}*/
-
-.MyPagePasswd h3 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 30px;
-    color: #333;
-}
-
 .passwd-title {
     font-size: 50px;
     font-weight: 700;
