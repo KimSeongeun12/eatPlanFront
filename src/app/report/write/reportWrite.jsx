@@ -9,32 +9,69 @@ export default function ReportWrite() {
     const router = useRouter()
 
     const [reporterId, setReporterId] = useState('')
+    const [reporterNickname, setReporterNickname] = useState('')
+
     useEffect(() => {
-        const id = localStorage.getItem('userId') || ''
-        setReporterId(id)
-    }, [])
+        const id = localStorage.getItem('userId') || '';
+        setReporterId(id);
+        if (!id) {
+            console.warn('⚠️ localStorage에 userId가 없습니다.');
+            return;
+        }
+        axios.get(`http://localhost/${id}`).then((res) => {
+            setReporterNickname(res.data.nickname || '');
+        }).catch((err) => {
+            console.log('신고자 닉네임 조회 실패 : ',err);
+            setReporterNickname('');
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!reporterId) return;
+
+        axios
+            .get(`http://localhost/${reporterId}`)
+            .then((res) => {
+                // 백엔드가 { user_id: "...", nickname: "..." } 형태로 응답한다고 가정
+                const nick = res.data.nickname || '';
+                setReporterNickname(nick);
+            })
+            .catch((err) => {
+                console.error('신고자 닉네임 조회 실패:', err);
+                setReporterNickname('');
+            });
+    }, [reporterId]);
 
     const searchParams = useSearchParams() ;
     const initialSuspect = searchParams.get('suspect') || '';
+    const initialClass = searchParams.get('isClass') || 'course'
+    const initialIdx = searchParams.get('idx') || ''
 
-    const [classification, setClassification] = useState('course')
     const [suspectId, setSuspectId] = useState(initialSuspect)
     const [suspectNickname, setSuspectNickname] = useState('')
+    const [classification, setClassification] = useState(initialClass)
+    const [reportedIdx, setReportedIdx] = useState(initialIdx)
+
+    useEffect(() => {
+        if (!suspectId) return;
+
+        axios
+            .get(`http://localhost/${suspectId}`)
+            .then((res) => {
+                // 백엔드가 { user_id:"user01", nickname:"니꾸네임" }을 보낸다고 가정
+                const nick = res.data.nickname || '';
+                setSuspectNickname(nick);
+            })
+            .catch((err) => {
+                console.error('닉네임 조회 실패:', err);
+                setSuspectNickname('');
+            });
+    }, [suspectId]);
+
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState([])
     const [isPublic, setIsPublic] = useState(false)
-
-    useEffect(() =>{
-        if(!suspectId) return;
-        axios.get(`api/member/${suspectId}`).then((res) => {
-            if(res.data.nickname){
-                setSuspectNickname(res.data.nickname);
-            }else {
-                setSuspectNickname('');
-            }
-        })
-    },[suspectId])
 
     const handleFileChange = (e) => {
         setFiles(Array.from(e.target.files))
@@ -43,7 +80,11 @@ export default function ReportWrite() {
     const handleSubmit = async (e) => {
         e.preventDefault()   // 네이티브 제출 차단
 
-        if (!suspectId || !subject || !content) {
+        if (!reporterId){
+            alert('로그인이 필요합니다');
+            return;
+        }
+        if (!suspectId || !subject.trim() || !content.trim()) {
             alert('필수 항목을 모두 입력해주세요.')
             return
         }
@@ -51,7 +92,10 @@ export default function ReportWrite() {
         const formData = new FormData()
         formData.append('isClass', classification)
         formData.append('suspect_id', suspectId)
+        formData.append('suspect_nickname', suspectNickname ||'');
         formData.append('reporter_id', reporterId)
+        formData.append('reporter_nickname', reporterNickname ||'')
+        formData.append('reported_idx', reportedIdx)
         formData.append('subject', subject)
         formData.append('content', content)
         formData.append('isPublic', isPublic ? '1' : '0')
@@ -59,7 +103,7 @@ export default function ReportWrite() {
 
         try {
             const res = await axios.post(
-                '/report_write',  // baseURL=http://localhost(=80) 로 프록시됨
+                'http://localhost/report_write',  // baseURL=http://localhost(=80) 로 프록시됨
                 formData,
                 {headers: {'Content-Type': 'multipart/form-data'}}
             )
