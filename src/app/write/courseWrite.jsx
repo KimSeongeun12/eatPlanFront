@@ -70,7 +70,7 @@ export default function CourseWrite({data}) {
             console.log("코스 등록 성공: ", response.data);
             if (response.data.success === true) {
                 alert("코스 등록에 성공했습니다.");
-                location.href="./list/commonList";
+                location.href="./list";
             }
         } catch (error) {
             console.error("코스 등록 실패: ", error);
@@ -186,9 +186,9 @@ export default function CourseWrite({data}) {
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
                             <div className="courseWrite_uploadDiv">
-                                {resta.length > 0 && (
-                                    <KakaoMap address={resta[0].resta[0].resta_name} />
-                                )}
+                                {/*{resta.length > 0 && (*/}
+                                {/*    <KakaoMap address={resta[0].resta[0].resta_name} />*/}
+                                {/*)}*/}
                             </div>
                         </td>
                     </tr>

@@ -1,0 +1,192 @@
+/* ─── 컨테이너 ─── */
+.message-list-container {
+    padding: 24px;
+    background-color: #fff;
+    min-height: calc(100vh - 0px);
+}
+
+/* ─── 탭 바 ─── */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #000;
+    margin-bottom: 16px;
+}
+.tabs button {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+}
+.tabs button.tab-active {
+    color: #cc503b;
+}
+.tabs button.tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #cc503b;
+}
+
+/* ─── 제목 ─── */
+.page-title {
+    font-size: 2rem;
+    margin: 8px 0 24px 0;
+}
+
+/* ─── 테이블 ─── */
+.message-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 열 너비 고정 */
+}
+.message-table th,
+.message-table td {
+    border: 1px solid #ddd;
+    padding: 12px 8px;
+    text-align: center;
+    overflow: hidden;      /* 넘칠 때 숨김 */
+    white-space: nowrap;   /* 한 줄 고정 */
+    text-overflow: ellipsis; /* 넘치면 “…” 표시 */
+}
+.message-table th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+}
+.message-table tbody tr:nth-child(even) {
+    background-color: #fbfbfb;
+}
+
+/* 각 열 너비 지정 (nth-child 순서: No., 체크박스, 제목, 작성자/받는 사람, 작성 날짜) */
+.message-table th:nth-child(1),
+.message-table td:nth-child(1) {
+    width: 60px;
+}
+.message-table th:nth-child(2),
+.message-table td:nth-child(2) {
+    width: 40px;
+}
+.message-table th:nth-child(3),
+.message-table td:nth-child(3) {
+    width: auto; /* 남은 공간 전부 제목에 할당 */
+}
+.message-table th:nth-child(4),
+.message-table td:nth-child(4) {
+    width: 120px;
+}
+.message-table th:nth-child(5),
+.message-table td:nth-child(5) {
+    width: 140px;
+}
+
+/* 제목 텍스트 클릭 시 스타일 */
+.message-subject {
+    color: #2c3e50;
+    cursor: pointer;
+    text-align: left;
+}
+.message-subject:hover {
+    color: #1abc9c;
+    text-decoration: underline;
+}
+
+/* ─── 하단 바 (페이징 + 삭제 버튼) ─── */
+.bottom-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+}
+
+/* 페이징 래퍼: flex:1로 만들고, 내부 컨텐츠를 가운데 정렬 */
+.pagination-wrapper {
+    flex: 1;
+    text-align: center;
+}
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+.page-btn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.current-page {
+    font-size: 1rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* ─── 선택 삭제 버튼 ─── */
+.delete-selected-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.delete-selected-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ─── 삭제 확인 팝업 ─── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+.confirm-text {
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+}
+.confirm-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+.confirm-btn,
+.cancel-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.cancel-btn {
+    border-color: #888;
+    color: #888;
+}

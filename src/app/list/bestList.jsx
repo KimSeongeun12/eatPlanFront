@@ -1,85 +1,90 @@
 'use client'
+
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function bestList() {
-    const [page, setPage] = useState(1);
-    const [items, setItems] = useState([]);
-    const [totalItems, setTotalItems] = useState(0);
+    const [weeklyList, setWeeklyList] = useState([]);
+    const [monthlyList, setMonthlyList] = useState([]);
 
-    // useEffect(() => {
-    //     renderList(page);
-    // }, [page]);
-    //
-    // const renderList = async (p) => {
-    //     try {
-    //         const res = await axios.get(`http://localhost/course_list/${p}`);
-    //         const data = res.data;
-    //         setItems(data.list);
-    //         setTotalItems(data.pages);
-    //     } catch (error) {
-    //         console.error('데이터 로딩 실패:', error);
-    //     }
-    // };
+    useEffect(() => {
+        weekly();
+        monthly();
+    }, []);
 
-    /**/
+    const weekly = async () => {
+        const {data} = await axios.get('http://localhost/weekly_best_list');
+        console.log("course_img 값들: ", data.list.map(item => item.course_img));
+        console.log(data.list);
+        setWeeklyList(data.list);
+    }
 
-    // const [weekly, setWeekly] = useState([]);
-    // const [monthly, setMonthly] = useState([]);
-    // const count = [1, 2, 3, 4, 5, 6];
-    //
-    // useEffect(() => {
-    //     weeklyList();
-    //     monthlyList();
-    // }, []);
-    //
-    // const weeklyList = () => {
-    //     const content = count.map((item, index) => {
-    //         return (
-    //             <div key={index}>
-    //                 <div className={"mainImage"}></div>
-    //                 <span className={"courseTitle"}>제목 {item}</span>
-    //                 <span className={"courseComment"}>[댓글]</span><br />
-    //                 <span className={"courseAuthor"}>작성자</span>
-    //                 <span className={"courseViews"}>조회 숫자</span><br />
-    //                 <span className={"courseScope"}>별점 숫자</span>
-    //                 <span className={"courseLike"}>좋아요 숫자</span><br />
-    //                 <span className={"courseDate"}>작성날짜</span>
-    //             </div>
-    //         );
-    //     });
-    //     setWeekly(content);
-    // }
-    //
-    // const monthlyList = () => {
-    //     const content = count.map((item, index) => {
-    //         return (
-    //             <div key={index}>
-    //                 <div className={"mainImage"}></div>
-    //                 <span className={"courseTitle"}>제목 {item}</span>
-    //                 <span className={"courseComment"}>[댓글]</span><br />
-    //                 <span className={"courseAuthor"}>작성자</span>
-    //                 <span className={"courseViews"}>조회 숫자</span><br />
-    //                 <span className={"courseScope"}>별점 숫자</span>
-    //                 <span className={"courseLike"}>좋아요 숫자</span><br />
-    //                 <span className={"courseDate"}>작성날짜</span>
-    //             </div>
-    //         );
-    //     });
-    //     setMonthly(content);
-    // }
+    const monthly = async () => {
+        const {data} = await axios.get('http://localhost/monthly_best_list');
+        console.log("월간 베스트 코스: ", data.list[0].course_img);
+        setMonthlyList(data.list);
+    }
 
     return (
         <>
             <div className={"rightMenu-bottom"}>
                 <div className={"weekly"}>
                     <span className={"weeklySpan"}>Weekly 주간 베스트</span>
-                    <div className={"weeklyDiv"}></div>
+                    <div className={"weeklyDiv"}>
+                        {weeklyList.map(item => (
+                            <div key={item.course.post_idx}>
+                                <div className="mainImage">
+                                    <img
+                                        src={`http://localhost/image/${item.course_img}`}
+                                        onError={(e) => {
+                                            e.target.src = '/no_image.png';
+                                        }}
+                                        alt="코스 이미지"
+                                    />
+                                </div>
+                                <Link href={`/courseDetail/${item.course.post_idx}`}>
+                                    <span className="courseTitle">{item.course.subject}</span>
+                                </Link>
+                                <span className="courseComment">[{item.cmt_cnt}]</span><br />
+                                <span className="courseAuthor">{item.nickname}</span>
+                                <span className="courseViews">조회 {item.course.b_hit}</span><br />
+                                <span className="courseScope">별점 {item.star_avg}</span>
+                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br />
+                                <span className="courseDate">{item.course.reg_date}</span>
+                            </div>
+                        ))}
+
+                    </div>
                 </div>
                 <div className={"length"}></div>
                 <div className={"monthly"}>
                     <span className={"monthlySpan"}>Monthly 월간 베스트</span>
-                    <div className={"monthlyDiv"}></div>
+                    <div className={"monthlyDiv"}>
+                        {monthlyList.map(item => (
+                            <div key={item.course.post_idx}>
+                                <div className="mainImage">
+                                    <img
+                                        src={`http://localhost/image/course/${item.course_img}`}
+                                        onError={(e) => {
+                                            e.target.src = '/no_image.png';
+                                        }}
+                                        alt="이미지 안 뜸"
+                                    />
+                                </div>
+                                <Link href={`/courseDetail/${item.course.post_idx}`}>
+                                    <span className="courseTitle">{item.course.subject}</span>
+                                </Link>
+                                <span className="courseComment">[{item.cmt_cnt}]</span><br />
+                                <span className="courseAuthor">{item.nickname}</span>
+                                <span className="courseViews">조회 {item.course.b_hit}</span><br />
+                                <span className="courseScope">별점 {item.star_avg}</span>
+                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br />
+                                {/*<span className="courseLike">좋아요: {item.like_cnt}</span><br /> 혹시 문제 있으면 이걸로*/}
+                                <span className="courseDate">{item.course.reg_date}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>

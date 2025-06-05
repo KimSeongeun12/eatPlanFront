@@ -18,10 +18,10 @@ export default function StepModal({onComplete}) {
         setFormData((prev) => ({...prev, ...data}));
     };
 
-    const timelineInsert = () => {
-        // 타임라인의 시간을 서버로 올려보냄
-        const {data} = axios
-    }
+    // const timelineInsert = () => {
+    //     // 타임라인의 시간을 서버로 올려보냄
+    //     const {data} = axios
+    // }
 
     return (
         <>
