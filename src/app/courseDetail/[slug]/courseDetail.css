@@ -416,6 +416,20 @@ ul[class*="horizontal"] > li {
 .detailDel {
     flex-basis: 100%;
     text-align: center;
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #e1695c;     /* 빨간색 계열 배경 */
+    color: white;                  /* 흰색 텍스트 */
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.detailDel:hover {
+    background-color: #c0392b;     /* hover 시 더 어두운 빨강 */
 }
 
 .tagAdd {

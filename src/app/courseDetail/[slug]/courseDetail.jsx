@@ -7,6 +7,7 @@ import {Pagination, Stack} from "@mui/material";
 
 export default function CourseDetail({post_idx}) {
 
+    const canUpdate = false;
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
     const [cmt, setCmt] = useState([]);
@@ -358,7 +359,8 @@ export default function CourseDetail({post_idx}) {
                     <Timeline timelineStart={detail.time.start}
                               timelineFinish={detail.time.end}
                               noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}/>
+                              resta = {detail.content_detail_resta}
+                              canUpdate ={canUpdate}/>
                 </span>
 
                 <span className={"mapHead"}>식당 위치 정보</span>

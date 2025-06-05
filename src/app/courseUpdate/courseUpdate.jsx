@@ -16,6 +16,8 @@ export default function CourseUpdate() {
     const [selectedTags, setSelectedTags] = useState([]);
     const [courseCmt, setCourseCmt] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [deletedDetailIds, setDeletedDetailIds] = useState([]);
+    const canUpdate = true;
 
 
     const [detail, setDetail] = useState({
@@ -80,21 +82,24 @@ export default function CourseUpdate() {
         setCourseCmt(detail.post_cmt);
     }, [detail]);
 
-    // 디테일정보가 들어오면 맵에 마커찍기
+    // 최신디테일정보가 들어오면 맵에 마커찍기
     useEffect(() => {
         kakao.maps.load(() => {
             const containerEl = container.current;
 
-            // 지도 생성 기본 옵션
-            let mapOption = {
-                center: new kakao.maps.LatLng(37.570377, 126.985409), // 기본 중심: 종각역
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.570377, 126.985409),
                 level: 3
             };
 
             const map = new kakao.maps.Map(containerEl, mapOption);
             const bounds = new kakao.maps.LatLngBounds();
 
-            const restaInfoList = detail.content_detail_resta.map(r => r.resta?.[0]).filter(Boolean);
+            // ✅ 삭제된 detail_idx 제외
+            const restaInfoList = detail.content_detail_resta
+                .filter(r => !deletedDetailIds.includes(r.detail_resta_idx))
+                .map(r => r.resta?.[0])
+                .filter(Boolean);
 
             if (restaInfoList.length > 0) {
                 restaInfoList.forEach(restaInfo => {
@@ -116,10 +121,8 @@ export default function CourseUpdate() {
                     }
                 });
 
-                // 모든 마커 포함되도록 범위 설정
                 map.setBounds(bounds);
             } else {
-                // ✅ 식당 정보 없을 경우 종각역에 기본 마커 표시
                 const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
                 const marker = new kakao.maps.Marker({
                     position: defaultPosition,
@@ -135,7 +138,7 @@ export default function CourseUpdate() {
                 infoWindow.open(map, marker);
             }
         });
-    }, [detail]);
+    }, [detail, deletedDetailIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
@@ -152,7 +155,19 @@ export default function CourseUpdate() {
     }
 
     const updateSubmit = () => {
-
+        const payload = {
+            subject,
+            post_cmt: courseCmt,
+            deleted_detail_idx_list: deletedDetailIds,
+            // ...기타 수정 데이터들
+        };
+        axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
+            if (data.success) {
+                alert("수정 완료!");
+            } else {
+                alert("수정 실패");
+            }
+        });
     }
 
     // 리스트로 돌아가기버튼
@@ -205,7 +220,11 @@ export default function CourseUpdate() {
                     <Timeline timelineStart={detail.time.start}
                               timelineFinish={detail.time.end}
                               noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}/>
+                              resta = {detail.content_detail_resta}
+                              onDeleteDetail={(detailIdx) =>
+                                  setDeletedDetailIds((prev) => [...prev, detailIdx])
+                              }
+                              canUpdate={canUpdate}/>
                 </span>
 
                 <span className={"mapHead"}>식당 위치 정보</span>
