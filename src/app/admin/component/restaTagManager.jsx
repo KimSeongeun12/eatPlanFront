@@ -31,7 +31,7 @@ export default function RestaTagManager({tags, resta_idx}) {
             console.log(item);
             return (
                 <div key={item.tag_idx}
-                     style={{border: "1px solid lightblue", padding: "3px", margin: "3px", width:"100px"}}>
+                     style={{border: "1px solid lightblue", padding: "3px", margin: "3px", width: "100px"}}>
                     {item.tag_name}
                     <span style={{color: "red"}} onClick={() => delTag(item.tag_idx)}>X</span>
                 </div>
@@ -53,20 +53,36 @@ export default function RestaTagManager({tags, resta_idx}) {
 // 태그 입력 컴포넌트
 function TagInput({resta_idx}) {
 
-    const [input, setInput] = useState("");
+    const [options, setOptions] = useState([]);
 
-    const insert=()=>{
+    useEffect(() => {
+        makeOptions();
+    }, [resta_idx]);
+
+    const insert = () => {
         
+    }
+    // 태그리스트 전체를 불러와서 추가해야함(isClass : 식당)
+
+    const makeOptions = async () => {
+        let {data} = await axios.get(`http://localhost/list_tag`);
+        const list = data.list_tag_whole.map((item) => {
+            if(item.isClass==='식당'){
+                return (
+                    <option value={item.tag_idx}>{item.tag_name}</option>
+                )
+            }
+        });
+        setOptions(list);
     }
 
     return (
-        <div style={{display:"flex", alignItems:"center"}}>
-            <input type={"text"}
-                   style={{height: "30px", margin:"10px", fontSize:"18px"}}
-                   value={input}
-                   onChange={(e) => setInput(e.target.value)}
-            />
-            <div style={{border:"1px solid red", padding:"5px", cursor:"pointer"}}>추가</div>
+        <div style={{display: "flex", alignItems: "center"}}>
+            {/*select문으로 받을예정*/}
+            <select name={"tags"} style={{height:'30px'}}>
+                {options}
+            </select>
+            <div style={{border: "1px solid red", padding: "5px", cursor: "pointer", margin:"5px"}}>추가</div>
         </div>
     );
 }
