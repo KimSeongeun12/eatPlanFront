@@ -1,155 +1,199 @@
-/* 공지목록 전체 컨테이너 */
+/* noticeList.css */
+
+/* -----------------------------------------------------------
+   1. 전체 컨테이너 스타일
+----------------------------------------------------------- */
 .notice-list-container {
-    padding: 24px;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    padding: 30px;
     background-color: #ffffff;
-    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
 }
 
-/* 제목 영역 */
-.notice-title {
+/* 공지사항 타이틀 */
+.notice-List-notice-title {
+    font-size: 1.75rem;
+    font-weight: 600;
     margin-bottom: 16px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #d74930;
+    color: #333333;
 }
 
-/* ────────────────────────────────────────────────── */
-/* 테이블 기본 스타일 */
-.notice-table {
+/* -----------------------------------------------------------
+   2. 테이블 기본 스타일
+----------------------------------------------------------- */
+.notice-List-notice-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    font-size: 14px;
+    table-layout: fixed; /* 고정된 컬럼 너비 사용 */
 }
 
-.notice-table th,
-.notice-table td {
-    text-align: center;
-    padding: 12px 8px;
-    border-bottom: 1px solid #ddd;
+/* 컬럼별 너비 지정 (colgroup에 정의한 클래스와 매칭) */
+.notice-List-col-no {
+    width: 10%;
 }
-
-.notice-table thead th {
-    background-color: #f5f5f5;
-    font-weight: 600;
+.notice-List-col-subject {
+    width: 50%;
 }
-
-/* 컬럼별 너비 (colgroup 설정) */
-.col-no {
-    width: 8%;
-}
-.col-subject {
-    width: 52%;
-}
-.col-writer {
+.notice-List-col-writer {
     width: 15%;
 }
-.col-date {
+.notice-List-col-date {
     width: 15%;
 }
-.col-hit {
+.notice-List-col-hit {
     width: 10%;
 }
 
-/* ────────────────────────────────────────────────── */
-/* 필독 공지(하이라이트) 행 스타일 */
-.highlight-row {
-    background-color: #FFF7D6; /* 옅은 노란색 */
+/* 테이블 헤더 */
+.notice-List-notice-table thead th {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #333333;
+    padding: 12px 8px;
+    border-bottom: 2px solid #333333;
+    background-color: transparent;
 }
 
-/* “L1” 라벨 스타일 */
-.label-highlight {
-    display: inline-block;
-    background-color: #f4c542;
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 6px;
-    margin-right: 6px;
-    border-radius: 4px;
+/* tbody의 tr, td 기본 */
+.notice-List-notice-table tbody tr td {
+    padding: 14px 8px;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #ebebeb;
+    text-align: center;
+    color: #333333;
+    vertical-align: middle;
+    box-sizing: border-box;
 }
 
-/* 일반 공지(흰색 배경) */
-.normal-row {
-    background-color: #ffffff;
+/* 제목 셀에 링크 적용 시 */
+.cell-title {
+    word-break: break-all; /* 제목이 길어지면 줄바꿈 처리 */
+    text-align: center;    /* 제목도 중앙 정렬 */
 }
 
-/* 제목 링크 스타일 */
-.cell-title .title-link {
-    color: #d74930;
+/* 링크 스타일 (제목 클릭 시) */
+.notice-List-title-link {
     text-decoration: none;
-    font-weight: 500;
+    color: #CC503B;   /* 이전의 inherit 대신 고정된 #CC503B 색상 */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.cell-title .title-link:hover {
-    text-decoration: underline;
+/* 제목 옆에 아이콘이 들어올 경우, 아이콘 크기 예시 */
+.notice-List-title-link img {
+    width: 16px;
+    height: 16px;
 }
 
-/* ────────────────────────────────────────────────── */
-/* 페이지네이션 */
-.pagination-wrapper {
+/* “데이터 없음” 상태 */
+.notice-List-no-data {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 1rem;
+    color: #999999;
+}
+
+/* -----------------------------------------------------------
+   3. 행(row)별 배경 및 텍스트 컬러
+   - highlight-row : “필독” 처럼 강조해야 하는 행
+   - normal-row    : 일반 행 (페이지가 넘어간 뒤 조회된 행 등)
+----------------------------------------------------------- */
+/* 강조된(필독) 행 */
+.highlight-row {
+    background-color: #fff4e6; /* 옅은 오렌지 계열 배경 */
+}
+
+.highlight-row td {
+    color: #d9480f; /* 오렌지 계열 텍스트 */
+}
+
+/* 일반 행 (회색 텍스트) */
+.normal-row td {
+    color: #6c6c6c; /* 진한 회색 텍스트 */
+}
+
+/* -----------------------------------------------------------
+   4. 페이지네이션(페이징) 스타일
+----------------------------------------------------------- */
+.notice-List-pagination-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 24px 0;
+    margin-top: 24px;
 }
 
+/* 화살표 & 숫자 버튼 기본 스타일 */
+.notice-List-page-btn,
 .page-btn {
-    width: 32px;
-    height: 32px;
-    margin: 0 4px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
     background-color: #ffffff;
-    font-size: 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    margin: 0 4px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    color: #555555;
     cursor: pointer;
-    color: #333;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
-.page-btn:hover {
-    background-color: #f0f0f0;
+/* 비활성(이전/다음이 불가능할 때) */
+.notice-List-page-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
-.page-btn.disabled {
-    border-color: #eee;
-    color: #ccc;
-    cursor: default;
-    background-color: #fafafa;
+/* 페이지 번호 버튼 (둥근 테두리) */
+.page-btn {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* 현재 페이지(active) 스타일 */
 .page-btn.active {
-    background-color: #d74930;
-    color: #ffffff;
-    border-color: #d74930;
+    background-color: #fff4e6;
+    border-color: #d9480f;
+    color: #d9480f;
 }
 
-/* ────────────────────────────────────────────────── */
-/* 관리자 작성 버튼 영역 */
-.write-button-wrapper {
+/* 페이지 번호 버튼 호버 */
+.page-btn:not(.active):hover {
+    background-color: #f5f5f5;
+    border-color: #bfbfbf;
+}
+
+/* -----------------------------------------------------------
+   5. “작성” 버튼(관리자 전용) 스타일
+----------------------------------------------------------- */
+.notice-write-button-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 32px;
 }
 
-.write-btn {
-    background-color: #d74930;
-    color: #ffffff;
-    border: none;
-    padding: 10px 24px;
-    font-size: 15px;
-    border-radius: 4px;
+.notice-List-write-btn {
+    background-color: transparent;
+    border: 1px solid #d9480f;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    color: #d9480f;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.write-btn:hover {
-    background-color: #b63f29;
-}
-
-/* ────────────────────────────────────────────────── */
-/* 로딩 중 표시 */
-.notice-loading {
-    text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #666;
+/* 호버 시 배경 반전 */
+.notice-List-write-btn:hover {
+    background-color: #d9480f;
+    color: #ffffff;
 }

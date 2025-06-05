@@ -8,9 +8,7 @@ export default function notice() {
     return (
         <>
             <LeftMenu />
-            <div className="rightMenu">
             <NoticeList />
-            </div>
         </>
     );
 }

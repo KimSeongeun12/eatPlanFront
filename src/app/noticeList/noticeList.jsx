@@ -42,15 +42,15 @@ export default function NoticeList() {
 
     return (
         <div className="notice-list-container">
-            <h2 className="notice-title">공지사항</h2>
+            <h2 className="notice-List-notice-title">공지사항</h2>
 
-            <table className="notice-table">
+            <table className="notice-List-notice-table">
                 <colgroup>
-                    <col className="col-no" />
-                    <col className="col-subject" />
-                    <col className="col-writer" />
-                    <col className="col-date" />
-                    <col className="col-hit" />
+                    <col className="notice-List-col-no" />
+                    <col className="notice-List-col-subject" />
+                    <col className="notice-List-col-writer" />
+                    <col className="notice-List-col-date" />
+                    <col className="notice-List-col-hit" />
                 </colgroup>
                 <thead>
                 <tr>
@@ -70,7 +70,7 @@ export default function NoticeList() {
                         <td>{item.notice_idx}</td>
                         <td className="cell-title">
                             <Link href={`/noticeDetail?id=${item.notice_idx}`}>
-                                <span className="title-link">{item.subject}</span>
+                                <span className="notice-List-title-link">{item.subject}</span>
                             </Link>
                         </td>
                         <td>{item.user_id}</td>
@@ -81,7 +81,7 @@ export default function NoticeList() {
 
                 {notices.length === 0 && (
                     <tr>
-                        <td colSpan="5" className="no-data">
+                        <td colSpan="5" className="notice-List-no-data">
                             등록된 공지가 없습니다.
                         </td>
                     </tr>
@@ -89,13 +89,13 @@ export default function NoticeList() {
                 </tbody>
             </table>
 
-            <div className="pagination-wrapper">
+            <div className="notice-List-pagination-wrapper">
                 {currentPage > 1 ? (
-                    <button className="page-btn" onClick={() => goToPage(currentPage - 1)}>
+                    <button className="notice-List-page-btn" onClick={() => goToPage(currentPage - 1)}>
                         &lt;
                     </button>
                 ) : (
-                    <button className="page-btn disabled" disabled>
+                    <button className="notice-List-page-btn disabled" disabled>
                         &lt;
                     </button>
                 )}
@@ -111,20 +111,20 @@ export default function NoticeList() {
                 ))}
 
                 {currentPage < totalPages ? (
-                    <button className="page-btn" onClick={() => goToPage(currentPage + 1)}>
+                    <button className="notice-List-page-btn" onClick={() => goToPage(currentPage + 1)}>
                         &gt;
                     </button>
                 ) : (
-                    <button className="page-btn disabled" disabled>
+                    <button className="notice-List-page-btn disabled" disabled>
                         &gt;
                     </button>
                 )}
             </div>
 
             {isAdmin && (
-                <div className="write-button-wrapper">
+                <div className="notice-write-button-wrapper">
                     <Link href="/noticeWrite">
-                        <button className="write-btn">작성</button>
+                        <button className="notice-List-write-btn">작성</button>
                     </Link>
                 </div>
             )}

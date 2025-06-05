@@ -101,36 +101,36 @@ export default function NoticeDetail() {
             </table>
 
             {/* ───────── 내용 영역 ───────── */}
-            <div className="detail-content">
-                <h4 className="content-label">내용</h4>
-                <div className="content-text">{notice.content}</div>
+            <div className="notice-detail-content">
+                <h4 className="notice-content-label">내용</h4>
+                <div className="notice-content-text">{notice.content}</div>
             </div>
 
             {/* ───────── 버튼 영역 ───────── */}
-            <div className="detail-button-wrapper">
+            <div className="notice-detail-button-wrapper">
                 {canModify && (
                     <>
-                        <button className="detail-btn edit" onClick={() => router.push(`/noticeUpdate?id=${noticeIdx}`)}>
+                        <button className="notice-detail-btn edit" onClick={() => router.push(`/noticeUpdate?id=${noticeIdx}`)}>
                             수정
                         </button>
-                        <button className="detail-btn delete" onClick={handleDeleteClick}>
+                        <button className="notice-detail-btn delete" onClick={handleDeleteClick}>
                             삭제
                         </button>
                     </>
                 )}
-                <button className="detail-btn list" onClick={() => router.push('/noticeList')}>
+                <button className="notice-detail-btn list" onClick={() => router.push('/noticeList')}>
                     목록
                 </button>
             </div>
 
             {/* ───────── 삭제 확인 모달 ───────── */}
             {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal-box">
-                        <p className="modal-text">게시글을 삭제 하시겠습니까?</p>
-                        <div className="modal-button-wrapper">
-                            <button className="modal-btn confirm" onClick={handleModalConfirm}>확인</button>
-                            <button className="modal-btn cancel" onClick={handleModalCancel}>취소</button>
+                <div className="notice-modal-overlay">
+                    <div className="notice-modal-box">
+                        <p className="notice-modal-text">게시글을 삭제 하시겠습니까?</p>
+                        <div className="notice-modal-button-wrapper">
+                            <button className="notice-modal-btn confirm" onClick={handleModalConfirm}>확인</button>
+                            <button className="notice-modal-btn cancel" onClick={handleModalCancel}>취소</button>
                         </div>
                     </div>
                 </div>
