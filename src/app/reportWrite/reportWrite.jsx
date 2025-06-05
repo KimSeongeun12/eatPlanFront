@@ -10,7 +10,7 @@ export default function ReportWrite() {
 
     const [reporterId, setReporterId] = useState('')
     useEffect(() => {
-        const id = localStorage.getItem('userId') || 'user01'
+        const id = localStorage.getItem('userId') || ''
         setReporterId(id)
     }, [])
 
@@ -18,11 +18,23 @@ export default function ReportWrite() {
     const initialSuspect = searchParams.get('suspect') || '';
 
     const [classification, setClassification] = useState('course')
-    const [suspectId, setSuspectId] = useState(initialSuspect);
+    const [suspectId, setSuspectId] = useState(initialSuspectId);
+    const [suspectNickname, setSuspectNickname] = useState('')
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState([])
     const [isPublic, setIsPublic] = useState(false)
+
+    useEffect(() =>{
+        if(!SuspectId) return;
+        axios.get(`api/member/${suspectId}`).then((res) => {
+            if(res.data.nickname){
+                setSuspectNickname(res.data.nickname);
+            }else {
+                setSuspectNickname('');
+            }
+        })
+    },[initialSuspectId])
 
     const handleFileChange = (e) => {
         setFiles(Array.from(e.target.files))
@@ -99,7 +111,7 @@ export default function ReportWrite() {
                     <td colSpan={3}>
                         <input
                             type="text"
-                            value={suspectId}
+                            value={suspectNickname ||suspectId}
                             placeholder="신고 대상자 아이디"
                             readOnly
                         />
