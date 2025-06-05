@@ -21,15 +21,6 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
                 url: restaInfo.url,
                 cardSubtitle: item.start,
                 cardDetailedText: item.comment,
-                media: {
-                    type: "IMAGE",
-                    source: {
-                        url: restaInfo.photo?.new_filename
-                            ? `http://localhost/image/${restaInfo.photo.new_filename}`
-                            : restaInfo.media
-                        // 좀 바꾸긴 햇는데 링크 손상은 안 시켯거든요 제가 사진을 http://localhost/imageIdx/2 이걸로 받아와서
-                    }
-                }
             };
         })
     ].sort((a, b) => a.cardSubtitle.localeCompare(b.cardSubtitle));
@@ -40,12 +31,41 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
             title: `시작 ${timelineStart}`,
             cardSubtitle: "플랜 시작 시간",
         },
-        ...nodes,
+        ...nodes.map((node, idx) => ({
+            ...node,
+            customResta: resta[idx]?.resta?.[0] || null
+        })),
         {
             title: `${timelineFinish} 끝`,
             cardSubtitle: "플랜 종료 시간"
         }
     ];
+
+    const customContent = items.map((item, idx) => {
+        const isStartOrEnd = item.title?.startsWith("시작") || item.title?.endsWith("끝");
+        const restaInfo = item.customResta;
+
+        return (
+            <div
+                key={idx}
+                className={isStartOrEnd ? "hidden" : "customCards"}
+            >
+                <p className={"detailContent"}>{item.cardDetailedText}</p>
+
+                {restaInfo?.photo?.new_filename && (
+                    <img
+                        src={`http://localhost/image/${restaInfo.photo.new_filename}`}
+                        className={"customCardImage"}
+                        alt="식당 이미지"
+                    />
+                )}
+
+                {!isStartOrEnd && (
+                    <p className={"detailDel"}>삭제</p>
+                )}
+            </div>
+        );
+    });
 
     return (
         <Chrono
@@ -53,6 +73,8 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
             items={items}
             mode="HORIZONTAL"
             disableToolbar
-        />
+        >
+            {customContent}
+        </Chrono>
     );
 }
