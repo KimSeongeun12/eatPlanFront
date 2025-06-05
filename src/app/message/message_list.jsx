@@ -55,6 +55,13 @@ export default function MessageList({type, user_id, token}) {
 
     return (
         <div>
+            {/*상단 바*/}
+            <div style={{display:"inline-flex", padding:"5px", border:"1px solid lightgray", borderRadius:"5px"}} >
+                <div style={{width:"100px"}}>No</div>
+                <div style={{width:"300px"}}>제목</div>
+                <div style={{width:"200px"}}>{type==='inbox'? '작성자':'수신자'}</div>
+                <div style={{width:"200px"}}>작성일</div>
+            </div>
             {list}
             <br/>
         </div>
@@ -90,7 +97,7 @@ function InboxItem({item, user_id, drawList}) {
             <span style={{cursor:"pointer"}} onClick={(e)=>{popup(e)}}>{item.sender}</span> &nbsp;&nbsp;
             {open ? <SelectedModel target_user={item.sender} /> : null}
             {/*작성일*/}
-            <span>{item.msg_date}</span>
+            <span> <DateFormat date={item.msg_date}/></span>
             {/*임시로만든 개별삭제버튼*/}
             <span style={{fontSize: "small", position: "absolute", right: "40px", cursor:"pointer"}}
                   onClick={() => del(item.msg_idx)}>[개별삭제]</span>
@@ -125,10 +132,19 @@ function OutboxItem({item, user_id, drawList}) {
             <span style={{cursor:"pointer"}} onClick={(e)=>{popup(e)}}>{item.recip}</span>  &nbsp;&nbsp;
             {open ? <SelectedModel target_user={item.recip} /> : null}
             {/*작성일*/}
-            <span>{item.msg_date}</span>
+            <span><DateFormat date={item.msg_date}/> </span>
             {/*개별삭제임시버튼*/}
             <span style={{fontSize: "small", position: "absolute", right: "40px", cursor:"pointer"}}
                   onClick={() => del(item.msg_idx)}>[개별삭제]</span>
         </div>
+    );
+}
+
+
+// 날짜 포맷 변경
+function DateFormat({date}) {
+    const trimmedString = date.split('T')[0];
+    return (
+        <>{trimmedString}</>
     );
 }
