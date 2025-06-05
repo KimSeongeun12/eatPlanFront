@@ -18,7 +18,7 @@ export default function ReportWrite() {
     const initialSuspect = searchParams.get('suspect') || '';
 
     const [classification, setClassification] = useState('course')
-    const [suspectId, setSuspectId] = useState(initialSuspectId);
+    const [suspectId, setSuspectId] = useState(initialSuspect)
     const [suspectNickname, setSuspectNickname] = useState('')
     const [subject, setSubject] = useState('')
     const [content, setContent] = useState('')
@@ -26,7 +26,7 @@ export default function ReportWrite() {
     const [isPublic, setIsPublic] = useState(false)
 
     useEffect(() =>{
-        if(!SuspectId) return;
+        if(!suspectId) return;
         axios.get(`api/member/${suspectId}`).then((res) => {
             if(res.data.nickname){
                 setSuspectNickname(res.data.nickname);
@@ -34,7 +34,7 @@ export default function ReportWrite() {
                 setSuspectNickname('');
             }
         })
-    },[initialSuspectId])
+    },[suspectId])
 
     const handleFileChange = (e) => {
         setFiles(Array.from(e.target.files))

@@ -3,11 +3,10 @@ import axios from "axios";
 import { Pagination, Stack, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Link from "next/link";
 
-export default function CommonList() {
+export default function CommonList({sort}) {
     const [page, setPage] = useState(1);
     const [items, setItems] = useState([]);
 
-    const [sort, setSort] = useState('date_desc');  // 초기 정렬: 최신순 (내림차순)
     const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
     const pageSize = 10;  // 한 페이지에 보여줄 아이템 수
 
@@ -18,13 +17,11 @@ export default function CommonList() {
     const renderList = async () => {
         try {
             const { data } = await axios.get(`http://localhost/course_list/${page}/${sort}`);
-
-            // 서버가 데이터와 총 아이템 수를 준다고 가정 (필요에 따라 수정)
-            setItems(data.items || data); // 데이터 배열
+            console.log(data);
+            setItems(data.list);
             if (data.totalCount) {
                 setTotalPages(Math.ceil(data.totalCount / pageSize));
             } else {
-                // totalCount 없으면 임의로 10페이지 지정
                 setTotalPages(10);
             }
         } catch (error) {
@@ -34,29 +31,16 @@ export default function CommonList() {
 
     return (
         <>
-            <FormControl sx={{ minWidth: 200, mb: 2 }}>
-                <InputLabel id="sort-select-label">정렬 기준</InputLabel>
-                <Select
-                    labelId="sort-select-label"
-                    value={sort}
-                    label="정렬 기준"
-                    onChange={(e) => {
-                        setPage(1);  // 정렬 변경 시 1페이지로 초기화
-                        setSort(e.target.value);
-                    }}
-                >
-                    <MenuItem value="date_desc">등록일 (최신순)</MenuItem>
-                    <MenuItem value="date_asc">등록일 (오래된 순)</MenuItem>
-                    <MenuItem value="hit_desc">조회수 (많은 순)</MenuItem>
-                    <MenuItem value="hit_asc">조회수 (적은 순)</MenuItem>
-                    {/* 필요에 따라 항목 추가 */}
-                </Select>
-            </FormControl>
-
             <div className="commonList">
                 {Array.isArray(items) && items.map((item) => (
                     <div key={item.course.post_idx} className="listItem">
-                        <div className="mainImage"></div>
+                        <div className="mainImage">
+                            <img src={
+                                'no_image.jpg'
+                                    ? '/no_image.png'
+                                    : `http://localhost/image/course/${item.course_img}`
+                            } alt={"이미지 안 뜸"} />
+                        </div>
                         <span className="courseTitle">
                             <Link href={`/courseDetail/${item.course.post_idx}`}>
                                 {item.course?.subject}

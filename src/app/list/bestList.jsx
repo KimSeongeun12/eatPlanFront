@@ -7,20 +7,20 @@ export default function bestList() {
     const [items, setItems] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
 
-    useEffect(() => {
-        renderList(page);
-    }, [page]);
-
-    const renderList = async (p) => {
-        try {
-            const res = await axios.get(`http://localhost/course_list/${p}`);
-            const data = res.data;
-            setItems(data.list);
-            setTotalItems(data.pages);
-        } catch (error) {
-            console.error('데이터 로딩 실패:', error);
-        }
-    };
+    // useEffect(() => {
+    //     renderList(page);
+    // }, [page]);
+    //
+    // const renderList = async (p) => {
+    //     try {
+    //         const res = await axios.get(`http://localhost/course_list/${p}`);
+    //         const data = res.data;
+    //         setItems(data.list);
+    //         setTotalItems(data.pages);
+    //     } catch (error) {
+    //         console.error('데이터 로딩 실패:', error);
+    //     }
+    // };
 
     /**/
 
