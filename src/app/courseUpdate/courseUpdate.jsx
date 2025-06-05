@@ -6,17 +6,24 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
+import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
 
 export default function CourseUpdate() {
 
     const searchParams = useSearchParams();
     const post_idx = searchParams.get('post_idx');
     const container = useRef(null);
+
     const [subject, setSubject] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [courseCmt, setCourseCmt] = useState("");
-    const [showModal, setShowModal] = useState(false);
+    const [restaIdxList, setRestaIdxList] = useState([]);
+    const [resta, setResta] = useState([]);
+    const [noResta, setNoResta] = useState([]);
     const [deletedDetailIds, setDeletedDetailIds] = useState([]);
+
+    const [showModal, setShowModal] = useState(false);
+    const [showDetailModal, setShowDetailModal] = useState(false);
     const canUpdate = true;
 
 
@@ -73,14 +80,46 @@ export default function CourseUpdate() {
         getDetail();
     }, []);
 
+    const isFirstLoad = useRef(true);
     useEffect(() => {
-        setSubject(detail.subject);
-        setSelectedTags([
-            ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
-            ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
-        ]);
-        setCourseCmt(detail.post_cmt);
+        if (isFirstLoad.current && detail.post_idx !== 0) {
+            setSubject(detail.subject);
+            setSelectedTags([
+                ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
+                ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
+            ]);
+            setCourseCmt(detail.post_cmt);
+            isFirstLoad.current = false;
+        }
     }, [detail]);
+
+    // 세부일정 실시간 반영
+    useEffect(() => {
+        setDetail(prev => ({
+            ...prev,
+            content_detail_resta: [
+                ...prev.content_detail_resta.filter(
+                    r => !deletedDetailIds.includes(r.detail_resta_idx)
+                ),
+                ...resta.map((r, idx) => ({
+                    detail_resta_idx: `temp-${idx}`, // 새 항목은 임시 ID 부여
+                    resta: r.resta,
+                    start: r.start,
+                    comment: r.comment,
+                }))
+            ],
+            content_detail_cmt: [
+                ...prev.content_detail_cmt.filter(
+                    c => !deletedDetailIds.includes(c.detail_cmt_idx)
+                ),
+                ...noResta.map((c, idx) => ({
+                    detail_cmt_idx: `temp-cmt-${idx}`,
+                    start: c.start,
+                    comment: c.comment,
+                }))
+            ]
+        }));
+    }, [resta, noResta, deletedDetailIds]);
 
     // 최신디테일정보가 들어오면 맵에 마커찍기
     useEffect(() => {
@@ -154,21 +193,60 @@ export default function CourseUpdate() {
         });
     }
 
+    // 코스 추가 핸들러
+    const handleAddCourse = (formData) => {
+        if (formData.resta_name && formData.resta_name.trim() !== "") {
+            // timeline_resta_name 에 값이 존재할 경우
+            // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
+            setResta(prev => [
+                ...prev,
+                {
+                    resta: [
+                        {
+                            resta_name: formData.resta_name,
+                            url: formData.url || '',
+                            media: formData.media || '',
+                        }
+                    ],
+                    start: formData.start || '',
+                    comment: formData.comment || '',
+                }
+            ]);
+            setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
+        } else {
+            // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
+            setNoResta(prev => [
+                ...prev,
+                {
+                    start: formData.start || '',
+                    comment: formData.comment || '',
+                }
+            ]);
+        }
+        setShowDetailModal(false);
+    }
+
+    // 수정완료버튼
     const updateSubmit = () => {
         const payload = {
+            post_idx: detail.post_idx,
             subject,
             post_cmt: courseCmt,
+            tag_name: selectedTags
+                .filter(tag => tag.type === "tag")
+                .map(tag => ({ tag_name: tag.value })),
+            tag_name_area: selectedTags
+                .filter(tag => tag.type === "area")
+                .map(tag => ({ tag_name: tag.value })),
             deleted_detail_idx_list: deletedDetailIds,
-            // ...기타 수정 데이터들
+            content_detail_resta: detail.content_detail_resta,
+            content_detail_cmt: detail.content_detail_cmt
         };
+
         axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
-            if (data.success) {
-                alert("수정 완료!");
-            } else {
-                alert("수정 실패");
-            }
+            alert(data.success ? "수정 완료!" : "수정 실패");
         });
-    }
+    };
 
     // 리스트로 돌아가기버튼
     const toList = () => {
@@ -226,6 +304,15 @@ export default function CourseUpdate() {
                               }
                               canUpdate={canUpdate}/>
                 </span>
+                <button onClick={() => setShowDetailModal(true)} className="courseWrite_button">
+                    코스 추가
+                </button>
+                {showDetailModal && (
+                    <CourseAdd_modal
+                        onClose={() => setShowDetailModal(false)}
+                        onSubmit={handleAddCourse}
+                    />
+                )}
 
                 <span className={"mapHead"}>식당 위치 정보</span>
                 <span className={"mapBody"}>
