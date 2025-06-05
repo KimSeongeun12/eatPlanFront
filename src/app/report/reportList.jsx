@@ -65,7 +65,6 @@ export default function ReportListPage() {
     return (
             <div className="report-rightMenu">
                 <h2>신고 목록</h2>
-
                 <table className="report-table">
                     <thead>
                     <tr>
