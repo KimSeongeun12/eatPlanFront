@@ -1,3 +1,7 @@
+.hidden {
+    display: none !important;
+}
+
 .courseContainer {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 2fr;
@@ -351,6 +355,7 @@ div[class*="active"]{
 article[class*="TimelineItemContentWrapper"]{
     max-width: 500px !important;
     min-width: 500px !important;
+    height: auto !important;
 }
 
 [class*="TimelineContentDetailsWrapper"]::after {
@@ -368,15 +373,49 @@ ul[class*="horizontal"] > li {
     width: auto !important;
 }
 
-[class*=MediaWrapper] {
+/*[class*=MediaWrapper] {
     background: white !important;
-}
+}*/
 
 [class*=TimelineMain] {
     box-sizing: border-box !important;
     width: 100% !important;
     max-width: 1450px !important;
     overflow: unset !important;
+}
+
+[class*=TimelineContentDetailsWrapper] {
+    overflow: unset !important;
+}
+
+.customCards {
+    display: flex;
+    gap: 30px !important;
+    width: 100% !important;
+    flex-wrap: wrap;
+}
+
+.detailContent {
+    flex: 1;
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 10px;
+    height: auto;
+    white-space: normal;    /* 줄바꿈 허용 */
+    word-break: break-word; /* 단어가 길어도 줄바꿈 */
+    overflow-wrap: break-word; /* 오래된 브라우저 호환 */
+}
+
+.customCardImage {
+    width: 250px !important;
+    height: 250px !important;
+}
+
+.detailDel {
+    flex-basis: 100%;
+    text-align: center;
 }
 
 .tagAdd {

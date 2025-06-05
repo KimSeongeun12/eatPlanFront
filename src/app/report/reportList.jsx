@@ -4,7 +4,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import LeftMenu from "@/app/leftMenu";
 import "./reportList.css";
 
 export default function ReportListPage() {
@@ -94,7 +93,7 @@ export default function ReportListPage() {
                                     </Link>
                                 </td>
                                 <td>{report.reporter_id}</td>
-                                <td>{report.suspect_id}</td>
+                                <td>{report.suspect_nickname || report.suspect_id}</td>
                                 <td>
                                     {new Date(report.report_date).toLocaleDateString()}
                                 </td>

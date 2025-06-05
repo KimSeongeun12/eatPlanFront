@@ -12,7 +12,7 @@ export default function Tags({idx, isClass}) {
 
     useEffect(() => {
         if(isClass==='course') {
-            drawRestaTags();
+            drawCourseTags();
         }
         else if(isClass==='restaurant') {
             drawRestaTags();

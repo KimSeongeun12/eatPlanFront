@@ -1,67 +1,220 @@
-.messageList {
+/* reportDetail.css */
+
+/* ─────────────────────────────────────────────────────
+   0) 브라우저 기본 margin/padding 리셋
+───────────────────────────────────────────────────── */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* ─────────────────────────────────────────────────────
+   1) 최상위 레이아웃: 좌우 Flex 배치
+───────────────────────────────────────────────────── */
+.page-wrapper {
+    display: flex;
+    align-items: flex-start; /* 최상단부터 정렬 */
+    min-height: 100vh;       /* 화면 높이만큼 늘리기 */
+}
+
+/* ─────────────────────────────────────────────────────
+   2) 좌측 메뉴 (LeftMenu) - 고정 너비, 색상 등
+───────────────────────────────────────────────────── */
+.left-menu {
+    width: 240px;           /* 고정 너비 */
+    background-color: #CC503B; /* 예시: 주황-red 톤 */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 상단 padding을 반드시 줄여서 화면 최상단과 맞추기 */
+    padding-top: 20px;
+}
+
+/* 좌측 메뉴 내부 프로필 아이콘 (예시) */
+.left-menu .profile-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-bottom: 16px;
+}
+
+/* 좌측 메뉴 항목 링크 */
+.left-menu nav a {
     width: 100%;
-    max-width: 1000px;
-    margin: 50px auto;
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-.messageList h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.messageTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.messageTable th,
-.messageTable td {
-    border: 1px solid #ddd;
-    padding: 12px;
+    padding: 10px 0;
     text-align: center;
-    font-size: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.messageTable th {
-    background-color: #f5f5f5;
+/* 호버 및 활성 상태 */
+.left-menu nav a:hover,
+.left-menu nav a.active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ─────────────────────────────────────────────────────
+   3) 우측 콘텐츠: 신고 상세보기 영역
+───────────────────────────────────────────────────── */
+.report-detail-rightmenu {
+    flex: 1;                 /* 남은 영역 모두 차지 */
+    background-color: #f9f9f9;
+    /* 상단 패딩을 최소화하여 화면 최상단과 붙이기 */
+    padding: 0;
+    margin-top: 0;           /* 혹시 margin 설정이 있다면 0으로 리셋 */
+}
+
+/* ─────────────────────────────────────────────────────
+   4) 신고 상세보기 컨테이너
+───────────────────────────────────────────────────── */
+.report_container {
+    width: 1550px;
+    height: 1050px;
+    margin-left: 10px;   /* 좌우 가운데 정렬 */
+}
+
+/* 상단 제목 */
+.report_container h2 {
+    margin-top: 0;      /* 기본 h2 상단여백 제거 */
+    margin-bottom: 24px;
+    font-size: 1.8rem;
     font-weight: 600;
+    color: #333;
 }
 
-.messageItem {
-    display: table-row;
+/* ─────────────────────────────────────────────────────
+   5) 신고 상세보기 테이블
+───────────────────────────────────────────────────── */
+.report_detail_table {
+    width: 100%;
+    border-collapse: collapse;         /* 경계선이 겹치지 않도록 */
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;               /* 테이블 아래 공간 */
 }
 
-.messageItem td {
-    padding: 10px;
+/* 테이블 헤더 & 본문 셀 스타일 */
+.report_detail_table th,
+.report_detail_table td {
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;         /* ← 여기서 위/아래/왼쪽/오른쪽 모두 테두리 */
     vertical-align: middle;
 }
 
-.messageItem input[type="checkbox"] {
-    transform: scale(1.1);
+/* th (레이블) 배경색 */
+.report_detail_table th {
+    background-color: #fafafa;
+    font-weight: 500;
+    color: #555;
+    text-align: left;
 }
 
-.messageList .delete-btn {
-    float: right;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #cc503b;
+/* 마지막 행이 아닌 경우에만 border-bottom 표시 */
+.report_detail_table tr:not(:last-child) th,
+.report_detail_table tr:not(:last-child) td {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* “내용 *” 레이블 셀 */
+.report_detail_table .content-label {
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* input, textarea 읽기전용 스타일 */
+.report_detail_table input[type='text'],
+.report_detail_table textarea {
+    width: 100%;
+    border: none;
+    background-color: #fafafa;
+    font-size: 1rem;
+    color: #333;
+    resize: none; /* textarea 크기 변경 금지 */
+}
+
+/* 읽기전용 상태 표시 */
+.report_detail_table input[type='text']:read-only,
+.report_detail_table textarea:read-only {
+    cursor: default;
+}
+
+/* textarea 높이 조절 */
+.report_detail_table textarea {
+    max-width: 1500px;
+    min-height: 650px; /* 필요에 따라 조정 */
+    line-height: 1.5;
+    padding: 12px;
+}
+
+/* 첨부파일 목록 */
+.attachments {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.attachments li {
+    margin-bottom: 8px;
+}
+
+.attachments a {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+.attachments a:hover {
+    text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────────
+   6) 하단 “목록” 버튼
+───────────────────────────────────────────────────── */
+.button-wrapper {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.button-wrapper button {
+    padding: 10px 24px;
+    background-color: #d14a30;
     color: #fff;
     border: none;
-    border-radius: 20px;
-    font-weight: bold;
+    border-radius: 24px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-.messageList .delete-btn:hover {
-    background-color: #a33f2f;
+.button-wrapper button:hover {
+    background-color: #a83624;
 }
 
-.messageList .pagination {
-    text-align: center;
-    margin-top: 40px;
+/* ─────────────────────────────────────────────────────
+   7) 반응형 예시
+───────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    /* 좌측 메뉴 반응형 처리 (숨김 또는 슬라이드 아웃) */
+    .left-menu {
+        display: none;
+    }
+    /* 우측 콘텐츠 패딩 보정 */
+    .report-detail-rightmenu {
+        padding: 16px;
+    }
+    /* 테이블 셀 패딩 줄이기 */
+    .report_detail_table th,
+    .report_detail_table td {
+        padding: 8px 12px;
+    }
 }
+
