@@ -4,6 +4,8 @@ import { Chrono } from "react-chrono";
 
 export default function Timeline({timelineStart, timelineFinish, resta, noResta}) {
 
+    const defaultImg = "/no_image.png";
+
     // 세부일정 배열 꺼내고 합친다음 시간순으로 정렬
     const nodes = [
         ...noResta.map(item => ({
@@ -52,13 +54,25 @@ export default function Timeline({timelineStart, timelineFinish, resta, noResta}
             >
                 <p className={"detailContent"}>{item.cardDetailedText}</p>
 
-                {restaInfo?.photo?.new_filename && (
-                    <img
-                        src={`http://localhost/image/${restaInfo.photo.new_filename}`}
-                        className={"customCardImage"}
-                        alt="식당 이미지"
-                    />
-                )}
+                {/*{restaInfo?.photo?.new_filename && (*/}
+                {/*    <img*/}
+                {/*        src={`http://localhost/image/${restaInfo.photo.new_filename}`}*/}
+                {/*        className={"customCardImage"}*/}
+                {/*        alt="식당 이미지"*/}
+                {/*    />*/}
+                {/*)}*/} {/*혹시 몰라서 남겨둠*/}
+
+                <img
+                    src={restaInfo?.photo?.new_filename
+                        ? `http://localhost/image/${restaInfo.photo.new_filename}`
+                        : restaInfo?.media || defaultImg }
+                    className={"customCardImage"}
+                    alt="식당 이미지"
+                    onError={(e) => {
+                        e.target.onerror = null; // 무한 루프 방지
+                        e.target.src = restaInfo?.media || defaultImg;
+                    }}
+                />
 
                 {!isStartOrEnd && (
                     <p className={"detailDel"}>삭제</p>
