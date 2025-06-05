@@ -7,7 +7,7 @@ export default function ReportDetailPage() {
     return (
         <div className="page-wrapper">
             <LeftMenu/>
-            <div className="rightMenu">
+            <div className="report-detail-rightmenu">
                 <ReportDetail/>
             </div>
         </div>

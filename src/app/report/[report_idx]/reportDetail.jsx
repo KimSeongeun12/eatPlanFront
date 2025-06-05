@@ -52,6 +52,7 @@ export default function ReportDetail() {
     const categoryText = categoryMap[detail.class] || '기타';
 
     return (
+        <div className="report-detail-rightmenu">
         <div className={"report_container"}>
             <h2>신고 상세보기</h2>
 
@@ -75,7 +76,7 @@ export default function ReportDetail() {
                 <tr>
                     <th>신고대상자</th>
                     <td colSpan={5}>
-                        <input type="text" value={detail.suspect_id} readOnly/>
+                        <input type="text" value={detail.suspect_nickname || detail.suspect_id} readOnly/>
                     </td>
                 </tr>
 
@@ -127,6 +128,7 @@ export default function ReportDetail() {
                 <button>목록</button>
                 </a>
             </div>
+        </div>
         </div>
     );
 }
