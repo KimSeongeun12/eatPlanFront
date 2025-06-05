@@ -119,6 +119,8 @@ export default function ReportWrite() {
     }
 
     return (
+        <div>
+            <h2>신고작성</h2>
         <form onSubmit={handleSubmit} className="report-form">
             <table className="report-table">
                 <colgroup>
@@ -233,5 +235,6 @@ export default function ReportWrite() {
                 <button type="submit" className="btn-submit">등록</button>
             </div>
         </form>
+        </div>
     )
 }
