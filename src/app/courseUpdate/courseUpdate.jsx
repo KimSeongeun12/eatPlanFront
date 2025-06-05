@@ -7,6 +7,7 @@ import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
 import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
+import * as formData from "slate";
 
 export default function CourseUpdate() {
 
@@ -20,7 +21,8 @@ export default function CourseUpdate() {
     const [restaIdxList, setRestaIdxList] = useState([]);
     const [resta, setResta] = useState([]);
     const [noResta, setNoResta] = useState([]);
-    const [deletedDetailIds, setDeletedDetailIds] = useState([]);
+    const [deletedDetailRestaIds, setDeletedDetailRestaIds] = useState([]);
+    const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
@@ -48,7 +50,6 @@ export default function CourseUpdate() {
     // 디테일 정보 가져오기
     const getDetail = () => {
         axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
-            console.log(data);
             const d = data.detail;
             const newDetail =
                 {
@@ -91,35 +92,8 @@ export default function CourseUpdate() {
             setCourseCmt(detail.post_cmt);
             isFirstLoad.current = false;
         }
+        console.log("받아온 디테일 : ",detail);
     }, [detail]);
-
-    // 세부일정 실시간 반영
-    useEffect(() => {
-        setDetail(prev => ({
-            ...prev,
-            content_detail_resta: [
-                ...prev.content_detail_resta.filter(
-                    r => !deletedDetailIds.includes(r.detail_resta_idx)
-                ),
-                ...resta.map((r, idx) => ({
-                    detail_resta_idx: `temp-${idx}`, // 새 항목은 임시 ID 부여
-                    resta: r.resta,
-                    start: r.start,
-                    comment: r.comment,
-                }))
-            ],
-            content_detail_cmt: [
-                ...prev.content_detail_cmt.filter(
-                    c => !deletedDetailIds.includes(c.detail_cmt_idx)
-                ),
-                ...noResta.map((c, idx) => ({
-                    detail_cmt_idx: `temp-cmt-${idx}`,
-                    start: c.start,
-                    comment: c.comment,
-                }))
-            ]
-        }));
-    }, [resta, noResta, deletedDetailIds]);
 
     // 최신디테일정보가 들어오면 맵에 마커찍기
     useEffect(() => {
@@ -136,7 +110,7 @@ export default function CourseUpdate() {
 
             // ✅ 삭제된 detail_idx 제외
             const restaInfoList = detail.content_detail_resta
-                .filter(r => !deletedDetailIds.includes(r.detail_resta_idx))
+                .filter(r => !deletedDetailRestaIds.includes(r.detail_idx))
                 .map(r => r.resta?.[0])
                 .filter(Boolean);
 
@@ -177,7 +151,7 @@ export default function CourseUpdate() {
                 infoWindow.open(map, marker);
             }
         });
-    }, [detail, deletedDetailIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
+    }, [detail, deletedDetailRestaIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
@@ -206,6 +180,7 @@ export default function CourseUpdate() {
                             resta_name: formData.resta_name,
                             url: formData.url || '',
                             media: formData.media || '',
+                            img_idx: formData.img_idx
                         }
                     ],
                     start: formData.start || '',
@@ -229,18 +204,27 @@ export default function CourseUpdate() {
     // 수정완료버튼
     const updateSubmit = () => {
         const payload = {
-            post_idx: detail.post_idx,
-            subject,
-            post_cmt: courseCmt,
+            content: {subject: subject, post_cmt: courseCmt, isPublic: true, tmp: false},
+            time: {start: "13:00", end: "18:00"},
+            tags: [],
+            tags_del: [],
             tag_name: selectedTags
                 .filter(tag => tag.type === "tag")
                 .map(tag => ({ tag_name: tag.value })),
             tag_name_area: selectedTags
                 .filter(tag => tag.type === "area")
                 .map(tag => ({ tag_name: tag.value })),
-            deleted_detail_idx_list: deletedDetailIds,
-            content_detail_resta: detail.content_detail_resta,
-            content_detail_cmt: detail.content_detail_cmt
+            content_detail_resta: resta.map((item, idx) => ({
+                resta_idx: restaIdxList[idx], // 선택된 식당 idx
+                comment: item.comment || '',
+                start: item.start || ''
+            })),
+            content_detail_cmt: noResta.map(item => ({
+                comment: item.comment || '',
+                start: item.start || ''
+            })),
+            content_detail_resta_del: deletedDetailRestaIds,
+            content_detail_cmt_del: deletedDetailCmtIds,
         };
 
         axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
@@ -252,6 +236,12 @@ export default function CourseUpdate() {
     const toList = () => {
         location.href = "/list";
     };
+
+    console.log("선택된 레스토랑 : ", resta);
+    console.log("지워질 디테일(식당) : ", deletedDetailRestaIds);
+    console.log("지워질 디테일(코멘트) : ", deletedDetailCmtIds);
+    console.log("태그 : ",selectedTags);
+    console.log("제목 상태 : ",subject);
 
     return (
         <>
@@ -295,17 +285,33 @@ export default function CourseUpdate() {
 
                 <span className={"timelineHead"}>코스 내용</span>
                 <span className={"timelineBody"}>
-                    <Timeline timelineStart={detail.time.start}
-                              timelineFinish={detail.time.end}
-                              noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}
-                              onDeleteDetail={(detailIdx) =>
-                                  setDeletedDetailIds((prev) => [...prev, detailIdx])
-                              }
-                              canUpdate={canUpdate}/>
+                <Timeline
+                    timelineStart={detail.time.start}
+                    timelineFinish={detail.time.end}
+                    noResta={[
+                        ...detail.content_detail_cmt.filter(
+                            c => !deletedDetailCmtIds.includes(c.detail_idx)
+                        ),
+                        ...noResta
+                    ]}
+                    resta={[
+                        ...detail.content_detail_resta.filter(
+                            r => !deletedDetailRestaIds.includes(r.detail_idx)
+                        ),
+                        ...resta.filter(r => r.resta)
+                    ]}
+                    onDeleteDetail={(detailIdx, type) => {
+                        if (type === 'resta') {
+                            setDeletedDetailRestaIds(prev => [...prev, detailIdx]);
+                        } else {
+                            setDeletedDetailCmtIds(prev => [...prev, detailIdx]);
+                        }
+                    }}
+                    canUpdate={canUpdate}
+                />
                 </span>
                 <button onClick={() => setShowDetailModal(true)} className="courseWrite_button">
-                    코스 추가
+                    일정 추가
                 </button>
                 {showDetailModal && (
                     <CourseAdd_modal
