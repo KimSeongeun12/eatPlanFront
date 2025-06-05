@@ -1,94 +1,94 @@
 'use client'
 
 import { Chrono } from "react-chrono";
+import { useEffect, useState } from "react";
 
-export default function Timeline({timelineStart, timelineFinish, resta, noResta}) {
+export default function Timeline({ timelineStart, timelineFinish, resta, noResta, onDeleteDetail, canUpdate }) {
 
-    const defaultImg = "/no_image.png";
+    const [timelineItems, setTimelineItems] = useState([]);
 
-    // 세부일정 배열 꺼내고 합친다음 시간순으로 정렬
-    const nodes = [
-        ...noResta.map(item => ({
-            title: "코멘트",
-            cardTitle: "코멘트",
-            cardSubtitle: item.start,
-            cardDetailedText: item.comment
-        })),
-        ...resta
-            .map(item => {
-            const restaInfo = item.resta[0]; // 배열에서 첫 번째 식당 정보 사용
-            return {
-                title: restaInfo.resta_name,
-                cardTitle: restaInfo.resta_name,
-                url: restaInfo.url,
+    // props 기반으로 items 재계산
+    useEffect(() => {
+        const nodes = [
+            ...noResta.map(item => ({
+                title: "코멘트",
+                cardTitle: "코멘트",
                 cardSubtitle: item.start,
                 cardDetailedText: item.comment,
-            };
-        })
-    ].sort((a, b) => a.cardSubtitle.localeCompare(b.cardSubtitle));
+                detail_idx: item.detail_idx
+            })),
+            ...resta.map(item => {
+                const restaInfo = item.resta[0];
+                return {
+                    title: restaInfo.resta_name,
+                    cardTitle: restaInfo.resta_name,
+                    url: restaInfo.url,
+                    cardSubtitle: item.start,
+                    cardDetailedText: item.comment,
+                    customResta: restaInfo,
+                    detail_idx: item.detail_idx
+                };
+            })
+        ].sort((a, b) => a.cardSubtitle.localeCompare(b.cardSubtitle));
 
-    // 시작과 끝 노드 추가
-    const items = [
-        {
-            title: `시작 ${timelineStart}`,
-            cardSubtitle: "플랜 시작 시간",
-        },
-        ...nodes.map((node, idx) => ({
-            ...node,
-            customResta: resta[idx]?.resta?.[0] || null
-        })),
-        {
-            title: `${timelineFinish} 끝`,
-            cardSubtitle: "플랜 종료 시간"
+        const fullItems = [
+            { title: `시작 ${timelineStart}`, cardSubtitle: "플랜 시작 시간", detail_idx:0 },
+            ...nodes,
+            { title: `${timelineFinish} 끝`, cardSubtitle: "플랜 종료 시간", detail_idx:99999 }
+        ];
+
+        setTimelineItems(fullItems);
+
+    }, [resta, noResta, timelineStart, timelineFinish]);
+
+    // 삭제 함수
+    const handleDeleteById = (detailIdx) => {
+        if (detailIdx !== undefined) {
+            onDeleteDetail(detailIdx);
+            setTimelineItems(prev => prev.filter(item => item.detail_idx !== detailIdx));
         }
-    ];
+    };
 
-    const customContent = items.map((item, idx) => {
-        const isStartOrEnd = item.title?.startsWith("시작") || item.title?.endsWith("끝");
-        const restaInfo = item.customResta;
-
-        return (
-            <div
-                key={idx}
-                className={isStartOrEnd ? "hidden" : "customCards"}
-            >
-                <p className={"detailContent"}>{item.cardDetailedText}</p>
-
-                {/*{restaInfo?.photo?.new_filename && (*/}
-                {/*    <img*/}
-                {/*        src={`http://localhost/image/${restaInfo.photo.new_filename}`}*/}
-                {/*        className={"customCardImage"}*/}
-                {/*        alt="식당 이미지"*/}
-                {/*    />*/}
-                {/*)}*/} {/*혹시 몰라서 남겨둠*/}
-
-                <img
-                    src={restaInfo?.photo?.new_filename
-                        ? `http://localhost/image/${restaInfo.photo.new_filename}`
-                        : restaInfo?.media || defaultImg }
-                    className={"customCardImage"}
-                    alt="식당 이미지"
-                    onError={(e) => {
-                        e.target.onerror = null; // 무한 루프 방지
-                        e.target.src = restaInfo?.media || defaultImg;
-                    }}
-                />
-
-                {!isStartOrEnd && (
-                    <p className={"detailDel"}>삭제</p>
-                )}
-            </div>
-        );
-    });
+    console.log("프롭으로 받은 아이템리스트 : ",timelineItems)
+    console.log("timelineItems.length:", timelineItems.length);
 
     return (
         <Chrono
-            key={resta.length + "-" + noResta.length}
-            items={items}
+            key={timelineItems.map(i => i.detail_idx).join("-")}
+            items={timelineItems}
             mode="HORIZONTAL"
             disableToolbar
         >
-            {customContent}
+            {timelineItems.map(item => {
+                const isStartOrEnd = item.title?.startsWith("시작") || item.title?.endsWith("끝");
+                const restaInfo = item.customResta;
+
+                return (
+                    <div
+                        key={item.detail_idx}
+                        className={isStartOrEnd ? "hidden" : "customCards"}
+                        style={{ display: isStartOrEnd ? "none" : "flex", gap: "12px" }}
+                    >
+                        <p className="detailContent" style={{ flex: 1, wordBreak: "break-word", whiteSpace: "normal" }}>
+                            {item.cardDetailedText}
+                        </p>
+
+                        {restaInfo?.img_idx && (
+                            <img
+                                src={`http://localhost/imageIdx/${restaInfo.img_idx}`}
+                                className="customCardImage"
+                                alt="식당 이미지"
+                                style={{ width: "120px", objectFit: "cover" }}
+                            />
+                        )}
+
+                        {!isStartOrEnd && canUpdate && (
+                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx)}>[삭제]</p>
+                        )}
+                    </div>
+                );
+            })
+            }
         </Chrono>
     );
 }

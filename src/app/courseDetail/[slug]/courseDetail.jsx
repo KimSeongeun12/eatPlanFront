@@ -7,6 +7,7 @@ import {Pagination, Stack} from "@mui/material";
 
 export default function CourseDetail({post_idx}) {
 
+    const canUpdate = false;
     const [page, setPage] = useState(1);
     const itemsPerPage = 10;
     const [cmt, setCmt] = useState([]);
@@ -129,8 +130,8 @@ export default function CourseDetail({post_idx}) {
     // 코스 신고버튼
     const courseReport = (detail) => {
         console.log("courseReport -> detail :",detail);
-        const queryParts = ["isClass=course", `idx=${detail.post_idx}`,`suspect=${detail.user_id}`,`nickname=${detail.nickname}`].join("&");
-        const url = `/reportWrite?${queryParts}`
+        const queryParts = ["isClass=course", `idx=${detail.post_idx}`,`suspect=${detail.user_id}`,`nickname=${encodeURIComponent(detail.nickname)}`].join("&");
+        const url = `/report/write?${queryParts}`
         location.href = url;
     };
 
@@ -263,8 +264,8 @@ export default function CourseDetail({post_idx}) {
 
     // 댓글 신고 버튼
     const cmtReport = (item) => {
-        const queryParts = ["isClass=comment", `idx=${item.comment_idx}`,`suspect=${item.user_id}` ,`nickname=${item.nickname}`].join("&");
-        const url = `/reportWrite?${queryParts}`
+        const queryParts = ["isClass=comment", `idx=${item.comment_idx}`,`suspect=${item.user_id}` ,`nickname=${encodeURIComponent(item.nickname)}`].join("&");
+        const url = `/report/write?${queryParts}`
         location.href = url;
     };
 
@@ -358,7 +359,8 @@ export default function CourseDetail({post_idx}) {
                     <Timeline timelineStart={detail.time.start}
                               timelineFinish={detail.time.end}
                               noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}/>
+                              resta = {detail.content_detail_resta}
+                              canUpdate ={canUpdate}/>
                 </span>
 
                 <span className={"mapHead"}>식당 위치 정보</span>

@@ -6,16 +6,25 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
+import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
 
 export default function CourseUpdate() {
 
     const searchParams = useSearchParams();
     const post_idx = searchParams.get('post_idx');
     const container = useRef(null);
+
     const [subject, setSubject] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [courseCmt, setCourseCmt] = useState("");
+    const [restaIdxList, setRestaIdxList] = useState([]);
+    const [resta, setResta] = useState([]);
+    const [noResta, setNoResta] = useState([]);
+    const [deletedDetailIds, setDeletedDetailIds] = useState([]);
+
     const [showModal, setShowModal] = useState(false);
+    const [showDetailModal, setShowDetailModal] = useState(false);
+    const canUpdate = true;
 
 
     const [detail, setDetail] = useState({
@@ -71,30 +80,65 @@ export default function CourseUpdate() {
         getDetail();
     }, []);
 
+    const isFirstLoad = useRef(true);
     useEffect(() => {
-        setSubject(detail.subject);
-        setSelectedTags([
-            ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
-            ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
-        ]);
-        setCourseCmt(detail.post_cmt);
+        if (isFirstLoad.current && detail.post_idx !== 0) {
+            setSubject(detail.subject);
+            setSelectedTags([
+                ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
+                ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
+            ]);
+            setCourseCmt(detail.post_cmt);
+            isFirstLoad.current = false;
+        }
     }, [detail]);
 
-    // 디테일정보가 들어오면 맵에 마커찍기
+    // 세부일정 실시간 반영
+    useEffect(() => {
+        setDetail(prev => ({
+            ...prev,
+            content_detail_resta: [
+                ...prev.content_detail_resta.filter(
+                    r => !deletedDetailIds.includes(r.detail_resta_idx)
+                ),
+                ...resta.map((r, idx) => ({
+                    detail_resta_idx: `temp-${idx}`, // 새 항목은 임시 ID 부여
+                    resta: r.resta,
+                    start: r.start,
+                    comment: r.comment,
+                }))
+            ],
+            content_detail_cmt: [
+                ...prev.content_detail_cmt.filter(
+                    c => !deletedDetailIds.includes(c.detail_cmt_idx)
+                ),
+                ...noResta.map((c, idx) => ({
+                    detail_cmt_idx: `temp-cmt-${idx}`,
+                    start: c.start,
+                    comment: c.comment,
+                }))
+            ]
+        }));
+    }, [resta, noResta, deletedDetailIds]);
+
+    // 최신디테일정보가 들어오면 맵에 마커찍기
     useEffect(() => {
         kakao.maps.load(() => {
             const containerEl = container.current;
 
-            // 지도 생성 기본 옵션
-            let mapOption = {
-                center: new kakao.maps.LatLng(37.570377, 126.985409), // 기본 중심: 종각역
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.570377, 126.985409),
                 level: 3
             };
 
             const map = new kakao.maps.Map(containerEl, mapOption);
             const bounds = new kakao.maps.LatLngBounds();
 
-            const restaInfoList = detail.content_detail_resta.map(r => r.resta?.[0]).filter(Boolean);
+            // ✅ 삭제된 detail_idx 제외
+            const restaInfoList = detail.content_detail_resta
+                .filter(r => !deletedDetailIds.includes(r.detail_resta_idx))
+                .map(r => r.resta?.[0])
+                .filter(Boolean);
 
             if (restaInfoList.length > 0) {
                 restaInfoList.forEach(restaInfo => {
@@ -116,10 +160,8 @@ export default function CourseUpdate() {
                     }
                 });
 
-                // 모든 마커 포함되도록 범위 설정
                 map.setBounds(bounds);
             } else {
-                // ✅ 식당 정보 없을 경우 종각역에 기본 마커 표시
                 const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
                 const marker = new kakao.maps.Marker({
                     position: defaultPosition,
@@ -135,7 +177,7 @@ export default function CourseUpdate() {
                 infoWindow.open(map, marker);
             }
         });
-    }, [detail]);
+    }, [detail, deletedDetailIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
@@ -151,9 +193,60 @@ export default function CourseUpdate() {
         });
     }
 
-    const updateSubmit = () => {
-
+    // 코스 추가 핸들러
+    const handleAddCourse = (formData) => {
+        if (formData.resta_name && formData.resta_name.trim() !== "") {
+            // timeline_resta_name 에 값이 존재할 경우
+            // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
+            setResta(prev => [
+                ...prev,
+                {
+                    resta: [
+                        {
+                            resta_name: formData.resta_name,
+                            url: formData.url || '',
+                            media: formData.media || '',
+                        }
+                    ],
+                    start: formData.start || '',
+                    comment: formData.comment || '',
+                }
+            ]);
+            setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
+        } else {
+            // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
+            setNoResta(prev => [
+                ...prev,
+                {
+                    start: formData.start || '',
+                    comment: formData.comment || '',
+                }
+            ]);
+        }
+        setShowDetailModal(false);
     }
+
+    // 수정완료버튼
+    const updateSubmit = () => {
+        const payload = {
+            post_idx: detail.post_idx,
+            subject,
+            post_cmt: courseCmt,
+            tag_name: selectedTags
+                .filter(tag => tag.type === "tag")
+                .map(tag => ({ tag_name: tag.value })),
+            tag_name_area: selectedTags
+                .filter(tag => tag.type === "area")
+                .map(tag => ({ tag_name: tag.value })),
+            deleted_detail_idx_list: deletedDetailIds,
+            content_detail_resta: detail.content_detail_resta,
+            content_detail_cmt: detail.content_detail_cmt
+        };
+
+        axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
+            alert(data.success ? "수정 완료!" : "수정 실패");
+        });
+    };
 
     // 리스트로 돌아가기버튼
     const toList = () => {
@@ -205,8 +298,21 @@ export default function CourseUpdate() {
                     <Timeline timelineStart={detail.time.start}
                               timelineFinish={detail.time.end}
                               noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}/>
+                              resta = {detail.content_detail_resta}
+                              onDeleteDetail={(detailIdx) =>
+                                  setDeletedDetailIds((prev) => [...prev, detailIdx])
+                              }
+                              canUpdate={canUpdate}/>
                 </span>
+                <button onClick={() => setShowDetailModal(true)} className="courseWrite_button">
+                    코스 추가
+                </button>
+                {showDetailModal && (
+                    <CourseAdd_modal
+                        onClose={() => setShowDetailModal(false)}
+                        onSubmit={handleAddCourse}
+                    />
+                )}
 
                 <span className={"mapHead"}>식당 위치 정보</span>
                 <span className={"mapBody"}>
