@@ -166,7 +166,29 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                 {/* 하단 버튼 */}
                 <div className="tagModalFooter">
                     <button className="cancelBtn" onClick={onCancel}>취소</button>
-                    <button className="applyBtn" onClick={() => onApply(selectedList)}>적용</button>
+                    <button className="applyBtn"
+                            onClick={() => {
+                                const enrichedList = selectedList.map(item => {
+                                    if (item.type === 'tag') {
+                                        const found = tag.find(t => t.tag_name === item.value && t.isClass === 'course');
+                                        return {
+                                            type: 'tag',
+                                            value: item.value,
+                                            idx: found?.tag_idx || null,
+                                            isClass: 'tag'
+                                        };
+                                    } else {
+                                        const found = areaTag.find(a => a.tag_name === item.value);
+                                        return {
+                                            type: 'area',
+                                            value: item.value,
+                                            idx: found?.area_tag_idx || null,
+                                            isClass: 'area_tag'
+                                        };
+                                    }
+                                });
+                                onApply(enrichedList);
+                            }}>적용</button>
                 </div>
             </div>
         </div>

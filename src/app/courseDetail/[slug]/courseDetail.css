@@ -313,6 +313,47 @@ textarea[class$="Body"] {
     background-color: #ddd;
 }
 
+.isPublic {
+    margin-right: 990px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    gap: 10px;
+    outline: none;
+}
+
+.actionButtons {
+    display: flex;
+    justify-content: center; /* 가로 가운데 정렬 */
+    gap: 20px;               /* 버튼 간 간격 */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    grid-column: 1 / -1;     /* 전체 열 차지 (코스 그리드 내에서) */
+}
+
+.actionButtons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid #CC503B;
+    background-color: #fff;
+    color: #CC503B;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.actionButtons button:hover {
+    background-color: #CC503B;
+    color: white;
+}
+
+.actionButtons button:active {
+    transform: scale(0.96);
+}
+
 div[class*="Outline"] {
     background-color: #CC503B !important;
     height: 8px !important;

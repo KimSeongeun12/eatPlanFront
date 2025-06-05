@@ -7,7 +7,7 @@ import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
 import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
-import * as formData from "slate";
+import StepModalUpdate from "@/app/courseUpdate/update_modal/page";
 
 export default function CourseUpdate() {
 
@@ -23,9 +23,13 @@ export default function CourseUpdate() {
     const [noResta, setNoResta] = useState([]);
     const [deletedDetailRestaIds, setDeletedDetailRestaIds] = useState([]);
     const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
+    const [time, setTime] = useState({timelineStart:"",timelineFinish:""});
+    const [isPublic, setIsPublic] = useState(true);
 
+    const [initialSelectedTags, setInitialSelectedTags] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showTimeModal, setShowTimeModal] = useState(false);
     const canUpdate = true;
 
 
@@ -36,6 +40,7 @@ export default function CourseUpdate() {
         "reg_date":"",
         "star_average":0,
         "subject":"",
+        "isPublic":true,
         "blind":false,
         "tmp":false,
         "total_like_count":0,
@@ -45,7 +50,8 @@ export default function CourseUpdate() {
         "content_detail_resta":[],
         "tag_name":[],
         "tag_name_area": [],
-        "time":{"start":"", "end":""}});
+        "tags":[],
+        "time":{"timelineStart":"", "timelineFinish":""}});
 
     // 디테일 정보 가져오기
     const getDetail = () => {
@@ -59,6 +65,7 @@ export default function CourseUpdate() {
                     "reg_date":d.content.reg_date,
                     "star_average":d.content.star_average,
                     "subject":d.content.subject,
+                    "isPublic":d.content.public,
                     "blind":d.content.blind,
                     "tmp":d.content.tmp,
                     "total_like_count":d.content.total_like_count,
@@ -68,11 +75,13 @@ export default function CourseUpdate() {
                     "content_detail_resta":d.content_detail_resta,
                     "tag_name":d.tag_name,
                     "tag_name_area": d.tag_name_area,
+                    "tags":d.tags,
                     "time":{
-                        "start":d.time.start,
-                        "end":d.time.end
+                        "timelineStart":d.time.start,
+                        "timelineFinish":d.time.end
                     }}
             setDetail(newDetail);
+            console.log("받아온 데이터 : ",data);
         });
     };
 
@@ -84,12 +93,32 @@ export default function CourseUpdate() {
     const isFirstLoad = useRef(true);
     useEffect(() => {
         if (isFirstLoad.current && detail.post_idx !== 0) {
+            const newSelected = detail.tags.map(tag => {
+                const isArea = tag.isClass === "area_tag";
+                const idx = isArea ? tag.area_tag_idx : tag.tag_idx;
+
+                const name = isArea
+                    ? detail.tag_name_area.find(a => a.area_tag_idx === idx)?.tag_name
+                    : detail.tag_name.find(t => t.tag_idx === idx)?.tag_name;
+
+                return {
+                    type: isArea ? "area" : "tag",
+                    value: name || "",   // 못 찾았을 경우 빈 문자열
+                    idx,
+                    isClass: tag.isClass
+                };
+            });
+            const newInitial = detail.tags.map(tag => ({
+                idx: tag.tag_idx ?? tag.area_tag_idx,
+                isClass: tag.isClass
+            }));
+
             setSubject(detail.subject);
-            setSelectedTags([
-                ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
-                ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
-            ]);
+            setSelectedTags(newSelected);
+            setInitialSelectedTags(newInitial); // 초기 상태 따로 저장
             setCourseCmt(detail.post_cmt);
+            setTime(detail.time);
+            setIsPublic(detail.isPublic);
             isFirstLoad.current = false;
         }
         console.log("받아온 디테일 : ",detail);
@@ -167,6 +196,13 @@ export default function CourseUpdate() {
         });
     }
 
+    // 코스 시간 핸들러
+    const handleComplete = (data) => {
+        setTime(data);       // 저장
+        setShowTimeModal(false);     // 모달 닫기
+        console.log("변경된 시간 : ",time);
+    };
+
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
         if (formData.resta_name && formData.resta_name.trim() !== "") {
@@ -203,17 +239,31 @@ export default function CourseUpdate() {
 
     // 수정완료버튼
     const updateSubmit = () => {
+
+        const added = selectedTags.filter(
+            tag => !initialSelectedTags.some(init => init.type === tag.type && init.value === tag.value)
+        );
+        const removed = initialSelectedTags.filter(
+            init => !selectedTags.some(tag => tag.type === init.type && tag.value === init.value)
+        );
+
+        const tags = added.map(t => ({
+            type: t.type,
+            isClass: t.isClass,
+            idx: t.idx ?? null
+        }));
+
+        const tags_del = removed.map(t => ({
+            type: t.type,
+            isClass: t.isClass,
+            idx: t.idx ?? null
+        }));
+
         const payload = {
-            content: {subject: subject, post_cmt: courseCmt, isPublic: true, tmp: false},
-            time: {start: "13:00", end: "18:00"},
-            tags: [],
-            tags_del: [],
-            tag_name: selectedTags
-                .filter(tag => tag.type === "tag")
-                .map(tag => ({ tag_name: tag.value })),
-            tag_name_area: selectedTags
-                .filter(tag => tag.type === "area")
-                .map(tag => ({ tag_name: tag.value })),
+            content: {subject: subject, post_cmt: courseCmt, isPublic: isPublic, tmp: detail.tmp},
+            time: {start:time.timelineStart, end:time.timelineFinish},
+            tags,
+            tags_del,
             content_detail_resta: resta.map((item, idx) => ({
                 resta_idx: restaIdxList[idx], // 선택된 식당 idx
                 comment: item.comment || '',
@@ -228,7 +278,14 @@ export default function CourseUpdate() {
         };
 
         axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
-            alert(data.success ? "수정 완료!" : "수정 실패");
+            if (data.success){
+                alert("수정 완료!");
+                location.href=`/courseDetail/${detail.post_idx}`
+            }else{
+                alert("변경된 내용이 없습니다.")
+                location.href=`/courseDetail/${detail.post_idx}`
+            }
+
         });
     };
 
@@ -240,8 +297,10 @@ export default function CourseUpdate() {
     console.log("선택된 레스토랑 : ", resta);
     console.log("지워질 디테일(식당) : ", deletedDetailRestaIds);
     console.log("지워질 디테일(코멘트) : ", deletedDetailCmtIds);
-    console.log("태그 : ",selectedTags);
     console.log("제목 상태 : ",subject);
+    console.log("코스 코멘트 상태 : ",courseCmt);
+    console.log("변경된 시간 : ",time);
+    console.log("공개여부 : ",isPublic)
 
     return (
         <>
@@ -286,8 +345,8 @@ export default function CourseUpdate() {
                 <span className={"timelineHead"}>코스 내용</span>
                 <span className={"timelineBody"}>
                 <Timeline
-                    timelineStart={detail.time.start}
-                    timelineFinish={detail.time.end}
+                    timelineStart={time.timelineStart}
+                    timelineFinish={time.timelineFinish}
                     noResta={[
                         ...detail.content_detail_cmt.filter(
                             c => !deletedDetailCmtIds.includes(c.detail_idx)
@@ -310,15 +369,26 @@ export default function CourseUpdate() {
                     canUpdate={canUpdate}
                 />
                 </span>
-                <button onClick={() => setShowDetailModal(true)} className="courseWrite_button">
-                    일정 추가
-                </button>
-                {showDetailModal && (
-                    <CourseAdd_modal
-                        onClose={() => setShowDetailModal(false)}
-                        onSubmit={handleAddCourse}
-                    />
-                )}
+                <div className={"actionButtons"}>
+                    <button onClick={() => setShowTimeModal(true)} className="timeUpdate">
+                        코스 시간 변경
+                    </button>
+                    {showTimeModal && (
+                        <StepModalUpdate
+                            onClose={() => setShowTimeModal(false)}
+                            onComplete={handleComplete}
+                        />
+                    )}
+                    <button onClick={() => setShowDetailModal(true)} className="detailUpdate">
+                        일정 추가
+                    </button>
+                    {showDetailModal && (
+                        <CourseAdd_modal
+                            onClose={() => setShowDetailModal(false)}
+                            onSubmit={handleAddCourse}
+                        />
+                    )}
+                </div>
 
                 <span className={"mapHead"}>식당 위치 정보</span>
                 <span className={"mapBody"}>
@@ -334,6 +404,28 @@ export default function CourseUpdate() {
                     onChange={(e) => setCourseCmt(e.target.value)}></textarea>
 
                 <div className={"btns"}>
+                    <div className="isPublic">
+                        <label>
+                            <input
+                                type="radio"
+                                name="isPublic"
+                                value="public"
+                                checked={isPublic}
+                                onChange={() => setIsPublic(true)}
+                            />
+                            공개
+                        </label>
+                        <label style={{ marginLeft: "10px" }}>
+                            <input
+                                type="radio"
+                                name="isPublic"
+                                value="private"
+                                checked={!isPublic}
+                                onChange={() => setIsPublic(false)}
+                            />
+                            비공개
+                        </label>
+                    </div>
                     <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
                     <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
                     <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
