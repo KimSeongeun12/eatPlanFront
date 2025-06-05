@@ -20,23 +20,24 @@ export default function DrawResta({leftMenu}){
     }
 
     // --------------------- 식당 리스트를 뽑는 함수 --------------------- //
-    const drawResta = async (e)=>{
+    const drawResta = (e)=>{
         sortList(e);
-        let {data}=await axios.get(`http://localhost/adtag_restaList/${page.current}/${sort.current}`);
+        axios.get(`http://localhost/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+            const result=data.restaList.list.map((item)=>{
+                // console.log(item);
+                return(
+                    <div key={item.resta_idx}
+                         style={{padding:"5px", border:"1px solid lightgray", display:'flex', flexDirection:'row'}}>
+                        {/*식당 이름*/}
+                        <div style={{width:"200px", cursor:"pointer"}} onClick={()=>openDetail(item.resta_idx)}>{item.resta_name}</div>
+                        {/*식당 주소*/}
+                        <div style={{position:"relative", right:"-20%"}}>{item.address}</div>
+                    </div>
+                );
+            });
+            setList(result);
+        })
 
-        const result=data.restaList.list.map((item)=>{
-            // console.log(item);
-            return(
-                <div key={item.resta_idx}
-                     style={{padding:"5px", border:"1px solid lightgray", display:'flex', flexDirection:'row'}}>
-                    {/*식당 이름*/}
-                    <div style={{width:"200px", cursor:"pointer"}} onClick={()=>openDetail(item.resta_idx)}>{item.resta_name}</div>
-                    {/*식당 주소*/}
-                    <div style={{position:"relative", right:"-20%"}}>{item.address}</div>
-                </div>
-            );
-        });
-        setList(result);
     }
 
     const sortList=(e)=>{

@@ -15,7 +15,7 @@ export default function RestaTagManager({tags, resta_idx}) {
 
     useEffect(() => {
         drawTags();
-    },[resta_idx]);
+    }, [resta_idx]);
 
     const [list, setList] = useState([]);
 
@@ -24,10 +24,11 @@ export default function RestaTagManager({tags, resta_idx}) {
         let {data} = await axios.get(`http://localhost/restaTagDel/${resta_idx}/${tag_idx}`);
         drawTags();
     }
-
+    
     // 태그들을 그리는 함수
-    const drawTags = () => {
-        const data = tags.map((item) => {
+    const drawTags = async () => {
+        let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`);
+        const tagList = data.tags.map((item)=>{
             return (
                 <div key={item.tag_idx}
                      style={{border: "1px solid lightblue", padding: "3px", margin: "3px", width: "100px"}}>
@@ -35,15 +36,15 @@ export default function RestaTagManager({tags, resta_idx}) {
                     <span style={{color: "red", cursor:"pointer"}} onClick={() => delTag(item.tag_idx)}>X</span>
                 </div>
             );
-        });
-        setList(data);
+        })
+        setList(tagList);
     }
 
     return (
         <div>
             {/*태그 출력 부분*/}
             <div>{list}</div>
-            <TagInput resta_idx={resta_idx} drawTags={drawTags}/>
+            <TagInput resta_idx={resta_idx} drawTags={drawTags} />
         </div>
     );
 }
@@ -57,10 +58,11 @@ function TagInput({resta_idx, drawTags}) {
 
     useEffect(() => {
         makeOptions();
+        drawTags();
     }, [resta_idx]);
 
     const insert = async () => {
-        let {data} = await axios.post(`http://localhost/addTagtoResta`, {tag_idx: input, resta_idx: resta_idx});
+        await axios.post(`http://localhost/addTagtoResta`, {tag_idx: input, resta_idx: resta_idx});
         drawTags();
     }
 

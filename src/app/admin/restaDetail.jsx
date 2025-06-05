@@ -18,7 +18,6 @@ export default function RestaDetail({resta_idx}) {
 
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`)
-
         setResta(data.detail);   // 1. 식당 정보 저장
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
