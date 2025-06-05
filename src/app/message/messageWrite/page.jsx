@@ -1,13 +1,13 @@
 'use client';
 
 import LeftMenu from '@/app/leftMenu';
-import MessageList from './messageList';
+import MessageWrite from './messageWrite';
 
 export default function MessagePage() {
     return (
         <div style={{ display: 'flex' }}>
             <LeftMenu />
-            <MessageList />
+            <MessageWrite/>
         </div>
     );
 }

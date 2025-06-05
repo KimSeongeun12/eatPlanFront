@@ -1,0 +1,113 @@
+/* File: /app/message/messageDetail/messageDetail.css */
+
+/* ─── 기본 컨테이너 ─── */
+.message-detail-container {
+    padding: 24px;
+    width: 1580px;
+    height: 1040px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* ─── 상세 테이블 ─── */
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+}
+.detail-table th,
+.detail-table td {
+    border: 1px solid #ddd;
+    padding: 12px 8px;
+    vertical-align: top;
+}
+.detail-table th {
+    background-color: #f7f7f7;
+    width: 120px;
+    font-weight: 600;
+    text-align: left;
+}
+.detail-table .cell-header {
+    background-color: #f0f0f0;
+    width: 150px;
+}
+.detail-table .cell-value {
+    background-color: #fff;
+}
+.detail-table .content-header {
+    background-color: #e0e0e0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.detail-table .content-cell {
+    height: 650px;
+    background-color: #fff;
+    padding: 16px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ─── 버튼 그룹 ─── */
+.detail-button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+.action-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.action-btn:hover {
+    background-color: #cc503b;
+    color: #fff;
+}
+
+/* ─── 삭제 확인 팝업 ─── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 360px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+.confirm-text {
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+}
+.confirm-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+.confirm-btn,
+.cancel-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.cancel-btn {
+    border-color: #888;
+    color: #888;
+}
