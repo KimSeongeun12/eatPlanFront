@@ -11,6 +11,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
     useEffect(() => {
         const nodes = [
             ...noResta.map(item => ({
+                tmpIdx: item.tmpIdx,
                 title: "코멘트",
                 cardTitle: "코멘트",
                 cardSubtitle: item.start,
@@ -20,6 +21,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
             ...resta.map(item => {
                 const restaInfo = item.resta[0];
                 return {
+                    tmpIdx: item.tmpIdx,
                     title: restaInfo.resta_name,
                     cardTitle: restaInfo.resta_name,
                     url: restaInfo.url,
@@ -42,10 +44,13 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
     }, [resta, noResta, timelineStart, timelineFinish]);
 
     // 삭제 함수
-    const handleDeleteById = (detailIdx, customResta) => {
+    const handleDeleteById = (detailIdx, customResta, tmpIdx) => {
         if (detailIdx !== undefined) {
-            onDeleteDetail(detailIdx, customResta);
+            onDeleteDetail(detailIdx, customResta, null);
             setTimelineItems(prev => prev.filter(item => item.detail_idx !== detailIdx));
+        } else {
+            onDeleteDetail(undefined, customResta, tmpIdx);
+            setTimelineItems(prev => prev.filter(item => item.tmpIdx !== tmpIdx || item.tmpIdx == null));
         }
     };
 
@@ -54,7 +59,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
 
     return (
         <Chrono
-            key={timelineItems.map(i => i.detail_idx).join("-")}
+            key={timelineItems.map(i => i.detail_idx ?? `tmp-${i.tmpIdx}`).join("-")}
             items={timelineItems}
             mode="HORIZONTAL"
             disableToolbar
@@ -65,7 +70,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
 
                 return (
                     <div
-                        key={item.detail_idx}
+                        key={item.detail_idx ?? `tmp-${item.tmpIdx}`}
                         className={isStartOrEnd ? "hidden" : "customCards"}
                         style={{ display: isStartOrEnd ? "none" : "flex", gap: "12px" }}
                     >
@@ -83,7 +88,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
                         )}
 
                         {!isStartOrEnd && canUpdate && (
-                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx, item.customResta)}>[삭제]</p>
+                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx, item.customResta, item.tmpIdx)}>[삭제]</p>
                         )}
                     </div>
                 );

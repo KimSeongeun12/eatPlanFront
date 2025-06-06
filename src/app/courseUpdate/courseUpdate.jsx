@@ -25,6 +25,7 @@ export default function CourseUpdate() {
     const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
     const [time, setTime] = useState({timelineStart:"",timelineFinish:""});
     const [isPublic, setIsPublic] = useState(true);
+    const [tmpIdx, setTmpIdx] = useState(1);
 
     const [initialSelectedTags, setInitialSelectedTags] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -194,6 +195,7 @@ export default function CourseUpdate() {
             setResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     resta: [
                         {
                             resta_name: formData.resta_name,
@@ -206,16 +208,19 @@ export default function CourseUpdate() {
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
             setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
         } else {
             // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
             setNoResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     start: formData.start || '',
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
         }
         setShowDetailModal(false);
     }
@@ -336,19 +341,29 @@ export default function CourseUpdate() {
                         ...detail.content_detail_cmt.filter(
                             c => !deletedDetailCmtIds.some(d => d.detail_idx === c.detail_idx)
                         ),
-                        ...noResta
+                        ...noResta.filter(
+                            n => !deletedDetailCmtIds.some(d => d.tmpIdx === n.tmpIdx)
+                        )
                     ]}
                     resta={[
                         ...detail.content_detail_resta.filter(
                             r => !deletedDetailRestaIds.some(d => d.detail_idx === r.detail_idx)
                         ),
-                        ...resta.filter(r => r.resta)
+                        ...resta.filter(
+                            r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx)
+                        ).filter(r => r.resta)
                     ]}
-                    onDeleteDetail={(detailIdx, customResta) => {
-                        if (customResta && Object.keys(customResta).length > 0) {
+                    onDeleteDetail={(detailIdx, customResta, tmpIdx) => {
+                        if (customResta && Object.keys(customResta).length > 0 && tmpIdx == null) {
                             setDeletedDetailRestaIds(prev => [...prev, {detail_idx:detailIdx}]);
-                        } else {
+                        } else if (tmpIdx == null){
                             setDeletedDetailCmtIds(prev => [...prev, {detail_idx:detailIdx}]);
+                        } else if (customResta && Object.keys(customResta).length > 0 && tmpIdx){
+                            setDeletedDetailRestaIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                            setResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
+                        } else if (tmpIdx) {
+                            setDeletedDetailCmtIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                            setNoResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
                         }
                     }}
                     canUpdate={canUpdate}
