@@ -121,11 +121,16 @@ export default function CourseUpdate() {
             const map = new kakao.maps.Map(containerEl, mapOption);
             const bounds = new kakao.maps.LatLngBounds();
 
-            // ✅ 삭제된 detail_idx 제외
-            const restaInfoList = detail.content_detail_resta
-                .filter(r => !deletedDetailRestaIds.includes(r.detail_idx))
-                .map(r => r.resta?.[0])
-                .filter(Boolean);
+            const restaInfoList = [
+                ...detail.content_detail_resta
+                    .filter(r => !deletedDetailRestaIds.some(d => d.detail_idx === r.detail_idx))
+                    .map(r => r.resta?.[0])
+                    .filter(Boolean),
+                ...resta
+                    .filter(r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx))
+                    .map(r => r.resta?.[0])
+                    .filter(Boolean)
+            ];
 
             if (restaInfoList.length > 0) {
                 restaInfoList.forEach(restaInfo => {
@@ -149,22 +154,67 @@ export default function CourseUpdate() {
 
                 map.setBounds(bounds);
             } else {
-                const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
+                // ✅ 현재 위치 사용
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const userPosition = new kakao.maps.LatLng(lat, lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position: userPosition,
+                            map,
+                            title: "현재 위치"
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position: userPosition,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">현재 내 위치입니다. 식당일정을 추가해 보세요!</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        map.setCenter(userPosition);
+                    }, () => {
+                        // ✅ 실패 시 fallback
+                        showDefaultMarker(map);
+                    });
+                } else {
+                    // ✅ 브라우저에서 geolocation 지원 안할 때 fallback
+                    showDefaultMarker(map);
+                }
+            }
+
+            function showDefaultMarker(map) {
+                const defaultPosition = new kakao.maps.LatLng(38.0761111, 128.0963889);
                 const marker = new kakao.maps.Marker({
                     position: defaultPosition,
                     map,
-                    title: "종각역"
+                    title: "대한민국 정중앙"
                 });
 
                 const infoWindow = new kakao.maps.InfoWindow({
                     position: defaultPosition,
-                    content: `<div style="padding:5px;font-size:13px;font-weight:bold;">종각역 근처</div>`
+                    content: `<div style=
+                                            padding:8px;
+                                            font-size:13px;
+                                            font-weight:bold;
+                                            background-color:white;
+                                            border:1px solid #ccc;
+                                            border-radius:8px;
+                                            max-width:220px;
+                                            word-break:break-word;
+                                            white-space:normal;
+                                        ">
+                                        식당일정도 없고 위치정보 허용도 안해주셨군요! 대한민국 정중앙이에요!
+                                        </div>`
                 });
 
                 infoWindow.open(map, marker);
+                map.setCenter(defaultPosition);
             }
         });
-    }, [detail, deletedDetailRestaIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
+    }, [detail, deletedDetailRestaIds, resta]);
+
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
@@ -198,6 +248,8 @@ export default function CourseUpdate() {
                     tmpIdx: tmpIdx,
                     resta: [
                         {
+                            lat: formData.lat,
+                            lng: formData.lng,
                             resta_name: formData.resta_name,
                             url: formData.url || '',
                             media: formData.media || '',
@@ -281,16 +333,6 @@ export default function CourseUpdate() {
     const toList = () => {
         location.href = "/list";
     };
-
-    console.log("선택된 레스토랑 : ", resta);
-    console.log("지워질 디테일(식당) : ", deletedDetailRestaIds);
-    console.log("지워질 디테일(코멘트) : ", deletedDetailCmtIds);
-    console.log("제목 상태 : ",subject);
-    console.log("코스 코멘트 상태 : ",courseCmt);
-    console.log("변경된 시간 : ",time);
-    console.log("공개여부 : ",isPublic)
-    console.log('selectedTags:', selectedTags);
-    console.log('initialSelectedTags:', initialSelectedTags);
 
     return (
         <>

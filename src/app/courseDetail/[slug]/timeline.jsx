@@ -54,9 +54,6 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
         }
     };
 
-    console.log("프롭으로 받은 아이템리스트 : ",timelineItems)
-    console.log("timelineItems.length:", timelineItems.length);
-
     return (
         <Chrono
             key={timelineItems.map(i => i.detail_idx ?? `tmp-${i.tmpIdx}`).join("-")}

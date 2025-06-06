@@ -23,6 +23,8 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
     const handleSelectRestaurant = (restaurant) => {
         setFormData(prev => ({
             ...prev,
+            lat: restaurant.lat,
+            lng: restaurant.lng,
             selectedRestaIdx: restaurant.resta_idx,
             img_idx: restaurant?.img_idx,
             resta_name: restaurant?.resta_name || null,
