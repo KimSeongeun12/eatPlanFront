@@ -8,6 +8,12 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
     const [areaTag, setAreaTag] = useState([]);
     const [tag, setTag] = useState([]);
 
+    const [selectedCity, setSelectedCity] = useState("");
+    const [selectedDist, setSelectedDist] = useState("");
+    const [selectedArea, setSelectedArea] = useState([]);
+    const [selectedTag, setSelectedTag] = useState([]);
+    const [selectedList, setSelectedList] = useState([]);
+
     useEffect(() => {
         axios.get("http://localhost/list_tagcate").then(({data}) =>
             setTagCate(data?.list_tagcate ?? []));
@@ -18,7 +24,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
     }, []);
 
     useEffect(() => {
-        const initialArea = selectedTags.filter(tag => tag.type === 'area').map(t => t.value);
+        const initialArea = selectedTags.filter(tag => tag.type === 'area_tag').map(t => t.value);
         const initialTag = selectedTags.filter(tag => tag.type === 'tag').map(t => t.value);
 
         setSelectedArea(initialArea);
@@ -31,12 +37,6 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
         return [...new Set(areaTag.map(at => at.city))];
     }, [areaTag]);
 
-    const [selectedCity, setSelectedCity] = useState("");
-    const [selectedDist, setSelectedDist] = useState("");
-    const [selectedArea, setSelectedArea] = useState([]);
-    const [selectedTag, setSelectedTag] = useState([]);
-    const [selectedList, setSelectedList] = useState([]);
-
     const toggleArea = (area) => {
         setSelectedArea(prev =>
             prev.includes(area)
@@ -46,8 +46,8 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
         setSelectedList(prev => {
             const isSelected = selectedArea.includes(area);
             return isSelected
-                ? prev.filter(entry => !(entry.type === 'area' && entry.value === area))
-                : [...prev, { type: 'area', value: area }];
+                ? prev.filter(entry => !(entry.type === 'area_tag' && entry.value === area))
+                : [...prev, { type: 'area_tag', value: area }];
         });
     };
 
@@ -81,7 +81,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                             <span key={idx}
                                   onClick={() => {
                                       setSelectedList(prev => prev.filter(entry => entry.value !== item.value));
-                                      if (item.type === 'area') {
+                                      if (item.type === 'area_tag') {
                                           setSelectedArea(prev => prev.filter(a => a !== item.value));
                                       }
                                       if (item.type === 'tag') {
@@ -180,7 +180,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                                     } else {
                                         const found = areaTag.find(a => a.tag_name === item.value);
                                         return {
-                                            type: 'area',
+                                            type: 'area_tag',
                                             value: item.value,
                                             idx: found?.area_tag_idx || null,
                                             isClass: 'area_tag'

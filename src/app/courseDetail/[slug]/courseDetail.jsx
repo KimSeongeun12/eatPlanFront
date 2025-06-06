@@ -28,8 +28,7 @@ export default function CourseDetail({post_idx}) {
         "nickname":"",
         "content_detail_cmt":[],
         "content_detail_resta":[],
-        "tag_name":[],
-        "tag_name_area": [],
+        "tags":[],
         "time":{"start":"", "end":""}});
 
     // 디테일 정보 가져오기
@@ -49,12 +48,11 @@ export default function CourseDetail({post_idx}) {
                 "tmp":d.content.tmp,
                 "total_like_count":d.content.total_like_count,
                 "total_comment_count":d.content.total_comment_count,
-                    "user_id" : d.content.user_id,
+                "user_id" : d.content.user_id,
                 "nickname":d.nickname.nickname,
                 "content_detail_cmt":d.content_detail_cmt,
                 "content_detail_resta":d.content_detail_resta,
-                "tag_name":d.tag_name,
-                "tag_name_area": d.tag_name_area,
+                "tags":d.tags,
                 "time":{
                     "start":d.time.start,
                     "end":d.time.end
@@ -349,9 +347,7 @@ export default function CourseDetail({post_idx}) {
                 <span className={"subjectBody"}>{detail.subject}</span>
                 <span className={"tagHead"}>태그</span>
                 <span className={"tagBody"}>
-                    {detail.tag_name_area.map(tag => tag.tag_name).join(" ")}
-                    {" "}
-                    {detail.tag_name.map(tag => tag.tag_name).join(" ")}
+                    {detail.tags.map(tag => tag.tag_name).join(" ")}
                 </span>
 
                 <span className={"timelineHead"}>코스 내용</span>

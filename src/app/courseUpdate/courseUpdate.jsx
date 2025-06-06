@@ -48,8 +48,6 @@ export default function CourseUpdate() {
         "nickname":"",
         "content_detail_cmt":[],
         "content_detail_resta":[],
-        "tag_name":[],
-        "tag_name_area": [],
         "tags":[],
         "time":{"timelineStart":"", "timelineFinish":""}});
 
@@ -73,8 +71,6 @@ export default function CourseUpdate() {
                     "nickname":d.nickname.nickname,
                     "content_detail_cmt":d.content_detail_cmt,
                     "content_detail_resta":d.content_detail_resta,
-                    "tag_name":d.tag_name,
-                    "tag_name_area": d.tag_name_area,
                     "tags":d.tags,
                     "time":{
                         "timelineStart":d.time.start,
@@ -93,29 +89,16 @@ export default function CourseUpdate() {
     const isFirstLoad = useRef(true);
     useEffect(() => {
         if (isFirstLoad.current && detail.post_idx !== 0) {
-            const newSelected = detail.tags.map(tag => {
-                const isArea = tag.isClass === "area_tag";
-                const idx = isArea ? tag.area_tag_idx : tag.tag_idx;
+            setSubject(detail.subject);
 
-                const name = isArea
-                    ? detail.tag_name_area.find(a => a.area_tag_idx === idx)?.tag_name
-                    : detail.tag_name.find(t => t.tag_idx === idx)?.tag_name;
-
-                return {
-                    type: isArea ? "area" : "tag",
-                    value: name || "",   // 못 찾았을 경우 빈 문자열
-                    idx,
-                    isClass: tag.isClass
-                };
-            });
-            const newInitial = detail.tags.map(tag => ({
-                idx: tag.tag_idx ?? tag.area_tag_idx,
-                isClass: tag.isClass
+            const normalizedTags = detail.tags.map(tag => ({
+                ...tag,
+                value: tag.tag_name,
+                type: tag.isClass
             }));
 
-            setSubject(detail.subject);
-            setSelectedTags(newSelected);
-            setInitialSelectedTags(newInitial); // 초기 상태 따로 저장
+            setSelectedTags(normalizedTags);
+            setInitialSelectedTags(normalizedTags);  // 초기 상태 따로 저장
             setCourseCmt(detail.post_cmt);
             setTime(detail.time);
             setIsPublic(detail.isPublic);
@@ -241,22 +224,21 @@ export default function CourseUpdate() {
     const updateSubmit = () => {
 
         const added = selectedTags.filter(
-            tag => !initialSelectedTags.some(init => init.type === tag.type && init.value === tag.value)
+            tag => !initialSelectedTags.some(init => init.type === tag.type && init.idx === tag.idx)
         );
+
         const removed = initialSelectedTags.filter(
-            init => !selectedTags.some(tag => tag.type === init.type && tag.value === init.value)
+            init => !selectedTags.some(tag => tag.type === init.type && tag.idx === init.idx)
         );
 
         const tags = added.map(t => ({
-            type: t.type,
-            isClass: t.isClass,
-            idx: t.idx ?? null
+            isClass: t.type,
+            idx: t.idx
         }));
 
         const tags_del = removed.map(t => ({
-            type: t.type,
-            isClass: t.isClass,
-            idx: t.idx ?? null
+            isClass: t.type,
+            idx: t.idx
         }));
 
         const payload = {
@@ -285,7 +267,8 @@ export default function CourseUpdate() {
                 alert("변경된 내용이 없습니다.")
                 location.href=`/courseDetail/${detail.post_idx}`
             }
-
+            console.log("tags:", tags);
+            console.log("tags_del:", tags_del);
         });
     };
 
@@ -301,6 +284,8 @@ export default function CourseUpdate() {
     console.log("코스 코멘트 상태 : ",courseCmt);
     console.log("변경된 시간 : ",time);
     console.log("공개여부 : ",isPublic)
+    console.log('selectedTags:', selectedTags);
+    console.log('initialSelectedTags:', initialSelectedTags);
 
     return (
         <>
