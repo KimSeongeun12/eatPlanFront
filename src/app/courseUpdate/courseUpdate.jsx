@@ -334,21 +334,21 @@ export default function CourseUpdate() {
                     timelineFinish={time.timelineFinish}
                     noResta={[
                         ...detail.content_detail_cmt.filter(
-                            c => !deletedDetailCmtIds.includes(c.detail_idx)
+                            c => !deletedDetailCmtIds.some(d => d.detail_idx === c.detail_idx)
                         ),
                         ...noResta
                     ]}
                     resta={[
                         ...detail.content_detail_resta.filter(
-                            r => !deletedDetailRestaIds.includes(r.detail_idx)
+                            r => !deletedDetailRestaIds.some(d => d.detail_idx === r.detail_idx)
                         ),
                         ...resta.filter(r => r.resta)
                     ]}
-                    onDeleteDetail={(detailIdx, type) => {
-                        if (type === 'resta') {
-                            setDeletedDetailRestaIds(prev => [...prev, detailIdx]);
+                    onDeleteDetail={(detailIdx, customResta) => {
+                        if (customResta && Object.keys(customResta).length > 0) {
+                            setDeletedDetailRestaIds(prev => [...prev, {detail_idx:detailIdx}]);
                         } else {
-                            setDeletedDetailCmtIds(prev => [...prev, detailIdx]);
+                            setDeletedDetailCmtIds(prev => [...prev, {detail_idx:detailIdx}]);
                         }
                     }}
                     canUpdate={canUpdate}

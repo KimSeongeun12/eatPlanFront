@@ -42,9 +42,9 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
     }, [resta, noResta, timelineStart, timelineFinish]);
 
     // 삭제 함수
-    const handleDeleteById = (detailIdx) => {
+    const handleDeleteById = (detailIdx, customResta) => {
         if (detailIdx !== undefined) {
-            onDeleteDetail(detailIdx);
+            onDeleteDetail(detailIdx, customResta);
             setTimelineItems(prev => prev.filter(item => item.detail_idx !== detailIdx));
         }
     };
@@ -83,7 +83,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
                         )}
 
                         {!isStartOrEnd && canUpdate && (
-                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx)}>[삭제]</p>
+                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx, item.customResta)}>[삭제]</p>
                         )}
                     </div>
                 );
