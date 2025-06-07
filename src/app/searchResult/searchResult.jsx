@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {CircularProgress, Pagination, Popover, Stack} from "@mui/material";
 import {useSearchParams} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import qs from "qs";
 
@@ -78,6 +78,7 @@ export default function SearchResult(){
         location.href = `/courseDetail/${post_idx}`;
     }
 
+    const user_id = useRef('');
 
     // 작성자에게 쪽지보내기, 작성자 정보보기 팝업
     const [anchorEl, setAnchorEl] = useState(null);
@@ -99,7 +100,14 @@ export default function SearchResult(){
         location.href = `/mypage?user_id=${selectedUser.user_id}`
     }
     const sendMsg = (selectedUser) => {
-        location.href = `/message/messageWrite?recip=${selectedUser.user_id}&nickname=${selectedUser.nickname}`
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+            if (!user_id.current) {
+                alert('로그인이 필요한 서비스입니다.');
+            } else {
+                location.href = `/message/messageWrite?recip=${selectedUser.user_id}&nickname=${selectedUser.nickname}`
+            }
+        }
     };
 
     return(

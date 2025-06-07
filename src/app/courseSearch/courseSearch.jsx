@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
+import {CircularProgress} from "@mui/material";
 
 export default function CourseSearch(){
 
@@ -32,11 +33,19 @@ export default function CourseSearch(){
         })
     };
 
+    const [isLoading, setIsLoading] = useState(true);
+
     // 페이지 입장시 백에서 태그 카테고리, 태그 리스트 가져오기
     useEffect(() => {
-        tagCateList();
-        areaTagList();
-        tagList();
+        try{
+            tagCateList();
+            areaTagList();
+            tagList();
+        }catch (error){
+            console.log("몬가..에러..",error)
+        }finally {
+            setIsLoading(false);
+        }
     }, []);
 
     // 지역태그 city 중복제거
@@ -125,121 +134,125 @@ export default function CourseSearch(){
     return(
         <>
             <div className="searchContainer">
-                {/*텍스트 검색창*/}
-                <div className={"searchWrapper"}>
-                    <input
-                        className={"StringSearch"}
-                        type={"text"}
-                        value={keyword}
-                        onChange={e => setKeyword(e.target.value)}
-                        onKeyUp={keyHandler}
-                        placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
-                    <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
-                        <option value="subject">제목</option>
-                        <option value="nickname">작성자</option>
-                    </select>
-                    <button className={"searchBtn"} onClick={search}>
-                        <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
-                    </button>
-                </div>
+                {isLoading ? (<CircularProgress />) :(
+                    <>
+                        {/*텍스트 검색창*/}
+                        <div className={"searchWrapper"}>
+                            <input
+                                className={"StringSearch"}
+                                type={"text"}
+                                value={keyword}
+                                onChange={e => setKeyword(e.target.value)}
+                                onKeyUp={keyHandler}
+                                placeholder={"코스 제목 또는 작성자를 입력하세요."}/>
+                            <select className="searchFilter" value={searchType} onChange={e => setSearchType(e.target.value)}>
+                                <option value="subject">제목</option>
+                                <option value="nickname">작성자</option>
+                            </select>
+                            <button className={"searchBtn"} onClick={search}>
+                                <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
+                            </button>
+                        </div>
 
-                {/*선택한 태그 리스트, 초기화 버튼*/}
-                <div className="selectedRow">
-                    <h3 className="selectedList">
-                        {selectedList.map((item, idx) => (
-                            <span key={idx}
-                                  onClick={() => {
-                                      setSelectedList(prev => prev.filter(entry => entry.value !== item.value));
-                                      if (item.type === 'area') {
-                                          setSelectedArea(prev => prev.filter(a => a !== item.value));
-                                      }
-                                      if (item.type === 'tag') {
-                                          setSelectedTag(prev => prev.filter(t => t !== item.value));
-                                      }
-                                  }}>
+                        {/*선택한 태그 리스트, 초기화 버튼*/}
+                        <div className="selectedRow">
+                            <h3 className="selectedList">
+                                {selectedList.map((item, idx) => (
+                                    <span key={idx}
+                                          onClick={() => {
+                                              setSelectedList(prev => prev.filter(entry => entry.value !== item.value));
+                                              if (item.type === 'area') {
+                                                  setSelectedArea(prev => prev.filter(a => a !== item.value));
+                                              }
+                                              if (item.type === 'tag') {
+                                                  setSelectedTag(prev => prev.filter(t => t !== item.value));
+                                              }
+                                          }}>
                                 {item.value}
                             </span>
-                        ))}
-                    </h3>
-
-                    <button onClick={resetAll} className="resetBtn">선택 초기화</button>
-                </div>
-
-                <div className={"tagAreaWrapper"}>
-
-                    <h3 className={"areaCate"}>지역</h3>
-
-                    {/*도시 리스트*/}
-                    <div className={"cityWrapper"}>
-                        <h5 className={"cityHead"}>시 · 도</h5>
-                        <ul className={"city"}>
-                            {uniqueCities.map(city => (
-                                <li
-                                    key={city}
-                                    className={city === selectedCity ? "active" : ""}
-                                    onClick={() => setSelectedCity(city)}
-                                >{city}</li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/*시군구 리스트*/}
-                    <div className={"distWrapper"}>
-                        <h5 className={"distHead"}>시 · 군 · 구</h5>
-                        <ul className={"dist"}>
-                            {areaTag
-                                .filter(distCate => distCate.city === selectedCity)
-                                .map(distName => (
-                                    <li
-                                        key={distName.dist}
-                                        className={(distName.dist === selectedDist ? "active " : "") +
-                                            (distName.city === selectedCity ? "" : "hidden")}
-                                        onClick={() => setSelectedDist(distName.dist)}
-                                    >{distName.dist}</li>
                                 ))}
-                        </ul>
-                    </div>
+                            </h3>
 
-                    {/*지역태그 리스트*/}
-                    <div className={"areaWrapper"}>
-                        <ul className={"area"}>
-                            {areaTag
-                                .filter(areaCate => areaCate.dist === selectedDist)
-                                .map(at => (
-                                    <li
-                                        key={at.area_tag_idx}
-                                        className={(selectedArea.includes(at.tag_name) ? "activeArea " : "noneActiveArea ") +
-                                            (at.city === selectedCity ? "" : "hidden")}
-                                        onClick={() => toggleArea(at.tag_name)}
-                                    >{at.tag_name}</li>
-                                ))}
-                        </ul>
-                    </div>
-                </div>
+                            <button onClick={resetAll} className="resetBtn">선택 초기화</button>
+                        </div>
 
-                {/*태그 리스트*/}
-                <div className="tagWrapper">
-                    {tagCate
-                        .filter(cate => cate.cate_idx !== 1)
-                        .map(cate => {
-                            const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx && t.isClass === 'course');
-                            return (
-                                <div key={cate.cate_idx} className="tag">
-                                    <h3>{cate.cate_name}</h3>
-                                    <ul>
-                                        {tagsForCate.length > 0
-                                            ? tagsForCate.map(t =>
-                                                <li key={t.tag_idx}
-                                                    className={selectedTag.includes(t.tag_name) ? "activeTag" : "noneActiveTag"}
-                                                    onClick={() => toggleTag(t.tag_name)}
-                                                >{t.tag_name}</li>)
-                                            : <li className="empty">태그가 없습니다.</li>
-                                        }
-                                    </ul>
-                                </div>
-                            );
-                        })}
-                </div>
+                        <div className={"tagAreaWrapper"}>
+
+                            <h3 className={"areaCate"}>지역</h3>
+
+                            {/*도시 리스트*/}
+                            <div className={"cityWrapper"}>
+                                <h5 className={"cityHead"}>시 · 도</h5>
+                                <ul className={"city"}>
+                                    {uniqueCities.map(city => (
+                                        <li
+                                            key={city}
+                                            className={city === selectedCity ? "active" : ""}
+                                            onClick={() => setSelectedCity(city)}
+                                        >{city}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/*시군구 리스트*/}
+                            <div className={"distWrapper"}>
+                                <h5 className={"distHead"}>시 · 군 · 구</h5>
+                                <ul className={"dist"}>
+                                    {areaTag
+                                        .filter(distCate => distCate.city === selectedCity)
+                                        .map(distName => (
+                                            <li
+                                                key={distName.dist}
+                                                className={(distName.dist === selectedDist ? "active " : "") +
+                                                    (distName.city === selectedCity ? "" : "hidden")}
+                                                onClick={() => setSelectedDist(distName.dist)}
+                                            >{distName.dist}</li>
+                                        ))}
+                                </ul>
+                            </div>
+
+                            {/*지역태그 리스트*/}
+                            <div className={"areaWrapper"}>
+                                <ul className={"area"}>
+                                    {areaTag
+                                        .filter(areaCate => areaCate.dist === selectedDist)
+                                        .map(at => (
+                                            <li
+                                                key={at.area_tag_idx}
+                                                className={(selectedArea.includes(at.tag_name) ? "activeArea " : "noneActiveArea ") +
+                                                    (at.city === selectedCity ? "" : "hidden")}
+                                                onClick={() => toggleArea(at.tag_name)}
+                                            >{at.tag_name}</li>
+                                        ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/*태그 리스트*/}
+                        <div className="tagWrapper">
+                            {tagCate
+                                .filter(cate => cate.cate_idx !== 1)
+                                .map(cate => {
+                                    const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx && t.isClass === 'course');
+                                    return (
+                                        <div key={cate.cate_idx} className="tag">
+                                            <h3>{cate.cate_name}</h3>
+                                            <ul>
+                                                {tagsForCate.length > 0
+                                                    ? tagsForCate.map(t =>
+                                                        <li key={t.tag_idx}
+                                                            className={selectedTag.includes(t.tag_name) ? "activeTag" : "noneActiveTag"}
+                                                            onClick={() => toggleTag(t.tag_name)}
+                                                        >{t.tag_name}</li>)
+                                                    : <li className="empty">태그가 없습니다.</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+                    </>
+                )}
             </div>
         </>
     );
