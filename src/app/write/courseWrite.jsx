@@ -1,10 +1,10 @@
 'use client'
 import './courseWriteCss.css';
 import './courseAdd_modal/courseAdd_modalCss.css';
+import '../courseDetail/[slug]/courseDetail.css';
 import {useEffect, useRef, useState} from 'react';
 import CourseAdd_modal from './courseAdd_modal/page';
 import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
-import KakaoMap from "@/app/write/kakaoMap";
 import TagComponent from "@/app/write/tagComponent";
 import axios from "axios";
 
@@ -92,6 +92,115 @@ export default function CourseWrite({data}) {
 
     const [resta, setResta] = useState([]);
     const [noResta, setNoResta] = useState([]);
+    const [tmpIdx, setTmpIdx] = useState(1);
+    const [deletedDetailRestaIds, setDeletedDetailRestaIds] = useState([]);
+    const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
+    const canUpdate = true;
+
+    const container = useRef(null);
+
+    // 지도정보
+    useEffect(() => {
+        kakao.maps.load(() => {
+            const containerEl = container.current;
+
+            const mapOption = {
+                center: new kakao.maps.LatLng(37.570377, 126.985409),
+                level: 3
+            };
+
+            const map = new kakao.maps.Map(containerEl, mapOption);
+            const bounds = new kakao.maps.LatLngBounds();
+
+            const restaInfoList = [
+                ...resta
+                    .filter(r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx))
+                    .map(r => r.resta?.[0])
+                    .filter(Boolean)
+            ];
+
+            if (restaInfoList.length > 0) {
+                restaInfoList.forEach(restaInfo => {
+                    if (restaInfo?.lat && restaInfo?.lng) {
+                        const position = new kakao.maps.LatLng(restaInfo.lat, restaInfo.lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position,
+                            map
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">${restaInfo.resta_name}</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        bounds.extend(position);
+                    }
+                });
+
+                map.setBounds(bounds);
+            } else {
+                // ✅ 현재 위치 사용
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const userPosition = new kakao.maps.LatLng(lat, lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position: userPosition,
+                            map,
+                            title: "현재 위치"
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position: userPosition,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">현재 내 위치입니다. 식당일정을 추가해 보세요!</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        map.setCenter(userPosition);
+                    }, () => {
+                        // ✅ 실패 시 fallback
+                        showDefaultMarker(map);
+                    });
+                } else {
+                    // ✅ 브라우저에서 geolocation 지원 안할 때 fallback
+                    showDefaultMarker(map);
+                }
+            }
+
+            function showDefaultMarker(map) {
+                const defaultPosition = new kakao.maps.LatLng(38.0761111, 128.0963889);
+                const marker = new kakao.maps.Marker({
+                    position: defaultPosition,
+                    map,
+                    title: "대한민국 정중앙"
+                });
+
+                const infoWindow = new kakao.maps.InfoWindow({
+                    position: defaultPosition,
+                    content: `<div style=
+                                            padding:8px;
+                                            font-size:13px;
+                                            font-weight:bold;
+                                            background-color:white;
+                                            border:1px solid #ccc;
+                                            border-radius:8px;
+                                            max-width:220px;
+                                            word-break:break-word;
+                                            white-space:normal;
+                                        ">
+                                        식당일정도 없고 위치정보 허용도 안해주셨군요! 대한민국 정중앙이에요!
+                                        </div>`
+                });
+
+                infoWindow.open(map, marker);
+                map.setCenter(defaultPosition);
+            }
+        });
+    }, [deletedDetailRestaIds, resta]);
 
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
@@ -101,8 +210,11 @@ export default function CourseWrite({data}) {
             setResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     resta: [
                         {
+                            lat: formData.lat,
+                            lng: formData.lng,
                             resta_name: formData.resta_name,
                             url: formData.url || '',
                             media: formData.media || '',
@@ -112,16 +224,19 @@ export default function CourseWrite({data}) {
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
             setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
         } else {
             // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
             setNoResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     start: formData.start || '',
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
         }
         setIsModalOpen(false);
     }
@@ -156,8 +271,26 @@ export default function CourseWrite({data}) {
                             <div className="courseWrite_uploadDiv">
                                 <Timeline timelineStart={timelineStart}
                                           timelineFinish={timelineFinish}
-                                          resta={resta}
-                                          noResta={noResta}
+                                          noResta={[
+                                              ...noResta.filter(
+                                                  n => !deletedDetailCmtIds.some(d => d.tmpIdx === n.tmpIdx)
+                                              )
+                                          ]}
+                                          resta={[
+                                              ...resta.filter(
+                                                  r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx)
+                                              ).filter(r => r.resta)
+                                          ]}
+                                          onDeleteDetail={(detailIdx, customResta, tmpIdx) => {
+                                              if (customResta && Object.keys(customResta).length > 0 && tmpIdx){
+                                                  setDeletedDetailRestaIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                                                  setResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
+                                              } else if (tmpIdx) {
+                                                  setDeletedDetailCmtIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                                                  setNoResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
+                                              }
+                                          }}
+                                          canUpdate={canUpdate}
                                 />
                             </div>
                         </td>
@@ -166,7 +299,7 @@ export default function CourseWrite({data}) {
                 </table>
 
                 <button onClick={() => setIsModalOpen(true)} className="courseWrite_button">
-                    코스 추가
+                    일정 추가
                 </button>
 
                 {isModalOpen && (
@@ -180,7 +313,9 @@ export default function CourseWrite({data}) {
                     <tbody>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
-                            지도 상세보기 (1개 이상의 코스가 등록될 시 자동으로 추가됩니다.)
+                            <div className={"kakaoWrapper"}>
+                                <div id="map" ref={container} style={{ width: "100%", height: "100%" }}></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
