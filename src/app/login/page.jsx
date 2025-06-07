@@ -61,7 +61,7 @@ export default function LoginPage() {
             alert("로그인에 성공했습니다.");
             sessionStorage.setItem('user_id', data.user_id);
             sessionStorage.setItem('token', data.token);
-            sessionStorage.setItem('admin', data.admin);
+            sessionStorage.setItem('isAdmin', data.admin === 1? '1' : '0');
             location.href="/list";
         } else {
             alert("아이디 또는 비밀번호를 확인해주세요.");

@@ -18,9 +18,15 @@ export default function NoticeWritePage() {
     const [currentUser, setCurrentUser] = useState(null);
     useEffect(() => {
         const storedUser = sessionStorage.getItem('user_id');
+        const isAdmin = sessionStorage.getItem('isAdmin');
+        console.log("🧾 user_id:", storedUser);
+        console.log("🛡️ isAdmin:", isAdmin);
+
         setCurrentUser(storedUser);
-        if (storedUser !== 'admin') {
-            router.push('/noticeList'); // 관리자 아니면 목록으로 리다이렉트
+
+        if (isAdmin !== '1') {
+            console.warn("⛔️ 관리자 아님 → 리스트로 리다이렉트");
+            router.push('/noticeList');
         }
     }, [router]);
 
