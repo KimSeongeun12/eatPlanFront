@@ -43,7 +43,7 @@ input[class$="Body"] {
 
 textarea[class$="Body"] {
     resize: none;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 .mapBody {
@@ -80,6 +80,8 @@ textarea[class$="Body"] {
 .courseCmtBody {
     border-bottom: 2px solid lightgray;
     padding: 40px !important;
+    font-size: 20px;
+    white-space: pre-wrap;
 }
 
 .rates {
@@ -92,6 +94,11 @@ textarea[class$="Body"] {
 .commentList {
     border-left: 2px solid lightgray;
     border-right: 2px solid lightgray;
+}
+
+.cmtLimit {
+    margin-left: auto;
+    margin-right: 15px;
 }
 
 .timelineHead,
@@ -190,6 +197,7 @@ textarea[class$="Body"] {
 
 .commentContent {
     padding: 10px 18px 10px 18px !important;
+    white-space: pre-wrap;
 }
 
 .reg_date {

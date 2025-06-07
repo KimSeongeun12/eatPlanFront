@@ -82,7 +82,15 @@ export default function CourseUpdate() {
                         "timelineFinish":d.time.end
                     }}
             setDetail(newDetail);
-            console.log("받아온 데이터 : ",data);
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 404) {
+                alert("존재하지 않는 코스입니다.");
+                location.href = '/list';
+            } else {
+                alert("데이터를 불러오는 중 오류가 발생했습니다. 서버 혹시 키셨나요?");
+                location.href = '/list';
+            }
         });
     };
 
@@ -131,8 +139,11 @@ export default function CourseUpdate() {
             setTime(detail.time);
             setIsPublic(detail.isPublic);
             isFirstLoad.current = false;
+            if ((detail.user_id && user_id.current !== detail.user_id) || !detail.user_id) {
+                alert("url로 장난치면 혼나요!");
+                location.href="/list";
+            }
         }
-        console.log("받아온 디테일 : ",detail);
     }, [detail]);
 
     // 최신디테일정보가 들어오면 맵에 마커찍기
@@ -396,12 +407,16 @@ export default function CourseUpdate() {
                             <span className={"likeCntHead"}>좋아요</span>
                             <span className={"likeCntBody"}>{detail.total_like_count}</span>
 
-                            <span className={"subjectHead"}>코스 제목 ❗</span>
+                            <span className={"subjectHead"}>
+                                코스 제목 ❗ &nbsp;&nbsp;
+                                <small>{subject.length} / 66자 제한</small>
+                            </span>
                             <input
                                 className={"subjectBody"}
                                 type="text"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
+                                maxLength={66}
                             />
                             <span className={"tagHead"}>태그 ❗</span>
                             <span className={"tagBody"}>
@@ -483,11 +498,15 @@ export default function CourseUpdate() {
                     </div>
                 </span>
 
-                            <span className={"courseCmtHead"}>코스 코멘트 ❗</span>
+                            <span className={"courseCmtHead"}>
+                                코스 코멘트 ❗ &nbsp;&nbsp;
+                                <small>{courseCmt.length} / 333자 제한</small>
+                            </span>
                             <textarea
                                 className={"courseCmtBody"}
                                 value={courseCmt}
-                                onChange={(e) => setCourseCmt(e.target.value)}></textarea>
+                                onChange={(e) => setCourseCmt(e.target.value)}
+                                maxLength={333}></textarea>
 
                             <div className={"btns"}>
                                 <div className="isPublic">

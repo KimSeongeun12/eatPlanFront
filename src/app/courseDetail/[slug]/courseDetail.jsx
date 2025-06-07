@@ -61,6 +61,15 @@ export default function CourseDetail({post_idx}) {
             setDetail(newDetail);
             checkLikeStatus(d.content.post_idx);
             cmtList(d.content.post_idx);
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 404) {
+                alert("존재하지 않는 코스입니다.");
+                location.href = '/list';
+            } else {
+                alert("데이터를 불러오는 중 오류가 발생했습니다. 서버 혹시 키셨나요?");
+                location.href = '/list';
+            }
         });
     };
 
@@ -558,14 +567,15 @@ export default function CourseDetail({post_idx}) {
                             </div>
 
                             <div className={"comment"}>
-                    <textarea
-                        className={"commentBox"}
-                        placeholder="댓글을 입력하세요."
-                        rows="3"
-                        name={"cmtContent"}
-                        value={cmtContent}
-                        onChange={(e) => setCmtContent(e.target.value)}>
-                    </textarea>
+                                <textarea
+                                    className={"commentBox"}
+                                    placeholder="댓글을 입력하세요."
+                                    rows="3"
+                                    name={"cmtContent"}
+                                    value={cmtContent}
+                                    onChange={(e) => setCmtContent(e.target.value)}>
+                                </textarea>
+                                <small className={"cmtLimit"}>{cmtContent.length} / 333자 제한</small>
                                 <span className={"commentBtn"} onClick={()=>submitCmt()}>등록</span>
                             </div>
 
@@ -576,27 +586,30 @@ export default function CourseDetail({post_idx}) {
                                             <div className={"comment2"} key={index}>
                                                 <span className={"nickname"}>{item.nickname}</span>
                                                 {editingCommentIdx === item.comment_idx ? (
-                                                    <textarea
-                                                        className={"updateCommentBox"}
-                                                        value={editedContent}
-                                                        onChange={(e) => setEditedContent(e.target.value)}
-                                                        rows="3"
-                                                    />
+                                                    <>
+                                                        <textarea
+                                                            className={"updateCommentBox"}
+                                                            value={editedContent}
+                                                            onChange={(e) => setEditedContent(e.target.value)}
+                                                            rows="3"
+                                                        />
+                                                        <small className={"cmtLimit"}>{editedContent.length} / 333자 제한</small>
+                                                    </>
                                                 ) : (
                                                     <span className={"commentContent"}>{item.content}</span>)}
-                                                <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
-                                                <div className={"commentBtns"}>
-                                            <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
-                                                {item.likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({item.cmt_like_cnt})
-                                            </span>
-                                                    <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
-                                                    <span className={user_id.current === item.user_id ? "cmtDelete" : "hidden"} onClick={()=>cmtDel(item)}>삭제</span>
-                                                    {editingCommentIdx === item.comment_idx ? (
-                                                        <span className={"cmtUpdate"} onClick={() => saveUpdatedComment(item)}>저장</span>
-                                                    ) : (
-                                                        <span className={user_id.current === item.user_id ? "cmtUpdate" : "hidden"} onClick={() => cmtUpdate(item)}>수정</span>
-                                                    )}
-                                                </div>
+                                                    <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
+                                                    <div className={"commentBtns"}>
+                                                        <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
+                                                            {item.likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({item.cmt_like_cnt})
+                                                        </span>
+                                                        <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
+                                                        <span className={user_id.current === item.user_id ? "cmtDelete" : "hidden"} onClick={()=>cmtDel(item)}>삭제</span>
+                                                        {editingCommentIdx === item.comment_idx ? (
+                                                            <span className={"cmtUpdate"} onClick={() => saveUpdatedComment(item)}>저장</span>
+                                                        ) : (
+                                                            <span className={user_id.current === item.user_id ? "cmtUpdate" : "hidden"} onClick={() => cmtUpdate(item)}>수정</span>
+                                                        )}
+                                                    </div>
                                                 <div className={"commentLineWrapper"}>
                                                     <div className={"commentLine"}></div>
                                                 </div>
