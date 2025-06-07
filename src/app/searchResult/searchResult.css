@@ -69,6 +69,7 @@
 .selectedTag .body {
     font-size: 14px;
     color: #b0b0b0;
+    margin-left: 10px;
 }
 
 .sorting {

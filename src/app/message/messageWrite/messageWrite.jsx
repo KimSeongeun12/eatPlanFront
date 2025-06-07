@@ -17,8 +17,8 @@ export default function MessageWrite() {
         typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
     // 2) 쿼리로 전달된 받는 사람(recipient)이 있으면 미리 채워주기
-    const initialRecip = searchParams.get('recip') || '';
-    const [recip, setRecip] = useState(initialRecip);
+    const recip = searchParams.get('recip') || '';
+    const nickname = searchParams.get('nickname') ||'';
 
     // 3) 제목, 내용 상태
     const [subject, setSubject] = useState('');
@@ -98,8 +98,7 @@ export default function MessageWrite() {
                         <td>
                             <input
                                 type="text"
-                                value={recip}
-                                onChange={(e) => setRecip(e.target.value)}
+                                value={nickname}
                                 placeholder="받는 사람 아이디"
                                 required
                             />
