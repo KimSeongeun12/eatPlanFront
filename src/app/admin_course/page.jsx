@@ -8,7 +8,7 @@ import Admin_courseList from "@/app/admin_course/admin_courseList";
 import {useRouter} from "next/navigation";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
-export default function List() {
+export default function Admin_course_page() {
     const [visible, setVisible] = useState('bestList');
     const [sort, setSort] = useState('date_desc'); // 정렬 기준 상태
 
@@ -52,7 +52,7 @@ export default function List() {
                 </div>
                 <hr/>
                 {visible === 'bestList' && <BestList/>}
-                {visible === 'admin_courseList' && <Admin_courseList/>}
+                {visible === 'admin_courseList' && <Admin_courseList sort={sort}/>}
             </div>
         </>
     );

@@ -11,17 +11,19 @@ export default function leftMenu() {
         marginRight: '0px',
     }
 
+    const isActive = (path) => pathname === path;
+
     const router = useRouter();
     const pathname = usePathname();
     const [userId, setUserId] = useState(null);
-
-    const isActive = (path) => pathname === path;
+    const [admin, setAdmin] = useState(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const storedUserId = sessionStorage.getItem('user_id');
-
-            setUserId(storedUserId);
+            const user_id = sessionStorage.getItem('user_id');
+            const admin = sessionStorage.getItem('admin');
+            setUserId(user_id);
+            setAdmin(admin);
         }
     }, []);
 
@@ -48,25 +50,55 @@ export default function leftMenu() {
                 <img className={"userIcon"} src={"/userIcon.png"} alt={"프로필 사진"}/>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px'}}>
                     {isLoggedIn
-                        ? <><span style={welcomeStyle}>환영합니다, {userId} 님!</span><span className={"logoutSpan"} onClick={logout}>로그아웃</span></>
-                        : <>
-                            <div onClick={() => router.push('/login')}
-                                 className={`loginMenu ${isActive('/login') ? 'active' : ''}`}>
-                                <img src={"/loginIcon.png"} alt={"로그인 아이콘"}/>
-                                <span>로그인</span>
-                            </div>
-                        </>}
+                        ? (
+                            <>
+                                {admin === "true" ? (
+                                    <span style={welcomeStyle}>환영합니다, 관리자 님!</span>
+                                ) : (
+                                    <span style={welcomeStyle}>환영합니다, {userId} 님!</span>
+                                )}
+                                <span className={"logoutSpan"} onClick={logout}>로그아웃</span>
+                            </>
+                        )
+                        : (
+                            <>
+                                <div onClick={() => router.push('/login')}
+                                     className={`loginMenu ${isActive('/login') ? 'active' : ''}`}>
+                                    <img src={"/loginIcon.png"} alt={"로그인 아이콘"}/>
+                                    <span>로그인</span>
+                                </div>
+                            </>
+                        )
+                    }
                 </div>
-                <div onClick={() => router.push('/admin_course')}
-                     className={`courseListMenu ${isActive('/admin_course') || isActive('/courseSearch') || isActive('/searchResult') ? 'active' : ''}`}>
-                    <img src={"/communityIcon.png"} alt={"코스 구경 아이콘"}/>
-                    <span>코스 구경</span>
+
+                <div
+                    onClick={() => router.push(admin === "true" ? '/admin_course' : '/list')}
+                    className={`courseListMenu ${
+                        isActive('/admin_course') ||
+                        isActive('/list') ||
+                        isActive('/courseSearch') ||
+                        isActive('/searchResult') ? 'active' : ''
+                    }`}
+                >
+                    <img src={"/communityIcon.png"} alt={"코스 구경 아이콘"} />
+                    <span>{admin === "true" ? "코스 구경 (관리자용)" : "코스 구경"}</span>
                 </div>
-                <div onClick={() => router.push('/mypage')}
-                     className={`mypageMenu ${isActive('/mypage') || isActive('/mypage_update') || isActive('/passwd') ? 'active' : ''}`}>
-                    <img src={"/personIcon.png"} alt={"마이페이지 아이콘"}/>
-                    <span>마이페이지</span>
+
+                <div
+                    onClick={() => router.push(admin === "true" ? '/admin' : '/mypage')}
+                    className={`mypageMenu ${
+                        isActive('/mypage') ||
+                        isActive('/mypage_update') ||
+                        isActive('/admin') ||
+                        isActive('/passwd') ||
+                        isActive('/admin') ? 'active' : ''
+                    }`}
+                >
+                    <img src={"/personIcon.png"} alt={"마이페이지 아이콘"} />
+                    <span>{admin === "true" ? "관리자 페이지" : "마이페이지"}</span>
                 </div>
+
                 <div onClick={() => router.push('/write')}
                      className={`courseWriteMenu ${isActive('/write') ? 'active' : ''}`}>
                     <img src={"/pencil.png"} alt={"코스 등록 아이콘"}/>

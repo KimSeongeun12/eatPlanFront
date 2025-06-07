@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 import {Pagination, Stack, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
 import Link from "next/link";
+import Image from 'next/image';
 
 export default function Admin_courseList({sort}) {
     const [page, setPage] = useState(1);
@@ -68,7 +69,7 @@ export default function Admin_courseList({sort}) {
             alert('블라인드 처리에 실패했습니다.');
         }
     }
-    
+
     // 선택 삭제 기능
     const selectDelete = async () => {
         const {data} = await axios.delete('http://localhost/delete', {
@@ -96,14 +97,12 @@ export default function Admin_courseList({sort}) {
                                    checked={selectedCourse.includes(item.course.post_idx)}
                             />
                             <img
-                                src={item.course.blind === true ? '/blind.svg' : `http://localhost/image/${item.course_img}`}
+                                src={item.course.blind === true ? '/blind.svg' : `http://localhost/upload/${item.course_img}`}
+                                alt="코스 이미지"
                                 onError={(e) => {
                                     e.target.src = '/no_image.png';
                                 }}
-                                alt="코스 이미지"
                             />
-                        {/*만약 블라인드 처리 된 게시글이라면
-                        눈 감은 이미지로 변경시키고, 그렇지 않으면 그대로 유지*/}
                         </div>
 
                         <span className="courseTitle">
@@ -152,7 +151,7 @@ export default function Admin_courseList({sort}) {
             </Stack>
 
             <div className={"buttons"}>
-                <button onClick={selectBlind} className={"admin_button"}>선택 블라인드</button>
+                <button onClick={selectBlind} className={"admin_button"}>선택 블라인드 / 블라인드 해제</button>
                 <button onClick={selectDelete} className={"admin_button_delete"}>선택 삭제</button>
             </div>
 
