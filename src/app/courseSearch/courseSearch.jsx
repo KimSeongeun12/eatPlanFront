@@ -37,15 +37,14 @@ export default function CourseSearch(){
 
     // 페이지 입장시 백에서 태그 카테고리, 태그 리스트 가져오기
     useEffect(() => {
-        try{
-            tagCateList();
-            areaTagList();
-            tagList();
-        }catch (error){
-            console.log("몬가..에러..",error)
-        }finally {
-            setIsLoading(false);
-        }
+        const fetchTags = async () => {
+            await Promise.all([tagCateList(), areaTagList(), tagList()])
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        };
+
+        fetchTags();
     }, []);
 
     // 지역태그 city 중복제거

@@ -34,7 +34,7 @@ export default function CourseDetail({post_idx}) {
 
     // 디테일 정보 가져오기
     const getDetail = () => {
-        axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
+        return axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
             console.log(data);
             const d = data.detail;
             const newDetail =
@@ -91,13 +91,9 @@ export default function CourseDetail({post_idx}) {
     // 페이지 입장시 로그인 확인되면 디테일정보 가져오기
     useEffect(() => {
         if (!checkingAuth) {
-            try {
-                getDetail();
-            } catch (error) {
-                console.log('몬가.. 실패..', error);
-            }finally {
+            getDetail().finally(() => {
                 setIsLoading(false);
-            }
+            });
         }
     }, [checkingAuth]);
 
