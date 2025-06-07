@@ -195,6 +195,16 @@ textarea[class$="Body"] {
     font-weight: bold;
 }
 
+.nicknameText {
+    cursor: pointer;
+    padding: 0 !important;
+}
+
+.nicknameBodyText {
+    cursor: pointer;
+    padding: 0 !important;
+}
+
 .commentContent {
     padding: 10px 18px 10px 18px !important;
     white-space: pre-wrap;
@@ -215,6 +225,10 @@ textarea[class$="Body"] {
 
 .commentBtns {
     padding-right: 10px;
+}
+
+.like {
+    cursor: pointer;
 }
 
 .commentBtn {

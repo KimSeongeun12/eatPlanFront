@@ -3,7 +3,7 @@
 import {useEffect, useRef, useState} from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import {CircularProgress, Pagination, Stack} from "@mui/material";
+import {CircularProgress, Pagination, Popover, Stack} from "@mui/material";
 
 export default function CourseDetail({post_idx}) {
 
@@ -463,6 +463,36 @@ export default function CourseDetail({post_idx}) {
         }
     };
 
+    // 작성자에게 쪽지보내기, 작성자 정보보기 팝업
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedUser, setSelectedUser] = useState({ user_id: '', nickname: '' });
+
+    const handleAuthorClick = (event, user_id, nickname) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedUser({ user_id, nickname });
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const memberInfo = (selectedUser) => {
+        location.href = `/mypage?user_id=${selectedUser.user_id}`
+    }
+    const sendMsg = (selectedUser) => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+            if (!user_id.current) {
+                alert('로그인이 필요한 서비스입니다.');
+            } else {
+                location.href = `/message/messageWrite?recip=${selectedUser.user_id}&nickname=${selectedUser.nickname}`
+            }
+        }
+    };
+
     return (
         <>
             <div className={"courseContainer"}>
@@ -475,7 +505,9 @@ export default function CourseDetail({post_idx}) {
                             <span className={"reg_dateBody"}>{detail.reg_date.replace("T", " ").substring(0, 16)}</span>
 
                             <span className={"nicknameHead"}>작성자</span>
-                            <span className={"nicknameBody"}>{detail.nickname}</span>
+                            <span className={"nicknameBody"}>
+                                <span className={"nicknameBodyText"} onClick={(e) => handleAuthorClick(e, detail.user_id, detail.nickname)}>{detail.nickname}</span>
+                            </span>
                             <span className={"b_hitHead"}>조회수</span>
                             <span className={"b_hitBody"}>{detail.b_hit}</span>
 
@@ -584,7 +616,9 @@ export default function CourseDetail({post_idx}) {
                                     <>
                                         {cmt.map((item, index) => (
                                             <div className={"comment2"} key={index}>
-                                                <span className={"nickname"}>{item.nickname}</span>
+                                                <span className={"nickname"} >
+                                                    <span className={"nicknameText"} onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>{item.nickname}</span>
+                                                </span>
                                                 {editingCommentIdx === item.comment_idx ? (
                                                     <>
                                                         <textarea
@@ -653,6 +687,23 @@ export default function CourseDetail({post_idx}) {
                         </>
                     )}
             </div>
+            {/*회원 닉네임 누르면 뜨는 팝업창*/}
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <div style={{ padding: '10px' }}>
+                    <p><b>{selectedUser.nickname}</b> 님</p>
+                    <button onClick={() => memberInfo(selectedUser)}>회원정보 보기</button>
+                    <button onClick={() => sendMsg(selectedUser)}>쪽지 보내기</button>
+                </div>
+            </Popover>
         </>
     );
 }

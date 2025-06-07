@@ -151,22 +151,6 @@ export default function SearchResult(){
                                         <span className="courseAuthor" onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>
                                             {item.nickname}
                                         </span>
-                                        <Popover
-                                            id={id}
-                                            open={open}
-                                            anchorEl={anchorEl}
-                                            onClose={handleClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'left',
-                                            }}
-                                        >
-                                            <div style={{ padding: '10px' }}>
-                                                <p><b>{selectedUser.nickname}</b> 님</p>
-                                                <button onClick={() => memberInfo(selectedUser)}>회원정보 보기</button>
-                                                <button onClick={() => sendMsg(selectedUser)}>쪽지 보내기</button>
-                                            </div>
-                                        </Popover>
                                         <span className="courseViews">조회 {item.b_hit}</span><br/>
                                         <span className="courseScope">별점 {item.star_average}</span>
                                         <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
@@ -209,6 +193,23 @@ export default function SearchResult(){
                         )}
                 </div>
             </div>
+            {/*회원 닉네임 누르면 뜨는 팝업창*/}
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <div style={{ padding: '10px' }}>
+                    <p><b>{selectedUser.nickname}</b> 님</p>
+                    <button onClick={() => memberInfo(selectedUser)}>회원정보 보기</button>
+                    <button onClick={() => sendMsg(selectedUser)}>쪽지 보내기</button>
+                </div>
+            </Popover>
         </>
     );
 }
