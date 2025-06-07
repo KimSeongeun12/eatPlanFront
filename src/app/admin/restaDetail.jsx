@@ -7,7 +7,7 @@ import RestaTagManager from "@/app/admin/component/restaTagManager";
 
 export default function RestaDetail({resta_idx}) {
 
-    const [resta,setResta]=useState({});    // 식당세부정보 state
+    const [resta, setResta]=useState({});    // 식당세부정보 state
     const [tags,setTags]=useState([]);      // 해당 식당의 태그정보 state
     // ▲ {tag_idx:'', tag_name:''}
 
@@ -17,8 +17,7 @@ export default function RestaDetail({resta_idx}) {
 
 
     const getDetail = async ()=>{
-        let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`)
-
+        let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};

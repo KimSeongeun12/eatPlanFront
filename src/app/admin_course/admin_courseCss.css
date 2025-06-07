@@ -191,6 +191,12 @@ body {
     color: #AE3D29;
 }
 
+.admin_button:hover,
+.admin_button_delete:hover {
+    background: #CC503B;
+    color: #fff;
+}
+
 .admin_checkBox {
     width: 27px;
     height: 27px;

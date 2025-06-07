@@ -7,7 +7,7 @@ import './modalCss.css';
 import CourseWrite from "@/app/write/courseWrite";
 import axios from "axios";
 
-export default function StepModal({onComplete}) {
+export default function StepModalUpdate({onComplete, onClose}) {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({});
 
@@ -27,7 +27,7 @@ export default function StepModal({onComplete}) {
         <>
             <div className="modal">
                 <div className="modal-content">
-                    {step === 1 && <StepOne onNext={nextStep} setData={updateFormData}/>}
+                    {step === 1 && <StepOne onNext={nextStep} setData={updateFormData} onClose={onClose}/>}
                     {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData}/>}
                     {step === 3 && (
                         <StepThree

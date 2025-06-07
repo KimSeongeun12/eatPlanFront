@@ -1,0 +1,83 @@
+/* File: /app/message/messageWrite/messageWrite.css */
+
+.message-write-container {
+    padding: 24px;
+    background-color: #fff;
+    width: 1580px;
+    box-sizing: border-box;
+}
+
+.message-write-form {
+    width: 100%;
+}
+
+.write-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.write-table th,
+.write-table td {
+    border: 1px solid #ddd;
+    padding: 12px 8px;
+    vertical-align: top;
+}
+
+.write-table th {
+    background-color: #f7f7f7;
+    width: 120px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.full-width-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.full-width-textarea {
+    width: 1390px;        /* 고정 가로 너비 */
+    min-width: 1390px;    /* 가로 크기가 이보다 작아지지 않도록 */
+    max-width: 1390px;    /* 가로 크기가 이보다 커지지 않도록 */
+    height: 760px;        /* 초기 높이 설정 */
+    padding: 8px;
+    box-sizing: border-box;
+    resize: none;     /* 세로 방향으로만 크기 조절 가능 */
+    overflow-y: auto;     /* 내용이 많을 때 세로 스크롤 표시 */
+}
+
+.readonly-input {
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #555;
+}
+
+.required {
+    color: #cc503b;
+}
+
+.write-submit-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.btn-submit {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 10px 28px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #cc503b;
+    color: #fff;
+}

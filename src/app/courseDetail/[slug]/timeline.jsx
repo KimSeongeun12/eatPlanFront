@@ -11,82 +11,86 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
     useEffect(() => {
         const nodes = [
             ...noResta.map(item => ({
+                tmpIdx: item.tmpIdx,
                 title: "코멘트",
                 cardTitle: "코멘트",
                 cardSubtitle: item.start,
-                cardDetailedText: item.comment
+                cardDetailedText: item.comment,
+                detail_idx: item.detail_idx
             })),
-            ...resta.map((item, idx) => {
+            ...resta.map(item => {
                 const restaInfo = item.resta[0];
                 return {
+                    tmpIdx: item.tmpIdx,
                     title: restaInfo.resta_name,
                     cardTitle: restaInfo.resta_name,
                     url: restaInfo.url,
                     cardSubtitle: item.start,
                     cardDetailedText: item.comment,
-                    customResta: restaInfo
+                    customResta: restaInfo,
+                    detail_idx: item.detail_idx
                 };
             })
         ].sort((a, b) => a.cardSubtitle.localeCompare(b.cardSubtitle));
 
         const fullItems = [
-            { title: `시작 ${timelineStart}`, cardSubtitle: "플랜 시작 시간" },
+            { title: `시작 ${timelineStart}`, cardSubtitle: "플랜 시작 시간", detail_idx:0 },
             ...nodes,
-            { title: `${timelineFinish} 끝`, cardSubtitle: "플랜 종료 시간" }
+            { title: `${timelineFinish} 끝`, cardSubtitle: "플랜 종료 시간", detail_idx:99999 }
         ];
 
         setTimelineItems(fullItems);
+
     }, [resta, noResta, timelineStart, timelineFinish]);
 
     // 삭제 함수
-    const handleDelete = (index) => {
-        const item = timelineItems[index];
-        const detailIdx = item?.detail_idx;
-
+    const handleDeleteById = (detailIdx, customResta, tmpIdx) => {
         if (detailIdx !== undefined) {
-            onDeleteDetail(detailIdx); // 상위로 전달
+            onDeleteDetail(detailIdx, customResta, null);
+            setTimelineItems(prev => prev.filter(item => item.detail_idx !== detailIdx));
+        } else {
+            onDeleteDetail(undefined, customResta, tmpIdx);
+            setTimelineItems(prev => prev.filter(item => item.tmpIdx !== tmpIdx || item.tmpIdx == null));
         }
-        setTimelineItems(prev => prev.filter((_, i) => i !== index));
     };
-
-    const customContent = timelineItems.map((item, idx) => {
-        const isStartOrEnd = item.title?.startsWith("시작") || item.title?.endsWith("끝");
-        const restaInfo = item.customResta;
-
-        return (
-            <div
-                key={idx}
-                className={isStartOrEnd ? "hidden" : "customCards"}
-                style={{ display: isStartOrEnd ? "none" : "flex", gap: "12px" }}
-            >
-                <p className="detailContent" style={{ flex: 1, wordBreak: "break-word", whiteSpace: "normal" }}>
-                    {item.cardDetailedText}
-                </p>
-
-                {restaInfo?.photo?.new_filename && (
-                    <img
-                        src={`http://localhost/image/${restaInfo.photo.new_filename}`}
-                        className="customCardImage"
-                        alt="식당 이미지"
-                        style={{ width: "120px", objectFit: "cover" }}
-                    />
-                )}
-
-                {!isStartOrEnd && canUpdate && (
-                    <p className="detailDel" onClick={() => handleDelete(idx)}>[삭제]</p>
-                )}
-            </div>
-        );
-    });
 
     return (
         <Chrono
-            key={timelineItems.length}
+            key={timelineItems.map(i => i.detail_idx ?? `tmp-${i.tmpIdx}`).join("-")}
             items={timelineItems}
             mode="HORIZONTAL"
             disableToolbar
         >
-            {customContent}
+            {timelineItems.map(item => {
+                const isStartOrEnd = item.title?.startsWith("시작") || item.title?.endsWith("끝");
+                const restaInfo = item.customResta;
+
+                return (
+                    <div
+                        key={item.detail_idx ?? `tmp-${item.tmpIdx}`}
+                        className={isStartOrEnd ? "hidden" : "customCards"}
+                        style={{ display: isStartOrEnd ? "none" : "flex", gap: "12px" }}
+                    >
+                        <p className="detailContent" style={{ flex: 1, wordBreak: "break-word", whiteSpace: "normal" }}>
+                            {item.cardDetailedText}
+                        </p>
+
+                        {restaInfo?.img_idx && (
+                            <img
+                                src={`http://localhost/imageIdx/${restaInfo.img_idx}`}
+                                className="customCardImage"
+                                alt="식당 이미지"
+                                style={{ width: "120px", objectFit: "cover" }}
+                            />
+                        )}
+
+                        {!isStartOrEnd && canUpdate && (
+                            <p className="detailDel" onClick={() => handleDeleteById(item.detail_idx, item.customResta, item.tmpIdx)}>[삭제]</p>
+                        )}
+                    </div>
+                );
+            })
+            }
         </Chrono>
     );
 }

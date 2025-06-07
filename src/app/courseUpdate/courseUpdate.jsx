@@ -7,6 +7,7 @@ import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
 import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
+import StepModalUpdate from "@/app/courseUpdate/update_modal/page";
 
 export default function CourseUpdate() {
 
@@ -20,10 +21,16 @@ export default function CourseUpdate() {
     const [restaIdxList, setRestaIdxList] = useState([]);
     const [resta, setResta] = useState([]);
     const [noResta, setNoResta] = useState([]);
-    const [deletedDetailIds, setDeletedDetailIds] = useState([]);
+    const [deletedDetailRestaIds, setDeletedDetailRestaIds] = useState([]);
+    const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
+    const [time, setTime] = useState({timelineStart:"",timelineFinish:""});
+    const [isPublic, setIsPublic] = useState(true);
+    const [tmpIdx, setTmpIdx] = useState(1);
 
+    const [initialSelectedTags, setInitialSelectedTags] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showTimeModal, setShowTimeModal] = useState(false);
     const canUpdate = true;
 
 
@@ -34,6 +41,7 @@ export default function CourseUpdate() {
         "reg_date":"",
         "star_average":0,
         "subject":"",
+        "isPublic":true,
         "blind":false,
         "tmp":false,
         "total_like_count":0,
@@ -41,14 +49,12 @@ export default function CourseUpdate() {
         "nickname":"",
         "content_detail_cmt":[],
         "content_detail_resta":[],
-        "tag_name":[],
-        "tag_name_area": [],
-        "time":{"start":"", "end":""}});
+        "tags":[],
+        "time":{"timelineStart":"", "timelineFinish":""}});
 
     // 디테일 정보 가져오기
     const getDetail = () => {
         axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
-            console.log(data);
             const d = data.detail;
             const newDetail =
                 {
@@ -58,6 +64,7 @@ export default function CourseUpdate() {
                     "reg_date":d.content.reg_date,
                     "star_average":d.content.star_average,
                     "subject":d.content.subject,
+                    "isPublic":d.content.public,
                     "blind":d.content.blind,
                     "tmp":d.content.tmp,
                     "total_like_count":d.content.total_like_count,
@@ -65,13 +72,13 @@ export default function CourseUpdate() {
                     "nickname":d.nickname.nickname,
                     "content_detail_cmt":d.content_detail_cmt,
                     "content_detail_resta":d.content_detail_resta,
-                    "tag_name":d.tag_name,
-                    "tag_name_area": d.tag_name_area,
+                    "tags":d.tags,
                     "time":{
-                        "start":d.time.start,
-                        "end":d.time.end
+                        "timelineStart":d.time.start,
+                        "timelineFinish":d.time.end
                     }}
             setDetail(newDetail);
+            console.log("받아온 데이터 : ",data);
         });
     };
 
@@ -84,42 +91,22 @@ export default function CourseUpdate() {
     useEffect(() => {
         if (isFirstLoad.current && detail.post_idx !== 0) {
             setSubject(detail.subject);
-            setSelectedTags([
-                ...detail.tag_name.map(tag => ({ type: "tag", value: tag.tag_name })),
-                ...detail.tag_name_area.map(area => ({ type: "area", value: area.tag_name }))
-            ]);
+
+            const normalizedTags = detail.tags.map(tag => ({
+                ...tag,
+                value: tag.tag_name,
+                type: tag.isClass
+            }));
+
+            setSelectedTags(normalizedTags);
+            setInitialSelectedTags(normalizedTags);  // 초기 상태 따로 저장
             setCourseCmt(detail.post_cmt);
+            setTime(detail.time);
+            setIsPublic(detail.isPublic);
             isFirstLoad.current = false;
         }
+        console.log("받아온 디테일 : ",detail);
     }, [detail]);
-
-    // 세부일정 실시간 반영
-    useEffect(() => {
-        setDetail(prev => ({
-            ...prev,
-            content_detail_resta: [
-                ...prev.content_detail_resta.filter(
-                    r => !deletedDetailIds.includes(r.detail_resta_idx)
-                ),
-                ...resta.map((r, idx) => ({
-                    detail_resta_idx: `temp-${idx}`, // 새 항목은 임시 ID 부여
-                    resta: r.resta,
-                    start: r.start,
-                    comment: r.comment,
-                }))
-            ],
-            content_detail_cmt: [
-                ...prev.content_detail_cmt.filter(
-                    c => !deletedDetailIds.includes(c.detail_cmt_idx)
-                ),
-                ...noResta.map((c, idx) => ({
-                    detail_cmt_idx: `temp-cmt-${idx}`,
-                    start: c.start,
-                    comment: c.comment,
-                }))
-            ]
-        }));
-    }, [resta, noResta, deletedDetailIds]);
 
     // 최신디테일정보가 들어오면 맵에 마커찍기
     useEffect(() => {
@@ -134,11 +121,16 @@ export default function CourseUpdate() {
             const map = new kakao.maps.Map(containerEl, mapOption);
             const bounds = new kakao.maps.LatLngBounds();
 
-            // ✅ 삭제된 detail_idx 제외
-            const restaInfoList = detail.content_detail_resta
-                .filter(r => !deletedDetailIds.includes(r.detail_resta_idx))
-                .map(r => r.resta?.[0])
-                .filter(Boolean);
+            const restaInfoList = [
+                ...detail.content_detail_resta
+                    .filter(r => !deletedDetailRestaIds.some(d => d.detail_idx === r.detail_idx))
+                    .map(r => r.resta?.[0])
+                    .filter(Boolean),
+                ...resta
+                    .filter(r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx))
+                    .map(r => r.resta?.[0])
+                    .filter(Boolean)
+            ];
 
             if (restaInfoList.length > 0) {
                 restaInfoList.forEach(restaInfo => {
@@ -162,22 +154,67 @@ export default function CourseUpdate() {
 
                 map.setBounds(bounds);
             } else {
-                const defaultPosition = new kakao.maps.LatLng(37.570377, 126.985409);
+                // ✅ 현재 위치 사용
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const userPosition = new kakao.maps.LatLng(lat, lng);
+
+                        const marker = new kakao.maps.Marker({
+                            position: userPosition,
+                            map,
+                            title: "현재 위치"
+                        });
+
+                        const infoWindow = new kakao.maps.InfoWindow({
+                            position: userPosition,
+                            content: `<div style="padding:5px;font-size:13px;font-weight:bold;">현재 내 위치입니다. 식당일정을 추가해 보세요!</div>`
+                        });
+
+                        infoWindow.open(map, marker);
+                        map.setCenter(userPosition);
+                    }, () => {
+                        // ✅ 실패 시 fallback
+                        showDefaultMarker(map);
+                    });
+                } else {
+                    // ✅ 브라우저에서 geolocation 지원 안할 때 fallback
+                    showDefaultMarker(map);
+                }
+            }
+
+            function showDefaultMarker(map) {
+                const defaultPosition = new kakao.maps.LatLng(38.0761111, 128.0963889);
                 const marker = new kakao.maps.Marker({
                     position: defaultPosition,
                     map,
-                    title: "종각역"
+                    title: "대한민국 정중앙"
                 });
 
                 const infoWindow = new kakao.maps.InfoWindow({
                     position: defaultPosition,
-                    content: `<div style="padding:5px;font-size:13px;font-weight:bold;">종각역 근처</div>`
+                    content: `<div style=
+                                            padding:8px;
+                                            font-size:13px;
+                                            font-weight:bold;
+                                            background-color:white;
+                                            border:1px solid #ccc;
+                                            border-radius:8px;
+                                            max-width:220px;
+                                            word-break:break-word;
+                                            white-space:normal;
+                                        ">
+                                        식당일정도 없고 위치정보 허용도 안해주셨군요! 대한민국 정중앙이에요!
+                                        </div>`
                 });
 
                 infoWindow.open(map, marker);
+                map.setCenter(defaultPosition);
             }
         });
-    }, [detail, deletedDetailIds]); // ✅ 삭제 ID가 바뀔 때도 재렌더링
+    }, [detail, deletedDetailRestaIds, resta]);
+
 
     // 코스 삭제버튼
     const courseDelete = (detail) => {
@@ -193,6 +230,13 @@ export default function CourseUpdate() {
         });
     }
 
+    // 코스 시간 핸들러
+    const handleComplete = (data) => {
+        setTime(data);       // 저장
+        setShowTimeModal(false);     // 모달 닫기
+        console.log("변경된 시간 : ",time);
+    };
+
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
         if (formData.resta_name && formData.resta_name.trim() !== "") {
@@ -201,50 +245,87 @@ export default function CourseUpdate() {
             setResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     resta: [
                         {
+                            lat: formData.lat,
+                            lng: formData.lng,
                             resta_name: formData.resta_name,
                             url: formData.url || '',
                             media: formData.media || '',
+                            img_idx: formData.img_idx
                         }
                     ],
                     start: formData.start || '',
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
             setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
         } else {
             // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
             setNoResta(prev => [
                 ...prev,
                 {
+                    tmpIdx: tmpIdx,
                     start: formData.start || '',
                     comment: formData.comment || '',
                 }
             ]);
+            setTmpIdx(prev => prev + 1);
         }
         setShowDetailModal(false);
     }
 
     // 수정완료버튼
     const updateSubmit = () => {
+
+        const added = selectedTags.filter(
+            tag => !initialSelectedTags.some(init => init.type === tag.type && init.idx === tag.idx)
+        );
+
+        const removed = initialSelectedTags.filter(
+            init => !selectedTags.some(tag => tag.type === init.type && tag.idx === init.idx)
+        );
+
+        const tags = added.map(t => ({
+            isClass: t.type,
+            idx: t.idx
+        }));
+
+        const tags_del = removed.map(t => ({
+            isClass: t.type,
+            idx: t.idx
+        }));
+
         const payload = {
-            post_idx: detail.post_idx,
-            subject,
-            post_cmt: courseCmt,
-            tag_name: selectedTags
-                .filter(tag => tag.type === "tag")
-                .map(tag => ({ tag_name: tag.value })),
-            tag_name_area: selectedTags
-                .filter(tag => tag.type === "area")
-                .map(tag => ({ tag_name: tag.value })),
-            deleted_detail_idx_list: deletedDetailIds,
-            content_detail_resta: detail.content_detail_resta,
-            content_detail_cmt: detail.content_detail_cmt
+            content: {subject: subject, post_cmt: courseCmt, isPublic: isPublic, tmp: detail.tmp},
+            time: {start:time.timelineStart, end:time.timelineFinish},
+            tags,
+            tags_del,
+            content_detail_resta: resta.map((item, idx) => ({
+                resta_idx: restaIdxList[idx], // 선택된 식당 idx
+                comment: item.comment || '',
+                start: item.start || ''
+            })),
+            content_detail_cmt: noResta.map(item => ({
+                comment: item.comment || '',
+                start: item.start || ''
+            })),
+            content_detail_resta_del: deletedDetailRestaIds,
+            content_detail_cmt_del: deletedDetailCmtIds,
         };
 
         axios.put(`http://localhost/update/${detail.post_idx}`, payload).then(({ data }) => {
-            alert(data.success ? "수정 완료!" : "수정 실패");
+            if (data.success){
+                alert("수정 완료!");
+                location.href=`/courseDetail/${detail.post_idx}`
+            }else{
+                alert("변경된 내용이 없습니다.")
+                location.href=`/courseDetail/${detail.post_idx}`
+            }
+            console.log("tags:", tags);
+            console.log("tags_del:", tags_del);
         });
     };
 
@@ -295,24 +376,61 @@ export default function CourseUpdate() {
 
                 <span className={"timelineHead"}>코스 내용</span>
                 <span className={"timelineBody"}>
-                    <Timeline timelineStart={detail.time.start}
-                              timelineFinish={detail.time.end}
-                              noResta = {detail.content_detail_cmt}
-                              resta = {detail.content_detail_resta}
-                              onDeleteDetail={(detailIdx) =>
-                                  setDeletedDetailIds((prev) => [...prev, detailIdx])
-                              }
-                              canUpdate={canUpdate}/>
+                <Timeline
+                    timelineStart={time.timelineStart}
+                    timelineFinish={time.timelineFinish}
+                    noResta={[
+                        ...detail.content_detail_cmt.filter(
+                            c => !deletedDetailCmtIds.some(d => d.detail_idx === c.detail_idx)
+                        ),
+                        ...noResta.filter(
+                            n => !deletedDetailCmtIds.some(d => d.tmpIdx === n.tmpIdx)
+                        )
+                    ]}
+                    resta={[
+                        ...detail.content_detail_resta.filter(
+                            r => !deletedDetailRestaIds.some(d => d.detail_idx === r.detail_idx)
+                        ),
+                        ...resta.filter(
+                            r => !deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx)
+                        ).filter(r => r.resta)
+                    ]}
+                    onDeleteDetail={(detailIdx, customResta, tmpIdx) => {
+                        if (customResta && Object.keys(customResta).length > 0 && tmpIdx == null) {
+                            setDeletedDetailRestaIds(prev => [...prev, {detail_idx:detailIdx}]);
+                        } else if (tmpIdx == null){
+                            setDeletedDetailCmtIds(prev => [...prev, {detail_idx:detailIdx}]);
+                        } else if (customResta && Object.keys(customResta).length > 0 && tmpIdx){
+                            setDeletedDetailRestaIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                            setResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
+                        } else if (tmpIdx) {
+                            setDeletedDetailCmtIds(prev => [...prev, {tmpIdx:tmpIdx}]);
+                            setNoResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
+                        }
+                    }}
+                    canUpdate={canUpdate}
+                />
                 </span>
-                <button onClick={() => setShowDetailModal(true)} className="courseWrite_button">
-                    코스 추가
-                </button>
-                {showDetailModal && (
-                    <CourseAdd_modal
-                        onClose={() => setShowDetailModal(false)}
-                        onSubmit={handleAddCourse}
-                    />
-                )}
+                <div className={"actionButtons"}>
+                    <button onClick={() => setShowTimeModal(true)} className="timeUpdate">
+                        코스 시간 변경
+                    </button>
+                    {showTimeModal && (
+                        <StepModalUpdate
+                            onClose={() => setShowTimeModal(false)}
+                            onComplete={handleComplete}
+                        />
+                    )}
+                    <button onClick={() => setShowDetailModal(true)} className="detailUpdate">
+                        일정 추가
+                    </button>
+                    {showDetailModal && (
+                        <CourseAdd_modal
+                            onClose={() => setShowDetailModal(false)}
+                            onSubmit={handleAddCourse}
+                        />
+                    )}
+                </div>
 
                 <span className={"mapHead"}>식당 위치 정보</span>
                 <span className={"mapBody"}>
@@ -328,6 +446,28 @@ export default function CourseUpdate() {
                     onChange={(e) => setCourseCmt(e.target.value)}></textarea>
 
                 <div className={"btns"}>
+                    <div className="isPublic">
+                        <label>
+                            <input
+                                type="radio"
+                                name="isPublic"
+                                value="public"
+                                checked={isPublic}
+                                onChange={() => setIsPublic(true)}
+                            />
+                            공개
+                        </label>
+                        <label style={{ marginLeft: "10px" }}>
+                            <input
+                                type="radio"
+                                name="isPublic"
+                                value="private"
+                                checked={!isPublic}
+                                onChange={() => setIsPublic(false)}
+                            />
+                            비공개
+                        </label>
+                    </div>
                     <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
                     <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
                     <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
