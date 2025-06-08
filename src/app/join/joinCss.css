@@ -238,27 +238,38 @@ input::placeholder {
 
 .profile > img {
     position: absolute;
-    margin-top: 10px;
+    margin-top: 25px;
     margin-left: 150px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
 }
 
 .cameraIcon {
     position: absolute;
-    left: 100px;
-    top: 100px;
+    left: 250px;
+    top: 125px;
+    z-index: 1000;
 }
 
 .deleteSpan {
     position: absolute;
-    left: 175px;
-    top: 167px;
+    left: 173px;
+    top: 173px;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 27px;
-    text-decoration-line: underline;
     color: #CC503B;
+    background: none;
+    border: none;
+}
+
+.deleteSpan:hover {
+    text-decoration-line: underline;
 }
 
 .left {

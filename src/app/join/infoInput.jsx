@@ -146,25 +146,40 @@ export default function infoInput({
                     ))}
                 </select><br/>
 
-                <label>프로필 사진</label><br/>
-                {/*<div className={"profile"}>*/}
-                {/*    <img src={"userIcon_default_profile.png"} alt={"기본 프로필 사진"}/>*/}
-                {/*    <img className={"cameraIcon"} src={"cameraIcon.png"} alt={"카메라 아이콘"}/>*/}
-                {/*    <span className={"deleteSpan"}>사진 삭제</span>*/}
-                {/*</div>*/}
+                <label>프로필 사진 (설정하지 않을 시 기본 이미지로 등록됩니다.)</label><br/>
                 <div className="profile">
-                    <label htmlFor="profile">프로필 이미지 업로드:</label>
-                    <input type="file"
-                           accept="image/*"
-                           onChange={handleProfileChange}
+                    <img
+                        src={profilePreview ? profilePreview : "userIcon_default_profile.png"}
+                        alt="프로필 사진"
+                        className="w-[140px] h-[140px] object-cover rounded-full border"
                     />
-                    {profilePreview && (
-                        <img
-                            src={profilePreview}
-                            alt="미리보기"
-                            className="w-32 h-32 object-cover rounded-full border mt-2"
-                        />
-                    )}
+                    {/*<input type="file"*/}
+                    {/*       accept="image/*"*/}
+                    {/*       onChange={handleProfileChange}*/}
+                    {/*/>*/}
+                    <input
+                        type="file"
+                        id="profile-upload"
+                        accept="image/*"
+                        onChange={handleProfileChange}
+                        style={{ display: 'none' }}
+                    />
+                    <label htmlFor="profile-upload" style={{ cursor: 'pointer' }}>
+                        <img className="cameraIcon" src="cameraIcon.png" alt="카메라 아이콘" />
+                    </label>
+                    <button
+                        onClick={() => {
+                            if (!profilePreview) {
+                                alert("삭제할 사진이 없습니다.");
+                            } else {
+                                setProfilePreview(null);
+                                setProfileImage(null);
+                            }
+                        }}
+                        className="deleteSpan"
+                    >
+                        사진 삭제
+                    </button>
                 </div>
             </div>
 
