@@ -34,15 +34,14 @@ export default function CommonList({sort}) {
             <div className="commonList">
                 {Array.isArray(items) && items.map((item) => (
                     <div key={item.course.post_idx} className="listItem">
-                        <div className="mainImage">
-                            <img
-                                src={`http://localhost/image/${item.course_img}`}
-                                onError={(e) => {
-                                    e.target.src = '/no_image.png';
-                                }}
-                                alt="코스 이미지"
-                            />
-                        </div>
+                        <img
+                            className={"mainImage"}
+                            src={`http://localhost/image/${item.course_img}`}
+                            onError={(e) => {
+                                e.target.src = '/no_image.png';
+                            }}
+                            alt="코스 이미지"
+                        />
 
                         <span className="courseTitle">
                             <Link href={`/courseDetail/${item.course.post_idx}`}>

@@ -26,6 +26,8 @@ export default function bestList() {
         setMonthlyList(data.list);
     }
 
+    const [imgError, setImgError] = useState(false);
+
     return (
         <>
             <div className={"rightMenu-bottom"}>
@@ -34,15 +36,14 @@ export default function bestList() {
                     <div className={"weeklyDiv"}>
                         {weeklyList.map(item => (
                             <div key={item.course.post_idx}>
-                                <div className="mainImage">
-                                    <img
-                                        src={`http://localhost/image/${item.course_img}`}
-                                        onError={(e) => {
-                                            e.target.src = '/no_image.png';
-                                        }}
-                                        alt="코스 이미지"
-                                    />
-                                </div>
+                                <img
+                                    className={"mainImage"}
+                                    src={`http://localhost/image/${item.course_img}`}
+                                    onError={(e) => {
+                                        e.target.src = '/no_image.png';
+                                    }}
+                                    alt="코스 이미지"
+                                />
                                 <Link href={`/courseDetail/${item.course.post_idx}`}>
                                     <span className="courseTitle">{item.course.subject}</span>
                                 </Link>
@@ -63,15 +64,14 @@ export default function bestList() {
                     <div className={"monthlyDiv"}>
                         {monthlyList.map(item => (
                             <div key={item.course.post_idx}>
-                                <div className="mainImage">
-                                    <img
-                                        src={`http://localhost/image/course/${item.course_img}`}
-                                        onError={(e) => {
-                                            e.target.src = '/no_image.png';
-                                        }}
-                                        alt="이미지 안 뜸"
-                                    />
-                                </div>
+                                <img
+                                    className={"mainImage"}
+                                    src={`http://localhost/image/course/${item.course_img}`}
+                                    onError={(e) => {
+                                        e.target.src = '/no_image.png';
+                                    }}
+                                    alt="이미지 안 뜸"
+                                />
                                 <Link href={`/courseDetail/${item.course.post_idx}`}>
                                     <span className="courseTitle">{item.course.subject}</span>
                                 </Link>

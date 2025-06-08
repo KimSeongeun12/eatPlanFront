@@ -90,17 +90,25 @@ export default function Admin_courseList({sort}) {
             <div className="commonList">
                 {Array.isArray(items) && items.map((item) => (
                     <div key={item.course.post_idx} className="listItem">
-                        <div className="mainImage">
-                            <input className={"admin_checkBox"}
-                                   type={"checkbox"}
-                                   onChange={(e) => selectItem(e, item.course.post_idx)}
-                                   checked={selectedCourse.includes(item.course.post_idx)}
-                            />
+                        <div style={{ position: 'relative', display: 'inline-block' }}>
                             <img
-                                src={item.course.blind === true ? '/blind.svg' : `http://localhost/upload/${item.course_img}`}
+                                className={"mainImage"}
+                                src={item.course.blind === true ? '/blind.svg' : `http://localhost/image/${item.course_img}`}
                                 alt="코스 이미지"
-                                onError={(e) => {
-                                    e.target.src = '/no_image.png';
+                                onError={(e) => { e.target.src = '/no_image.png'; }}
+                            />
+                            <input
+                                className={"admin_checkBox"}
+                                type={"checkbox"}
+                                onChange={(e) => selectItem(e, item.course.post_idx)}
+                                checked={selectedCourse.includes(item.course.post_idx)}
+                                style={{
+                                    position: 'absolute',
+                                    top: '0px',
+                                    left: '0px',
+                                    zIndex: 10,
+                                    width: '25px',
+                                    height: '25px',
                                 }}
                             />
                         </div>
