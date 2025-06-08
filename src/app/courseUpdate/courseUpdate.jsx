@@ -26,7 +26,8 @@ export default function CourseUpdate() {
     const [deletedDetailRestaIds, setDeletedDetailRestaIds] = useState([]);
     const [deletedDetailCmtIds, setDeletedDetailCmtIds] = useState([]);
     const [time, setTime] = useState({timelineStart:"",timelineFinish:""});
-    const [isPublic, setIsPublic] = useState(true);
+    const [isPublic, setIsPublic] = useState(false);
+    const [tmp, setTmp] = useState(false);
     const [tmpIdx, setTmpIdx] = useState(1);
 
     const [initialSelectedTags, setInitialSelectedTags] = useState([]);
@@ -44,7 +45,7 @@ export default function CourseUpdate() {
         "reg_date":"",
         "star_average":0,
         "subject":"",
-        "isPublic":true,
+        "isPublic":false,
         "blind":false,
         "tmp":false,
         "total_like_count":0,
@@ -81,6 +82,16 @@ export default function CourseUpdate() {
                         "timelineStart":d.time.start,
                         "timelineFinish":d.time.end
                     }}
+            if (newDetail.blind) {
+                alert("관리자가 블라인드 처리한 코스 입니다.");
+                location.href = "/list";
+                return;
+            }
+            if ((newDetail.user_id && user_id.current !== newDetail.user_id) || !newDetail.user_id) {
+                alert("url로 장난치면 혼나요!");
+                location.href="/list";
+                return;
+            }
             setDetail(newDetail);
         })
         .catch(error => {
@@ -134,11 +145,8 @@ export default function CourseUpdate() {
             setCourseCmt(detail.post_cmt);
             setTime(detail.time);
             setIsPublic(detail.isPublic);
+            setTmp(detail.tmp);
             isFirstLoad.current = false;
-            if ((detail.user_id && user_id.current !== detail.user_id) || !detail.user_id) {
-                alert("url로 장난치면 혼나요!");
-                location.href="/list";
-            }
         }
     }, [detail]);
 
@@ -251,7 +259,6 @@ export default function CourseUpdate() {
         }
     }, [detail, deletedDetailRestaIds, resta]);
 
-
     // 코스 삭제버튼
     const courseDelete = (detail) => {
         if (isAuthenticated && user_id.current === detail.user_id){
@@ -319,6 +326,10 @@ export default function CourseUpdate() {
         setShowDetailModal(false);
     }
 
+    useEffect(() => {
+        console.log("public 값 확인:", isPublic, "타입:", typeof isPublic);
+    }, [isPublic]);
+
     // 수정완료버튼
     const updateSubmit = () => {
 
@@ -342,7 +353,7 @@ export default function CourseUpdate() {
             }));
 
             const payload = {
-                content: {subject: subject, user_id: detail.user_id , post_cmt: courseCmt, isPublic: isPublic, tmp: detail.tmp},
+                content: {subject: subject, user_id: detail.user_id , post_cmt: courseCmt, isPublic: isPublic, tmp: tmp},
                 time: {start: time.timelineStart, end: time.timelineFinish},
                 tags,
                 tags_del,
@@ -510,7 +521,7 @@ export default function CourseUpdate() {
                                         <input
                                             type="radio"
                                             name="isPublic"
-                                            value="public"
+                                            value= "true"
                                             checked={isPublic}
                                             onChange={() => setIsPublic(true)}
                                         />
@@ -520,16 +531,40 @@ export default function CourseUpdate() {
                                         <input
                                             type="radio"
                                             name="isPublic"
-                                            value="private"
+                                            value= "false"
                                             checked={!isPublic}
                                             onChange={() => setIsPublic(false)}
                                         />
                                         비공개
                                     </label>
                                 </div>
-                                <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
-                                <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
-                                <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
+                                <div className="tmp">
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            name="tmp"
+                                            value= "true"
+                                            checked={tmp}
+                                            onChange={() => setTmp(true)}
+                                        />
+                                        임시저장 활성화
+                                    </label>
+                                    <label style={{ marginLeft: "10px" }}>
+                                        <input
+                                            type="radio"
+                                            name="tmp"
+                                            value= "false"
+                                            checked={!tmp}
+                                            onChange={() => setTmp(false)}
+                                        />
+                                        임시저장 비활성화
+                                    </label>
+                                </div>
+                                <div className={"btnsWrapper"}>
+                                    <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
+                                    <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
+                                    <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
+                                </div>
                             </div>
                         </>
                     )}

@@ -58,6 +58,16 @@ export default function CourseDetail({post_idx}) {
                     "start":d.time.start,
                     "end":d.time.end
                 }}
+            if (newDetail.blind) {
+                alert("관리자가 블라인드 처리한 코스 입니다.");
+                location.href = "/list";
+                return;
+            }
+            if (newDetail.tmp) {
+                alert("임시 저장 코스입니다.");
+                location.href = "/list"
+                return;
+            }
             setDetail(newDetail);
             checkLikeStatus(d.content.post_idx);
             cmtList(d.content.post_idx);
@@ -205,7 +215,12 @@ export default function CourseDetail({post_idx}) {
     const courseReport = (detail) => {
         console.log("courseReport -> detail :",detail);
         if (isAuthenticated) {
-            const queryParts = ["isClass=course", `idx=${detail.post_idx}`,`suspect=${detail.user_id}`,`nickname=${encodeURIComponent(detail.nickname)}`].join("&");
+            user_id.current = sessionStorage.getItem("user_id");
+            const queryParts = ["isClass=course",
+                `idx=${detail.post_idx}`,
+                `suspect=${detail.user_id}`,
+                `nickname=${encodeURIComponent(detail.nickname)}`,
+                `reporter=${user_id.current}`].join("&");
             const url = `/report/write?${queryParts}`
             location.href = url;
         } else {
