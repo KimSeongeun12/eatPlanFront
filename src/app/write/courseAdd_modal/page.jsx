@@ -13,7 +13,7 @@ const CourseAddModal = ({ onClose, onSubmit }) => {
     //     timeline_time: "",
     //     timeline_coment: "",
     // });
-    const [formData, setFormData] = useState([]);
+    const [formData, setFormData] = useState({});
 
     const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
@@ -41,7 +41,10 @@ const CourseAddModal = ({ onClose, onSubmit }) => {
                     <AddStepThree
                         prevStep={prevStep}
                         formData={formData}
-                        onSubmit={() => onSubmit(formData)}
+                        onSubmit={() => {
+                            console.log("최종 제출 formData:", formData); // ✅ 제출 시 로그
+                            onSubmit(formData);
+                        }}
                     />
                 )}
             </div>

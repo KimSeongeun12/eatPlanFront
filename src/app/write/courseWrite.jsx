@@ -204,6 +204,8 @@ export default function CourseWrite({data}) {
 
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
+        console.log("모달에서 넘어온 최종 formData:", formData); // media: "http://localhost/imageIdx/1"
+
         if (formData.resta_name && formData.resta_name.trim() !== "") {
             // timeline_resta_name 에 값이 존재할 경우
             // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
@@ -218,6 +220,7 @@ export default function CourseWrite({data}) {
                             resta_name: formData.resta_name,
                             url: formData.url || '',
                             media: formData.media || '',
+                            img_idx: formData.img_idx || null,
                         }
                     ],
                     start: formData.start || '',
@@ -225,7 +228,7 @@ export default function CourseWrite({data}) {
                 }
             ]);
             setTmpIdx(prev => prev + 1);
-            setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]); // ✅ 인덱스 저장
+            setRestaIdxList(prev => [...prev, formData.selectedRestaIdx]);
         } else {
             // timeline_resta_name 이 null 일 경우 timeline_time, timeline_coment 만 noResta 에 저장
             setNoResta(prev => [
@@ -318,15 +321,15 @@ export default function CourseWrite({data}) {
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colSpan={2} className="courseWrite_td">
-                            <div className="courseWrite_uploadDiv">
-                                {/*{resta.length > 0 && (*/}
-                                {/*    <KakaoMap address={resta[0].resta[0].resta_name} />*/}
-                                {/*)}*/}
-                            </div>
-                        </td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*    <td colSpan={2} className="courseWrite_td">*/}
+                    {/*        <div className="courseWrite_uploadDiv">*/}
+                    {/*            /!*{resta.length > 0 && (*!/*/}
+                    {/*            /!*    <KakaoMap address={resta[0].resta[0].resta_name} />*!/*/}
+                    {/*            /!*)}*!/*/}
+                    {/*        </div>*/}
+                    {/*    </td>*/}
+                    {/*</tr>*/}
                     <tr>
                         <td colSpan={2} className="courseWrite_td">개인 코멘트 입력</td>
                     </tr>

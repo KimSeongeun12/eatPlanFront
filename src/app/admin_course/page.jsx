@@ -38,8 +38,6 @@ export default function Admin_course_page() {
                                     <MenuItem value="date_asc">등록일 (오래된 순)</MenuItem>
                                     <MenuItem value="hit_desc">조회수 (많은 순)</MenuItem>
                                     <MenuItem value="hit_asc">조회수 (적은 순)</MenuItem>
-                                    <MenuItem value="like_desc">좋아요 많은 순</MenuItem>
-                                    <MenuItem value="like_asc">좋아요 적은 순</MenuItem>
                                     <MenuItem value="star_avg_desc">별점 높은 순</MenuItem>
                                     <MenuItem value="star_avg_asc">별점 낮은 순</MenuItem>
                                 </Select>
