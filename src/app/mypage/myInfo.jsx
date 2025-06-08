@@ -45,6 +45,7 @@ export default function MyInfo() {
             location.href = '/list';
             return;
         }
+        console.log("받은 회원 정보:", data.list[0]);
         setUserInfo(data.list[0]);
     }
 
@@ -52,9 +53,9 @@ export default function MyInfo() {
     const [tags, setTags] = useState([]);
     const member_tagList = async () => {
         const {data} = await axios.post('http://localhost/member_tag_list', {user_id: loginId.current});
-        console.log(data.taglist);
-        if (data?.taglist) {
-            setTags(data.taglist);
+        console.log(data.tagnames);
+        if (data?.tagnames) {
+            setTags(data.tagnames);
         }
     }
 
@@ -99,8 +100,8 @@ export default function MyInfo() {
                         <tr style={trStyle}>
                             <th style={thStyle}>선호 태그</th>
                             <td className={"infoTable_td"}>
-                                {tags.map((item, idx) => (
-                                    <div key={idx}>#{item.isClass}</div>
+                                {tags.map((tag, idx) => (
+                                    <div key={idx}># {tag}</div>
                                 ))}
                             </td>
                         </tr>

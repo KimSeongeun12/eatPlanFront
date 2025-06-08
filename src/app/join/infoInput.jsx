@@ -153,10 +153,6 @@ export default function infoInput({
                         alt="프로필 사진"
                         className="w-[140px] h-[140px] object-cover rounded-full border"
                     />
-                    {/*<input type="file"*/}
-                    {/*       accept="image/*"*/}
-                    {/*       onChange={handleProfileChange}*/}
-                    {/*/>*/}
                     <input
                         type="file"
                         id="profile-upload"

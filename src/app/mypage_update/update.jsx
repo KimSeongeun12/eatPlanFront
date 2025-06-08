@@ -8,6 +8,7 @@ import MypageTagSelectModal from "@/app/mypage_update/mypageTagSelectModal";
 
 export default function Update() {
     const user_id = useRef('');
+    const loginId = useRef('');
     const [ori_nickname, setOri_nickname] = useState('');
     const [ori_email, setOri_email] = useState('');
 
@@ -16,13 +17,15 @@ export default function Update() {
 
     const [showModal, setShowModal] = useState(false);
 
+    const [selectedTags, setSelectedTags] = useState([]);
+
     useEffect(() => {
-        const storedId = sessionStorage.getItem('user_id');
-        if (storedId) {
-            user_id.current = storedId;
-            getInfo();
-        } else {
-            console.log('sessionStorage에 user_id 없음');
+        if (typeof window !== 'undefined') {
+            loginId.current = sessionStorage.getItem('user_id');
+            if (!user_id.current) {
+                user_id.current = loginId.current
+            }
+            getInfo(user_id.current);
         }
     }, []);
 
@@ -89,6 +92,12 @@ export default function Update() {
 
     // 회원 정보 수정
     const mypage_update = async () => {
+        // 만약 선택된 태그가 1개 이상 없을 경우 태그를 선택해주세요 라는 alert 창 출력
+        if (selectedTags.length === 0) {
+            alert("태그를 선택해주세요.");
+            return;
+        }
+
         const {data} = await axios.put('http://localhost/member_update', {
             user_id: user_id.current,
             email: info.email,
@@ -125,7 +134,7 @@ export default function Update() {
         paddingLeft: '30px',
     }
 
-    // 지역 태그 리스트 불러오기
+    // 지역 리스트 불러오기
     const [locationTagList, setLocationTagList] = useState([]);
     useEffect(() => {
         const fetchLocationTags = async () => {
@@ -133,24 +142,65 @@ export default function Update() {
                 const {data} = await axios.get("http://localhost/list_tag_area");
                 setLocationTagList(data.list_area);
             } catch (error) {
-                console.error("지역 태그 불러오기 실패:", error);
+                console.error("지역 불러오기 실패:", error);
             }
         };
 
         fetchLocationTags();
     }, []);
 
+    // user_id 에 맞는 태그 불러오기 (지역 태그, 일반 태그 포함)
+    const [tags, setTags] = useState([]);
+    const member_tagList = async () => {
+        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: loginId.current});
+        console.log(data.tagnames);
+        console.log(data.tagnames.length);
+        if (data?.tagnames) {
+            setSelectedTags(data.tagnames);
+        }
+    }
+
+    useEffect(() => {
+        member_tagList();
+    }, []);
+    
+    // 멤버 태그 수정 (삭제 후 추가로 가야 함)
+    // 태그 삭제
+    const tagDelete = async () => {
+        if (selectedTags.length === 0) {
+            alert("선택된 태그가 없습니다.");
+            return;
+        }
+
+        try {
+            const { data } = await axios.delete('http://localhost/member_tag_prefer_delete', {
+                data: { user_id: loginId.current }
+            });
+
+            if (data.success) {
+                alert("태그가 삭제되었습니다.");
+                // 최신 태그 목록을 다시 불러와서 상태 동기화
+                await member_tagList();
+            } else {
+                alert("삭제 실패: 서버 응답 실패");
+            }
+        } catch (error) {
+            console.error("태그 삭제 실패:", error);
+            alert("태그 삭제에 실패했습니다.");
+        }
+    }
+
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
     const handleTagSelect = (tags) => {
-        setInfo(prev => ({
-            ...prev,
-            tags
-        }));
+        // data.tagnames.length
+        if (selectedTags.length > 2) {
+            alert("태그는 3개 이상 선택이 불가능합니다.");
+            return;
+        }
+        setSelectedTags(tags);
         setIsTagModalOpen(false);
     };
-
-    // user_id 에 맞는 태그 불러오기
 
     return (
         <>
@@ -207,7 +257,7 @@ export default function Update() {
                                     className={"locationSelect"}
                                     name={"location"}
                                     onChange={input}
-                                    value={input.location}>
+                                    value={info.location}>
                                     <option value="">지역을 선택하세요</option>
                                     {locationTagList.map(area => (
                                         <option key={area.area_tag_idx} value={area.tag_name}>
@@ -222,12 +272,27 @@ export default function Update() {
                             <td className={"infoTable_td"}>
                                 <div className={"tag_content"}>
                                     <span className={"tagName"}>
-                    {info.tags && info.tags.length > 0
-                        ? info.tags.map(tag => `#${tag.value}`).join(', ')
-                        : '선택된 태그가 없습니다.'}
-                </span>
-                                    <button onClick={() => setIsTagModalOpen(true)}
-                                            className={"tag_updateButton"}>태그 선택
+                                          {selectedTags.length > 0 ? (
+                                              selectedTags.map((tag, idx) => (
+                                                  <div key={idx}># {tag}</div>
+                                              ))
+                                          ) : (
+                                              <div>선택된 태그가 없습니다.</div>
+                                          )}
+                                    </span>
+                                    <button onClick={tagDelete}
+                                            className={"tag_updateButton"}>태그 삭제
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (selectedTags.length >= 3) {
+                                                alert("이미 3개의 태그를 선택했습니다. 더 이상 선택할 수 없습니다.");
+                                                return;
+                                            }
+                                            setIsTagModalOpen(true);
+                                        }}
+                                        className={"tag_updateButton"}
+                                    >태그 선택
                                     </button>
                                 </div>
                             </td>
@@ -242,7 +307,8 @@ export default function Update() {
 
             {isTagModalOpen && <MypageTagSelectModal
                 onClose={() => setIsTagModalOpen(false)}
-                onSelect={handleTagSelect}/>}
+                onSelect={handleTagSelect}
+            />}
             {showModal && <ChangePW onClose={() => setShowModal(false)}/>}
 
         </>

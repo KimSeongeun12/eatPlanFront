@@ -44,8 +44,10 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
 
     // 일반 태그 토글
     const toggleTag = (tagName) => {
+        const tagObj = tag.find(t => t.tag_name === tagName);
         const isSelected = selectedList.some(item => item.type === 'tag' && item.value === tagName);
-
+        console.log('tagName:', tagName);
+        console.log('tagObj:', tagObj);
         if (!isSelected && selectedList.length >= 3) {
             alert("태그는 최대 3개까지만 선택할 수 있습니다.");
             return;
@@ -54,14 +56,16 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
         setSelectedList(prev =>
             isSelected
                 ? prev.filter(item => !(item.type === 'tag' && item.value === tagName))
-                : [...prev, { type: 'tag', value: tagName }]
+                : [...prev, { type: 'tag', value: tagName, idx: tagObj?.tag_idx }]
         );
     };
 
     // 지역 태그 토글
     const toggleArea = (areaName) => {
+        const tagObj = locationTag.find(t => t.tag_name === areaName);
         const isSelected = selectedList.some(item => item.type === 'area' && item.value === areaName);
-
+        console.log('tagName:', areaName);
+        console.log('tagObj:', tagObj);
         if (!isSelected && selectedList.length >= 3) {
             alert("태그는 최대 3개까지만 선택할 수 있습니다.");
             return;
@@ -70,13 +74,29 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
         setSelectedList(prev =>
             isSelected
                 ? prev.filter(item => !(item.type === 'area' && item.value === areaName))
-                : [...prev, { type: 'area', value: areaName }]
+                : [...prev, { type: 'area', value: areaName, idx: tagObj?.area_tag_idx }]
         );
     };
 
-    const handleSelect = () => {
-        onSelect(selectedList);
-        onClose();
+    const handleSelect = async () => {
+        try {
+            const user_id = sessionStorage.getItem('user_id');
+            const tagsForServer = selectedList.map(tag => ({
+                idx: tag.idx, // idx가 없다면 따로 관리 필요
+                isClass: tag.type === 'area' ? '지역' : '일반',
+                user_id: user_id
+            }));
+
+            const requestBody = { tags: tagsForServer };
+
+            const { data } = await axios.post('http://localhost/member_tag_prefer_insert', requestBody);
+            console.log(data);
+            onSelect(selectedList.map(item => item.value));
+            alert('태그 추가에 성공했습니다.');
+        } catch (error) {
+            console.error('태그 저장 실패:', error);
+        }
+        // onClose();
     };
 
     return (
