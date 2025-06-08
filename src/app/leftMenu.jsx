@@ -1,6 +1,7 @@
 'use client'
 import {useRouter, usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
+import axios from "axios";
 
 export default function leftMenu() {
     const welcomeStyle = {
@@ -36,6 +37,19 @@ export default function leftMenu() {
         location.href="/";
     }
 
+    const [userInfo, setUserInfo] = useState({});
+    const memberInfo = async (user_id) => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
+        console.log(data);
+        setUserInfo(data.list[0]);
+    }
+
+    useEffect(() => {
+        if (userId) {
+            memberInfo(userId);
+        }
+    }, [userId]);
+
     return (
         <>
             <div className={"leftMenu"}>
@@ -47,7 +61,16 @@ export default function leftMenu() {
                     <img src="/logo.png" alt="EatPlan 로고" className="logo-img" />
                 </div>
 
-                <img className={"userIcon"} src={"/userIcon.png"} alt={"프로필 사진"}/>
+                <img
+                    className="userIcon"
+                    src={
+                        userInfo?.img_idx
+                            ? `http://localhost/imageIdx/${userInfo.img_idx}`
+                            : "/userIcon.png"
+                    }
+                    alt="프로필 사진"
+                />
+
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px'}}>
                     {isLoggedIn
                         ? (

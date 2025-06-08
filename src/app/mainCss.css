@@ -91,6 +91,8 @@ html, body {
 .userIcon {
     width: 176.55px;
     height: 176.55px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .loginMenu img,
