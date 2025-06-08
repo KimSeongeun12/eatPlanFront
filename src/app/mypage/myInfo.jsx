@@ -3,16 +3,23 @@ import '../mainCss.css'
 import './myPageCss.css'
 import axios from "axios";
 import {useEffect, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 export default function MyInfo() {
     const router = useRouter();
+    const loginId = useRef('');
     const user_id = useRef('');
     const [userInfo, setUserInfo] = useState({});
 
+    const searchParams = useSearchParams();
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            user_id.current = sessionStorage.getItem('user_id');
+            loginId.current = sessionStorage.getItem('user_id');
+            user_id.current = searchParams.get("user_id");
+            if (!user_id.current) {
+                user_id.current = loginId.current
+            }
             memberInfo(user_id.current);
         }
     }, []);
@@ -31,11 +38,11 @@ export default function MyInfo() {
         paddingLeft: '30px',
     }
 
-    const memberInfo = async () => {
-        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id.current});
+    const memberInfo = async (user_id) => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
         if (!data.list || data.list.length === 0 || !data.list[0].user_id) {
-            alert("로그인이 필요한 서비스입니다.");
-            location.href = '/login';
+            alert("해당 회원의 정보가 없습니다.");
+            location.href = '/list';
             return;
         }
         setUserInfo(data.list[0]);
@@ -44,7 +51,7 @@ export default function MyInfo() {
     // 태그 리스트 불러오기
     const [tags, setTags] = useState([]);
     const member_tagList = async () => {
-        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: user_id.current});
+        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: loginId.current});
         console.log(data.taglist);
         if (data?.taglist) {
             setTags(data.taglist);
@@ -69,7 +76,7 @@ export default function MyInfo() {
                             <th style={thStyle}>ID</th>
                             <td className={"infoTable_td"}>{userInfo?.user_id}</td>
                         </tr>
-                        <tr style={trStyle}>
+                        <tr style={trStyle} className={user_id.current === loginId.current ? "" : "hidden"}>
                             <th style={thStyle}>PASSWORD</th>
                             <td className={"infoTable_td"}>{userInfo?.pass}</td>
                         </tr>
@@ -101,8 +108,14 @@ export default function MyInfo() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <span onClick={() => router.push('/passwd')} className={"secessionSpan"} >회원 탈퇴</span>
-                    <button onClick={() => router.push('/myInfoPasswd')} className={"infoUpdateButton"}>회원 정보 수정</button>
+                    <span onClick={() => router.push('/passwd')}
+                          className={user_id.current === loginId.current ? "secessionSpan" : "hidden"} >
+                        회원 탈퇴
+                    </span>
+                    <button onClick={() => router.push('/myInfoPasswd')}
+                            className={user_id.current === loginId.current? "infoUpdateButton" : "hidden"}>
+                        회원 정보 수정
+                    </button>
                 </div>
             </div>
         </>

@@ -6,6 +6,10 @@
     padding: 100px 50px 30px;
 }*/
 
+.hidden {
+    display: none;
+}
+
 .infoTable {
     width: 1340px;
     height: 570px;
