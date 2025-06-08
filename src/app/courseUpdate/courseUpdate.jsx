@@ -333,6 +333,11 @@ export default function CourseUpdate() {
     // 수정완료버튼
     const updateSubmit = () => {
 
+        if (subject.trim().length === 0 || courseCmt.trim().length === 0) {
+            alert("제목과 코스 코멘트는 필수 입력사항 입니다.");
+            return;
+        }
+
         if (isAuthenticated && user_id.current === detail.user_id) {
             const added = selectedTags.filter(
                 tag => !initialSelectedTags.some(init => init.type === tag.type && init.idx === tag.idx)
@@ -351,6 +356,11 @@ export default function CourseUpdate() {
                 isClass: t.type,
                 idx: t.idx
             }));
+
+            if (selectedTags.length === 0 || selectedTags > 5) {
+                alert("코스 태그는 1개이상, 5개 이하여야 합니다.");
+                return;
+            }
 
             const payload = {
                 content: {subject: subject, user_id: detail.user_id , post_cmt: courseCmt, isPublic: isPublic, tmp: tmp},
@@ -514,57 +524,54 @@ export default function CourseUpdate() {
                                 value={courseCmt}
                                 onChange={(e) => setCourseCmt(e.target.value)}
                                 maxLength={333}></textarea>
-
+                            <div className="isPublic">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="isPublic"
+                                        value= "true"
+                                        checked={isPublic}
+                                        onChange={() => setIsPublic(true)}
+                                    />
+                                    공개
+                                </label>
+                                <label style={{ marginLeft: "10px" }}>
+                                    <input
+                                        type="radio"
+                                        name="isPublic"
+                                        value= "false"
+                                        checked={!isPublic}
+                                        onChange={() => setIsPublic(false)}
+                                    />
+                                    비공개
+                                </label>
+                            </div>
+                            <div className="tmp">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="tmp"
+                                        value= "true"
+                                        checked={tmp}
+                                        onChange={() => setTmp(true)}
+                                    />
+                                    임시저장 활성화
+                                </label>
+                                <label style={{ marginLeft: "10px" }}>
+                                    <input
+                                        type="radio"
+                                        name="tmp"
+                                        value= "false"
+                                        checked={!tmp}
+                                        onChange={() => setTmp(false)}
+                                    />
+                                    임시저장 비활성화
+                                </label>
+                            </div>
                             <div className={"btns"}>
-                                <div className="isPublic">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="isPublic"
-                                            value= "true"
-                                            checked={isPublic}
-                                            onChange={() => setIsPublic(true)}
-                                        />
-                                        공개
-                                    </label>
-                                    <label style={{ marginLeft: "10px" }}>
-                                        <input
-                                            type="radio"
-                                            name="isPublic"
-                                            value= "false"
-                                            checked={!isPublic}
-                                            onChange={() => setIsPublic(false)}
-                                        />
-                                        비공개
-                                    </label>
-                                </div>
-                                <div className="tmp">
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            name="tmp"
-                                            value= "true"
-                                            checked={tmp}
-                                            onChange={() => setTmp(true)}
-                                        />
-                                        임시저장 활성화
-                                    </label>
-                                    <label style={{ marginLeft: "10px" }}>
-                                        <input
-                                            type="radio"
-                                            name="tmp"
-                                            value= "false"
-                                            checked={!tmp}
-                                            onChange={() => setTmp(false)}
-                                        />
-                                        임시저장 비활성화
-                                    </label>
-                                </div>
-                                <div className={"btnsWrapper"}>
-                                    <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
-                                    <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
-                                    <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
-                                </div>
+                                <span className={"update"} onClick={()=>updateSubmit()}>수정 완료</span>
+                                <span className={"delete"} onClick={()=>courseDelete(detail)}>삭제</span>
+                                <span className={"toList"} onClick={()=>toList()}>메인페이지</span>
                             </div>
                         </>
                     )}

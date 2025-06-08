@@ -301,12 +301,6 @@ textarea[class$="Body"] {
     color: #2a2a2a;
 }
 
-.btns {
-    width: 100%;
-    margin-right: 0;
-    justify-content: space-between;
-}
-
 .btns span:active {
     background-color: #d0d0d0;
     transform: scale(0.97);
@@ -344,7 +338,7 @@ textarea[class$="Body"] {
 }
 
 .isPublic {
-    margin-right: 0px;
+    margin-top: 15px;
     display: flex;
     align-items: center;
     padding-left: 10px;
@@ -365,6 +359,7 @@ textarea[class$="Body"] {
 }
 
 .tmp {
+        margin-top: 15px;
         margin-right: auto;
         margin-left: 50px;
         display: flex;
