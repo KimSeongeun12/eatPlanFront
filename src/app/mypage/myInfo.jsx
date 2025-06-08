@@ -68,7 +68,11 @@ export default function MyInfo() {
             <div>
                 <div className={"infoTap"}>
                     <div className={"profileTap"}>
-                        <img className={"userImage"} src={"userIcon_default_profile.png"} alt={"유저 아이콘 기본 프로필 사진"}/><br/>
+                        <img
+                            className="userImage"
+                            src={userInfo.img_idx ? `http://localhost/imageIdx/${userInfo.img_idx}` : "/userIcon_default_profile.png"}
+                            alt="유저 프로필 이미지"
+                        /><br/>
                         <label>프로필 사진</label>
                     </div>
                     <table className={"infoTable"}>

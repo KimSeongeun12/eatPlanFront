@@ -202,14 +202,68 @@ export default function Update() {
         setIsTagModalOpen(false);
     };
 
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [shouldAlert, setShouldAlert] = useState(false);
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const tempUrl = URL.createObjectURL(file);
+            setPreviewUrl(tempUrl);
+
+            const formData = new FormData();
+            formData.append("files", file);
+            formData.append("user_id", info.user_id);
+
+            try {
+                const { data } = await axios.put("http://localhost/profile_update", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                console.log(data);
+                if (data.success) {
+                    // 성공 시 alert 예약
+                    setShouldAlert(true);
+                }
+            } catch (error) {
+                console.error("업로드 실패:", error.response?.data || error.message);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (previewUrl && shouldAlert) {
+            alert("프로필 사진 업데이트에 성공했습니다.");
+            setShouldAlert(false); // 다시 초기화
+        }
+    }, [previewUrl, shouldAlert]);
+
     return (
         <>
             <div>
                 <div className={"infoTap"}>
-                    <div className={"profileTap"}>
-                        <img className={"userImage"} src={"/userIcon_default_profile.png"}
-                             alt={"유저 아이콘 기본 프로필 사진"}/><br/>
-                        <label>프로필 사진</label>
+                    <div className="profileTap">
+                        <img
+                            className="userImage"
+                            src={
+                                previewUrl
+                                    ? previewUrl
+                                    : info.img_idx
+                                        ? `http://localhost/imageIdx/${info.img_idx}`
+                                        : "/userIcon_default_profile.png"
+                            }
+                            alt="유저 프로필 이미지"
+                        />
+                        <br />
+                        <input
+                            type="file"
+                            id="profileImageUpload"
+                            style={{ display: "none" }}
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="profileImageUpload" style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}>
+                            프로필 사진 추가
+                        </label>
                     </div>
                     <table className={"infoTable"}>
                         <tbody>
