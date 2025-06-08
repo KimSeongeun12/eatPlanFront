@@ -11,7 +11,7 @@
     height: 100%;
     max-height: 900px;
     width: 100vw;
-    max-width: 1450px;
+    max-width: 1310px;
     min-width: 1300px;
     overflow-y: scroll;
     padding-left: 10px;
@@ -282,6 +282,8 @@ textarea[class$="Body"] {
 
 .btns span {
     display: inline-block;
+    width: auto;
+    text-align: center;
     margin: 8px 10px 8px 0;
     padding: 6px 14px;
     border-radius: 10px;
@@ -297,6 +299,12 @@ textarea[class$="Body"] {
 .btns span:hover {
     background-color: #e0e0e0;
     color: #2a2a2a;
+}
+
+.btns {
+    width: 100%;
+    margin-right: 0;
+    justify-content: space-between;
 }
 
 .btns span:active {
@@ -336,7 +344,7 @@ textarea[class$="Body"] {
 }
 
 .isPublic {
-    margin-right: 990px;
+    margin-right: 0px;
     display: flex;
     align-items: center;
     padding-left: 10px;
@@ -346,13 +354,37 @@ textarea[class$="Body"] {
     outline: none;
 }
 
+.isPublic label {
+    width: 80px;
+    height: 100%;
+}
+
+.tmp label {
+    width: 140px;
+    height: 100%;
+}
+
+.tmp {
+        margin-right: auto;
+        margin-left: 50px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        font-size: 15px;
+        font-weight: bold;
+        gap: 10px;
+        outline: none;
+}
+
 .actionButtons {
     display: flex;
     justify-content: center; /* 가로 가운데 정렬 */
     gap: 20px;               /* 버튼 간 간격 */
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     grid-column: 1 / -1;     /* 전체 열 차지 (코스 그리드 내에서) */
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
 }
 
 .actionButtons button {

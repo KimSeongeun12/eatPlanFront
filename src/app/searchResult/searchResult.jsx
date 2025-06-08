@@ -141,12 +141,16 @@ export default function SearchResult(){
                                     <div key={index} className="listItem">
                                         <div className="mainImage">
                                             <img
-                                                src={`http://localhost/image/${item.thumbnail}`}
+                                                src={item.blind ? '/blind.svg' : `http://localhost/image/${item.thumbnail}`}
                                                 alt="썸네일"
                                             />
                                         </div>
                                         <span className="courseTitle"
-                                              onClick={()=>courseDetail(item.post_idx)}>{item.subject}</span>
+                                              onClick={item.blind
+                                                  ? ()=>alert("관리자가 블라인드 처리한 코스입니다.")
+                                                  : ()=>courseDetail(item.post_idx)}>
+                                            {item.subject}
+                                        </span>
                                         <span className="courseComment">[{item.total_comment_count}]</span><br/>
                                         <span className="courseAuthor" onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>
                                             {item.nickname}
