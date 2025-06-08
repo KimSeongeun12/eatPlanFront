@@ -326,10 +326,6 @@ export default function CourseUpdate() {
         setShowDetailModal(false);
     }
 
-    useEffect(() => {
-        console.log("public 값 확인:", isPublic, "타입:", typeof isPublic);
-    }, [isPublic]);
-
     // 수정완료버튼
     const updateSubmit = () => {
 
@@ -359,6 +355,19 @@ export default function CourseUpdate() {
 
             if (selectedTags.length === 0 || selectedTags > 5) {
                 alert("코스 태그는 1개이상, 5개 이하여야 합니다.");
+                return;
+            }
+
+            if (
+                resta.filter(r => (!deletedDetailRestaIds.some(d => d.tmpIdx === r.tmpIdx))).length === 0
+                &&
+                noResta.filter(n => (!deletedDetailCmtIds.some(d => d.tmpIdx === n.tmpIdx))).length === 0
+                &&
+                detail.content_detail_resta.filter(dr => (!deletedDetailRestaIds.some(d => d.detail_idx === dr.detail_idx))).length === 0
+                &&
+                detail.content_detail_cmt.filter(dc => (!deletedDetailCmtIds.some(d => d.detail_idx === dc.detail_idx))).length === 0
+            ) {
+                alert("세부 일정은 최소 1개이상 이어야 합니다.");
                 return;
             }
 
