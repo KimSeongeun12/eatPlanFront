@@ -9,8 +9,30 @@ export default function infoInput({
                                       overlayId,
                                       overlayNickname,
                                       confirmref,
-                                      setConfirmPass
+                                      setConfirmPass,
+                                      profileImage,
+                                      setProfileImage,
+                                      profilePreview,
+                                      setProfilePreview,
+                                      setProfileFileName
                                   }) {
+
+    /* 프로필 사진 업로드 기능*/
+    const handleProfileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfileImage(file);
+            setProfilePreview(URL.createObjectURL(file));
+            setProfileFileName(file.name);
+            setInput(prev => ({
+                ...prev,
+                new_filename: file.name
+            }));
+        }
+        console.log(file.name);
+    };
+    /**/
+
     const style = {
         color: '#FF0000',
     }
@@ -124,12 +146,26 @@ export default function infoInput({
                     ))}
                 </select><br/>
 
-                {/*<label>프로필 사진</label><br/>*/}
+                <label>프로필 사진</label><br/>
                 {/*<div className={"profile"}>*/}
                 {/*    <img src={"userIcon_default_profile.png"} alt={"기본 프로필 사진"}/>*/}
                 {/*    <img className={"cameraIcon"} src={"cameraIcon.png"} alt={"카메라 아이콘"}/>*/}
                 {/*    <span className={"deleteSpan"}>사진 삭제</span>*/}
                 {/*</div>*/}
+                <div className="profile">
+                    <label htmlFor="profile">프로필 이미지 업로드:</label>
+                    <input type="file"
+                           accept="image/*"
+                           onChange={handleProfileChange}
+                    />
+                    {profilePreview && (
+                        <img
+                            src={profilePreview}
+                            alt="미리보기"
+                            className="w-32 h-32 object-cover rounded-full border mt-2"
+                        />
+                    )}
+                </div>
             </div>
 
             {/*태그 더보기 모달*/}

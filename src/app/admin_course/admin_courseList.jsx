@@ -114,7 +114,7 @@ export default function Admin_courseList({sort}) {
                         <span className="courseAuthor">{item.nickname}</span>
                         <span className="courseViews">조회 {item.course?.b_hit}</span><br/>
                         <span className="courseScope">별점 {item.star_avg}</span>
-                        <span className="courseLike">좋아요 {item.like_cnt}</span><br/>
+                        <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
                         <span className="courseDate">{item.course?.reg_date}</span>
                     </div>
                 ))}
