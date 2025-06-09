@@ -68,13 +68,15 @@ export default function StepTwo({onNext, onPrev, setData}) {
             </div>
             <div className={"modal_time_select"}>
                 <span style={{fontSize: '24px'}}>오전</span><br/>
-                <div style={{
-                    marginTop: '15px',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '10px',
-                    justifyContent: 'center'
-                }}>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',  // 4열
+                        gap: '10px',
+                        justifyItems: 'center',  // 버튼 중앙 정렬
+                        marginTop: '15px',
+                    }}
+                >
                     {morning_buttons.map((btnText) => (
                         <input
                             key={btnText}
@@ -98,13 +100,15 @@ export default function StepTwo({onNext, onPrev, setData}) {
                 </div>
                 <br/>
                 <span style={{fontSize: '24px'}}>오후</span><br/>
-                <div style={{
-                    marginTop: '15px',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '10px',
-                    justifyContent: 'center'
-                }}>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',  // 4열
+                        gap: '10px',
+                        justifyItems: 'center',  // 버튼 중앙 정렬
+                        marginTop: '15px',
+                    }}
+                >
                     {afternoon_buttons.map((btnText) => (
                         <input
                             key={btnText}
@@ -128,8 +132,8 @@ export default function StepTwo({onNext, onPrev, setData}) {
                 </div>
             </div>
             <br/>
-            <button className={"modal_button"} onClick={handleNext}>다음</button>
-            <button className={"modal_button"} onClick={onPrev}>이전</button>
+            <button className={"modal_next_button"} onClick={handleNext}>다음</button>
+            <button className={"modal_back_button"} onClick={onPrev}>이전</button>
         </>
     );
 }

@@ -1,24 +1,28 @@
 const AddStepThree = ({ prevStep, formData, onSubmit }) => {
     return (
         <div>
-            <h2>4단계: 확인</h2>
-            <p><strong>이미지:</strong></p>
-            {formData.media ? (
-                <img src={formData.media} alt="선택된 식당 이미지" style={{ maxWidth: '300px', maxHeight: '200px' }} />
-            ) : (
-                <p>이미지가 없습니다.</p>
-            )}
-            <p><strong>선택된 식당 idx:</strong> {formData.selectedRestaIdx}</p>
-            <p><strong>선택된 태그:</strong> {formData.selectedTags && formData.selectedTags.length > 0
-                ? formData.selectedTags.map(tag => `#${tag.value}`).join(', ')
-                : "선택된 태그가 없습니다."}
-            </p>
-            <p><strong>선택된 식당:</strong> {formData.resta_name}</p>
-            <p><strong>시간:</strong> {formData.start}</p>
-            <p><strong>상세 설명:</strong> {formData.comment}</p>
-            <p><strong>url:</strong> {formData.url}</p>
-            <button onClick={prevStep}>이전</button>
-            <button onClick={onSubmit}>제출</button>
+            <h2 style={{ textAlign: "center", marginBottom: "30px" }}>최종 확인</h2>
+            <div className="confirmation_container">
+                <div className="confirmation_image_wrapper">
+                    {formData.media ? (
+                        <img
+                            src={formData.media}
+                            alt="선택된 식당 이미지"
+                        />
+                    ) : (
+                        <p>이미지가 없습니다.</p>
+                    )}
+                </div>
+                <div className="confirmation_details">
+                    <p><strong>식당 이름</strong>{formData.resta_name || "정보 없음"}</p>
+                    <p><strong>시간</strong>{formData.start || "정보 없음"}</p>
+                    <p><strong>상세 설명</strong>{formData.comment || "정보 없음"}</p>
+                </div>
+            </div>
+            <div className="confirmation_buttons">
+                <button className="btn" onClick={prevStep}>이전</button>
+                <button className="btn" onClick={onSubmit}>제출</button>
+            </div>
         </div>
     );
 };

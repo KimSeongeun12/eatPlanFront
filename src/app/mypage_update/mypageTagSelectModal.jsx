@@ -83,7 +83,8 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
             const user_id = sessionStorage.getItem('user_id');
             const tagsForServer = selectedList.map(tag => ({
                 idx: tag.idx, // idx가 없다면 따로 관리 필요
-                isClass: tag.type === 'area' ? 'area_tag' : 'tag',
+                // isClass: tag.type === 'area' ? 'area_tag' : 'tag',
+                isClass: tag.type === 'area' ? '지역' : '일반',
                 user_id: user_id
             }));
 
@@ -119,6 +120,7 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
             <div>
                 {tagCate
                     .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "지역") // 임시
+                    // .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "area_tag") // 임시
                     .map(cate => {
                         const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx);
                         return (
@@ -156,8 +158,8 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
                 ))}
             </div>
 
-            <button onClick={onClose}>닫기</button>
-            <button onClick={handleSelect}>선택</button>
+            <button className={"join_selectButton"} onClick={handleSelect}>선택</button>
+            <button className={"join_closeButton"} onClick={onClose}>닫기</button>
         </div>
     );
 }

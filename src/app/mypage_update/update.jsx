@@ -359,10 +359,16 @@ export default function Update() {
                 </div>
             </div>
 
-            {isTagModalOpen && <MypageTagSelectModal
-                onClose={() => setIsTagModalOpen(false)}
-                onSelect={handleTagSelect}
-            />}
+
+                {isTagModalOpen &&
+                    <div className={"modal"}>
+                    <MypageTagSelectModal
+                        onClose={() => setIsTagModalOpen(false)}
+                        onSelect={handleTagSelect}
+                    />
+                    </div>
+                }
+
             {showModal && <ChangePW onClose={() => setShowModal(false)}/>}
 
         </>

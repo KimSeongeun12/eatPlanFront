@@ -21,12 +21,12 @@ export default function StepThree({onPrev, onSubmit, data}) {
                     <div className={"timeline_grid_four"}></div>
                     <div className={"timeline_grid_five"}></div>
                     <span className={"timeline_finishSpan"}>{data.timelineFinish}</span>
-                </div><br /><br /><br /><br /><br />
+                </div>
             </div>
             <br/>
 
-            <button className={"modal_button"} onClick={onSubmit}>확인</button>
-            <button className={"modal_button"} onClick={onPrev}>이전</button>
+            <button className={"modal_next_button"} onClick={onSubmit}>확인</button>
+            <button className={"modal_back_button"} onClick={onPrev}>이전</button>
 
         </div>
     );

@@ -6,6 +6,7 @@ import {useEffect, useRef, useState} from 'react';
 import CourseAdd_modal from './courseAdd_modal/page';
 import {Timeline} from "@/app/courseDetail/[slug]/courseDetail";
 import TagComponent from "@/app/write/tagComponent";
+import TempModal from "@/app/write/tempModal";
 import axios from "axios";
 
 export default function CourseWrite({data}) {
@@ -243,12 +244,25 @@ export default function CourseWrite({data}) {
         }
         setIsModalOpen(false);
     }
+    
+    // 임시저장 기능
+    const tempSave = () => {}
+    
+    // 임시저장 불러오기 기능
+    const tempLoad = () => {}
+
+    const [isTempModalOpen, setIsTempModalOpen] = useState(false);
 
     return (
         <>
             <div className="course_rightMenu">
-                <button className="courseWrite_button">임시저장 불러오기</button>
+                <button onClick={() => setIsTempModalOpen(true)} className="courseWrite_button">임시저장 불러오기</button>
                 <button className="courseWrite_button">임시저장</button>
+
+                <TempModal
+                    isOpen={isTempModalOpen}
+                    onClose={() => setIsTempModalOpen(false)}
+                />
 
                 <table className="courseWrite_table_one">
                     <tbody>

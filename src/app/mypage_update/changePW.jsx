@@ -61,14 +61,14 @@ export default function ChangePW({onClose}) {
                 <h2>비밀번호 변경</h2>
                 <span>회원님의 개인정보를 안전하게 보호하고, 개인정보 도용으로 인한 피해를 방지하기 위해 0일 이상 비밀번호를 변경하지 않은 경우 비밀번호 변경을 권장하고 있습니다.</span>
                 
-                <label>현재 비밀번호</label>
+                <label><b>현재 비밀번호</b></label>
                 <input type="password"
                        name={"existing_pass"}
                        value={info.existing_pass}
                        onChange={input}
                        placeholder="현재 비밀번호를 입력해주세요." />
                 
-                <label>새 비밀번호</label>
+                <label><b>새 비밀번호</b></label>
                 <input type="password"
                        name={"new_pass"}
                        value={info.new_pass}

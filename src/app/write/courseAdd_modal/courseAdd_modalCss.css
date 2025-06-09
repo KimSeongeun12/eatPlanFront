@@ -17,8 +17,8 @@
     background-color: #fff;
     padding: 30px 40px;
     border-radius: 12px;
-    width: 400px;
-    max-width: 90%;
+    width: 80%;
+    max-width: 900px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: modalFadeIn 0.3s ease;
     font-family: sans-serif;
@@ -36,48 +36,64 @@
     }
 }
 
-/* 인풋 공통 스타일 */
-.modal-content input,
-.modal-content textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.resta_search_input {
+    width: 650px;
+    height: 40px;
+    padding: 0 12px;
+    font-size: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Noto Sans', sans-serif;
+    transition: border-color 0.2s ease;
 }
 
-/* 버튼 영역 */
-.modal-content button {
-    padding: 8px 16px;
-    margin-right: 8px;
+.resta_search_input:focus {
+    outline: none;
+    border-color: #cc503b;
+    box-shadow: 0 0 0 2px rgba(204, 80, 59, 0.2);
+}
+
+.resta_search_buttons {
+    float: right;
+}
+
+.resta_search_button {
+    margin-left: 10px;
+    padding: 0 20px;
+    width: 100px;
+    height: 40px;
+    background-color: #cc503b;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: white;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
+    transition: background-color 0.2s ease;
 }
 
-/* 다음 버튼 (기본) */
-.modal-content button.next {
-    background-color: #4caf50;
-    color: white;
+.resta_search_button:hover {
+    background-color: #b44732;
 }
 
-/* 이전 버튼 */
-.modal-content button.prev {
-    background-color: #2196f3;
-    color: white;
+
+.addStep_item {}
+
+.resta_img {
+    width: 200px;
+    height: 200px;
 }
 
-/* 취소 버튼 */
-.modal-content button.cancel {
-    background-color: #f44336;
-    color: white;
+.resta_search_div {
+    display: flex;
 }
 
-/**/
+.resta_search_left {}
+
+.resta_search_right {
+    margin-left: 20px;
+}
 
 .courseAdd_search_div {
     height: 780px;
@@ -177,4 +193,127 @@
 
 .location-column {
     margin-bottom: 20px;
+}
+
+/* 2단계 */
+
+.addstep_container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.addstep_label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.addstep_input,
+.addstep_textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box; /* 중요 */
+}
+
+.addstep_input:focus,
+.addstep_textarea:focus {
+    outline: none;
+    border-color: #cc503b;
+    box-shadow: 0 0 0 2px rgba(204, 80, 59, 0.2);
+}
+
+.addstep_textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.resta_search_buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* 최종 */
+.confirmation_container {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 30px;
+    align-items: flex-start;
+    font-family: 'Noto Sans', sans-serif;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+.confirmation_image_wrapper {
+    flex: 1;
+    min-width: 200px;
+    height: 200px;
+    /*border-radius: 12px;*/
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.confirmation_image_wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /*border-radius: 12px;*/
+}
+
+.confirmation_image_wrapper p {
+    color: #999;
+    font-style: italic;
+}
+
+.confirmation_details {
+    flex: 2;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.confirmation_details p {
+    margin-bottom: 12px;
+}
+
+.confirmation_details strong {
+    /*color: #cc503b;*/
+    margin-right: 6px;
+}
+
+.confirmation_buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn {
+    background-color: #cc503b;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #b44732;
 }

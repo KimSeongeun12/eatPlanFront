@@ -25,8 +25,8 @@ export default function StepModal({onComplete}) {
 
     return (
         <>
-            <div className="modal">
-                <div className="modal-content">
+            <div className="write_modal">
+                <div className="write_modal_content">
                     {step === 1 && <StepOne onNext={nextStep} setData={updateFormData}/>}
                     {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData}/>}
                     {step === 3 && (

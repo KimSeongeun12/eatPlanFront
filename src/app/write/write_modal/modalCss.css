@@ -1,4 +1,4 @@
-.modal {
+.write_modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,8 +8,9 @@
     z-index: 1000;
 }
 
-.modal-content {
-    width: 668px;
+.write_modal_content {
+    width: 80%;
+    max-width: 900px;
     height: 760px;
     margin: 10% auto;
     background: white;
@@ -40,7 +41,8 @@
     padding-bottom: 30px;
 }
 
-.modal_button {
+.modal_back_button,
+.modal_next_button {
     box-sizing: border-box;
     width: 147px;
     height: 55px;
@@ -70,7 +72,7 @@
     height: 15px;
     background: #CC503B;
     border-radius: 20px;
-    margin: 0 auto;
+    margin: 0 auto 110px;
 }
 
 .timeline_startSpan {

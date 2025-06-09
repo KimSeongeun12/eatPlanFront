@@ -150,7 +150,7 @@ input[type="password"] {
 
 .submit-button {
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #cc503b;
     color: white;
     font-weight: bold;
     border: none;
@@ -159,11 +159,17 @@ input[type="password"] {
     transition: background-color 0.2s ease-in-out;
 }
 
-.submit-button:hover {
-    background-color: #45a049;
+/* 태그 선택 모달 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
 }
 
-/* 태그 선택 모달 */
 .modal-tagTap {
     position: fixed;
     top: 50%;
@@ -185,7 +191,7 @@ input[type="password"] {
 }
 
 .location-column .selected {
-    background-color: #007bff;
+    /*background-color: #007bff;*/
     color: white;
     font-weight: bold;
 }
@@ -195,23 +201,25 @@ input[type="password"] {
     margin: 6px 6px 0 0;
     padding: 6px 10px;
     /*background-color: #eaeaea;*/
+    border: 1px solid #cc503b;
     border-radius: 16px;
+    color: #CC503B;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
 .tag-item:hover {
-    background-color: #ccc;
+    background-color: #f4e0e0;
 }
 
 .tag-item.selected {
-    background-color: #007bff;
+    background-color: #cc503b;
     color: white;
     font-weight: bold;
 }
 
 .empty {
-    color: #999;
+    color: #e19081;
     font-size: 14px;
     margin-top: 5px;
 }
@@ -224,13 +232,13 @@ input[type="password"] {
 /* 선택한 태그 미리보기 스타일링 */
 .selected-preview {
     padding: 12px;
-    background-color: #f7f9fc;
+    background-color: #fff1f1;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
 }
 
 .selected-preview h3 {
-    color: #333;
+    color: #872d1e;
     margin-top: 0px;
 }
 
@@ -241,7 +249,7 @@ input[type="password"] {
 }
 
 .selected-tag {
-    background-color: #007bff;
+    background-color: #cc503b;
     color: white;
     padding: 6px 10px;
     border-radius: 16px;
@@ -258,4 +266,24 @@ input[type="password"] {
 
 .location-column {
     margin-bottom: 20px;
+}
+
+.join_closeButton,
+.join_selectButton {
+    box-sizing: border-box;
+    width: 110px;
+    height: 40px;
+    margin-top: 4px;
+    margin-bottom: 5px;
+    background-color: #cc503b;
+    border: 2px solid #CC503B;
+    border-radius: 20px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    color: white;
+    float: right;
 }
