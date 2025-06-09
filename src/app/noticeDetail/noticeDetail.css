@@ -58,7 +58,7 @@
     border: 1px solid #ddd;
     border-top: none;
     padding: 15px;
-    min-height: 200px;          /* 내용 박스 초기 높이 */
+    min-height: 500px;          /* 내용 박스 초기 높이 */
     white-space: pre-wrap;      /* 줄바꿈 유지 */
     background-color: #fff;
     font-size: 0.95rem;
