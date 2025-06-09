@@ -1,19 +1,48 @@
-/*.rightMenu {
-    box-sizing: border-box;
-    border: 1px solid lightgray;
-    border-radius: 0px 20px 20px 0px;
-    width: 1450px;
-    padding: 100px 50px 30px;
-}*/
-
-.hidden {
-    display: none;
+/* ─── 탭 바 ─── */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #000;
+    margin-bottom: 16px;
 }
 
+.tabs button {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+}
+
+.tabs button.active-span {
+    color: #cc503b;
+    text-decoration-line: none;
+}
+
+.tabs button.active-span::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #cc503b;
+}
+/**/
+
 .infoTable {
-    width: 1340px;
-    height: 570px;
-    box-sizing: border-box;
+    margin-top: 0px;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+    width: 100%;
+    height: 575px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
 }
 
 .infoTable_td {
@@ -47,7 +76,7 @@ span {
 
 .infoTap {
     box-sizing: border-box;
-    width: 1450px;
+    /*width: 1450px;*/
     height: 809px;
 }
 
@@ -64,19 +93,6 @@ span {
     height: 140px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-table {
-    border: 1px solid lightgray;
-    border-collapse: collapse;
-    width: 1340px;
-    height: 575px;
-    font-family: 'Noto Sans';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 27px;
-    color: #000000;
 }
 
 .bioTable {
@@ -127,6 +143,16 @@ table {
 
 .myList_table {
     margin-top: 0px;
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+    width: 100%;
+    height: 575px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    color: #000000;
 }
 
 .myList {
@@ -136,9 +162,6 @@ table {
 
 .courseTable {
     margin-top: 0px;
-    width: 1350px;
-    /*height: 669px;*/
-    /*border: 1px solid black;*/
 }
 
 .courseTr {
@@ -170,7 +193,6 @@ td {
     border-bottom: 1px solid lightgray;
     /*height: 58px;*/
     box-sizing: border-box;
-    padding-left: 20px;
 }
 
 .item_td {
@@ -183,16 +205,13 @@ tr:nth-child(even) {
     background: #f8f8f8;
 }
 
-.list_item > td {
-    /*height: 100px;*/
-}
-
 .myWrite, .myLike {
     box-sizing: border-box;
     width: 242px;
     height: 59px;
     background: #FFFFFF;
     border: 1px solid #B3B3B3;
+    border-bottom: none;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 400;
@@ -212,8 +231,10 @@ tr:nth-child(even) {
     width: 242px;
     height: 59px;
     color: #8e8e8e;
-    background-color: #ebebeb;
-    border: 1px solid #b3b3b3 ;
+    background-color: #f3f3f3;
+    border-top: 1px solid #b3b3b3 ;
+    border-left: 1px solid #b3b3b3;
+    border-right: 1px solid #b3b3b3 ;
     font-family: 'Noto Sans';
     font-style: normal;
     font-weight: 400;

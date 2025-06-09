@@ -252,7 +252,7 @@ export default function CourseWrite({data}) {
 
                 <table className="courseWrite_table_one">
                     <tbody>
-                    <tr>
+                    <tr className={"courseWrite_tr_subject"}>
                         <td className="courseWrite_td_subject">
                             제목<span style={style}> *</span>
                         </td>
@@ -314,6 +314,11 @@ export default function CourseWrite({data}) {
 
                 <table className="courseWrite_table_two">
                     <tbody>
+                    <tr className={"courseWrite_tr_wrapper"}>
+                        <td colSpan={2}>
+                            지도
+                        </td>
+                    </tr>
                     <tr>
                         <td colSpan={2} className="courseWrite_td">
                             <div className={"kakaoWrapper"}>
@@ -321,16 +326,7 @@ export default function CourseWrite({data}) {
                             </div>
                         </td>
                     </tr>
-                    {/*<tr>*/}
-                    {/*    <td colSpan={2} className="courseWrite_td">*/}
-                    {/*        <div className="courseWrite_uploadDiv">*/}
-                    {/*            /!*{resta.length > 0 && (*!/*/}
-                    {/*            /!*    <KakaoMap address={resta[0].resta[0].resta_name} />*!/*/}
-                    {/*            /!*)}*!/*/}
-                    {/*        </div>*/}
-                    {/*    </td>*/}
-                    {/*</tr>*/}
-                    <tr>
+                    <tr className={"courseWrite_tr_comment"}>
                         <td colSpan={2} className="courseWrite_td">개인 코멘트 입력</td>
                     </tr>
                     <tr>
@@ -341,7 +337,7 @@ export default function CourseWrite({data}) {
                                       onChange={input} />
                         </td>
                     </tr>
-                    <tr>
+                    <tr className={"courseWrite_tr_public"}>
                         <td className="courseWrite_td_public">
                             공개 및 비공개 여부<span style={style}> *</span>
                         </td>
@@ -358,14 +354,14 @@ export default function CourseWrite({data}) {
                                    onChange={input} />비공개
                         </td>
                     </tr>
-                    <tr>
-                        <td colSpan={2} className="courseWrite_td">
+                    <tr className={"courseWrite_tr_tag"}>
+                        <td colSpan={2}>
                             태그 (최대 5개까지 선택 가능)<span style={style}> *</span>
                         </td>
                     </tr>
                     <tr>
-                        <td colSpan={2} className="courseWrite_td">
-                            <div className="courseWrite_uploadDiv_">
+                        <td colSpan={2} className="courseWrite_td_tag">
+                            <div>
                                 <TagComponent selectTag={handleTagChange} />
                             </div>
                         </td>

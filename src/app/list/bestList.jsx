@@ -26,8 +26,6 @@ export default function bestList() {
         setMonthlyList(data.list);
     }
 
-    const [imgError, setImgError] = useState(false);
-
     return (
         <>
             <div className={"rightMenu-bottom"}>
@@ -44,21 +42,29 @@ export default function bestList() {
                                     }}
                                     alt="코스 이미지"
                                 />
-                                <Link href={`/courseDetail/${item.course.post_idx}`}>
-                                    <span className="courseTitle">{item.course.subject}</span>
-                                </Link>
-                                <span className="courseComment">[{item.cmt_cnt}]</span><br />
+                                <span className="courseTitle">
+                                    <Link className={"courseTitle_link"} href={`/courseDetail/${item.course.post_idx}`}>
+                                        {item.course.subject}
+                                    </Link>
+                                </span>
+                                <span className="courseComment">[{item.cmt_cnt}]</span><br/>
                                 <span className="courseAuthor">{item.nickname}</span>
-                                <span className="courseViews">조회 {item.course.b_hit}</span><br />
+                                <span className="courseViews">조회 {item.course.b_hit}</span><br/>
                                 <span className="courseScope">별점 {item.star_avg}</span>
-                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br />
-                                <span className="courseDate">{item.course.reg_date}</span>
+                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br/>
+                                <span className="courseDate">{new Date(item.course?.reg_date).toLocaleString('ko-KR', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true, // 오전/오후 나오게
+                                })}</span>
                             </div>
                         ))}
-
                     </div>
                 </div>
-                <div className={"length"}></div>
+
                 <div className={"monthly"}>
                     <span className={"monthlySpan"}>Monthly 월간 베스트</span>
                     <div className={"monthlyDiv"}>
@@ -66,22 +72,31 @@ export default function bestList() {
                             <div key={item.course.post_idx}>
                                 <img
                                     className={"mainImage"}
-                                    src={`http://localhost/image/course/${item.course_img}`}
+                                    src={`http://localhost/image/${item.course_img}`}
                                     onError={(e) => {
                                         e.target.src = '/no_image.png';
                                     }}
-                                    alt="이미지 안 뜸"
+                                    alt="코스 이미지"
                                 />
-                                <Link href={`/courseDetail/${item.course.post_idx}`}>
-                                    <span className="courseTitle">{item.course.subject}</span>
-                                </Link>
-                                <span className="courseComment">[{item.cmt_cnt}]</span><br />
+                                <span className="courseTitle">
+                                    <Link className={"courseTitle_link"} href={`/courseDetail/${item.course.post_idx}`}>
+                                        {item.course.subject}
+                                    </Link>
+                                </span>
+                                <span className="courseComment">[{item.cmt_cnt}]</span><br/>
                                 <span className="courseAuthor">{item.nickname}</span>
-                                <span className="courseViews">조회 {item.course.b_hit}</span><br />
+                                <span className="courseViews">조회 {item.course.b_hit}</span><br/>
                                 <span className="courseScope">별점 {item.star_avg}</span>
-                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br />
+                                <span className="courseLike">좋아요 {item.course.like_cnt}</span><br/>
                                 {/*<span className="courseLike">좋아요: {item.like_cnt}</span><br /> 혹시 문제 있으면 이걸로*/}
-                                <span className="courseDate">{item.course.reg_date}</span>
+                                <span className="courseDate">{new Date(item.course?.reg_date).toLocaleString('ko-KR', {
+                                    year: 'numeric',
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true, // 오전/오후 나오게
+                                })}</span>
                             </div>
                         ))}
                     </div>

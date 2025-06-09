@@ -67,6 +67,10 @@ export default function infoInput({
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
     const handleTagSelect = (tags) => {
+        if (input.tags.length > 2) {
+            alert("태그는 3개 이상 선택이 불가능합니다.");
+            return;
+        }
         setInput(prev => ({
             ...prev,
             tags
