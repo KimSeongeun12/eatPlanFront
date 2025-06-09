@@ -1,4 +1,3 @@
-// File: /app/report/reportWrite.jsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,88 +7,98 @@ import './reportWrite.css';
 
 export default function ReportWrite() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
-    // 1) URL 쿼리에서 넘어온 suspect, isClass, idx 가져오기
-    const searchParams     = useSearchParams();
-    const initialSuspect   = searchParams.get('suspect') || '';
-    const initialClass     = searchParams.get('isClass') || 'course';
-    const initialIdx       = searchParams.get('idx')    || '';
+    const initialNickname = searchParams.get('suspect') || ''; // 닉네임
+    const initialClass = searchParams.get('isClass') || 'course';
+    const initialIdx = searchParams.get('idx') || '';
 
-    // 2) 상태 선언
-    const [reporterId, setReporterId]             = useState('');
+    const [reporterId, setReporterId] = useState('');
     const [reporterNickname, setReporterNickname] = useState('');
 
-    const [suspectId, setSuspectId]               = useState(initialSuspect);
-    const [suspectNickname, setSuspectNickname]   = useState('');
-    const [classification, setClassification]     = useState(initialClass);
-    const [reportedIdx, setReportedIdx]           = useState(initialIdx);
+    const [suspectId, setSuspectId] = useState('');
+    const [suspectNickname, setSuspectNickname] = useState(initialNickname);
+    const [classification, setClassification] = useState(initialClass);
+    const [reportedIdx, setReportedIdx] = useState(initialIdx);
 
-    const [subject, setSubject]                   = useState('');
-    const [content, setContent]                   = useState('');
-    const [files, setFiles]                       = useState([]);
-    const [isPublic, setIsPublic]                 = useState(false);
+    const [subject, setSubject] = useState('');
+    const [content, setContent] = useState('');
+    const [files, setFiles] = useState([]);
+    const [isPublic, setIsPublic] = useState(false);
 
-    // 3) 신고자 닉네임 조회
     useEffect(() => {
         const id = sessionStorage.getItem('user_id') || '';
         setReporterId(id);
-        if (!id) {
-            console.warn('⚠️ sessionStorage에 user_id가 없습니다.');
-            return;
-        }
-        axios
-            .get(`http://localhost/${id}`, {
-                headers: { Authorization: sessionStorage.getItem('token') || '' },
-            })
+        if (!id) return;
+
+        axios.get(`http://localhost/${id}`, {
+            headers: { Authorization: sessionStorage.getItem('token') || '' },
+        })
+            .then(res => setReporterNickname(res.data.nickname || ''))
+            .catch(() => setReporterNickname(''));
+    }, []);
+
+    useEffect(() => {
+        const nickname = searchParams.get('suspect') || '';
+        setSuspectNickname(nickname); // 닉네임은 표시용으로 사용
+
+        if (!nickname) return;
+
+        // 닉네임을 user_id로 변환
+        axios.get(`http://localhost/member/byNickname/${nickname}`)
             .then(res => {
-                setReporterNickname(res.data.nickname || '');
+                if (res.data.user_id) {
+                    setSuspectId(res.data.user_id);
+                } else {
+                    alert("사용자를 찾을 수 없습니다.");
+                }
             })
             .catch(err => {
-                console.error('신고자 닉네임 조회 실패:', err);
-                setReporterNickname('');
+                console.error("닉네임으로 user_id 조회 실패", err);
+                alert("닉네임 조회 중 오류 발생");
             });
     }, []);
 
-    // 4) 대상자 닉네임 조회
+
     useEffect(() => {
-        if (!suspectId) return;
-        axios.get(`http://localhost/${suspectId}`, {
-                headers: { Authorization: sessionStorage.getItem('token') || '' },
-            })
+        if (!initialNickname) return;
+
+        axios.get(`http://localhost/member/byNickname/${initialNickname}`)
             .then(res => {
-                setSuspectNickname(res.data.nickname || '');
+                if (res.data.user_id) {
+                    setSuspectId(res.data.user_id);
+                } else {
+                    alert("해당 닉네임의 사용자를 찾을 수 없습니다.");
+                }
             })
             .catch(err => {
-                console.error('피신고자 닉네임 조회 실패:', err);
+                console.error("닉네임으로 user_id 조회 실패", err);
+                alert("닉네임 조회 중 오류 발생");
             });
-    }, [suspectId]);
+    }, [initialNickname]);
 
     const handleFileChange = (e) => {
         setFiles(Array.from(e.target.files));
     };
 
-    // 5) 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!reporterId) {
-            alert('로그인이 필요합니다.');
-            return;
-        }
-        if (!suspectId || !subject.trim() || !content.trim()) {
+        if (!reporterId || !suspectId || !subject.trim() || !content.trim()) {
             alert('필수 항목을 모두 입력해주세요.');
             return;
+
         }
 
+
         const formData = new FormData();
-        formData.append('isClass',          classification);
-        formData.append('suspect_id',       suspectId);
-        formData.append('suspect_nickname', suspectNickname || '');
-        formData.append('reporter_id',      reporterId);
-        formData.append('reporter_nickname',reporterNickname || '');
-        formData.append('reported_idx',     reportedIdx);
-        formData.append('subject',          subject);
-        formData.append('content',          content);
-        formData.append('isPublic',         isPublic ? '1' : '0');
+        formData.append('isClass', classification);
+        formData.append('suspect_id', suspectId);
+        formData.append('suspect_nickname', suspectNickname);
+        formData.append('reporter_id', reporterId);
+        formData.append('reported_idx', reportedIdx);
+        formData.append('subject', subject);
+        formData.append('content', content);
+        formData.append('isPublic', isPublic ? '1' : '0');
         files.forEach(f => formData.append('files', f));
 
         try {
@@ -107,6 +116,7 @@ export default function ReportWrite() {
             console.error('서버 에러:', err);
             alert('서버 에러가 발생했습니다.');
         }
+
     };
 
     return (
@@ -137,21 +147,13 @@ export default function ReportWrite() {
                         </td>
                         <th>작성자</th>
                         <td>
-                            <input
-                                type="text"
-                                value={reporterNickname || reporterId}
-                                readOnly
-                            />
+                            <input type="text" value={reporterNickname || reporterId} readOnly />
                         </td>
                     </tr>
                     <tr>
                         <th>신고 대상자</th>
                         <td colSpan={3}>
-                            <input
-                                type="text"
-                                value={suspectNickname || suspectId}
-                                readOnly
-                            />
+                            <input type="text" value={suspectNickname || suspectId} readOnly />
                         </td>
                     </tr>
                     <tr>
@@ -167,17 +169,15 @@ export default function ReportWrite() {
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            내용 <span className="required">*</span>
-                        </th>
+                        <th>내용 *</th>
                         <td colSpan={3}>
-                <textarea
-                    value={content}
-                    onChange={e => setContent(e.target.value)}
-                    rows={8}
-                    placeholder="신고 내용을 작성해주세요."
-                    required
-                />
+                            <textarea
+                                value={content}
+                                onChange={e => setContent(e.target.value)}
+                                rows={8}
+                                placeholder="신고 내용을 작성해주세요."
+                                required
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -215,9 +215,7 @@ export default function ReportWrite() {
                     </tbody>
                 </table>
                 <div className="submit-area">
-                    <button type="submit" className="btn-submit">
-                        등록
-                    </button>
+                    <button type="submit" className="btn-submit">등록</button>
                 </div>
             </form>
         </div>
