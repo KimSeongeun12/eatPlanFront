@@ -2,6 +2,7 @@
 import {Pagination, Stack} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function MyList_write() {
     const [list, setList] = useState([]);
@@ -17,11 +18,15 @@ export default function MyList_write() {
             return (
                 <tr key={item.post_idx} style={{height: '60px'}}>
                     <td className={"item_td"}>{item.post_idx}</td>
-                    <td className={"item_td"}>{item.subject}</td>
+                    <td className={"item_td"}>
+                        <Link href={`/courseDetail/${item.post_idx}`}>
+                            {item.subject}
+                        </Link>
+                    </td>
                     <td className={"item_td"}>{item.user_id}</td>
-                    <td className={"item_td"}>{item.reg_date}</td>
+                    <td className={"item_td"}>{new Date(item.reg_date).toLocaleDateString()}</td>
                     <td className={"item_td"}>{item.b_hit}</td>
-                    <td className={"item_td"}>{item.public === 1 ? "공개" : "비공개"}</td>
+                    <td className={"item_td"}>{item.public === 0 ? "공개" : "비공개"}</td>
                 </tr>
             );
         });
@@ -70,14 +75,39 @@ export default function MyList_write() {
                 <tbody>{list}</tbody>
             </table>
 
-            <Stack spacing={2} mt={3} alignItems="center">
+            <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"} alignItems="center">
                 <Pagination
                     count={totalPages}
                     page={page}
                     onChange={handlePageChange}
-                    color="primary"
+                    variant="outlined"
+                    shape="rounded"
                     siblingCount={1}
                     boundaryCount={1}
+                    showFirstButton
+                    showLastButton
+                    sx={{
+                        '& .MuiPaginationItem-root': {
+                            color: '#c9c9c9',
+                            borderColor: '#d29292',
+                            border: 3,
+                            borderRadius: '10px',
+                            minWidth: '50px',
+                            height: '50px',
+                            padding: '10px',
+                            fontSize: '20px',
+                        },
+                        // 선택된 페이지 아이템 스타일
+                        '& .MuiPaginationItem-root.Mui-selected': {
+                            backgroundColor: '#CC503B',  // 배경색을 CC503B로
+                            color: '#ffffff',            // 글자색을 흰색으로
+                            borderColor: '#d29292',
+                        },
+                        // 선택된 상태에서 호버했을 때도 동일 컬러 유지
+                        '& .MuiPaginationItem-root.Mui-selected:hover': {
+                            backgroundColor: '#CC503B',
+                        },
+                    }}
                 />
             </Stack>
         </div>

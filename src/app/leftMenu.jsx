@@ -51,9 +51,17 @@ export default function leftMenu() {
 
     }
 
+    const [imageInfo, setImageInfo] = useState({});
+    const memberImageInfo = async (user_id) => {
+        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
+        console.log(data);
+        setImageInfo(data.list[0]);
+    }
+
     useEffect(() => {
         if (userId) {
             memberInfo(userId);
+            memberImageInfo(userId);
         }
     }, [userId]);
 
@@ -71,8 +79,8 @@ export default function leftMenu() {
                 <img
                     className="userIcon"
                     src={
-                        userInfo?.img_idx
-                            ? `http://localhost/imageIdx/${userInfo.img_idx}`
+                        imageInfo?.img_idx
+                            ? `http://localhost/imageIdx/${imageInfo.img_idx}`
                             : "/userIcon.png"
                     }
                     alt="프로필 사진"

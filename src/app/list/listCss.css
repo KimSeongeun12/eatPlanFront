@@ -1,15 +1,42 @@
-/*.rightMenu {*/
-/*    box-sizing: border-box;*/
-/*    border: 1px solid lightgray;*/
-/*    border-radius: 0px 20px 20px 0px;*/
-/*    width: 1450px;*/
-/*    !*padding: 100px 50px 30px;*!*/
-/*}*/
-
-.topMenuSpans {
-    width: 1350px;
-    height: 35px;
+/* ─── 탭 바 ─── */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #000;
+    margin-bottom: 16px;
 }
+
+.tabs button {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+}
+
+.tabs button.active-span {
+    color: #cc503b;
+    text-decoration-line: none;
+}
+
+.tabs button.active-span::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #cc503b;
+    font-weight: 500;
+}
+
+/**/
+
+/*.topMenuSpans {*/
+/*    width: 1350px;*/
+/*    height: 35px;*/
+/*}*/
 
 .alignSelect {
     position: absolute;
@@ -26,17 +53,14 @@
 }
 
 .search {
-    position: absolute;
-    left: 1680px;
-    top: 90px;
-    width: 60px;
-    height: 51px;
-    border-radius: 15px;
+    width: 70px;
+    height: 61px;
+    border-radius: 8px;
     border: 3px solid lightgray;
     background: #d9d9d9;
     box-sizing: border-box;
-    padding-top: 8px;
-    padding-left: 13px;
+    padding-top: 13px;
+    padding-left: 19px;
 }
 
 .search:hover {
@@ -48,7 +72,7 @@
 }
 
 .weekly {
-    width: 725px;
+    width: 50%;
 }
 
 .weeklyDiv, .monthlyDiv {
@@ -79,7 +103,7 @@
 }
 
 .monthly {
-    width: 725px;
+    width: 50%;
 }
 
 .weeklySpan, .monthlySpan {
@@ -98,14 +122,22 @@
 
 .length {
     width: 1px;
-    height: 710px;
+    height: 80%;
     border-left: 3px solid lightgray;
 }
 
 .courseTitle {
+    display: inline-block; /* 또는 block */
+    max-width: 150px;       /* 원하는 최대 너비 */
+    white-space: nowrap;    /* 줄바꿈 방지 */
+    overflow: hidden;       /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+}
+
+.courseTitle_link {
     font-size: 20px;
-    text-decoration: underline;
-    font-weight: bold;
+    font-weight: 500;
+    text-decoration-line: none;
 }
 
 .courseComment {
@@ -134,15 +166,18 @@
 /*commonList*/
 
 .commonList {
-    margin-left: 50px;
+    /*margin-left: 50px;*/
     margin-top: 50px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
     gap: 20px;
+    border: 1px solid lightgray;
 }
 
 .listItem {
     width: 194px;
+    align-items: center;
 }
 
 .courseTitle,

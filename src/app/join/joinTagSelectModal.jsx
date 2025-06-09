@@ -168,8 +168,8 @@ const JoinTagSelectModal = ({ onClose, onSelect }) => {
                 })}
             </div>
 
-            <button onClick={onClose}>닫기</button>
-            <button onClick={handleSelect}>선택</button>
+            <button className={"join_selectButton"} onClick={handleSelect}>선택</button>
+            <button className={"join_closeButton"} onClick={onClose}>닫기</button>
         </div>
     );
 };
