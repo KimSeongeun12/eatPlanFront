@@ -9,16 +9,13 @@ import HistoryInput from "@/app/admin/component/historyInput";
 export default function HistoryPage(props) {
 
     // report_idx
-    const idx = useRef(1);
+    const idx = useRef(props.params.slug);
     // report_idx로 신고대상글불러오기
     const [report, setReport] = useState({});
     const [reported, setReported] = useState({});
     const [loading, setLoading] = useState(true);    // 로딩 여부
 
     useEffect(() => {
-        props.params.then(({slug})=>{
-            idx.current = slug;
-        });
         loadReport();
     }, [idx]);
 
