@@ -56,9 +56,6 @@ export default function AreaField(){
         <>
             <div className="searchContainer">
                 <div className={"tagAreaWrapper"}>
-
-                    <h3 className={"areaCate"}>지역</h3>
-
                     {/*도시 리스트*/}
                     <div className={"cityWrapper"}>
                         <h5 className={"cityHead"}>시 · 도</h5>
