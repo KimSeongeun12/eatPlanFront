@@ -1,0 +1,18 @@
+.tabs{
+    display: flex;
+    text-align:center;
+    padding: 10px;
+}
+
+.component{
+    display: flex;
+    text-align:center;
+    padding: 10px;
+}
+
+.done{
+    display: flex;
+    text-align:center;
+    padding: 10px;
+    background-color: #dadada;
+}

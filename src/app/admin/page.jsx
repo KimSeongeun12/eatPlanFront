@@ -45,7 +45,7 @@ export default function AdminPage() {
         <>
             <LeftMenu/>
             <div className={"rightMenu"}>
-                <div className={"topMenuSpans"}>
+                <div className={"topMenuSpans"} style={{cursor: "pointer"}}>
                     <span id={'myPage'} className={tabName.current === 'myPage' ? 'active-span' : ''}
                           onClick={(e) => toggleTab(e)}>내 정보 열람</span>
                     <span id={'myCourse'} className={tabName.current === 'myCourse' ? 'active-span' : ''}
