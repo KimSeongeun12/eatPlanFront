@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { Stack, Pagination } from "@mui/material";
 import "./reportList.css";
 
 export default function ReportListPage() {
@@ -110,23 +111,41 @@ export default function ReportListPage() {
                 </table>
 
                 <div className="reportList-pagenation">
-                    <button
-                        className="arrow-btn"
-                        onClick={() => handlePageChange(page - 1)}
-                        disabled={page === 1}
-                    >
-                        &lt;
-                    </button>
-
-                    {renderPageNumbers()}
-
-                    <button
-                        className="arrow-btn"
-                        onClick={() => handlePageChange(page + 1)}
-                        disabled={page === totalPage}
-                    >
-                        &gt;
-                    </button>
+                    <Stack spacing={2} sx={{ mt: 2 }} alignItems="center">
+                        <Pagination
+                            count={totalPage}
+                            page={page}
+                            onChange={(_, value) => handlePageChange(value)}
+                            variant="outlined"
+                            shape="rounded"
+                            siblingCount={1}
+                            boundaryCount={1}
+                            showFirstButton
+                            showLastButton
+                            sx={{
+                                '& .MuiPaginationItem-root': {
+                                    color: '#c9c9c9',
+                                    borderColor: '#d29292',
+                                    border: 3,
+                                    borderRadius: '10px',
+                                    minWidth: '50px',
+                                    height: '50px',
+                                    padding: '10px',
+                                    fontSize: '20px',
+                                },
+                                // 선택된 페이지 아이템 스타일
+                                '& .MuiPaginationItem-root.Mui-selected': {
+                                    backgroundColor: '#CC503B',  // 배경색을 CC503B로
+                                    color: '#ffffff',            // 글자색을 흰색으로
+                                    borderColor: '#d29292',
+                                },
+                                // 선택된 상태에서 호버했을 때도 동일 컬러 유지
+                                '& .MuiPaginationItem-root.Mui-selected:hover': {
+                                    backgroundColor: '#CC503B',
+                                },
+                            }}
+                        />
+                    </Stack>
                 </div>
         </div>
     );
