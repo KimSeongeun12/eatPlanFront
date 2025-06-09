@@ -65,37 +65,31 @@ export default function List() {
                     <button className={visible === 'bestList' ? 'active-span' : ''} onClick={showBestList}>
                         베스트 코스
                     </button>
-                    {visible === 'commonList' && (
-                        <>
-                            <PlainFormControl>
-                                <PlainSelect
-                                    labelId="sort-select-label"
-                                    value={sort}
-                                    onChange={(e) => setSort(e.target.value)}
-                                    displayEmpty
-                                    MenuProps={{
-                                        PaperProps: {
-                                            style: {
-                                                borderRadius: 8,
-                                                marginTop: 8,
-                                            },
-                                        },
-                                    }}
-                                >
-                                    <MenuItem value="date_desc">등록일 (최신순)</MenuItem>
-                                    <MenuItem value="date_asc">등록일 (오래된 순)</MenuItem>
-                                    <MenuItem value="hit_desc">조회수 (많은 순)</MenuItem>
-                                    <MenuItem value="hit_asc">조회수 (적은 순)</MenuItem>
-                                    <MenuItem value="star_avg_desc">별점 높은 순</MenuItem>
-                                    <MenuItem value="star_avg_asc">별점 낮은 순</MenuItem>
-                                </PlainSelect>
-                            </PlainFormControl>
-                        </>
-                    )}
-                    <div className={"search"}>
-                        <Link href="/courseSearch">
-                                <img src={"searchIcon.png"} alt={"돋보기 아이콘"}/>
-                        </Link>
+                    <div className="searchDiv">
+                        {visible === 'commonList' && (
+                            <>
+                                <PlainFormControl>
+                                    <PlainSelect
+                                        labelId="sort-select-label"
+                                        value={sort}
+                                        onChange={(e) => setSort(e.target.value)}
+                                        displayEmpty
+                                    >
+                                        <MenuItem value="date_desc">등록일 (최신순)</MenuItem>
+                                        <MenuItem value="date_asc">등록일 (오래된 순)</MenuItem>
+                                        <MenuItem value="hit_desc">조회수 (많은 순)</MenuItem>
+                                        <MenuItem value="hit_asc">조회수 (적은 순)</MenuItem>
+                                        <MenuItem value="star_avg_desc">별점 높은 순</MenuItem>
+                                        <MenuItem value="star_avg_asc">별점 낮은 순</MenuItem>
+                                    </PlainSelect>
+                                </PlainFormControl>
+                            </>
+                        )}
+                        <div className="search">
+                            <Link href="/courseSearch">
+                                <img src="searchIcon.png" alt="돋보기 아이콘" />
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 {visible === 'bestList' && <BestList/>}

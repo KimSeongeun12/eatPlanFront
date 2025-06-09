@@ -234,11 +234,9 @@ input[type="checkbox"]{
     width: 20px;
 }
 
-[class*="Add"], [class*="Del"] {
-
-}
 
 [class*="AD"] {
     margin-top: 10px;
 }
+
 
