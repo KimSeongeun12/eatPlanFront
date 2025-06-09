@@ -14,15 +14,15 @@ export default function ReportWrite() {
     const [reporterNickname, setReporterNickname] = useState('');
 
     useEffect(() => {
-        const id = sessionStorage.getItem('userId') || '';
+        const id = sessionStorage.getItem('user_id') || '';
         setReporterId(id);
         if (!id) {
-            console.warn('⚠️ localStorage에 userId가 없습니다.');
+            console.warn('⚠️ sessionStorage에 userId가 없습니다.');
             return;
         }
         // (수정) /{id}/profile 과 같은 유저 프로필 조회 API를 가정
         axios
-            .get(`http://localhost/${id}/profile`, {
+            .get(`http://localhost/${id}`, {
                 headers: { Authorization: sessionStorage.getItem('token') || '' },
             })
             .then((res) => {
@@ -140,7 +140,7 @@ export default function ReportWrite() {
                         </td>
                         <th>작성자</th>
                         <td>
-                            <input type="text" value={reporterId} readOnly />
+                            <input type="text" value={reporterNickname || reporterId} readOnly />
                         </td>
                     </tr>
 

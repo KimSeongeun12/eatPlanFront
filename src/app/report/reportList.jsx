@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { Stack, Pagination } from "@mui/material";
+import { useRouter } from "next/navigation";
 import "./reportList.css";
 
 export default function ReportListPage() {
     const [reportList, setReportList] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
+    const router = useRouter();
 
     useEffect(() => {
         fetchReports(page);

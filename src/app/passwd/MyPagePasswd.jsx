@@ -47,7 +47,7 @@ export default function MyInfoPasswd() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <p>회원 정보 수정을 위한 비밀번호 확인 절차입니다.</p>
+                    <p>회원 탈퇴를 위한 비밀번호 확인 절차입니다.</p>
                     <button
                         onClick={checkPassword}
                         className="passwd-infoUpdateButton"

@@ -104,3 +104,30 @@
     background: #ff4d4f;
     color: #fff;
 }
+
+/* 페이징 + 버튼을 가로로 배치 */
+.reportList-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 왼쪽은 페이징, 오른쪽은 버튼 */
+    margin-top: 24px;
+}
+
+.report-write-btn-wrapper {
+    /* 버튼을 오른쪽 끝에 붙이기 위해 flex-end 사용해도 됩니다 */
+}
+
+.report-write-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.report-write-btn:hover {
+    background-color: #cc503b;
+    color: #ffffff;
+}

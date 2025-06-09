@@ -169,3 +169,29 @@
     margin: 0 6px;
 }
 
+.reportList-footer {
+    display: flex;
+    align-items: center;
+    width: 100%;         /* ← add this */
+    margin-top: 24px;
+}
+
+    .report-write-btn-wrapper {
+        margin-right: auto;   /* ← add this */
+}
+
+.report-write-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color: #cc503b;
+    border-radius: 24px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+}
+.report-write-btn:hover {
+    background-color: #cc503b;
+    color: #ffffff;
+}
