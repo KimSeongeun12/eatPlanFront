@@ -10,6 +10,7 @@ export default function ReportDetail() {
     const {report_idx} = useParams();
     const searchParams = useSearchParams();
 
+    const [photo, setPhoto]   = useState(null);
     const [detail, setDetail] = useState(null);
     const [listIndex, setListIndex] = useState(null);
 
@@ -29,7 +30,9 @@ export default function ReportDetail() {
                     alert(res.data.error);
                     return;
                 }
+                console.log(res.data);
                 setDetail(res.data.detail);
+                setPhoto(res.data.photo !== 'no_image' ? res.data.photo : null);
             })
             .catch((err) => {
                 console.error(err);
@@ -98,23 +101,17 @@ export default function ReportDetail() {
                     </td>
                 </tr>
 
-                {detail.files && detail.files.length > 0 && (
+                {/* 5. 첨부 이미지 (있을 때만) */}
+                {photo && (
                     <tr>
-                        <th>첨부파일</th>
+                        <th>첨부 이미지</th>
                         <td colSpan={5}>
-                            <ul className="attachments">
-                                {detail.files.map((file) => (
-                                    <li key={file.img_idx}>
-                                        <a
-                                            href={`http://localhost/files/${file.new_filename}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {file.originalFileName}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
+                            <img
+                                src={`http://localhost/image/${photo.new_filename}`}
+                                alt="신고 첨부파일"
+                                className="report-detail-image"
+                            />
+
                         </td>
                     </tr>
                 )}
