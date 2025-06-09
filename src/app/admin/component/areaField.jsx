@@ -77,16 +77,17 @@ export default function AreaField(){
                     <div className={"distWrapper"}>
                         <h5 className={"distHead"}>시 · 군 · 구</h5>
                         <ul className={"dist"}>
-                            {areaTag
-                                .filter(distCate => distCate.city === selectedCity)
-                                .map(distName => (
-                                    <li
-                                        key={distName.dist}
-                                        className={(distName.dist === selectedDist ? "active " : "") +
-                                            (distName.city === selectedCity ? "" : "hidden")}
-                                        onClick={() => setSelectedDist(distName.dist)}
-                                    >{distName.dist}</li>
-                                ))}
+                            {[...new Set(
+                                areaTag
+                                    .filter(distCate => distCate.city === selectedCity)
+                                    .map(distName => distName.dist)
+                            )].map(dist => (
+                                <li
+                                    key={dist}
+                                    className={(dist === selectedDist ? "active " : "")}
+                                    onClick={() => setSelectedDist(dist)}
+                                >{dist}</li>
+                            ))}
                         </ul>
                     </div>
                     {/*지역태그 리스트*/}
