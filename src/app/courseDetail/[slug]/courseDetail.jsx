@@ -218,8 +218,7 @@ export default function CourseDetail({post_idx}) {
             user_id.current = sessionStorage.getItem("user_id");
             const queryParts = ["isClass=course",
                 `idx=${detail.post_idx}`,
-                `suspect=${detail.user_id}`,
-                `nickname=${encodeURIComponent(detail.nickname)}`,
+                `suspect=${encodeURIComponent(detail.nickname)}`,
                 `reporter=${user_id.current}`].join("&");
             const url = `/report/write?${queryParts}`
             location.href = url;
@@ -385,7 +384,7 @@ export default function CourseDetail({post_idx}) {
     // 댓글 신고 버튼
     const cmtReport = (item) => {
         if (isAuthenticated) {
-            const queryParts = ["isClass=comment", `idx=${item.comment_idx}`,`suspect=${item.user_id}` ,`nickname=${encodeURIComponent(item.nickname)}`].join("&");
+            const queryParts = ["isClass=comment", `idx=${item.comment_idx}` ,`suspect=${encodeURIComponent(item.nickname)}`].join("&");
             const url = `/report/write?${queryParts}`
             location.href = url;
         } else {
@@ -682,10 +681,15 @@ export default function CourseDetail({post_idx}) {
                                                         padding: '10px',
                                                         fontSize: '20px',
                                                     },
-                                                    '& .Mui-selected': {
-                                                        backgroundColor: 'rgba(42,205,175,0.5)',
-                                                        color: '#a17070',
+                                                    // 선택된 페이지 아이템 스타일
+                                                    '& .MuiPaginationItem-root.Mui-selected': {
+                                                        backgroundColor: '#CC503B',  // 배경색을 CC503B로
+                                                        color: '#ffffff',            // 글자색을 흰색으로
                                                         borderColor: '#d29292',
+                                                    },
+                                                    // 선택된 상태에서 호버했을 때도 동일 컬러 유지
+                                                    '& .MuiPaginationItem-root.Mui-selected:hover': {
+                                                        backgroundColor: '#CC503B',
                                                     },
                                                 }}
                                             />

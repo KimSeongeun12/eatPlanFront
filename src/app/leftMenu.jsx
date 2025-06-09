@@ -39,9 +39,16 @@ export default function leftMenu() {
 
     const [userInfo, setUserInfo] = useState({});
     const memberInfo = async (user_id) => {
-        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
-        console.log(data);
-        setUserInfo(data.list[0]);
+        try {
+            const {data} = await axios.get(`http://localhost/${user_id}`);
+            setUserInfo({
+                user_id: data.user_id,
+                nickname: data.nickname
+            });
+        }catch (err) {
+            console.log('멤버정보 조회 실패',err);
+        }
+
     }
 
     useEffect(() => {
@@ -78,7 +85,8 @@ export default function leftMenu() {
                                 {admin === "true" ? (
                                     <span style={welcomeStyle}>환영합니다, 관리자 님!</span>
                                 ) : (
-                                    <span style={welcomeStyle}>환영합니다, {userId} 님!</span>
+                                    <span style={welcomeStyle}>환영합니다, {admin === "1" ?"관리자"
+                                    : (userInfo.nickname || userId)} 님!</span>
                                 )}
                                 <span className={"logoutSpan"} onClick={logout}>로그아웃</span>
                             </>
