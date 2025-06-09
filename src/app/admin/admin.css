@@ -13,7 +13,8 @@ span{
 
 .list{
     width: 90%;
-    height: 250px;
+    max-width: 1000px;
+    height: auto;
     font-size:15px;
     display: flex;
     flex-direction: row;
@@ -26,7 +27,7 @@ span{
     display: flex;
     flex-direction: column;
     width: auto;
-    height: 250px;
+    height: auto;
     box-sizing: border-box;
 }
 
@@ -42,7 +43,7 @@ span{
     margin: 0;
     width: 100%; /* 또는 width: 100% */
     max-width: 100%; /* 가로 넘침 방지 */
-    height: 250px;
+    height: auto;
     background: #fff;
 }
 
@@ -108,7 +109,9 @@ span{
     border-bottom: 1px solid black;
     box-sizing: border-box;
     width: 200px;
-    height: 210px;
+    height:auto;
+    min-height: 210px;
+    max-height: 210px;
     padding-top: 5px;
     padding-left: 5px;
     margin: 0;
@@ -138,7 +141,9 @@ span{
     border-bottom: 1px solid black;
     box-sizing: border-box;
     width: 200px;
-    height: 210px;
+    height: auto;
+    min-height: 210px;
+    max-height: 210px;
     padding-top: 5px;
     padding-left: 5px;
     margin: 0;
@@ -152,14 +157,17 @@ span{
 }
 
 .area {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     overflow-y: scroll;
     list-style: none;
     border: 1px solid black;
     box-sizing: border-box;
     width: 300px;
-    height: 250px;
+    height: auto;
+    min-height: 250px;
+    max-height: 250px;
     padding-left: 15px;
     margin: 0;
     font-size: 20px;
@@ -188,6 +196,7 @@ span{
 .dist li + li,
 .area li{
     margin-top: 8px;
+    flex-wrap: wrap;
 }
 
 .city li,
@@ -223,5 +232,13 @@ span{
 
 input[type="checkbox"]{
     width: 20px;
+}
+
+[class*="Add"], [class*="Del"] {
+
+}
+
+[class*="AD"] {
+    margin-top: 10px;
 }
 

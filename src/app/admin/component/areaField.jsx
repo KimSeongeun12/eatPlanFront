@@ -2,6 +2,7 @@
 
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
+import {data} from "react-router-dom";
 
 
 export default function AreaField(){
@@ -32,24 +33,106 @@ export default function AreaField(){
     // 선택한 목록들
     const [selectedCity, setSelectedCity] = useState(""); // 선택한 시·도
     const [selectedDist, setSelectedDist] = useState(""); // 선택한 시·군·구
-    const [selectedArea, setSelectedArea] = useState([]); // 선택한 지역태그
-    const [selectedList, setSelectedList] = useState([]); // 선택한 지역,태그
+    const [selectedArea, setSelectedArea] = useState(""); // 선택한 지역태그
 
     // 지역태그 선택, 취소하기
     const toggleArea = (area) => {
-        setSelectedArea(prev =>
-            prev.includes(area)
-                ? prev.filter(a => a !== area)
-                : [...prev, area]
-        );
-        setSelectedList(prev => {
-            const isSelected = selectedArea.includes(area);
-            if (isSelected) {
-                return prev.filter(entry => !(entry.type === 'area' && entry.value === area));
-            } else {
-                return [...prev, { type: 'area', value: area }];
-            }
-        });
+        if (selectedArea === area) {
+            setSelectedArea("");
+        } else {
+            setSelectedArea(area);
+        }
+    };
+
+    // 지역 태그 추가
+    const addArea = () => {
+        if (selectedCity.trim().length === 0 || selectedDist.trim().length === 0) {
+            alert("지역태그는 반드시 대분류와 중분류가 필요합니다.")
+            return;
+        }
+        if (selectedArea.trim().length === 0) {
+            alert("지역태그 이름을 입력하세요.");
+            return;
+        }
+
+        if (selectedCity.trim().length>0 && selectedDist.trim().length>0 && selectedArea.trim().length>0){
+            axios.post("http://localhost/adtag_write"
+                ,{cate_name: {cate_name:'지역', cate_idx:1}, tag_area: {city: selectedCity, dist: selectedDist, tag_name: selectedArea}})
+                .then(({data}) => {
+                    if (data.success) {
+                        alert("태그가 추가 되었습니다.");
+                        areaTagList();
+                    }else{
+                        alert("중복된 지역태그 이름입니다.");
+                    }
+                });
+        }
+    };
+
+    // 시도 삭제
+    const delCity = () => {
+        const delCity = areaTag.find(at => at.city === selectedCity);
+        if (!delCity){
+            alert("삭제할 대분류를 찾을 수 없습니다.");
+            return;
+        }
+        const confirmDelete = window.confirm("대분류에 해당하는 모든 중분류와 지역태그가 삭제됩니다.");
+        if (!confirmDelete) return;
+        axios.delete("http://localhost/adtag_del_city", {
+            data: { city: delCity.city }
+        })
+            .then(({data}) => {
+                if (data.success) {
+                    alert("대분류가 삭제 되었습니다.");
+                    areaTagList();
+                }else {
+                    alert("삭제에 실패했습니다.");
+                }
+            });
+    };
+
+    // 시군구 삭제
+    const delDist = () => {
+        const delDist = areaTag.find(at => at.dist === selectedDist);
+        if (!delDist){
+            alert("삭제할 중분류를 찾을 수 없습니다.");
+            return;
+        }
+        const confirmDelete = window.confirm("대분류에 해당하는 유일한 중분류일 경우 대분류가 삭제됩니다, 해당하는 모든 지역태그가 삭제됩니다.");
+        if (!confirmDelete) return;
+        axios.delete("http://localhost/adtag_del_dist", {
+            data: { dist: delDist.dist }
+        })
+            .then(({data}) => {
+                if (data.success) {
+                    alert("중분류가 삭제 되었습니다.");
+                    areaTagList();
+                }else {
+                    alert("삭제에 실패했습니다.");
+                }
+            });
+    };
+
+    // 지역 태그 삭제
+    const delArea = () => {
+        const delTag = areaTag.find(at => at.tag_name === selectedArea);
+        if (!delTag) {
+            alert("삭제할 태그를 찾을 수 없습니다.");
+            return;
+        }
+        const confirmDelete = window.confirm("중분류에 해당하는 유일한 지역태그일 경우 대분류와 중분류가 모두 삭제됩니다.");
+        if (!confirmDelete) return;
+        axios.delete("http://localhost/adtag_del", {
+            data: { area_tag_idx: delTag.area_tag_idx }
+        })
+            .then(({data}) => {
+                if (data.success) {
+                    alert("태그가 삭제 되었습니다.");
+                    areaTagList();
+                }else {
+                    alert("삭제에 실패했습니다.");
+                }
+            });
     };
 
     return (
@@ -68,6 +151,23 @@ export default function AreaField(){
                                 >{city}</li>
                             ))}
                         </ul>
+                        <div className={"ADHead"}>시 · 도 </div>
+                        <div className={"cityAdd"}>
+                            <input type="text" value={selectedCity} onChange={(e)=>setSelectedCity(e.target.value)}/>
+                        </div>
+                        <div className={"ADHead"}>Enter로 시 · 도 삭제 ❗</div>
+                        <div className={"cityDel"}>
+                            <input
+                                type="text"
+                                value={selectedCity}
+                                onChange={(e)=>setSelectedCity(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') {
+                                        delCity();
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
 
                     {/*시군구 리스트*/}
@@ -86,6 +186,23 @@ export default function AreaField(){
                                 >{dist}</li>
                             ))}
                         </ul>
+                        <div className={"ADHead"}>시 · 군 · 구</div>
+                        <div className={"distAdd"}>
+                            <input type="text" value={selectedDist} onChange={(e)=>setSelectedDist(e.target.value)}/>
+                        </div>
+                        <div className={"ADHead"}>Enter로 시 · 군 · 구 삭제 ❗</div>
+                        <div className={"distDel"}>
+                            <input
+                                type="text"
+                                value={selectedDist}
+                                onChange={(e)=>setSelectedDist(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') {
+                                        delDist();
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
                     {/*지역태그 리스트*/}
                     <div className={"areaWrapper"}>
@@ -101,6 +218,31 @@ export default function AreaField(){
                                     >{at.tag_name}</li>
                                 ))}
                         </ul>
+                        <div className={"ADHead"}>Enter로 지역태그 추가</div>
+                        <div className={"areaAdd"}>
+                            <input
+                                type="text"
+                                value={selectedArea}
+                                onChange={(e) => setSelectedArea(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') {
+                                        addArea();
+                                    }
+                                }}
+                            />
+                        </div>
+                        <div className={"ADHead"}>Enter로 지역태그 삭제 ❗</div>
+                        <div className={"areaDel"}>
+                            <input
+                                type="text"
+                                value={selectedArea}
+                                onChange={(e)=>setSelectedArea(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') {
+                                        delArea();
+                                    }
+                                }}/>
+                        </div>
                     </div>
                 </div>
             </div>
