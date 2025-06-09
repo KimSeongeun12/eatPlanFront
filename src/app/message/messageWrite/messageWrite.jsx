@@ -1,80 +1,94 @@
-// File: /app/message/messageWrite/messageWrite.jsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import './messageWrite.css';
 
 export default function MessageWrite() {
     const router = useRouter();
-    const searchParams = useSearchParams();
 
-    // 1) 로그인된 사용자(user_id)와 토큰(token) 가져오기
-    const userId =
-        typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
-    const token =
-        typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
+    // 로그인 정보
+    const userId = typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
+    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
-    // 1-1) 보내는 사람 닉네임 가져오기
-        const [senderNickname, setSenderNickname] = useState('');
-        useEffect(() => {
-              if (!userId) return;
-              axios.get(`http://localhost/${userId}`)      // 예: 유저 정보 조회 API
-                   .then(res => setSenderNickname(res.data.nickname || ''))
-                   .catch(() => setSenderNickname(''));
-            }, [userId]);
+    // 보내는 사람 닉네임 조회
+    const [senderNickname, setSenderNickname] = useState('');
+    useEffect(() => {
+        if (!userId) return;
+        axios.get(`http://localhost/${userId}`)
+            .then(res => setSenderNickname(res.data.nickname || ''))
+            .catch(() => setSenderNickname(''));
+    }, [userId]);
 
+    // 받는 사람 닉네임과 user_id
+    const [recipientNickname, setRecipientNickname] = useState('');
+    const [recipId, setRecipId] = useState('');
 
-    // 2) 쿼리로 전달된 받는 사람(recipient)이 있으면 미리 채워주기
-    const recip = searchParams.get('recip') || '';
-    const nickname = searchParams.get('nickname') ||'';
+    useEffect(() => {
+        if (!recipientNickname.trim()) {
+            setRecipId('');
+            return;
+        }
 
-    // 3) 제목, 내용 상태
+        const timeoutId = setTimeout(() => {
+            axios.get(`http://localhost/member/nickname/${recipientNickname.trim()}`)
+                .then((res) => {
+                    setRecipId(res.data.user_id || '');
+                })
+                .catch(() => {
+                    setRecipId('');
+                    console.warn('닉네임으로 사용자 조회 실패');
+                });
+        }, 300); // debounce
+
+        return () => clearTimeout(timeoutId);
+    }, [recipientNickname]);
+
+    // 제목, 내용
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
 
-    // 4) 폼 제출 핸들러
+    // 전송
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!userId || !token) {
             alert('로그인이 필요합니다.');
             return;
         }
-        if (!recip.trim()) {
-            alert('받는 사람을 입력해주세요.');
+
+        if (!recipientNickname.trim() || !recipId) {
+            alert('받는 사람 닉네임 또는 ID가 유효하지 않습니다.');
             return;
         }
+
         if (!subject.trim()) {
             alert('제목을 입력해주세요.');
             return;
         }
+
         if (!content.trim()) {
             alert('내용을 입력해주세요.');
             return;
         }
 
         try {
-            // 백엔드 호출: POST /{userId}/write_msg
             const body = {
                 sender: userId,
-                recip: recip.trim(),
+                recip: recipId,
                 subject: subject.trim(),
                 content: content.trim(),
             };
 
-            await axios.post(
-                `http://localhost/${userId}/write_msg`,
-                body,
-                {
-                    headers: {
-                        Authorization: token,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
+            await axios.post(`http://localhost/${userId}/write_msg`, body, {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json',
+                },
+            });
 
-            // 전송 성공 후 쪽지 목록 페이지로 이동
+            alert('쪽지를 성공적으로 보냈습니다.');
             router.push('/message');
         } catch (err) {
             console.error('쪽지 전송 중 오류 발생:', err);
@@ -93,29 +107,22 @@ export default function MessageWrite() {
                         <col />
                     </colgroup>
                     <tbody>
-                    {/* 보내는 사람 / 받는 사람 */}
                     <tr>
                         <th>보내는 사람</th>
                         <td>
-                            <input
-                                type="text"
-                                value={senderNickname}
-                                readOnly
-                                className="readonly-input"
-                            />
+                            <input type="text" value={senderNickname} readOnly className="readonly-input" />
                         </td>
                         <th>받는 사람 <span className="required">*</span></th>
                         <td>
                             <input
                                 type="text"
-                                value={nickname}
-                                placeholder="받는 사람 아이디"
+                                value={recipientNickname}
+                                onChange={(e) => setRecipientNickname(e.target.value)}
+                                placeholder="받는 사람 닉네임 입력"
                                 required
                             />
                         </td>
                     </tr>
-
-                    {/* 제목 */}
                     <tr>
                         <th>제목 <span className="required">*</span></th>
                         <td colSpan={3}>
@@ -129,29 +136,23 @@ export default function MessageWrite() {
                             />
                         </td>
                     </tr>
-
-                    {/* 내용 */}
                     <tr>
                         <th>내용 <span className="required">*</span></th>
                         <td colSpan={3}>
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    rows={12}
-                    placeholder="내용을 입력하세요."
-                    required
-                    className="full-width-textarea"
-                />
+                                <textarea
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                    rows={12}
+                                    placeholder="내용을 입력하세요."
+                                    required
+                                    className="full-width-textarea"
+                                />
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
-                {/* 보내기 버튼 */}
                 <div className="write-submit-area">
-                    <button type="submit" className="btn-submit">
-                        보내기
-                    </button>
+                    <button type="submit" className="btn-submit">보내기</button>
                 </div>
             </form>
         </div>
