@@ -709,10 +709,64 @@ export default function CourseDetail({post_idx}) {
                     horizontal: 'left',
                 }}
             >
-                <div style={{ padding: '10px' }}>
-                    <p><b>{selectedUser.nickname}</b> 님</p>
-                    <button onClick={() => memberInfo(selectedUser)}>회원정보 보기</button>
-                    <button onClick={() => sendMsg(selectedUser)}>쪽지 보내기</button>
+                <div style={{
+                    padding: '12px',
+                    minWidth: '145px', // 기존 대비 약 10% 증가
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    fontFamily: 'Segoe UI, Noto Sans KR, Roboto, Helvetica, Arial, sans-serif',
+                    color: '#222',
+                    textAlign: 'left', // 전체 텍스트 기본 왼쪽 정렬
+                    border: '1px solid #ddd'
+                }}>
+                    <p style={{
+                        margin: '0 0 12px 0',
+                        fontWeight: '600',
+                        fontSize: '12px',
+                        color: '#111'
+                    }}>
+                        <b>{selectedUser.nickname}</b> 님
+                    </p>
+                    <button
+                        onClick={() => memberInfo(selectedUser)}
+                        style={{
+                            width: '100%',
+                            padding: '7px',
+                            marginBottom: '4px',  // 간격 절반으로 줄임
+                            backgroundColor: '#CC503B',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '10px',
+                            letterSpacing: '0.3px',
+                            transition: 'background-color 0.3s ease'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#b64532'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = '#CC503B'}
+                    >
+                        회원정보 보기
+                    </button>
+                    <button
+                        onClick={() => sendMsg(selectedUser)}
+                        style={{
+                            width: '100%',
+                            padding: '7px',
+                            backgroundColor: '#CC503B',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '10px',
+                            letterSpacing: '0.3px',
+                            transition: 'background-color 0.3s ease'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#b64532'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = '#CC503B'}
+                    >
+                        쪽지 보내기
+                    </button>
                 </div>
             </Popover>
         </>
