@@ -13,11 +13,16 @@
     cursor: pointer;
     color: #333;
     position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 70px;
 }
 
 .tabs button.active-span {
     color: #cc503b;
     text-decoration-line: none;
+    display: inline-block;
+    width: 150px;
 }
 
 .tabs button.active-span::after {
@@ -28,6 +33,8 @@
     right: 0;
     height: 3px;
     background-color: #cc503b;
+    font-weight: 500;
+    display: inline-block;
 }
 /**/
 

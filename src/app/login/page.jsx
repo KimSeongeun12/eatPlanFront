@@ -7,6 +7,7 @@ export default function LoginPage() {
     useEffect(() => {
         const user_id = sessionStorage.getItem("user_id");
         const token = sessionStorage.getItem("token");
+        const admin = sessionStorage.getItem("admin");
 
         if (user_id != null) {
             sessionStorage.removeItem("user_id");
@@ -61,7 +62,11 @@ export default function LoginPage() {
             sessionStorage.setItem('user_id', data.user_id);
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('admin', data.admin);
-            location.href="/list";
+            if (sessionStorage.getItem('admin') === 'true') {
+                location.href = '/admin_course';
+            } else {
+                location.href = '/list';
+            }
         } else {
             alert("아이디 또는 비밀번호를 확인해주세요.");
         }
