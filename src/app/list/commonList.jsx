@@ -44,7 +44,7 @@ export default function CommonList({sort}) {
                         />
 
                         <span className="courseTitle">
-                            <Link href={`/courseDetail/${item.course.post_idx}`}>
+                            <Link className={"courseTitle_link"} href={`/courseDetail/${item.course.post_idx}`}>
                                 {item.course?.subject}
                             </Link>
                         </span>
@@ -53,7 +53,14 @@ export default function CommonList({sort}) {
                         <span className="courseViews">조회 {item.course?.b_hit}</span><br />
                         <span className="courseScope">별점 {item.star_avg}</span>
                         <span className="courseLike">좋아요 {item.like_cnt}</span><br />
-                        <span className="courseDate">{item.course?.reg_date}</span>
+                        <span className="courseDate">{new Date(item.course?.reg_date).toLocaleString('ko-KR', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true, // 오전/오후 나오게
+                        })}</span>
                     </div>
                 ))}
             </div>

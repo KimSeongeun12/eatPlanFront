@@ -121,9 +121,7 @@
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-.tag-item:hover {
-    background-color: #ccc;
-}
+.tag-item:hover {}
 
 .tag-item.selected {
     background-color: #007bff;
