@@ -14,7 +14,6 @@ export default function HistoryPage(props) {
     useEffect(() => {
         props.params.then(({slug}) => {
             idx.current = slug;
-            // console.log(idx.current);
             loadReport();
         });
     }, []);
@@ -25,8 +24,55 @@ export default function HistoryPage(props) {
 
     const loadReport = async () => {
         let {data} = await axios.get(`http://localhost/report_detail/${idx.current}`);
+
         setReport(data.detail);
-        setReported(data.reported_course);
+        console.log(report);
+        switch (report.isClass) {
+            case 'course':
+                setReported(data.reported_course);
+                console.log('course가 입력', reported);
+                break;
+            case 'comment':
+                setReported(data.reported_cmt);
+                console.log('comment가 입력', reported);
+                break;
+            default:
+                setReported(data.reported_msg);
+                console.log('message가 입력', reported);
+                break;
+        }
+        drawTarget();
+    }
+
+    const [component, setComponent] = useState(null);
+
+    const drawTarget = () => {
+        // 코스
+        if (report.isClass === 'course') {
+            setComponent(
+                <Target reported_idx={report.reported_idx}
+                        isClass={report.isClass}
+                        user_id={reported.user_id}
+                        report_idx={idx.current}/>
+            );
+            // 답글
+        } else if (report.isClass==='comment'){
+            setComponent(
+                <Target reported_idx={reported.comment_idx}
+                        isClass={report.isClass}
+                        user_id={reported.user_id}
+                        report_idx={idx.current}/>
+            );
+        }
+        // 쪽지
+        else{
+            setComponent(
+                <Target reported_idx={reported.msg_idx}
+                        isClass={report.isClass}
+                        user_id={reported.reporter_id}
+                        report_idx={idx.current}/>
+            );
+        }
     }
 
     return (
@@ -78,24 +124,10 @@ export default function HistoryPage(props) {
                             </td>
                         </tr>
 
-                        {/*{detail.files && detail.files.length > 0 && (*/}
-                        {/*    <tr>*/}
-                        {/*        <th>첨부파일</th>*/}
-                        {/*        <td colSpan={5}>*/}
-                        {/*            <ul className="attachments">*/}
-                        {/*                /!*{detail.files.map((file) => *!/*/}
-                        {/*            </ul>*/}
-                        {/*        </td>*/}
-                        {/*    </tr>*/}
-                        {/*)}*/}
-
                         <tr>
                             <td colSpan={6}>
-                                <Target reported_idx={reported.reported_idx}
-                                        isClass={reported.isClass}
-                                        user_id={reported.reporter_id}
-                                        report_idx={idx.current}
-                                /></td>
+                                {component}
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -110,6 +142,10 @@ export default function HistoryPage(props) {
 // 공통: idx, 글작성일, 제목, 작성자, 내용(content),
 function Target({reported_idx, isClass, user_id, report_idx}) {
 
+    const formattingDate=(dateStr)=>{
+        return new Date(dateStr).toLocaleDateString('ko-KR').toString();
+    }
+
     useEffect(() => {
         console.log('post idx, class, user_id, report_idx', reported_idx, isClass, user_id, report_idx);
         getPost();
@@ -117,23 +153,26 @@ function Target({reported_idx, isClass, user_id, report_idx}) {
 
     const [post, setPost] = useState({});
 
-    const getPost =  () => {
+    const getPost = () => {
         switch (isClass) {
             case 'course':
-                    axios.get(`http://localhost/courseDetail`, {params: {post_idx: reported_idx}}).then(({data}) => {
-                    setPost({
-                        idx:reported_idx,
-                        date: data.reported_course.reg_date,
-                        subject: data.reported_course.subject,
-                        content: data.reported_course.post_cmt
+                axios.get(`http://localhost/courseDetail`, {params: {post_idx: reported_idx}}).then(({data}) => {
+                  setPost({
+                        idx: reported_idx,
+                        date: formattingDate(data.detail.content.reg_date),
+                        subject: data.detail.content.subject,
+                        content: data.detail.content.post_cmt
                     });
-                    // console.log('course', data);
                 });
                 break;
             case 'comment':
                 axios.get(`http://localhost/comment_detail/${reported_idx}`).then(({data}) => {
-                    setPost({idx: data.comment_idx, date: data.reg_date, subject: data.subject, content: data.content});
-                    // console.log('comment: ', data);
+                    console.log(data);
+                    setPost({
+                        idx: data.comment_idx,
+                        date: formattingDate(data.reg_date),
+                        subject: '',
+                        content: data.content});
                 });
                 break;
             case 'message':
@@ -144,7 +183,6 @@ function Target({reported_idx, isClass, user_id, report_idx}) {
                         subject: data.message.subject,
                         content: data.message.content
                     });
-                    // console.log('message', data);
                 });
                 break;
             default:
@@ -155,16 +193,12 @@ function Target({reported_idx, isClass, user_id, report_idx}) {
     return (
         <>
             <div>
-                해당 게시글 정보(target)
+                {post.idx} | {post.subject} | {post.content} | {post.date}
             </div>
-            ...
-            <div>
-            </div>
-            <History report_idx={report_idx} />
+            <History report_idx={report_idx}/>
         </>
     );
 }
-
 
 
 function History({report_idx}) {
@@ -176,11 +210,11 @@ function History({report_idx}) {
     }, [report_idx]);
 
     // 리스트 불러오기
-    const drawList=async ()=>{
-        let {data}=await axios.get(`http://localhost/history_list/${report_idx}`);
-        const posts=data.list.map((item)=>{
-            return(
-                <div key={item.his_idx} style={{border:"1px solid gray", padding:"10px"}}>
+    const drawList = async () => {
+        let {data} = await axios.get(`http://localhost/history_list/${report_idx}`);
+        const posts = data.list.map((item) => {
+            return (
+                <div key={item.his_idx} style={{border: "1px solid gray", padding: "10px"}}>
                     <div>{item.user_id}</div>
                     <div>{item.content}</div>
                     <div>{formattingDate(item.done_date)}</div>
@@ -190,13 +224,13 @@ function History({report_idx}) {
         setList(posts);
     }
 
-    const formattingDate=(dateStr)=>{
+    const formattingDate = (dateStr) => {
         return new Date(dateStr).toLocaleDateString('ko-KR').toString();
     }
 
     return (
         <div className={"component-history"}>
-            <HistoryInput report_idx={report_idx} drawList={drawList} />
+            <HistoryInput report_idx={report_idx} drawList={drawList}/>
             {list}
         </div>
     );
