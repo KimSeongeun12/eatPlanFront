@@ -117,9 +117,9 @@ export default function MessageDetail() {
                 </tr>
                 <tr>
                     <th className="cell-header">보내는 사람</th>
-                    <td className="cell-value">{message.sender}</td>
+                    <td className="cell-value">{message.senderNickname || message.sender}</td>
                     <th className="cell-header">받는 사람</th>
-                    <td className="cell-value">{message.recip}</td>
+                    <td className="cell-value">{message.recipNickname || message.recip}</td>
                 </tr>
                 <tr>
                     <th className="cell-header">제목</th>

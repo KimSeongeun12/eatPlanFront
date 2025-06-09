@@ -92,7 +92,7 @@ export default function ReportListPage() {
                                         {report.subject}
                                     </Link>
                                 </td>
-                                <td>{report.reporter_id}</td>
+                                <td>{report.reporter_nickname || report.reporter_id}</td>
                                 <td>{report.suspect_nickname || report.suspect_id}</td>
                                 <td>
                                     {new Date(report.report_date).toLocaleDateString()}

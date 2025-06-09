@@ -13,8 +13,6 @@ export default function NoticeDetail() {
     const [notice, setNotice] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
-
-
     const [showModal, setShowModal] = useState(false);
 
     // 상세 데이터 가져오기
@@ -89,7 +87,7 @@ export default function NoticeDetail() {
                 </tr>
                 <tr>
                     <th>글쓴이</th>
-                    <td>{notice.user_id}</td>
+                    <td>{notice.writerNickname || notice.user_id}</td>
                     <th>조회수</th>
                     <td>{notice.b_Hit}</td>
                 </tr>

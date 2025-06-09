@@ -74,7 +74,7 @@ export default function NoticeList() {
                                 <span className="notice-List-title-link">{item.subject}</span>
                             </Link>
                         </td>
-                        <td>{item.user_id}</td>
+                        <td>{item.writerNickname || item.user_id}</td>
                         <td>{new Date(item.reg_date).toLocaleDateString()}</td>
                         <td>{item.b_Hit}</td>
                     </tr>

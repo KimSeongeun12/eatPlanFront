@@ -16,6 +16,16 @@ export default function MessageWrite() {
     const token =
         typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
+    // 1-1) 보내는 사람 닉네임 가져오기
+        const [senderNickname, setSenderNickname] = useState('');
+        useEffect(() => {
+              if (!userId) return;
+              axios.get(`http://localhost/${userId}`)      // 예: 유저 정보 조회 API
+                   .then(res => setSenderNickname(res.data.nickname || ''))
+                   .catch(() => setSenderNickname(''));
+            }, [userId]);
+
+
     // 2) 쿼리로 전달된 받는 사람(recipient)이 있으면 미리 채워주기
     const recip = searchParams.get('recip') || '';
     const nickname = searchParams.get('nickname') ||'';
@@ -89,7 +99,7 @@ export default function MessageWrite() {
                         <td>
                             <input
                                 type="text"
-                                value={userId || ''}
+                                value={senderNickname}
                                 readOnly
                                 className="readonly-input"
                             />

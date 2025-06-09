@@ -141,10 +141,17 @@
     padding: 8px 20px;
     font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 .delete-selected-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+.delete-selected-btn:hover {
+    background-color: #cc503b;
+    border: 2px solid #fff;
+    color: #fff;
 }
 
 .delete-wrapper {
@@ -193,4 +200,25 @@
 .cancel-btn {
     border-color: #888;
     color: #888;
+}
+
+/* 하단 “쪽지 쓰기” 버튼 */
+.write-wrapper {
+    margin-right: auto; /* pagination-wrapper가 flex:1 이면 불필요할 수도 있습니다 */
+}
+
+.write-msg-btn {
+    background: none;
+    border: 2px solid #cc503b;
+    color:  #cc503b;
+    border-radius: 24px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.write-msg-btn:hover {
+    background-color: #cc503b;
+    border: 2px solid #fff;
+    color: #fff; /* 글자색을 하얀색으로 */
 }

@@ -63,11 +63,9 @@ export default function ReportDetail() {
                     <th>분류</th>
                     <td>{categoryMap[detail.isClass] || '기타'}</td>
                     <th>작성자</th>
-                    <td
-                        style={{
-                            textAlign: 'center',
-                            verticalAlign: 'middle',
-                        }}>{detail.reporter_id}</td>
+                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
+                                           {detail.reporter_nickname || detail.reporter_id}
+                                       </td>
                     <th>신고번호</th>
                     <td>{listIndex ?? detail.report_idx}</td>
                 </tr>

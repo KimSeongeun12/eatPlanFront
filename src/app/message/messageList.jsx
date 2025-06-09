@@ -97,8 +97,6 @@ export default function MessageList() {
         router.push(`/message/messageDetail?page=${mode}&msgIdx=${msgIdx}`);
     };
 
-    const handlePrevPage = () => { if (page > 1) setPage(page - 1); };
-    const handleNextPage = () => { if (page < totalPages) setPage(page + 1); };
 
     return (
         <div className="message-list-container">
@@ -152,11 +150,10 @@ export default function MessageList() {
                             </td>
                             <td
                                 className="message-subject"
-                                onClick={() => handleTitleClick(msg.msg_idx)}
-                            >
+                                onClick={() => handleTitleClick(msg.msg_idx)}>
                                 {msg.subject}
                             </td>
-                            <td>{mode === 'inbox' ? msg.sender : msg.recip}</td>
+                            <td>{mode === 'inbox' ? msg.senderNickname : msg.recipNickname}</td>
                             <td>{new Date(msg.msg_date).toISOString().slice(0, 10)}</td>
                         </tr>
                     ))
@@ -172,6 +169,15 @@ export default function MessageList() {
 
             {/* 하단 (페이징 + 삭제 버튼) */}
             <div className="bottom-bar">
+                {/* 쪽지 쓰기 버튼 */}
+                 <div className="write-wrapper">
+                    <button
+                      className="write-msg-btn"
+                      onClick={() => router.push('/message/messageWrite')}
+                    >
+                      쪽지 쓰기
+                    </button>
+                  </div>
                 <div className="pagination-wrapper">
                 <Stack spacing={2} sx={{ mt: 2 }} alignItems="center">
                     <Pagination
