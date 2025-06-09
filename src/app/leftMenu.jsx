@@ -54,7 +54,7 @@ export default function leftMenu() {
     const [imageInfo, setImageInfo] = useState({});
     const memberImageInfo = async (user_id) => {
         const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
-        console.log(data);
+        // console.log(data);
         setImageInfo(data.list[0]);
     }
 
