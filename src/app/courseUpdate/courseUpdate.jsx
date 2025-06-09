@@ -434,7 +434,7 @@ export default function CourseUpdate() {
                             <span className={"likeCntBody"}>{detail.total_like_count}</span>
 
                             <span className={"subjectHead"}>
-                                코스 제목 ❗ &nbsp;&nbsp;
+                                코스 제목 <a style={{ color: 'red' }}>*</a> &nbsp;&nbsp;
                                 <small>{subject.length} / 66자 제한</small>
                             </span>
                             <input
@@ -444,7 +444,7 @@ export default function CourseUpdate() {
                                 onChange={(e) => setSubject(e.target.value)}
                                 maxLength={66}
                             />
-                            <span className={"tagHead"}>태그 ❗</span>
+                            <span className={"tagHead"}>태그 <a style={{ color: 'red' }}>*</a></span>
                             <span className={"tagBody"}>
                     {selectedTags.map(tag => tag.value).join(" ")}
                                 <button className={"tagAdd"} onClick={() => setShowModal(true)}>태그 추가</button>
@@ -459,7 +459,7 @@ export default function CourseUpdate() {
                                     }} onCancel={() => setShowModal(false)}/>
                             )}
 
-                            <span className={"timelineHead"}>코스 내용 ❗</span>
+                            <span className={"timelineHead"}>코스 내용 <a style={{ color: 'red' }}>*</a></span>
                             <span className={"timelineBody"}>
                 <Timeline
                     timelineStart={time.timelineStart}
@@ -525,7 +525,7 @@ export default function CourseUpdate() {
                 </span>
 
                             <span className={"courseCmtHead"}>
-                                코스 코멘트 ❗ &nbsp;&nbsp;
+                                코스 코멘트 <a style={{ color: 'red' }}>*</a>&nbsp;&nbsp;
                                 <small>{courseCmt.length} / 333자 제한</small>
                             </span>
                             <textarea
