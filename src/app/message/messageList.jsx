@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { Stack, Pagination } from '@mui/material';
 import './messageList.css';
 
 export default function MessageList() {
@@ -172,24 +173,44 @@ export default function MessageList() {
             {/* 하단 (페이징 + 삭제 버튼) */}
             <div className="bottom-bar">
                 <div className="pagination-wrapper">
-                    <div className="pagination">
-                        <button
-                            className="page-btn"
-                            onClick={handlePrevPage}
-                            disabled={page === 1}
-                        >
-                            ◀
-                        </button>
-                        <span className="current-page">{page}</span>
-                        <button
-                            className="page-btn"
-                            onClick={handleNextPage}
-                            disabled={page === totalPages}
-                        >
-                            ▶
-                        </button>
-                    </div>
+                <Stack spacing={2} sx={{ mt: 2 }} alignItems="center">
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={(_, value) => setPage(value)}
+                        variant="outlined"
+                        shape="rounded"
+                        siblingCount={1}
+                        boundaryCount={1}
+                        showFirstButton
+                        showLastButton
+                        sx={{
+                            '& .MuiPaginationItem-root': {
+                                color: '#c9c9c9',
+                                borderColor: '#d29292',
+                                border: 3,
+                                borderRadius: '10px',
+                                minWidth: '50px',
+                                height: '50px',
+                                padding: '10px',
+                                fontSize: '20px',
+                            },
+                            // 선택된 페이지 아이템 스타일
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                                backgroundColor: '#CC503B',  // 배경색을 CC503B로
+                                color: '#ffffff',            // 글자색을 흰색으로
+                                borderColor: '#d29292',
+                            },
+                            // 선택된 상태에서 호버했을 때도 동일 컬러 유지
+                            '& .MuiPaginationItem-root.Mui-selected:hover': {
+                                backgroundColor: '#CC503B',
+                            },
+                        }}
+                    />
+                </Stack>
                 </div>
+                {/* 선택 삭제 버튼 */}
+                <div className="delete-wrapper">
                 <button
                     className="delete-selected-btn"
                     onClick={handleDeleteClick}
@@ -197,6 +218,7 @@ export default function MessageList() {
                 >
                     선택 삭제
                 </button>
+                </div>
             </div>
 
             {/* 삭제 확인 팝업 */}

@@ -17,9 +17,9 @@
 /* 공지사항 타이틀 */
 .notice-List-notice-title {
     font-size: 1.75rem;
-    font-weight: 600;
+    font-weight: bold;
     margin-bottom: 16px;
-    color: #333333;
+    color:  #000 ;
 }
 
 /* -----------------------------------------------------------
@@ -62,10 +62,9 @@
 /* tbody의 tr, td 기본 */
 .notice-List-notice-table tbody tr td {
     padding: 14px 8px;
-    font-size: 0.875rem;
     border-bottom: 1px solid #ebebeb;
     text-align: center;
-    color: #333333;
+    color: #000;
     vertical-align: middle;
     box-sizing: border-box;
 }
@@ -79,7 +78,7 @@
 /* 링크 스타일 (제목 클릭 시) */
 .notice-List-title-link {
     text-decoration: none;
-    color: #CC503B;   /* 이전의 inherit 대신 고정된 #CC503B 색상 */
+    color: #E84629;   /* 이전의 inherit 대신 고정된 #CC503B 색상 */
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -89,6 +88,10 @@
 .notice-List-title-link img {
     width: 16px;
     height: 16px;
+}
+
+.notice-List-title-link:hover {
+    text-decoration: underline;
 }
 
 /* “데이터 없음” 상태 */
@@ -113,10 +116,6 @@
     color: #d9480f; /* 오렌지 계열 텍스트 */
 }
 
-/* 일반 행 (회색 텍스트) */
-.normal-row td {
-    color: #6c6c6c; /* 진한 회색 텍스트 */
-}
 
 /* -----------------------------------------------------------
    4. 페이지네이션(페이징) 스타일
@@ -124,52 +123,7 @@
 .notice-List-pagination-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 24px;
-}
-
-/* 화살표 & 숫자 버튼 기본 스타일 */
-.notice-List-page-btn,
-.page-btn {
-    background-color: #ffffff;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    margin: 0 4px;
-    padding: 8px 12px;
-    font-size: 0.875rem;
-    color: #555555;
-    cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-
-/* 비활성(이전/다음이 불가능할 때) */
-.notice-List-page-btn.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-/* 페이지 번호 버튼 (둥근 테두리) */
-.page-btn {
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    line-height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 현재 페이지(active) 스타일 */
-.page-btn.active {
-    background-color: #fff4e6;
-    border-color: #d9480f;
-    color: #d9480f;
-}
-
-/* 페이지 번호 버튼 호버 */
-.page-btn:not(.active):hover {
-    background-color: #f5f5f5;
-    border-color: #bfbfbf;
+    margin: 24px 0;  /* 위아래 여백 필요시 조절 */
 }
 
 /* -----------------------------------------------------------

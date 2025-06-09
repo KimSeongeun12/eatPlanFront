@@ -86,12 +86,12 @@
 
 /* 제목 텍스트 클릭 시 스타일 */
 .message-subject {
-    color: #2c3e50;
+    color: #E84629;
     cursor: pointer;
     text-align: left;
 }
 .message-subject:hover {
-    color: #1abc9c;
+    color: #E84629;
     text-decoration: underline;
 }
 
@@ -107,7 +107,7 @@
     flex: 1;
     text-align: center;
 }
-.pagination {
+/*.pagination {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -121,16 +121,16 @@
     height: 32px;
     font-size: 1rem;
     cursor: pointer;
-}
+}*/
 .page-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
-.current-page {
+/*.current-page {
     font-size: 1rem;
     min-width: 20px;
     text-align: center;
-}
+}*/
 
 /* ─── 선택 삭제 버튼 ─── */
 .delete-selected-btn {
@@ -145,6 +145,10 @@
 .delete-selected-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+.delete-wrapper {
+    margin-left: auto;
 }
 
 /* ─── 삭제 확인 팝업 ─── */

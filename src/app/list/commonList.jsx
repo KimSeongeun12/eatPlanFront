@@ -79,10 +79,15 @@ export default function CommonList({sort}) {
                             padding: '10px',
                             fontSize: '20px',
                         },
-                        '& .Mui-selected': {
-                            backgroundColor: 'rgba(42,205,175,0.5)',
-                            color: '#a17070',
+                        // 선택된 페이지 아이템 스타일
+                        '& .MuiPaginationItem-root.Mui-selected': {
+                            backgroundColor: '#CC503B',  // 배경색을 CC503B로
+                            color: '#ffffff',            // 글자색을 흰색으로
                             borderColor: '#d29292',
+                        },
+                        // 선택된 상태에서 호버했을 때도 동일 컬러 유지
+                        '& .MuiPaginationItem-root.Mui-selected:hover': {
+                            backgroundColor: '#CC503B',
                         },
                     }}
                 />
