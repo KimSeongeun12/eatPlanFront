@@ -34,7 +34,7 @@ export default function leftMenu() {
         sessionStorage.removeItem('user_id');
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('admin');
-        location.href="/";
+        location.href="/list";
     }
 
     const [userInfo, setUserInfo] = useState({});
@@ -70,7 +70,7 @@ export default function leftMenu() {
             <div className={"leftMenu"}>
                 <div
                     className="logo-container"
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push('/list')}
                     style={{ cursor: 'pointer' }}
                 >
                     <img src="/logo.png" alt="EatPlan 로고" className="logo-img" />
@@ -117,6 +117,7 @@ export default function leftMenu() {
                         isActive('/admin_course') ||
                         isActive('/list') ||
                         isActive('/courseSearch') ||
+                        isActive('/') ||
                         isActive('/searchResult') ? 'active' : ''
                     }`}
                 >

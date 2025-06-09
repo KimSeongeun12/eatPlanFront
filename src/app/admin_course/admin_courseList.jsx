@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 import {Pagination, Stack, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
 import Link from "next/link";
-import Image from 'next/image';
 
 export default function Admin_courseList({sort}) {
     const [page, setPage] = useState(1);

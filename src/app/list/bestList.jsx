@@ -33,7 +33,7 @@ export default function bestList() {
                     <span className={"weeklySpan"}>Weekly 주간 베스트</span>
                     <div className={"weeklyDiv"}>
                         {weeklyList.map(item => (
-                            <div key={item.course.post_idx}>
+                            <div key={item.course.post_idx} className={"best_listItem"}>
                                 <img
                                     className={"mainImage"}
                                     src={`http://localhost/image/${item.course_img}`}
@@ -69,7 +69,7 @@ export default function bestList() {
                     <span className={"monthlySpan"}>Monthly 월간 베스트</span>
                     <div className={"monthlyDiv"}>
                         {monthlyList.map(item => (
-                            <div key={item.course.post_idx}>
+                            <div key={item.course.post_idx} className={"listItem"}>
                                 <img
                                     className={"mainImage"}
                                     src={`http://localhost/image/${item.course_img}`}
