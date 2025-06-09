@@ -14,55 +14,28 @@ export default function HistoryPage(props) {
     const [report, setReport] = useState({});
     const [reported, setReported] = useState({});
     const [loading, setLoading] = useState(true);    // 로딩 여부
-    const [component, setComponent] = useState(null);
 
     useEffect(() => {
         props.params.then(({slug})=>{
             idx.current = slug;
         });
-        const loadReport = async () => {
-                const { data } = await axios.get(`http://localhost/report_detail/${idx.current}`);
-                setReport(data.detail);
-
-                if (data.detail.isClass === 'course') {
-                    setReported(data.reported_course);
-                } else if (data.detail.isClass === 'comment') {
-                    setReported(data.reported_cmt);
-                } else if (data.detail.isClass === 'message') {
-                    setReported(data.reported_msg);
-                }
-                setLoading(false); // 모두 완료 후 false
-        };
         loadReport();
     }, [idx]);
 
-    const loadReport = () => {
-        axios.get(`http://localhost/report_detail/${idx.current}`).then(({data})=>{
-            console.log('data 전체를 불러온 것: ', data);
-            setReport(data.detail);
-            console.log('data.detail로 불러온 것: ', report);
+    const loadReport = async () => {
+        let { data } = await axios.get(`http://localhost/report_detail/${idx.current}`);
+        console.log(data);
+        setReport(data.detail);
 
-            // report.isClass 별로 나누기
-            if(report.isClass==='course'){
-                console.log('course가 입력', reported);
-                setReported(data.reported_course);
-                setComponent(<Target report_idx={idx.current}
-                                     reported_idx={reported.post_idx}
-                                     isClass={report.isClass}
-                                     user_id={report.reporter_id}/>);
-            }else if(report.isClass==='comment'){
-                console.log('comment 입력', reported);
-                setReported(data.reported_cmt);
-                setComponent(<Target report_idx={idx.current}
-                                     reported_idx={reported.comment_idx}
-                                     isClass={report.isClass} />);
-            } else if(report.isClass==='message'){
-                console.log('message 입력', reported);
-                setReported(data.reported_msg);
-                //아직안함
-            }
-        });
-    }
+        if (data.detail.isClass === 'course') {
+            setReported(data.reported_course); // reported(신고된 글)
+        } else if (data.detail.isClass === 'comment') { // reported(신고된 글)
+            setReported(data.reported_cmt);
+        } else if (data.detail.isClass === 'message') { // reported(신고된 글)
+            setReported(data.reported_msg);
+        }
+        setLoading(false); // 모두 완료 후 false
+    };
 
     return (
         <>
@@ -104,6 +77,7 @@ export default function HistoryPage(props) {
                         </tr>
                         <tr>
                             <td colSpan={6}>
+                                {/*전부 렌더링된 이후 렌더링될 컴포넌트*/}
                                 {!loading && report && reported && (
                                     <Target
                                         report_idx={idx.current}
