@@ -615,6 +615,7 @@ export default function CourseDetail({post_idx}) {
                                     rows="3"
                                     name={"cmtContent"}
                                     value={cmtContent}
+                                    maxLength={333}
                                     onChange={(e) => setCmtContent(e.target.value)}>
                                 </textarea>
                                 <small className={"cmtLimit"}>{cmtContent.length} / 333자 제한</small>

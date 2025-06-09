@@ -178,7 +178,8 @@
 }
 
 .area {
-    display: inline-flex;
+    display:flex;
+    flex-wrap: wrap;
     gap: 10px;
     overflow-y: scroll;
     list-style: none;
