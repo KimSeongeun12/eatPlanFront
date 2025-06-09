@@ -39,9 +39,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
 
     const toggleArea = (area) => {
         setSelectedArea(prev =>
-            prev.includes(area)
-                ? prev.filter(a => a !== area)
-                : [...prev, area]
+            prev.includes(area)  ? prev.filter(a => a !== area) : [...prev, area]
         );
         setSelectedList(prev => {
             const isSelected = selectedArea.includes(area);

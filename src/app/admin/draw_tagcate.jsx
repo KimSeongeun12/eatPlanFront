@@ -4,6 +4,7 @@ import axios from "axios";
 import Tags from "@/app/admin/component/tags";
 import './tagManager.css'
 import CategoryInput from "@/app/admin/component/categoryInput";
+import AreaField from "@/app/admin/component/areaField";
 
 export default function DrawLeftTags({isClass, leftMenu}) {
 
@@ -19,7 +20,14 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     // isClass===코스/식당 식별
     const clickCate=(idx)=>{
         cate_idx.current=idx;
-        setComponent(<Tags idx={idx} isClass={isClass}/>);    //Tags set
+        
+        // 지역태그일경우
+        if(cate_idx.current===1){
+            setComponent(<AreaField/>);
+        }
+        else{
+            setComponent(<Tags idx={idx} isClass={isClass}/>);    //Tags set
+        }
     }
 
     // 태그 카테고리 삭제

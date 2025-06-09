@@ -27,7 +27,6 @@ export default function TagsManager() {
         <div>
             <br/>
             <div className={"tag tab"}>
-                !!! 지역 태그 추가 아직 안함 !!!
                 <div id={'course'} onClick={(e) => toggle(e)}>코스 태그 관리</div>
                 <div id={'restaurant'} onClick={(e) => toggle(e)}>식당 태그 관리</div>
                 <div id={'restaurant_tags'} onClick={(e) => toggle(e)}>식당 별 태그 관리</div>
