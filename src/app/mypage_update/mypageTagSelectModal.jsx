@@ -83,7 +83,7 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
             const user_id = sessionStorage.getItem('user_id');
             const tagsForServer = selectedList.map(tag => ({
                 idx: tag.idx, // idx가 없다면 따로 관리 필요
-                isClass: tag.type === 'area' ? '지역' : '일반',
+                isClass: tag.type === 'area' ? 'area_tag' : 'tag',
                 user_id: user_id
             }));
 
