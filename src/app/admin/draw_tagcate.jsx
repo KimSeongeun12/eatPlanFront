@@ -18,11 +18,12 @@ export default function DrawLeftTags({isClass, leftMenu}) {
 
     // 좌측 카테고리를 클릭할 시 실행되는 함수
     // isClass===코스/식당 식별
-    const clickCate=(idx)=>{
+    const clickCate=(idx, name)=>{
+        console.log(name);
         cate_idx.current=idx;
         
         // 지역태그일경우
-        if(cate_idx.current===1){
+        if(name==='지역'){
             setComponent(<AreaField/>);
         }
         else{
@@ -42,7 +43,7 @@ export default function DrawLeftTags({isClass, leftMenu}) {
         const tags = data.list_tagcate.map((item) => {
                 return (
                     <div key={item.cate_idx} className={"box"}
-                         onClick={() => {clickCate(item.cate_idx)}}>
+                         onClick={() => {clickCate(item.cate_idx, item.cate_name)}}>
                         {item.cate_name}
                         <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div>
                     </div>
