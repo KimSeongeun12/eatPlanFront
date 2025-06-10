@@ -2,13 +2,18 @@
     display: none !important;
 }
 
-span{
-    margin:10px;
+.topMenuSpans{
+    padding:10px;
 }
 
 .topMenuSpans{
     font-size:20px;
     padding:10px;
+}
+
+.long{
+    width: 300px;
+    text-align: center;
 }
 
 .list{
@@ -34,8 +39,7 @@ span{
 .box {
     flex: 1;
     box-sizing: border-box;
-    width: 250px !important;
-
+    width: 200px !important;
 }
 
 .searchContainer{

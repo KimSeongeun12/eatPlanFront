@@ -27,9 +27,10 @@ export default function CategoryInput({drawList}){
     return(
         <div className={"tag-input"}>
             <input type={"text"}
-                   style={{height:"30px", fontSize:"20px"}}
+                   style={{height:"30px", fontSize:"15px", margin:"5px"}}
                    onKeyUp={enterHandler}
                    value={cate}
+                   placeholder={"Enter을 눌러 카테고리를 추가"}
                    onChange={(e)=>{setCate(e.target.value)}}
             />
         </div>

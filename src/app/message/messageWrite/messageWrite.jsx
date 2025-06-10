@@ -1,73 +1,97 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import './messageWrite.css';
 
 export default function MessageWrite() {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     // 로그인 정보
-    const userId = typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
+    const userId  = typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
+    const token   = typeof window !== 'undefined' ? sessionStorage.getItem('token')  : null;
 
-    // 보내는 사람 닉네임 조회
+    // 보내는 사람 닉네임
     const [senderNickname, setSenderNickname] = useState('');
-    useEffect(() => {
-        if (!userId) return;
-        axios.get(`http://localhost/${userId}`)
-            .then(res => setSenderNickname(res.data.nickname || ''))
-            .catch(() => setSenderNickname(''));
-    }, [userId]);
 
-    // 받는 사람 닉네임과 user_id
+    // 받는 사람 닉네임 & ID
     const [recipientNickname, setRecipientNickname] = useState('');
     const [recipId, setRecipId] = useState('');
-
-    useEffect(() => {
-        if (!recipientNickname.trim()) {
-            setRecipId('');
-            return;
-        }
-
-        const timeoutId = setTimeout(() => {
-            axios.get(`http://localhost/member/nickname/${recipientNickname.trim()}`)
-                .then((res) => {
-                    setRecipId(res.data.user_id || '');
-                })
-                .catch(() => {
-                    setRecipId('');
-                    console.warn('닉네임으로 사용자 조회 실패');
-                });
-        }, 300); // debounce
-
-        return () => clearTimeout(timeoutId);
-    }, [recipientNickname]);
 
     // 제목, 내용
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
 
-    // 전송
+    // (A) URL 쿼리에서 recip 파라미터 초기값 설정
+    useEffect(() => {
+        const r = searchParams.get('recip');
+        if (!r) return;
+
+           // 1) r이 userId 이므로, /member/{userId}로 닉네임 조회
+            axios
+                .get(`http://localhost/member/${r}`)
+                .then((res) => {
+                    setRecipientNickname(res.data.nickname || '');  // 닉네임 셋
+                           setRecipId(r);                                // ID 셋
+                })
+                .catch(() => {
+                          // 혹시 ID로 조회 실패 시 fallback: 입력값 그대로 닉네임으로 간주
+                        setRecipientNickname(r);
+                });
+    }, [searchParams]);
+
+    // (B) recipientNickname 변경 시 ID 조회 (디바운스)
+    // 사용자 직접 수정했다면 recipientNickname은 닉네임이므로 byNickname 호출
+    useEffect(() => {
+    if (!recipientNickname.trim()) {
+        setRecipId('');
+        return;
+    }
+    const timeoutId = setTimeout(() => {
+        axios
+            .get(
+                `http://localhost/member/byNickname/${encodeURIComponent(
+                    recipientNickname.trim()
+                )}`
+            )
+            .then((res) => setRecipId(res.data.user_id || ''))
+            .catch(() => {
+                setRecipId('');
+                console.warn('닉네임으로 사용자 조회 실패');
+            });
+    }, 300);
+    return () => clearTimeout(timeoutId);
+}, [recipientNickname]);
+
+    // (C) senderNickname 조회
+    useEffect(() => {
+        if (!userId) return;
+        axios
+            .get(`http://localhost/member/${userId}`)
+            .then((res) => setSenderNickname(res.data.nickname || ''))
+            .catch((err) => {
+                console.warn('[MessageWrite] sender 조회 실패:', err);
+                setSenderNickname('');
+            });
+    }, [userId]);
+
+    // 쪽지 전송 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!userId || !token) {
             alert('로그인이 필요합니다.');
             return;
         }
-
         if (!recipientNickname.trim() || !recipId) {
             alert('받는 사람 닉네임 또는 ID가 유효하지 않습니다.');
             return;
         }
-
         if (!subject.trim()) {
             alert('제목을 입력해주세요.');
             return;
         }
-
         if (!content.trim()) {
             alert('내용을 입력해주세요.');
             return;
@@ -110,9 +134,16 @@ export default function MessageWrite() {
                     <tr>
                         <th>보내는 사람</th>
                         <td>
-                            <input type="text" value={senderNickname} readOnly className="readonly-input" />
+                            <input
+                                type="text"
+                                value={senderNickname}
+                                readOnly
+                                className="readonly-input"
+                            />
                         </td>
-                        <th>받는 사람 <span className="required">*</span></th>
+                        <th>
+                            받는 사람 <span className="required">*</span>
+                        </th>
                         <td>
                             <input
                                 type="text"
@@ -124,7 +155,9 @@ export default function MessageWrite() {
                         </td>
                     </tr>
                     <tr>
-                        <th>제목 <span className="required">*</span></th>
+                        <th>
+                            제목 <span className="required">*</span>
+                        </th>
                         <td colSpan={3}>
                             <input
                                 type="text"
@@ -137,22 +170,26 @@ export default function MessageWrite() {
                         </td>
                     </tr>
                     <tr>
-                        <th>내용 <span className="required">*</span></th>
+                        <th>
+                            내용 <span className="required">*</span>
+                        </th>
                         <td colSpan={3}>
-                                <textarea
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                    rows={12}
-                                    placeholder="내용을 입력하세요."
-                                    required
-                                    className="full-width-textarea"
-                                />
+                <textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    rows={12}
+                    placeholder="내용을 입력하세요."
+                    required
+                    className="full-width-textarea"
+                />
                         </td>
                     </tr>
                     </tbody>
                 </table>
                 <div className="write-submit-area">
-                    <button type="submit" className="btn-submit">보내기</button>
+                    <button type="submit" className="btn-submit">
+                        보내기
+                    </button>
                 </div>
             </form>
         </div>

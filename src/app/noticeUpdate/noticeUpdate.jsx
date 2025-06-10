@@ -26,7 +26,7 @@ export default function noticeUpdate() {
         setCurrentUser(storedUser);
 
         // isAdmin 정보 (예: sessionStorage에 isAdmin='1' 세팅되어 있다고 가정)
-        const adminFlag = sessionStorage.getItem('isAdmin') === '1';
+        const adminFlag = sessionStorage.getItem('admin') === 'true';
         setIsAdmin(adminFlag);
 
         // 관리자 아니라면 상세 페이지로 리다이렉트

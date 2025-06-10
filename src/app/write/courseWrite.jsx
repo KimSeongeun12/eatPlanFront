@@ -42,43 +42,6 @@ export default function CourseWrite({data}) {
 
     const [restaIdxList, setRestaIdxList] = useState([]);
 
-    const handelCourseSubmit = async () => {
-        try {
-            const payload = {
-                content: {
-                    user_id: user_id.current,
-                    subject: coursePost.subject,
-                    post_cmt: coursePost.post_cmt,
-                    isPublic: coursePost.isPublic,
-                    tmp: false // 필요 시
-                },
-                content_detail_resta: resta.map((item, idx) => ({
-                    resta_idx: restaIdxList[idx], // 선택된 식당 idx
-                    comment: item.comment || '',
-                    start: item.start || ''
-                })),
-                content_detail_cmt: noResta.map(item => ({
-                    comment: item.comment || '',
-                    start: item.start || ''
-                })),
-                tags: selectedTags.combined, // 태그 리스트
-                time: {
-                    start: timelineStart,
-                    end: timelineFinish
-                }
-            };
-            const response = await axios.post('http://localhost/regist_write', payload);
-            console.log("코스 등록 성공: ", response.data);
-            if (response.data.success === true) {
-                alert("코스 등록에 성공했습니다.");
-                location.href="./list";
-            }
-        } catch (error) {
-            console.error("코스 등록 실패: ", error);
-            alert("코스 등록에 실패했습니다.");
-        }
-    }
-
     const handleTagChange = (selection) => {
         setSelectedTags(selection);
         console.log("선택한 태그:", selection);
@@ -244,11 +207,71 @@ export default function CourseWrite({data}) {
         setIsModalOpen(false);
     }
     
+    // 코스 등록 버튼
+    const handelCourseSubmit = async () => {
+        if (!coursePost.subject.trim()) {
+            alert("코스 제목은 필수로 입력해야 하는 항목입니다.");
+            return;
+        }
+
+        if (
+            (!resta || resta.length === 0) &&
+            (!noResta || noResta.length === 0)
+        ) {
+            alert("코스는 한 개 이상 추가되어야 합니다.");
+            return;
+        }
+
+        if (!selectedTags.combined || selectedTags.combined.length === 0) {
+            alert("태그는 한 개 이상 선택되어야 합니다.");
+            return;
+        }
+
+        try {
+            const payload = {
+                content: {
+                    user_id: user_id.current,
+                    subject: coursePost.subject,
+                    post_cmt: coursePost.post_cmt,
+                    isPublic: coursePost.isPublic,
+                    tmp: false // 필요 시
+                },
+                content_detail_resta: resta.map((item, idx) => ({
+                    resta_idx: restaIdxList[idx], // 선택된 식당 idx
+                    comment: item.comment || '',
+                    start: item.start || ''
+                })),
+                content_detail_cmt: noResta.map(item => ({
+                    comment: item.comment || '',
+                    start: item.start || ''
+                })),
+                tags: selectedTags.combined, // 태그 리스트
+                time: {
+                    start: timelineStart,
+                    end: timelineFinish
+                }
+            };
+            const response = await axios.post('http://localhost/regist_write', payload);
+            console.log("코스 등록 성공: ", response.data);
+            if (response.data.success === true) {
+                alert("코스 등록에 성공했습니다.");
+                location.href="/list";
+            }
+        } catch (error) {
+            console.error("코스 등록 실패: ", error);
+            alert("코스 등록에 실패했습니다.");
+        }
+    }
+    
     // 임시저장 기능
-    const tempSave = () => {}
+    const tempSave = () => {
+        alert("아직 못 만들었어염");
+    }
     
     // 임시저장 불러오기 기능
-    const tempLoad = () => {}
+    const tempLoad = () => {
+        setIsTempModalOpen(true);
+    }
 
     const [isTempModalOpen, setIsTempModalOpen] = useState(false);
 
@@ -261,8 +284,8 @@ export default function CourseWrite({data}) {
     return (
         <>
             <div className="course_rightMenu">
-                <button onClick={() => setIsTempModalOpen(true)} className="courseWrite_button">임시저장 불러오기</button>
-                <button className="courseWrite_button">임시저장</button>
+                <button onClick={tempLoad} className="courseWrite_button">임시저장 불러오기</button>
+                <button onClick={tempSave} className="courseWrite_button">임시저장</button>
 
                 <TempModal
                     isOpen={isTempModalOpen}

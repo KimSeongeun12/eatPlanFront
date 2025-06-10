@@ -16,6 +16,7 @@ export default function ReportWrite() {
     const [reporterId, setReporterId] = useState('');
     const [reporterNickname, setReporterNickname] = useState('');
 
+    const [reportCmt, setReporterCmt] = useState('');
     const [suspectId, setSuspectId] = useState('');
     const [suspectNickname, setSuspectNickname] = useState(initialNickname);
     const [classification, setClassification] = useState(initialClass);
@@ -32,50 +33,42 @@ export default function ReportWrite() {
         setReporterId(id);
         if (!id) return;
 
-        axios.get(`http://localhost/member/${id}`,
-        { headers: { Authorization: token }
+        axios.get(`http://localhost/member/${id}`,{
+            headers: token ? { Authorization: token } : {}
         })
             .then(res => setReporterNickname(res.data.nickname));
     }, []);
 
+    // (2) **새로 추가하는** 한 개의 훅
     useEffect(() => {
-        const nickname = searchParams.get('suspect') || '';
-        setSuspectNickname(nickname); // 닉네임은 표시용으로 사용
+        const suspectParam = searchParams.get('suspect') || '';
+        if (!suspectParam) return;
 
-        if (!nickname) return;
+        (async () => {
+            // 1) user_id 로 시도
+            try {
+                const res = await axios.get(`http://localhost/member/${encodeURIComponent(suspectParam)}`);
+                console.log('▶ user_id 조회 성공', res.status);
+                setSuspectId(res.data.user_id);
+                setSuspectNickname(res.data.nickname);
+                return;   // ← 이 return이 핵심! 성공 시 아래로 내려가지 않도록 막아줍니다.
+            } catch (err) {
+                console.log('▶ user_id 조회 실패', err.response?.status);
+            }
 
-        // 닉네임을 user_id로 변환
-        axios.get(`http://localhost/member/byNickname/${suspectNickname}`)
-            .then(res => {
-                if (res.data.user_id) {
-                    setSuspectId(res.data.user_id);
-                } else {
-                    alert("사용자를 찾을 수 없습니다.");
-                }
-            })
-            .catch(err => {
-                console.error("닉네임으로 user_id 조회 실패", err);
-                alert("닉네임 조회 중 오류 발생");
-            });
-    }, []);
+            // 2) nickname 으로 재시도
+            try {
+                const res2 = await axios.get(`http://localhost/member/byNickname/${encodeURIComponent(suspectParam)}`);
+                console.log('▶ nickname 조회 성공', res2.status);
+                setSuspectId(res2.data.user_id);
+                setSuspectNickname(suspectParam);
+            } catch (err2) {
+                console.error('▶ 닉네임 조회도 실패', err2.response?.status);
+                alert('해당 사용자가 존재하지 않습니다.');
+            }
+        })();
+    }, [searchParams]);
 
-
-    useEffect(() => {
-        if (!initialNickname) return;
-
-        axios.get(`http://localhost/member/byNickname/${initialNickname}`)
-            .then(res => {
-                if (res.data.user_id) {
-                    setSuspectId(res.data.user_id);
-                } else {
-                    alert("해당 닉네임의 사용자를 찾을 수 없습니다.");
-                }
-            })
-            .catch(err => {
-                console.error("닉네임으로 user_id 조회 실패", err);
-                alert("닉네임 조회 중 오류 발생");
-            });
-    }, [initialNickname]);
 
     const handleFileChange = (e) => {
         setFiles(Array.from(e.target.files));
@@ -165,7 +158,8 @@ export default function ReportWrite() {
                                 onChange={e => setSubject(e.target.value)}
                                 placeholder="제목을 입력해주세요."
                                 required
-                            />
+                                maxLength={66}
+                            /><small>{subject.length} / 66자 제한</small>
                         </td>
                     </tr>
                     <tr>
@@ -177,7 +171,8 @@ export default function ReportWrite() {
                                 rows={8}
                                 placeholder="신고 내용을 작성해주세요."
                                 required
-                            />
+                                maxLength={1000}
+                            /><small>{subject.length} / 1000자 제한</small>
                         </td>
                     </tr>
                     <tr>

@@ -108,6 +108,19 @@ body {
     vertical-align: middle;
 }
 
+.report_detail_table input[type="text"],
+.report_detail_table textarea {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.report_detail_table input[type="text"]:focus,
+.report_detail_table textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 /* th (레이블) 배경색 */
 .report_detail_table th {
     background-color: #fafafa;

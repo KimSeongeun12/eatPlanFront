@@ -57,7 +57,7 @@ export default function Tags({idx, isClass}) {
 
     return (
         <div className={"right-tags"}>
-            <div style={{border:"1px solid lightgrey", padding:"5px", position:"relative", left:"400px"}}>
+            <div style={{border:"1px solid lightgrey", padding:"5px", position:"relative"}}>
                 <TagInsert isClass={isClass}
                            cate_idx={idx}
                            drawCourseTags={drawCourseTags}

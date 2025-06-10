@@ -7,6 +7,7 @@ import ReportHistory from "@/app/admin/reportHistory";
 import './admin.css';
 import '../mainCss.css'
 import TagsManager from "@/app/admin/tags_manager";
+import Link from "next/link";
 
 export default function AdminPage() {
 
@@ -46,10 +47,7 @@ export default function AdminPage() {
             <LeftMenu/>
             <div className={"rightMenu"}>
                 <div className={"topMenuSpans"} style={{cursor: "pointer"}}>
-                    <span id={'myPage'} className={tabName.current === 'myPage' ? 'active-span' : ''}
-                          onClick={(e) => toggleTab(e)}>내 정보 열람</span>
-                    <span id={'myCourse'} className={tabName.current === 'myCourse' ? 'active-span' : ''}
-                          onClick={(e) => toggleTab(e)}>내 코스 모아보기</span>
+                    <Link href={`/mypage`}><span id={'myPage'} className={tabName.current === 'myPage' ? 'active-span' : ''}>내 정보 열람</span></Link>
                     <span id={'memberList'} className={tabName.current === 'memberList' ? 'active-span' : ''}
                           onClick={(e) => toggleTab(e)}>회원 리스트</span>
                     <span id={'tagManage'} className={tabName.current === 'tagManage' ? 'active-span' : ''}

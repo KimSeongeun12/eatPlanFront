@@ -9,7 +9,6 @@ export default function MemberItem({item, adminClick}){
     return(
         <>
             <div className={"member list"}>
-                <input type={"checkbox"} id={item.user_id}/>
                 <span>{item.user_id}</span>
                 {/*아래에 유저 페이지 이동*/}
                 <span>{item.nickname}</span>

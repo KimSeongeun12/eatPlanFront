@@ -60,7 +60,7 @@ export default function FindPw({ setVisibleComponent }) {
                            onChange={input}
                            placeholder={"이메일을 입력해주세요."}/>
                 </div>
-                <button onClick={send} className={"nextButton"}>인증 메일 발송</button>
+                <button onClick={send} className={"nextButton"}>다음 단계</button>
             </div>
         </>
     );

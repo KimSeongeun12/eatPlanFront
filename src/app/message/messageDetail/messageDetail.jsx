@@ -19,6 +19,14 @@ export default function MessageDetail() {
     const userId = typeof window !== 'undefined' ? sessionStorage.getItem('user_id') : null;
     const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') : null;
 
+    // 로그인 체크: 로그인 안 된 경우 로그인 페이지로 리다이렉트
+    useEffect(() => {
+        if (!userId || !token) {
+            alert('로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.');
+            router.push('/login');
+        }
+    }, [userId, token, router]);
+
     // 쪽지 상세 조회
     useEffect(() => {
         if (!userId || !token || !msgIdx) return;

@@ -3,7 +3,7 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 import './modalCss.css';
 
-export default function StepOne({onNext, setData}) {
+export default function StepOne({onNext, setData, data}) {
     const [timelineStart, setTimelineStart] = useState('');
     const router = useRouter();
 
@@ -13,7 +13,6 @@ export default function StepOne({onNext, setData}) {
             return;
         }
         setData({timelineStart});  // 상위로 데이터 전달
-        // console.log(timelineStart);
         onNext();
     };
 

@@ -34,10 +34,12 @@ export default function NoticeList() {
 
     useEffect(() => {
         // (1) 관리자 여부 확인
-        const adminFlag = sessionStorage.getItem('isAdmin') === '1';
+        const adminFlag = sessionStorage.getItem('admin') === 'true';
         setIsAdmin(adminFlag);
+    }, []);
 
-        // (2) 현재 페이지 데이터 불러오기
+    // 페이지가 바뀔 때마다 공지 목록만 다시 불러오기
+    useEffect(() => {
         fetchNotices(currentPage);
     }, [currentPage]);
 

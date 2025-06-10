@@ -14,27 +14,32 @@ div .tab{
 }
 
 .box{
+    font-weight: bold;
+    font-size: 15px;
     border: 1px solid #ffffff;
     width: 150px;
     display: flex;
     flex-direction: column;
-    background-color: lightgray;
+    background-color: #ececec;
     text-align: center;
     padding: 10px;
     cursor: pointer;
 }
 
 .right-tags{
+    width: 800px;
     display: inline-block;
     padding: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .tag-component{
+    display: flex;
     font-weight: bold;
     font-size: 16px;
-    padding: 15px;
+    padding: 10px;
     width: 70px;
-    display: flex;
     flex-direction: row;
     border: 1px solid lightgray;
     border-radius: 20px;
@@ -50,5 +55,6 @@ div .tab{
 
 .tagArea{
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
 }

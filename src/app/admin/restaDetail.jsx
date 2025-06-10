@@ -41,7 +41,7 @@ export default function RestaDetail({resta_idx}) {
                     <div>{resta.resta_bio}</div>
                 </div>
                 {/*닫기버튼*/}
-                <div style={{color:"red", position:"absolute", right:"5%", fontSize:"large", cursor:"pointer"}}>X</div>
+                {/*<div style={{color:"red", position:"absolute", right:"5%", fontSize:"large", cursor:"pointer"}}>X</div>*/}
             </div>
             <RestaTagManager tags={tags} resta_idx={resta.resta_idx} />
         </>
