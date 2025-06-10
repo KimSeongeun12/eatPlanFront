@@ -641,9 +641,11 @@ export default function CourseDetail({post_idx}) {
                                                         <small className={"cmtLimit"}>{editedContent.length} / 333자 제한</small>
                                                     </>
                                                 ) : (
-                                                    <span className={"commentContent"}>{item.content}</span>)}
+                                                    <span className={"commentContent"}>
+                                                        {item.blind ? <small style={{color: "gray"}}>관리자가 블라인드 처리한 댓글 입니다.</small> : item.content}
+                                                    </span>)}
                                                     <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
-                                                    <div className={"commentBtns"}>
+                                                    <div className={item.blind ? "hidden" : "commentBtns"}>
                                                         <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
                                                             {item.likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({item.cmt_like_cnt})
                                                         </span>
