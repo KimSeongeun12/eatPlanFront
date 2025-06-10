@@ -59,27 +59,38 @@ export default function LoginPage() {
         return data.blocked;
     }
 
+    // 탈퇴 유저 로그인 제어 포함
     const login = async () => {
-        // console.log(info);
-        const {data} = await axios.post('http://localhost/login', info);
-        console.log(data);
-
-        if (await block()) {
-            alert('정지된 사용자입니다.');
-        } else {
-            if (data.success === true) {
-                alert("로그인에 성공했습니다.");
-                sessionStorage.setItem('user_id', data.user_id);
-                sessionStorage.setItem('token', data.token);
-                sessionStorage.setItem('admin', data.admin);
-                if (sessionStorage.getItem('admin') === 'true') {
-                    location.href = '/admin_course';
-                } else {
-                    location.href = '/list';
-                }
-            } else {
-                alert("아이디 또는 비밀번호를 확인해주세요.");
+        try {
+            const withdraw = await axios.post('http://localhost/withdraw_check', {user_id: info.user_id});
+            console.log(withdraw.data);
+            if (withdraw.data.success === true) {
+                alert("이미 탈퇴한 계정입니다. 로그인할 수 없습니다.");
+                return;
             }
+
+            const {data} = await axios.post('http://localhost/login', info);
+            console.log(data);
+
+            if (await block()) {
+                alert('정지된 사용자입니다.');
+            } else {
+                if (data.success === true) {
+                    alert("로그인에 성공했습니다.");
+                    sessionStorage.setItem('user_id', data.user_id);
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('admin', data.admin);
+                    if (sessionStorage.getItem('admin') === 'true') {
+                        location.href = '/admin_course';
+                    } else {
+                        location.href = '/list';
+                    }
+                }
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("아이디 또는 비밀번호를 확인해주세요.");
         }
 
     }
