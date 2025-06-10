@@ -28,14 +28,14 @@ export default function ReportWrite() {
 
     useEffect(() => {
         const id = sessionStorage.getItem('user_id') || '';
+        const token = sessionStorage.getItem('token') || '';
         setReporterId(id);
         if (!id) return;
 
-        axios.get(`http://localhost/${id}`, {
-            headers: { Authorization: sessionStorage.getItem('token') || '' },
+        axios.get(`http://localhost/member/${id}`,
+        { headers: { Authorization: token }
         })
-            .then(res => setReporterNickname(res.data.nickname || ''))
-            .catch(() => setReporterNickname(''));
+            .then(res => setReporterNickname(res.data.nickname));
     }, []);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function ReportWrite() {
         if (!nickname) return;
 
         // 닉네임을 user_id로 변환
-        axios.get(`http://localhost/member/byNickname/${nickname}`)
+        axios.get(`http://localhost/member/byNickname/${suspectNickname}`)
             .then(res => {
                 if (res.data.user_id) {
                     setSuspectId(res.data.user_id);

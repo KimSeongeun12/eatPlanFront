@@ -40,7 +40,7 @@ export default function leftMenu() {
     const [userInfo, setUserInfo] = useState({});
     const memberInfo = async (user_id) => {
         try {
-            const {data} = await axios.get(`http://localhost/${user_id}`);
+            const {data} = await axios.get(`http://localhost/member/${user_id}`);
             setUserInfo({
                 user_id: data.user_id,
                 nickname: data.nickname
