@@ -65,16 +65,26 @@ export default function Admin_courseList({sort}) {
             alert('선택된 항목이 블라인드 처리 되었습니다.');
             renderList();
         } else {
-            alert('블라인드 처리에 실패했습니다.');
+            alert('항목을 선택해주세요.');
         }
     }
 
     // 선택 삭제 기능
     const selectDelete = async () => {
+        if (selectedCourse.length === 0) {
+            alert("항목을 선택해주세요.");
+            return;
+        }
+
+        const token = sessionStorage.getItem('token');
         const {data} = await axios.delete('http://localhost/delete', {
-            data: selectedCourse.map(user_id => ({post_idx: user_id})),
+            headers: {
+                Authorization: token
+            },
+            data: selectedCourse.map(post_idx => ({ post_idx }))
         });
         console.log(data);
+
         if (data.success === true) {
             alert('게시글이 성공적으로 삭제되었습니다.');
             setSelectedCourse([]);
@@ -126,38 +136,40 @@ export default function Admin_courseList({sort}) {
                     </div>
                 ))}
             </div>
-            <Stack spacing={2} sx={{mt: 2}} className={"courseStack"} alignItems="center">
-                <Pagination
-                    count={totalPages}
-                    page={page}
-                    onChange={(e, value) => setPage(value)}
-                    variant="outlined"
-                    shape="rounded"
-                    siblingCount={1}
-                    boundaryCount={1}
-                    showFirstButton
-                    showLastButton
-                    sx={{
-                        '& .MuiPaginationItem-root': {
-                            color: '#c9c9c9',
-                            borderColor: '#d29292',
-                            border: 3,
-                            borderRadius: '10px',
-                            minWidth: '50px',
-                            height: '50px',
-                            padding: '10px',
-                            fontSize: '20px',
-                        },
-                        '& .Mui-selected': {
-                            backgroundColor: 'rgba(42,205,175,0.5)',
-                            color: '#a17070',
-                            borderColor: '#d29292',
-                        },
-                    }}
-                />
-            </Stack>
+            <div>
+                <Stack spacing={2} sx={{mt: 2}} className={"courseStack"} alignItems="center">
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={(e, value) => setPage(value)}
+                        variant="outlined"
+                        shape="rounded"
+                        siblingCount={1}
+                        boundaryCount={1}
+                        showFirstButton
+                        showLastButton
+                        sx={{
+                            '& .MuiPaginationItem-root': {
+                                color: '#c9c9c9',
+                                borderColor: '#d29292',
+                                border: 3,
+                                borderRadius: '10px',
+                                minWidth: '50px',
+                                height: '50px',
+                                padding: '10px',
+                                fontSize: '20px',
+                            },
+                            '& .Mui-selected': {
+                                backgroundColor: 'rgba(42,205,175,0.5)',
+                                color: '#a17070',
+                                borderColor: '#d29292',
+                            },
+                        }}
+                    />
+                </Stack>
+            </div>
 
-            <div className={"buttons"}>
+            <div className={"admin_buttons"} style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <button onClick={selectBlind} className={"admin_button"}>선택 블라인드 / 블라인드 해제</button>
                 <button onClick={selectDelete} className={"admin_button_delete"}>선택 삭제</button>
             </div>

@@ -21,7 +21,7 @@ const AddStepThree = ({ prevStep, formData, onSubmit }) => {
             </div>
             <div className="confirmation_buttons">
                 <button className="btn" onClick={prevStep}>이전</button>
-                <button className="btn" onClick={onSubmit}>제출</button>
+                <button className="btn" onClick={onSubmit}>확인</button>
             </div>
         </div>
     );

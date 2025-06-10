@@ -33,6 +33,11 @@ export default function ChangePw() {
     }
 
     const completed = async () => {
+        if (!info.existing_pass || !info.pass) {
+            alert("새 비밀번호 및 비밀번호 확인은 필수로 입력해야 하는 항목입니다.");
+            return;
+        }
+
         if (info.existing_pass !== info.pass) {
             alert('비밀번호가 일치하지 않습니다.');
             setInfo(prev => ({

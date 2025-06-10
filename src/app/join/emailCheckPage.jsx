@@ -12,8 +12,10 @@ export default function emailCheckPage({input, setInput, confirmPass, setEmailAu
     // ----------이메일 인증 기능-------------//   // 인증번호가 맞는지 식별하는 state
     const sendEmail=async ()=>{
         console.log(input.email);
+        alert("이메일로 인증 코드가 발송되었습니다.");
         let {data}=await axios.post(`http://localhost/sendNumber`, {'email':input.email});
-        alert(data.result);
+        // alert(data.result);
+        console.log(data);
     }
     const [num, setNum] = useState(0);
     const checkEmail=async ()=>{

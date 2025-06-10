@@ -31,7 +31,7 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 
 
-export default function StepTwo({onNext, onPrev, setData}) {
+export default function StepTwo({onNext, onPrev, setData, data}) {
     const [timelineFinish, setTimelineFinish] = useState('');
     const router = useRouter();
 
@@ -40,12 +40,16 @@ export default function StepTwo({onNext, onPrev, setData}) {
             alert("종료 시각을 선택해주세요.");
             return;
         }
-        setData({timelineFinish});  // 상위로 데이터 전달
-        onNext();
-    };
 
-    const handleCancel = () => {
-        router.back();
+        // 만약 선택한 시작 시각과 종료 시각이 같다면 alert 창 띄움
+        if (data.timelineStart === timelineFinish) {
+            alert("시작 시각과 종료 시각은 동일할 수 없습니다.");
+            setTimelineFinish('');
+            return;
+        }
+
+        setData({timelineFinish});
+        onNext();
     };
 
     const buttonClick = (value) => {

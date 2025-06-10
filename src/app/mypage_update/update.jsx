@@ -62,7 +62,7 @@ export default function Update() {
             return;
         }
         const {data} = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`)
-        // console.log(data);
+        console.log(data);
         if (data.use === false) {
             alert("이미 사용 중인 닉네임입니다.");
             setNicknameChk(false);
@@ -80,8 +80,8 @@ export default function Update() {
             return;
         }
         const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
-        // console.log(data);
-        if (data.use === false) {
+        console.log(data);
+        if (data.success === false) {
             alert("이미 사용 중인 이메일입니다.");
             setEmailChk(false);
         } else {

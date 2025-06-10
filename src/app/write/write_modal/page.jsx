@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import StepOne from './stepOne';
 import StepTwo from './stepTwo';
 import StepThree from './stepThree';
@@ -18,17 +18,16 @@ export default function StepModal({onComplete}) {
         setFormData((prev) => ({...prev, ...data}));
     };
 
-    // const timelineInsert = () => {
-    //     // 타임라인의 시간을 서버로 올려보냄
-    //     const {data} = axios
-    // }
+    useEffect(() => {
+        console.log('data updated:', formData);
+    }, [formData]);
 
     return (
         <>
             <div className="write_modal">
                 <div className="write_modal_content">
-                    {step === 1 && <StepOne onNext={nextStep} setData={updateFormData}/>}
-                    {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData}/>}
+                    {step === 1 && <StepOne onNext={nextStep} setData={updateFormData} data={formData}/>}
+                    {step === 2 && <StepTwo onNext={nextStep} onPrev={prevStep} setData={updateFormData} data={formData}/>}
                     {step === 3 && (
                         <StepThree
                             onPrev={prevStep}

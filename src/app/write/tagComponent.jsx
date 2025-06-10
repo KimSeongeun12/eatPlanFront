@@ -66,6 +66,13 @@ export default function TagComponent({selectTag}) {
 
     // 지역태그 선택, 취소하기
     const toggleArea = (area) => {
+        const totalSelected = selectedArea.length + selectedTag.length;
+
+        if (!selectedArea.includes(area) && totalSelected >= 5) {
+            alert("태그는 최대 5개까지 선택할 수 있습니다.");
+            return;
+        }
+
         setSelectedArea(prev =>
             prev.includes(area)
                 ? prev.filter(a => a !== area)
@@ -83,6 +90,13 @@ export default function TagComponent({selectTag}) {
 
     // 태그 선택, 취소하기
     const toggleTag = (tag) => {
+        const totalSelected = selectedArea.length + selectedTag.length;
+
+        if (!selectedTag.includes(tag) && totalSelected >= 5) {
+            alert("태그는 최대 5개까지 선택할 수 있습니다.");
+            return;
+        }
+
         setSelectedTag(prev =>
             prev.includes(tag)
                 ? prev.filter(t => t !== tag)
