@@ -86,7 +86,6 @@ export default function ReportDetail() {
             });
     };
     return (
-        <div className="report-detail-rightmenu">
             <div className="report_container">
                 <h2>신고 상세보기</h2>
                 <table className="report_detail_table">
@@ -157,6 +156,5 @@ export default function ReportDetail() {
                     <a href="/report"><button>목록</button></a>
                 </div>
             </div>
-        </div>
     );
 }
