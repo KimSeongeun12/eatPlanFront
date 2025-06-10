@@ -16,11 +16,15 @@ export default function HistoryPage(props) {
     const [loading, setLoading] = useState(true);    // 로딩 여부
 
     useEffect(() => {
+        if (sessionStorage.getItem('admin') === 'false') {
+            alert('관리자가 아닙니다.');
+            location.href = "/";
+        }
         loadReport();
     }, [idx]);
 
     const loadReport = async () => {
-        let { data } = await axios.get(`http://localhost/report_detail/${idx.current}`);
+        let {data} = await axios.get(`http://localhost/report_detail/${idx.current}`);
         console.log(data);
         setReport(data.detail);
 
@@ -36,7 +40,7 @@ export default function HistoryPage(props) {
 
     return (
         <>
-            <LeftMenu />
+            <LeftMenu/>
             <div className="report-detail-rightmenu">
                 <div className={"report_container"}>
                     <h2>신고 상세보기</h2>
@@ -46,7 +50,7 @@ export default function HistoryPage(props) {
                             <th>분류</th>
                             <td>{report?.isClass}</td>
                             <th>작성자</th>
-                            <td style={{ textAlign: 'center' }}>
+                            <td style={{textAlign: 'center'}}>
                                 {report.reporter_nickname}
                             </td>
                             <th>신고번호</th>
@@ -96,14 +100,14 @@ export default function HistoryPage(props) {
 
 // 해당 게시글/댓글/쪽지 내용 (course, comment, message)
 // 공통: idx, 글작성일, 제목, 작성자, 내용(content),
-function Target({ reported, isClass, user_id, report_idx }) {
+function Target({reported, isClass, user_id, report_idx}) {
     const [post, setPost] = useState({});
 
     useEffect(() => {
         const getPost = async () => {
             if (isClass === 'course') {
-                const { data } = await axios.get(`http://localhost/courseDetail`, {
-                    params: { post_idx: reported.post_idx }
+                const {data} = await axios.get(`http://localhost/courseDetail`, {
+                    params: {post_idx: reported.post_idx}
                 });
 
                 setPost({
@@ -113,7 +117,7 @@ function Target({ reported, isClass, user_id, report_idx }) {
                     content: data.detail.content.post_cmt
                 });
             } else if (isClass === 'comment') {
-                const { data } = await axios.get(`http://localhost/comment_detail/${reported.comment_idx}`);
+                const {data} = await axios.get(`http://localhost/comment_detail/${reported.comment_idx}`);
                 setPost({
                     idx: data.comment_idx,
                     date: new Date(data.reg_date).toLocaleDateString('ko-KR'),
@@ -121,7 +125,7 @@ function Target({ reported, isClass, user_id, report_idx }) {
                     content: data.content
                 });
             } else if (isClass === 'message') {
-                const { data } = await axios.get(`http://localhost/${user_id}/${reported.msg_idx}/msg_detail`);
+                const {data} = await axios.get(`http://localhost/${user_id}/${reported.msg_idx}/msg_detail`);
                 setPost({
                     idx: data.message.msg_idx,
                     date: new Date(data.message.msg_date).toLocaleDateString('ko-KR'),
@@ -150,15 +154,15 @@ function Target({ reported, isClass, user_id, report_idx }) {
             >
                 <div><strong>번호:</strong> {post.idx}</div>
                 <div><strong>제목:</strong> {post.subject}</div>
-                <div style={{ flexGrow: 1, marginTop: '1rem' }}>
+                <div style={{flexGrow: 1, marginTop: '1rem'}}>
                     <strong>내용:</strong>
-                    <div style={{ marginTop: '0.5rem', whiteSpace: 'pre-wrap' }}>{post.content}</div>
+                    <div style={{marginTop: '0.5rem', whiteSpace: 'pre-wrap'}}>{post.content}</div>
                 </div>
-                <div style={{ textAlign: 'right', marginTop: '1rem' }}>
+                <div style={{textAlign: 'right', marginTop: '1rem'}}>
                     <em>{post.date}</em>
                 </div>
             </div>
-            <History report_idx={report_idx} />
+            <History report_idx={report_idx}/>
         </>
     );
 }

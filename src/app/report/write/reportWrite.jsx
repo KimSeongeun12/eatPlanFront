@@ -30,13 +30,21 @@ export default function ReportWrite() {
     useEffect(() => {
         const id = sessionStorage.getItem('user_id') || '';
         const token = sessionStorage.getItem('token') || '';
-        setReporterId(id);
-        if (!id) return;
+        if (!id || !token) {
+            alert('로그인이 필요한 서비스입니다.');
+            router.push('/login'); // 로그인 페이지 경로로 리다이렉트
+            return;
+        }
 
-        axios.get(`http://localhost/member/${id}`,{
-            headers: token ? { Authorization: token } : {}
+        setReporterId(id);
+        axios.get(`http://localhost/member/${id}`, {
+            headers: { Authorization: token }
         })
-            .then(res => setReporterNickname(res.data.nickname));
+            .then(res => setReporterNickname(res.data.nickname))
+            .catch(err => {
+                console.error('작성자 정보 조회 실패:', err);
+                alert('사용자 정보를 불러올 수 없습니다.');
+            });
     }, []);
 
     // (2) **새로 추가하는** 한 개의 훅
@@ -172,7 +180,7 @@ export default function ReportWrite() {
                                 placeholder="신고 내용을 작성해주세요."
                                 required
                                 maxLength={1000}
-                            /><small>{subject.length} / 1000자 제한</small>
+                            /><small>{content.length} / 1000자 제한</small>
                         </td>
                     </tr>
                     <tr>

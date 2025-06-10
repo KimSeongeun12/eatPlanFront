@@ -18,6 +18,9 @@ export default function Ban({user_id, user_nickname, setOpen}) {
     }
 
     const suspend = async () => {
+        if(user_id === sessionStorage.getItem("user_id")){
+            alert('본인 계정은 정지할 수 없습니다.');
+        }
         let {data} = axios.post(`http://localhost/${user_id}/suspend`, {start: start, end: end});
         location.reload();
     }
