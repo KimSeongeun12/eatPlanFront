@@ -18,11 +18,18 @@ export default function AdminPage() {
 
 
     useEffect(() => {
+        checkAdmin();
         setComponent(<MemberList />);
         user_id.current = sessionStorage.getItem('user_id');
         token.current = sessionStorage.getItem('token');
     }, []);
 
+    const checkAdmin=()=>{
+        if(sessionStorage.getItem('admin')==='false'){
+            alert('관리자가 아닙니다.');
+            location.href="/";
+        }
+    }
 
     const toggleTab = (e) => {
         console.log(tabName.current);
