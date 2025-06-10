@@ -133,7 +133,8 @@ export default function noticeUpdate() {
                                 onChange={handleSubjectChange}
                                 maxLength={100}
                                 required
-                            />
+                                maxLength={66}
+                            /><small>{subject.length} / 66자 제한</small>
                         </td>
                     </tr>
 
@@ -149,7 +150,8 @@ export default function noticeUpdate() {
                     value={content}
                     onChange={handleContentChange}
                     required
-                />
+                    maxLength={1000}
+                /><small>{content.length} / 1000자 제한</small>
                         </td>
                     </tr>
                     </tbody>
