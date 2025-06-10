@@ -27,6 +27,13 @@ export default function NoticeDetail() {
 
     useEffect(() => {
         const storedUser = sessionStorage.getItem('user_id');
+
+        if (!storedUser) {
+            alert('로그인이 필요한 서비스입니다.');
+            router.push('/login');
+            return;
+        }
+
         const adminFlag = sessionStorage.getItem('isAdmin') === '1';
         setCurrentUser(storedUser);
         setIsAdmin(adminFlag);

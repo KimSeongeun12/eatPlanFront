@@ -166,7 +166,8 @@ export default function MessageWrite() {
                                 placeholder="제목을 입력하세요."
                                 required
                                 className="full-width-input"
-                            />
+                                maxLength={66}
+                            /><small>{subject.length} / 66자 제한</small>
                         </td>
                     </tr>
                     <tr>
@@ -181,7 +182,8 @@ export default function MessageWrite() {
                     placeholder="내용을 입력하세요."
                     required
                     className="full-width-textarea"
-                />
+                    maxLength={333}
+                /><small>{content.length} / 333자 제한</small>
                         </td>
                     </tr>
                     </tbody>

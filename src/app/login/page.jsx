@@ -100,6 +100,7 @@ export default function LoginPage() {
 
     return (
         <>
+            <div className={"BFB"}>
             <div className={"loginTap"}>
                 <img src={"login_background.png"} alt={"로그인 페이지 이미지"}/>
                 <span className={"loginSpan"}>LOGIN</span>
@@ -112,6 +113,7 @@ export default function LoginPage() {
                 <button className={"loginButton"} onClick={login}>로그인</button>
                 <span className={"joinSpan"} style={style} onClick={join}>회원가입</span>
                 <span className={"findPWSpan"} style={style} onClick={findPw}>비밀번호찾기</span>
+            </div>
             </div>
         </>
     );

@@ -110,15 +110,17 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                     <div className="distWrapper">
                         <h5 className="distHead">시 · 군 · 구</h5>
                         <ul className="dist">
-                            {areaTag
-                                .filter(dist => dist.city === selectedCity)
-                                .map(dist => (
-                                    <li key={dist.dist}
-                                        className={(dist.dist === selectedDist ? "activeModal " : "") +
-                                            (dist.city === selectedCity ? "" : "hidden")}
-                                        onClick={() => setSelectedDist(dist.dist)}
-                                    >{dist.dist}</li>
-                                ))}
+                            {[...new Set(
+                                areaTag
+                                    .filter(distCate => distCate.city === selectedCity)
+                                    .map(distName => distName.dist)
+                            )].map(dist => (
+                                <li
+                                    key={dist}
+                                    className={(dist === selectedDist ? "active " : "")}
+                                    onClick={() => setSelectedDist(dist)}
+                                >{dist}</li>
+                            ))}
                         </ul>
                     </div>
 
@@ -146,7 +148,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                             return (
                                 <div key={cate.cate_idx} className="tag">
                                     <h3>{cate.cate_name}</h3>
-                                    <ul>
+                                    <ul className={"tags"}>
                                         {tagsForCate.length > 0
                                             ? tagsForCate.map(t =>
                                                 <li key={t.tag_idx}
