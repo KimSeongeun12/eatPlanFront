@@ -2,10 +2,11 @@
 
 import {useEffect, useState} from "react";
 import axios from "axios";
-import './admin.css'
+import './admin.css';
+import './memberList.css';
 import MemberItem from "@/app/admin/component/memberItem";
 
-export default function MemberList({check, setCheck}){
+export default function MemberList({}){
 
     const [list, setList] = useState([]);
     const [filter, setFilter] = useState("all");
@@ -36,7 +37,7 @@ export default function MemberList({check, setCheck}){
     return(
         <>
             <div className={"adminMember"} style={{borderBottom:"2px solid grey", borderTop:"2px solid grey", padding:"6px"}}>
-                <input type={"checkbox"} style={{margin:"10px", width:"20px"}}/>
+
                 <span style={{marginLeft:"10px"}}>필터: </span>
                 <select style={{margin:"10px", height:"30px"}} name={"filter"} onChange={(e)=>setFilter(e.target.options[e.target.selectedIndex].value)}>
                     <option value={"all"}>모든 회원</option>
