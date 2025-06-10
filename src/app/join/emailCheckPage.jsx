@@ -49,14 +49,14 @@ export default function emailCheckPage({input, setInput, confirmPass, setEmailAu
     return (
         <>
             <div className={"emailDiv"}>
-                <label>이메일<span style={style}> *</span></label><br/>
+                <label className={"email"}>이메일<span style={style}> *</span></label><br/>
                 <input className={"emailInput"} type={"text"}
                        placeholder={"이메일을 입력해주세요."} name={"email"}
                        value={input.email} onChange={handleChange}/><br/>
                 <button className={"emailCheckButton"} onClick={()=>sendEmail()}>이메일 인증하기</button>
             </div>
             <div className={"AuthCodeDiv"}>
-                <label>인증 코드<span style={style}> *</span></label><br/>
+                <label className={"email"}>인증 코드<span style={style}> *</span></label><br/>
                 <input className={"authcodeInput"} type={"text"}
                        placeholder={"인증 코드 5자리를 입력해주세요."}
                        name={"authcode"}

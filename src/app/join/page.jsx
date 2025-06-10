@@ -141,6 +141,7 @@ export default function JoinPage() {
     };
 
     return (
+        <div className={"bigBody"}>
         <div className="joinTap">
             <span className="signupSpan">SIGN UP</span>
             {visible === 'consentPage' && <ConsentPage selected={select} onChange={setSelect} />}
@@ -174,6 +175,7 @@ export default function JoinPage() {
             <button onClick={showThird} className="nextButton">
                 {visible === 'emailCheckPage' ? "가입 완료" : "다음 단계"}
             </button>
+        </div>
         </div>
     );
 }

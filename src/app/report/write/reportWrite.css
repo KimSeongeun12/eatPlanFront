@@ -1,35 +1,9 @@
-/* 1) 왼쪽 사이드바 (LeftMenu) 고정 */
-.left-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 345px;      /* 실제 사이드바 너비 */
-    height: 100vh;
-    /* 기존 LeftMenu 안에서 설정한 나머지 스타일 그대로 유지 */
-}
-
 /* 2) 전체 레이아웃: 좌우 Flex 배치 */
 .page-wrapper {
     display: flex;
     width: 100%;
     height: 100vh;
     overflow: hidden;
-}
-
-/* 3) 오른쪽 폼 컨테이너(단 한 번) */
-.rightMenu {
-    /* LeftMenu 너비(345px) 만큼 밀려서 시작 */
-    margin-left: 0px;
-
-    /* 사이드바 로고+프로필 영역 높이가 240px이라 가정 */
-    padding-top: 200px;
-
-    /* 필요에 따라 아래/좌우 패딩 */
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    padding-bottom: 1.5rem;
-    box-sizing: border-box;
-    overflow-y: auto;   /* 스크롤 필요 시, rightMenu 내부에서 스크롤 */
 }
 
 /* 4) report-form: 음수 마진은 없애고 기본 상태로 */
