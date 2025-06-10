@@ -1,60 +1,12 @@
 /* reportDetail.css */
 
 /* ─────────────────────────────────────────────────────
-   0) 브라우저 기본 margin/padding 리셋
-───────────────────────────────────────────────────── */
-html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-/* ─────────────────────────────────────────────────────
    1) 최상위 레이아웃: 좌우 Flex 배치
 ───────────────────────────────────────────────────── */
 .page-wrapper {
     display: flex;
     align-items: flex-start; /* 최상단부터 정렬 */
     min-height: 100vh;       /* 화면 높이만큼 늘리기 */
-}
-
-/* ─────────────────────────────────────────────────────
-   2) 좌측 메뉴 (LeftMenu) - 고정 너비, 색상 등
-───────────────────────────────────────────────────── */
-.left-menu {
-    width: 240px;           /* 고정 너비 */
-    background-color: #CC503B; /* 예시: 주황-red 톤 */
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* 상단 padding을 반드시 줄여서 화면 최상단과 맞추기 */
-    padding-top: 20px;
-}
-
-/* 좌측 메뉴 내부 프로필 아이콘 (예시) */
-.left-menu .profile-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    margin-bottom: 16px;
-}
-
-/* 좌측 메뉴 항목 링크 */
-.left-menu nav a {
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-/* 호버 및 활성 상태 */
-.left-menu nav a:hover,
-.left-menu nav a.active {
-    background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* ─────────────────────────────────────────────────────

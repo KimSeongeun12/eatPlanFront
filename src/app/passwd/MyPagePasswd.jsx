@@ -69,7 +69,7 @@ export default function MypagePasswd() {
     return (
         <div className="passwd-rightMenu">
             <div className="passwd-passwdCard">
-                <h3 className="passwd-title">회원 탈퇴</h3>
+                <h3 className="passwd-title2">회원 탈퇴</h3>
                 <div className="Mypage_passwd_div">
                     <input
                         type="password"

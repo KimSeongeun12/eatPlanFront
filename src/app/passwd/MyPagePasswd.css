@@ -1,14 +1,6 @@
 /* MyPagePasswd.css */
 
-/* ■■■ 전역 영역을 회색(#f5f5f5)으로 덮어쓴다 ■■■ */
-html,
-body,
-#__next {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #f5f5f5;  /* 페이지 전체 배경을 연한 회색으로 덮음 */
-}
+
 
 /* ── 오른쪽 컨테이너 전체 배경을 동일하게 ── */
 /* 2) 컨테이너: 가로 중앙, 세로 위로만 오도록 */
@@ -41,7 +33,7 @@ body,
 }
 
 /* 3) 내부 아이템 간격만 설정 */
-.passwd-title {
+.passwd-title2 {
     margin: 0 0 16px;
     font-size: 28px;
     font-weight: 500;

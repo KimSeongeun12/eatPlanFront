@@ -28,7 +28,7 @@
     font-weight: bold;
 }
 
-h3{
+.userSuspend {
     margin: 5px;
 }
 
@@ -38,7 +38,7 @@ h3{
     text-align: center;
 }
 
-button{
+.suspend {
     position: absolute;
     bottom: 10px;
     right: 10px;

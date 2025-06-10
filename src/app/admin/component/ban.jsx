@@ -26,7 +26,7 @@ export default function Ban({user_id, user_nickname, setOpen}) {
         <div className={"banPopup"}>
             <div className={"x"} onClick={() => setOpen(false)}>X</div>
             <div className={"top"}>
-                <h3>유저 정지</h3>
+                <h3 className={"userSuspend"}>유저 정지</h3>
                 {user_nickname} 회원의 정지 기간을 지정하세요.
             </div>
             <div className={"period"}>
@@ -46,7 +46,7 @@ export default function Ban({user_id, user_nickname, setOpen}) {
                 <br/>
                 <br/>
             </div>
-            <button onClick={() => suspend()}>정지</button>
+            <button className={"suspend"} onClick={() => suspend()}>정지</button>
         </div>
     );
 }
