@@ -182,8 +182,8 @@ export default function MessageWrite() {
                     placeholder="내용을 입력하세요."
                     required
                     className="full-width-textarea"
-                    maxLength={1000}
-                /><small>{content.length} / 1000자 제한</small>
+                    maxLength={333}
+                /><small>{content.length} / 333자 제한</small>
                         </td>
                     </tr>
                     </tbody>

@@ -131,7 +131,6 @@ export default function noticeUpdate() {
                                 placeholder="제목을 입력해주세요."
                                 value={subject}
                                 onChange={handleSubjectChange}
-                                maxLength={100}
                                 required
                                 maxLength={66}
                             /><small>{subject.length} / 66자 제한</small>
@@ -150,8 +149,8 @@ export default function noticeUpdate() {
                     value={content}
                     onChange={handleContentChange}
                     required
-                    maxLength={1000}
-                /><small>{content.length} / 1000자 제한</small>
+                    maxLength={333}
+                /><small>{content.length} / 333자 제한</small>
                         </td>
                     </tr>
                     </tbody>
