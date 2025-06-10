@@ -26,12 +26,23 @@
     margin-left: 10px;
 }
 
-.nickname_update
-,.email_update {
+.nickname_update {
     width: 91%;
     height: 40px;
     float: left;
     /*margin-left: 15px;*/
+    margin-top: 3px;
+    background: #fff;
+    border: 1px solid #c6c6c6;
+    font-size: 20px;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+
+.email_update {
+    width: 99%;
+    height: 40px;
+    float: left;
     margin-top: 3px;
     background: #fff;
     border: 1px solid #c6c6c6;

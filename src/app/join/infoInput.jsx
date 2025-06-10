@@ -174,6 +174,10 @@ export default function infoInput({
                             } else {
                                 setProfilePreview(null);
                                 setProfileImage(null);
+                                setInput(prev => ({
+                                    ...prev,
+                                    new_filename: null, // on delete cascade 완화
+                                }));
                             }
                         }}
                         className="deleteSpan"

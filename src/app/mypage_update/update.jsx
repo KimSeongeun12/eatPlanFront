@@ -72,23 +72,23 @@ export default function Update() {
         }
     }
 
-    // 중복 확인 - 이메일
-    const email_overlay = async () => {
-        if (info.email === ori_email) {
-            alert("변경된 내용이 없습니다.");
-            setEmailChk(true);
-            return;
-        }
-        const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
-        console.log(data);
-        if (data.success === false) {
-            alert("이미 사용 중인 이메일입니다.");
-            setEmailChk(false);
-        } else {
-            alert("사용 가능한 이메일입니다.");
-            setEmailChk(true);
-        }
-    }
+    // // 중복 확인 - 이메일
+    // const email_overlay = async () => {
+    //     if (info.email === ori_email) {
+    //         alert("변경된 내용이 없습니다.");
+    //         setEmailChk(true);
+    //         return;
+    //     }
+    //     const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
+    //     console.log(data);
+    //     if (data.success === false) {
+    //         alert("이미 사용 중인 이메일입니다.");
+    //         setEmailChk(false);
+    //     } else {
+    //         alert("사용 가능한 이메일입니다.");
+    //         setEmailChk(true);
+    //     }
+    // }
 
     // 회원 정보 수정
     const mypage_update = async () => {
@@ -293,7 +293,6 @@ export default function Update() {
                                 <input className={"email_update"}
                                        type={"text"} name={"email"}
                                        value={info?.email || ''} onChange={input}/>
-                                <button onClick={email_overlay} className={"updateButton"}>중복 확인</button>
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>

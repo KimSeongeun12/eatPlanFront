@@ -15,6 +15,9 @@ export default function LoginPage() {
         if (token != null) {
             sessionStorage.removeItem("token");
         }
+        if (admin != null) {
+            sessionStorage.removeItem("admin");
+        }
     }, []);
 
     const style = {
@@ -70,7 +73,7 @@ export default function LoginPage() {
             }
 
             const {data} = await axios.post('http://localhost/login', info);
-            console.log(data);
+            // console.log(data);
 
             if (await block()) {
                 alert('정지된 사용자입니다.');
