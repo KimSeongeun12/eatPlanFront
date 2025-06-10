@@ -3,12 +3,21 @@
 
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import './myInfoPasswd.css';
 
 export default function MyInfoPasswd() {
     const [password, setPassword] = useState('');
     const router = useRouter();
+
+    // 로그인 체크
+       useEffect(() => {
+             const userId = sessionStorage.getItem('user_id');
+             if (!userId) {
+                   router.replace('/login');
+                 }
+           }, [router]);
+
 
     const checkPassword = async () => {
         if (!password) {
