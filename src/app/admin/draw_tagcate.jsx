@@ -59,7 +59,6 @@ export default function DrawLeftTags({isClass, leftMenu}) {
             </div>
             <br/>
             <CategoryInput drawList={drawList}/>
-            ▲태그카테고리 Enter로 추가하세요 | 현재탭: {isClass}
         </div>
 
     );

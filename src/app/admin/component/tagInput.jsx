@@ -45,8 +45,10 @@ export default function TagInsert({isClass, cate_idx, drawCourseTags, drawRestaT
 
 
     return (
-        <div className="tag-input" style={{padding: "5px", display: "flex", flexDirection: "row"}}>
-            <input type="text" style={{fontSize: "18px"}}
+        <div
+             style={{padding: "5px", display: "flex", flexDirection: "row", width:"100%"}}>
+            <input type="text" style={{fontSize: "14px", width: "80%"}}
+                   placeholder={"태그 입력"}
                    value={tag.tag_name}
                    onKeyUp={(e) => {
                        enterHandler(e)
