@@ -84,6 +84,7 @@ export default function CourseDetail({post_idx}) {
     };
 
     const user_id = useRef('');
+    const [admin, setAdmin] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 여부
     const [checkingAuth, setCheckingAuth] = useState(true); // 인증 확인 중 여부
 
@@ -91,6 +92,8 @@ export default function CourseDetail({post_idx}) {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             user_id.current = sessionStorage.getItem('user_id');
+            const isAdmin = sessionStorage.getItem('admin');
+            setAdmin(isAdmin);
             if (user_id.current) {
                 setIsAuthenticated(true);
             }
@@ -473,6 +476,24 @@ export default function CourseDetail({post_idx}) {
         }
     };
 
+    // 댓글 블라인드 토글
+    const cmtBlindToggle = (cmtInfo) => {
+        if (!cmtInfo) {
+            alert("댓글 정보를 찾을 수 없습니다.");
+            return;
+        }
+        axios.patch(`http://localhost/${cmtInfo.post_idx}/${cmtInfo.comment_idx}/${cmtInfo.user_id}/comment_blind`)
+            .then(({data}) => {
+                if (data.success) {
+                    alert("댓글의 블라인드 상태가 변경 되었습니다.");
+                    cmtList(detail.post_idx, 1);
+                    setPage(1);
+                }else{
+                    alert("블라인드 처리 실패.");
+                }
+        });
+    };
+
     // 작성자에게 쪽지보내기, 작성자 정보보기 팝업
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedUser, setSelectedUser] = useState({ user_id: '', nickname: '' });
@@ -645,17 +666,22 @@ export default function CourseDetail({post_idx}) {
                                                         {item.blind ? <small style={{color: "gray"}}>관리자가 블라인드 처리한 댓글 입니다.</small> : item.content}
                                                     </span>)}
                                                     <span className={"reg_date"}>{item.reg_date.replace("T", " ").substring(0, 16)}</span>
-                                                    <div className={item.blind ? "hidden" : "commentBtns"}>
-                                                        <span className={"like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
+                                                    <div className={"commentBtns"}>
+                                                        <span className={item.blind ? "hidden" : "like"} onClick={()=>cmtLikeToggle(item.comment_idx)}>
                                                             {item.likedByMe ? "❤️ 좋아요" : "🤍 좋아요"}({item.cmt_like_cnt})
                                                         </span>
-                                                        <span className={"cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
-                                                        <span className={user_id.current === item.user_id ? "cmtDelete" : "hidden"} onClick={()=>cmtDel(item)}>삭제</span>
+                                                        <span className={item.blind ? "hidden" : "cmtReport"} onClick={()=>cmtReport(item)}>신고</span>
+                                                        <span className={item.blind ? "hidden" : user_id.current === item.user_id ? "cmtDelete" : "hidden"} onClick={()=>cmtDel(item)}>삭제</span>
                                                         {editingCommentIdx === item.comment_idx ? (
                                                             <span className={"cmtUpdate"} onClick={() => saveUpdatedComment(item)}>저장</span>
                                                         ) : (
-                                                            <span className={user_id.current === item.user_id ? "cmtUpdate" : "hidden"} onClick={() => cmtUpdate(item)}>수정</span>
+                                                            <span className={item.blind ? "hidden" : user_id.current === item.user_id ? "cmtUpdate" : "hidden"} onClick={() => cmtUpdate(item)}>수정</span>
                                                         )}
+                                                        <span
+                                                            className={admin ? "cmtBlind" : "hidden"}
+                                                            onClick={()=>cmtBlindToggle({comment_idx:item.comment_idx, user_id:item.user_id, post_idx:item.post_idx})}>
+                                                            블라인드
+                                                        </span>
                                                     </div>
                                                 <div className={"commentLineWrapper"}>
                                                     <div className={"commentLine"}></div>
