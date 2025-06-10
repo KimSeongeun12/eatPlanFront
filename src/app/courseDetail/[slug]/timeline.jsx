@@ -3,7 +3,7 @@
 import { Chrono } from "react-chrono";
 import { useEffect, useState } from "react";
 
-export default function Timeline({ timelineStart, timelineFinish, resta, noResta, onDeleteDetail, canUpdate }) {
+export default function Timeline({ timelineStart, timelineFinish, resta, noResta, onDeleteDetail, canUpdate, onTimelineItemsChange }) {
 
     const [timelineItems, setTimelineItems] = useState([]);
 
@@ -40,6 +40,15 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
         ];
 
         setTimelineItems(fullItems);
+
+        onTimelineItemsChange?.(prev => {
+            const prevString = JSON.stringify(prev);
+            const nextString = JSON.stringify(fullItems);
+            if (prevString !== nextString) {
+                return fullItems;
+            }
+            return prev;
+        });
 
     }, [resta, noResta, timelineStart, timelineFinish]);
 

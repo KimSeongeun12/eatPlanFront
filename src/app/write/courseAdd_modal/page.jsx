@@ -4,7 +4,7 @@ import AddStepTwo from "./addStepTwo";
 import AddStepThree from "./addStepThree";
 import './courseAdd_modalCss.css';
 
-const CourseAddModal = ({ onClose, onSubmit }) => {
+const CourseAddModal = ({ onClose, onSubmit, timelineStart, timelineFinish, combinedTimes }) => {
     const [step, setStep] = useState(1);
     // const [formData, setFormData] = useState({
     //     timeline_resta_name: "",
@@ -35,6 +35,9 @@ const CourseAddModal = ({ onClose, onSubmit }) => {
                         prevStep={prevStep}
                         formData={formData}
                         setFormData={setFormData}
+                        timelineStart={timelineStart}
+                        timelineFinish={timelineFinish}
+                        combinedTimes={combinedTimes}
                     />
                 )}
                 {step === 3 && (

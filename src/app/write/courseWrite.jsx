@@ -206,7 +206,6 @@ export default function CourseWrite({data}) {
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
         console.log("모달에서 넘어온 최종 formData:", formData); // media: "http://localhost/imageIdx/1"
-
         if (formData.resta_name && formData.resta_name.trim() !== "") {
             // timeline_resta_name 에 값이 존재할 경우
             // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
@@ -252,6 +251,12 @@ export default function CourseWrite({data}) {
     const tempLoad = () => {}
 
     const [isTempModalOpen, setIsTempModalOpen] = useState(false);
+
+    // 선택된 세부일정 시작시간들
+    const combinedTimes = [
+        ...resta.map(item => item.start),
+        ...noResta.map(item => item.start),
+    ];
 
     return (
         <>
@@ -323,6 +328,9 @@ export default function CourseWrite({data}) {
                     <CourseAdd_modal
                         onClose={() => setIsModalOpen(false)}
                         onSubmit={handleAddCourse}
+                        timelineStart={timelineStart}
+                        timelineFinish={timelineFinish}
+                        combinedTimes={combinedTimes}
                     />
                 )}
 

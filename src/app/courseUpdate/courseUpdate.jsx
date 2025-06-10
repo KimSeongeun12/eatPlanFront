@@ -36,6 +36,7 @@ export default function CourseUpdate() {
     const [showTimeModal, setShowTimeModal] = useState(false);
     const canUpdate = true;
 
+    const [finalNodes, setFinalNodes] = useState([]);
 
     const [detail, setDetail] = useState({
         "post_idx":0,
@@ -324,7 +325,13 @@ export default function CourseUpdate() {
             setTmpIdx(prev => prev + 1);
         }
         setShowDetailModal(false);
+        console.log("sdjgskjdgbskjdgbskdjgb",combinedTimes);
     }
+
+    // 선택된 세부일정 시작시간들
+    const combinedTimes = [
+        ...finalNodes.map(item => item.cardSubtitle)
+    ];
 
     // 수정완료버튼
     const updateSubmit = () => {
@@ -493,6 +500,7 @@ export default function CourseUpdate() {
                             setNoResta(prev => prev.filter(item => item.tmpIdx !== tmpIdx));
                         }
                     }}
+                    onTimelineItemsChange={setFinalNodes}
                     canUpdate={canUpdate}
                 />
                 </span>
@@ -513,6 +521,9 @@ export default function CourseUpdate() {
                                     <CourseAdd_modal
                                         onClose={() => setShowDetailModal(false)}
                                         onSubmit={handleAddCourse}
+                                        timelineStart={time.timelineStart}
+                                        timelineFinish={time.timelineFinish}
+                                        combinedTimes={combinedTimes}
                                     />
                                 )}
                             </div>
