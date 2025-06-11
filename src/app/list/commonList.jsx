@@ -36,11 +36,9 @@ export default function CommonList({sort}) {
                     <div key={item.course.post_idx} className="listItem">
                         <img
                             className={"mainImage"}
-                            src={`http://localhost/image/${item.course_img}`}
-                            onError={(e) => {
-                                e.target.src = '/no_image.png';
-                            }}
+                            src={item.course.blind === true ? '/blind.svg' : `http://localhost/image/${item.course_img}`}
                             alt="코스 이미지"
+                            onError={(e) => { e.target.src = '/no_image.png'; }}
                         />
 
                         <span className="courseTitle">

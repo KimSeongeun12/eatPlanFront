@@ -58,7 +58,7 @@ export default function CourseDetail({post_idx}) {
                     "start":d.time.start,
                     "end":d.time.end
                 }}
-            if (newDetail.blind) {
+            if (newDetail.blind && !admin) {
                 alert("관리자가 블라인드 처리한 코스 입니다.");
                 location.href = "/list";
             }
@@ -90,7 +90,7 @@ export default function CourseDetail({post_idx}) {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             user_id.current = sessionStorage.getItem('user_id');
-            const isAdmin = sessionStorage.getItem('admin');
+            const isAdmin = sessionStorage.getItem('admin') === 'true';
             setAdmin(isAdmin);
             if (user_id.current) {
                 setIsAuthenticated(true);
@@ -525,7 +525,7 @@ export default function CourseDetail({post_idx}) {
     return (
         <>
             <div className={"courseContainer"}>
-                {isLoading || detail.blind || detail.tmp ? (<CircularProgress />) :
+                {isLoading || (detail.blind && !admin) || detail.tmp ? (<CircularProgress />) :
                     (
                         <>
                             <span className={"noHead"}>글 번호</span>
