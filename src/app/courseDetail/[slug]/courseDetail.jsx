@@ -61,12 +61,10 @@ export default function CourseDetail({post_idx}) {
             if (newDetail.blind) {
                 alert("관리자가 블라인드 처리한 코스 입니다.");
                 location.href = "/list";
-                return;
             }
             if (newDetail.tmp) {
                 alert("임시 저장 코스입니다.");
                 location.href = "/list"
-                return;
             }
             setDetail(newDetail);
             checkLikeStatus(d.content.post_idx);
@@ -527,7 +525,7 @@ export default function CourseDetail({post_idx}) {
     return (
         <>
             <div className={"courseContainer"}>
-                {isLoading ? (<CircularProgress />) :
+                {isLoading || detail.blind || detail.tmp ? (<CircularProgress />) :
                     (
                         <>
                             <span className={"noHead"}>글 번호</span>
