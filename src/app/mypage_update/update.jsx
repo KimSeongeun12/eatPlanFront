@@ -1,32 +1,29 @@
 'use client'
 import './myInfo_updateCss.css'
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import ChangePW from "@/app/mypage_update/changePW";
 import JoinTagSelectModal from "@/app/join/joinTagSelectModal";
 import MypageTagSelectModal from "@/app/mypage_update/mypageTagSelectModal";
 
 export default function Update() {
-    const user_id = useRef('');
-    const loginId = useRef('');
+    const userId = useRef('');
     const [ori_nickname, setOri_nickname] = useState('');
     const [ori_email, setOri_email] = useState('');
 
     const [nicknameChk, setNicknameChk] = useState(false);
-    const [emailChk, setEmailChk] = useState(false);
-
     const [showModal, setShowModal] = useState(false);
-
     const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            loginId.current = sessionStorage.getItem('user_id');
-            if (!user_id.current) {
-                user_id.current = loginId.current
-            }
-            getInfo(user_id.current);
+        const storedUserId = sessionStorage.getItem('user_id');
+        if (!storedUserId) {
+            alert("로그인이 필요한 서비스입니다.");
+            location.href = '/login';
+            return;
         }
+        userId.current = storedUserId;
+        getInfo(userId.current);
     }, []);
 
     const [info, setInfo] = useState({
@@ -34,95 +31,97 @@ export default function Update() {
         email: '',
         bio: '',
         location: '',
-    })
+    });
 
-    const getInfo = async () => {
-        const {data} = await axios.post('http://localhost/member_list', {
-            user_id: user_id.current,
-        });
-        console.log(data.list[0]);
-        setInfo(data.list[0]);
-        setOri_nickname(data.list[0].nickname);
-        setOri_email(data.list[0].email);
+    const getInfo = async (id) => {
+        try {
+            const { data } = await axios.post('http://localhost/member_list', {
+                user_id: id,
+            });
+            if (data.list && data.list[0]) {
+                setInfo(data.list[0]);
+                setOri_nickname(data.list[0].nickname);
+                setOri_email(data.list[0].email);
+            }
+        } catch (error) {
+            console.error("회원 정보 불러오기 실패:", error);
+        }
     };
 
     const input = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setInfo((prev) => ({
             ...prev,
             [name]: value,
         }));
-    }
+        if (name === 'nickname') {
+            setNicknameChk(false);
+        }
+    };
 
-    // 중복 확인 - 닉네임
     const nickname_overlay = async () => {
+        if (!info.nickname.trim()) {
+            alert("닉네임을 입력해주세요.");
+            setNicknameChk(false);
+            return;
+        }
+
         if (info.nickname === ori_nickname) {
             alert("변경된 내용이 없습니다.");
             setNicknameChk(true);
             return;
         }
-        const {data} = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`)
-        console.log(data);
-        if (data.use === false) {
-            alert("이미 사용 중인 닉네임입니다.");
-            setNicknameChk(false);
-        } else {
-            alert("사용 가능한 닉네임입니다.");
-            setNicknameChk(true);
+
+        try {
+            const { data } = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`);
+            if (data.use === false) {
+                alert("이미 사용 중인 닉네임입니다.");
+                setNicknameChk(false);
+            } else {
+                alert("사용 가능한 닉네임입니다.");
+                setNicknameChk(true);
+            }
+        } catch (error) {
+            console.error("중복 확인 실패", error);
+            alert("닉네임 중복 확인 중 오류가 발생했습니다.");
         }
-    }
+    };
 
-    // // 중복 확인 - 이메일
-    // const email_overlay = async () => {
-    //     if (info.email === ori_email) {
-    //         alert("변경된 내용이 없습니다.");
-    //         setEmailChk(true);
-    //         return;
-    //     }
-    //     const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
-    //     console.log(data);
-    //     if (data.success === false) {
-    //         alert("이미 사용 중인 이메일입니다.");
-    //         setEmailChk(false);
-    //     } else {
-    //         alert("사용 가능한 이메일입니다.");
-    //         setEmailChk(true);
-    //     }
-    // }
-
-    // 회원 정보 수정
     const mypage_update = async () => {
-        // 만약 선택된 태그가 1개 이상 없을 경우 태그를 선택해주세요 라는 alert 창 출력
+        if (!nicknameChk) {
+            alert("닉네임 중복 확인을 진행해주세요.");
+            return;
+        }
         if (selectedTags.length === 0) {
             alert("태그를 선택해주세요.");
             return;
         }
 
-        const {data} = await axios.put('http://localhost/member_update', {
-            user_id: user_id.current,
-            email: info.email,
-            bio: info.bio,
-            location: info.location,
-            nickname: info.nickname,
-        })
-        console.log(data);
-        if (data.success === true) {
-            alert("회원 정보 수정에 성공했습니다.");
-            location.href = './mypage';
-        } else {
-            if (nicknameChk === false) {
-                alert("닉네임 중복 확인을 진행해주세요.");
+        try {
+            const { data } = await axios.put('http://localhost/member_update', {
+                user_id: userId.current,
+                email: info.email,
+                bio: info.bio,
+                location: info.location,
+                nickname: info.nickname,
+            });
+
+            if (data.success === true) {
+                alert("회원 정보 수정에 성공했습니다.");
+                location.href = './mypage';
+            } else {
+                alert("회원 정보 수정에 실패했습니다.");
             }
-            if (emailChk === false) {
-                alert("이메일 중복 확인을 진행해주세요.");
-            }
+        } catch (error) {
+            console.error("회원 정보 수정 실패:", error);
+            alert("회원 정보 수정 중 오류가 발생했습니다.");
         }
-    }
+    };
 
     const trStyle = {
         border: '1px solid lightgray',
         height: '45px',
-    }
+    };
 
     const thStyle = {
         boxSizing: 'border-box',
@@ -132,14 +131,13 @@ export default function Update() {
         fontWeight: 500,
         textAlign: 'left',
         paddingLeft: '30px',
-    }
+    };
 
-    // 지역 리스트 불러오기
     const [locationTagList, setLocationTagList] = useState([]);
     useEffect(() => {
         const fetchLocationTags = async () => {
             try {
-                const {data} = await axios.get("http://localhost/list_tag_area");
+                const { data } = await axios.get("http://localhost/list_tag_area");
                 setLocationTagList(data.list_area);
             } catch (error) {
                 console.error("지역 불러오기 실패:", error);
@@ -149,23 +147,22 @@ export default function Update() {
         fetchLocationTags();
     }, []);
 
-    // user_id 에 맞는 태그 불러오기 (지역 태그, 일반 태그 포함)
     const [tags, setTags] = useState([]);
     const member_tagList = async () => {
-        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: loginId.current});
-        console.log(data.tagnames);
-        console.log(data.tagnames.length);
-        if (data?.tagnames) {
-            setSelectedTags(data.tagnames);
+        try {
+            const { data } = await axios.post('http://localhost/member_tag_list', { user_id: userId.current });
+            if (data?.tagnames) {
+                setSelectedTags(data.tagnames);
+            }
+        } catch (error) {
+            console.error("태그 불러오기 실패:", error);
         }
-    }
+    };
 
     useEffect(() => {
         member_tagList();
     }, []);
 
-    // 멤버 태그 수정 (삭제 후 추가로 가야 함)
-    // 태그 삭제
     const tagDelete = async () => {
         if (selectedTags.length === 0) {
             alert("선택된 태그가 없습니다.");
@@ -174,12 +171,11 @@ export default function Update() {
 
         try {
             const { data } = await axios.delete('http://localhost/member_tag_prefer_delete', {
-                data: { user_id: loginId.current }
+                data: { user_id: userId.current }
             });
 
             if (data.success) {
                 alert("태그가 삭제되었습니다.");
-                // 최신 태그 목록을 다시 불러와서 상태 동기화
                 await member_tagList();
             } else {
                 alert("삭제 실패: 서버 응답 실패");
@@ -188,12 +184,11 @@ export default function Update() {
             console.error("태그 삭제 실패:", error);
             alert("태그 삭제에 실패했습니다.");
         }
-    }
+    };
 
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
     const handleTagSelect = (tags) => {
-        // data.tagnames.length
         if (selectedTags.length > 2) {
             alert("태그는 3개 이상 선택이 불가능합니다.");
             return;
@@ -212,7 +207,7 @@ export default function Update() {
 
             const formData = new FormData();
             formData.append("files", file);
-            formData.append("user_id", info.user_id);
+            formData.append("user_id", userId.current);
 
             try {
                 const { data } = await axios.put("http://localhost/profile_update", formData, {
@@ -220,9 +215,7 @@ export default function Update() {
                         "Content-Type": "multipart/form-data",
                     },
                 });
-                console.log(data);
                 if (data.success) {
-                    // 성공 시 alert 예약
                     setShouldAlert(true);
                 }
             } catch (error) {
@@ -234,7 +227,7 @@ export default function Update() {
     useEffect(() => {
         if (previewUrl && shouldAlert) {
             alert("프로필 사진 업데이트에 성공했습니다.");
-            setShouldAlert(false); // 다시 초기화
+            setShouldAlert(false);
         }
     }, [previewUrl, shouldAlert]);
 
@@ -269,38 +262,51 @@ export default function Update() {
                         <tbody>
                         <tr style={trStyle}>
                             <th style={thStyle}>ID</th>
-                            <td className={"infoTable_td"}>{user_id.current}</td>
+                            <td className={"infoTable_td"}>{userId.current}</td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>PASSWORD</th>
-                            <td onClick={() => {
-                                setShowModal(true)
-                            }} className={"infoTable_td_pw"}>비밀번호 수정
+                            <td onClick={() => setShowModal(true)} className={"infoTable_td_pw"}>
+                                비밀번호 수정
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>닉네임</th>
                             <td className={"infoTable_td"}>
-                                <input className={"nickname_update"}
-                                       type={"text"} name={"nickname"}
-                                       value={info?.nickname || ''} onChange={input}/>
-                                <button onClick={nickname_overlay} className={"updateButton"}>중복 확인</button>
+                                <input
+                                    className={"nickname_update"}
+                                    type={"text"}
+                                    name={"nickname"}
+                                    value={info?.nickname || ''}
+                                    onChange={input}
+                                />
+                                <button onClick={nickname_overlay} className={"updateButton"}>
+                                    중복 확인
+                                </button>
                             </td>
                         </tr>
                         <tr style={trStyle}>
                             <th style={thStyle}>이메일</th>
                             <td className={"infoTable_td"}>
-                                <input className={"email_update"}
-                                       type={"text"} name={"email"}
-                                       value={info?.email || ''} onChange={input}/>
+                                <input
+                                    className={"email_update"}
+                                    type={"text"}
+                                    name={"email"}
+                                    value={info?.email || ''}
+                                    onChange={input}
+                                />
                             </td>
                         </tr>
                         <tr className={"bioTable"} style={trStyle}>
                             <th style={thStyle}>자기소개</th>
                             <td className={"infoTable_td"}>
-                                <input className={"bio_update"}
-                                       type={"text"} name={"bio"}
-                                       value={info?.bio || ''} onChange={input}/>
+                                <input
+                                    className={"bio_update"}
+                                    type={"text"}
+                                    name={"bio"}
+                                    value={info?.bio || ''}
+                                    onChange={input}
+                                />
                             </td>
                         </tr>
                         <tr style={trStyle}>
@@ -310,9 +316,10 @@ export default function Update() {
                                     className={"locationSelect"}
                                     name={"location"}
                                     onChange={input}
-                                    value={info.location}>
+                                    value={info.location}
+                                >
                                     <option value="">지역을 선택하세요</option>
-                                    {locationTagList.map(area => (
+                                    {locationTagList.map((area) => (
                                         <option key={area.area_tag_idx} value={area.tag_name}>
                                             {area.tag_name}
                                         </option>
@@ -324,17 +331,17 @@ export default function Update() {
                             <th style={thStyle}>선호 태그</th>
                             <td className={"infoTable_td"}>
                                 <div className={"tag_content"}>
-                                    <span className={"tagName"}>
-                                          {selectedTags.length > 0 ? (
-                                              selectedTags.map((tag, idx) => (
-                                                  <div key={idx}># {tag}</div>
-                                              ))
-                                          ) : (
-                                              <div>선택된 태그가 없습니다.</div>
-                                          )}
-                                    </span>
-                                    <button onClick={tagDelete}
-                                            className={"tag_updateButton"}>태그 삭제
+                                        <span className={"tagName"}>
+                                            {selectedTags.length > 0 ? (
+                                                selectedTags.map((tag, idx) => (
+                                                    <div key={idx}># {tag}</div>
+                                                ))
+                                            ) : (
+                                                <div>선택된 태그가 없습니다.</div>
+                                            )}
+                                        </span>
+                                    <button onClick={tagDelete} className={"tag_updateButton"}>
+                                        태그 삭제
                                     </button>
                                     <button
                                         onClick={() => {
@@ -345,7 +352,8 @@ export default function Update() {
                                             setIsTagModalOpen(true);
                                         }}
                                         className={"tag_updateButton"}
-                                    >태그 선택
+                                    >
+                                        태그 선택
                                     </button>
                                 </div>
                             </td>
@@ -354,22 +362,22 @@ export default function Update() {
                     </table>
                 </div>
                 <div className={"footer"}>
-                    <button onClick={mypage_update} className={"infoUpdateButton"}>수정 완료</button>
+                    <button onClick={mypage_update} className={"infoUpdateButton"}>
+                        수정 완료
+                    </button>
                 </div>
             </div>
 
-
-                {isTagModalOpen &&
-                    <div className={"modal"}>
+            {isTagModalOpen && (
+                <div className={"modal"}>
                     <MypageTagSelectModal
                         onClose={() => setIsTagModalOpen(false)}
                         onSelect={handleTagSelect}
                     />
-                    </div>
-                }
+                </div>
+            )}
 
-            {showModal && <ChangePW onClose={() => setShowModal(false)}/>}
-
+            {showModal && <ChangePW onClose={() => setShowModal(false)} />}
         </>
     );
 }

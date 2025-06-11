@@ -12,6 +12,8 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     const cate_idx=useRef(1);
     const [component, setComponent] = useState(null);
 
+    const [selectedIdx, setSelectedIdx] = useState(null)
+
     useEffect(() => {
         drawList();
     }, [cate_idx.current, leftMenu]);
@@ -21,6 +23,7 @@ export default function DrawLeftTags({isClass, leftMenu}) {
     const clickCate=(idx, name)=>{
         console.log(name);
         cate_idx.current=idx;
+        setSelectedIdx(idx);
         
         // 지역태그일경우
         if(name==='지역'){
@@ -42,10 +45,11 @@ export default function DrawLeftTags({isClass, leftMenu}) {
         let {data} = await axios.get('http://localhost/list_tagcate');
         const tags = data.list_tagcate.map((item) => {
                 return (
-                    <div key={item.cate_idx} className={"box"}
+                    <div key={item.cate_idx}
+                         className={`box ${selectedIdx === item.cate_idx ? 'selected' : ''}`}
                          onClick={() => {clickCate(item.cate_idx, item.cate_name)}}>
                         {item.cate_name}
-                        {item.cate_name!=='지역' ? <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div> : null}
+                        <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div>
                     </div>
                 );
         })

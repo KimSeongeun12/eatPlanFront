@@ -47,6 +47,14 @@ div .tab{
     margin: 5px;
 }
 
+.selected {
+    background-color: white; /* 선택된 항목의 배경을 흰색으로 변경 */
+}
+
+.tag.tab div.selected{
+    background-color: white;
+}
+
 #x {
     /*css는 알아서해주세요*/
     color: red;
