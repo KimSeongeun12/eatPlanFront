@@ -262,18 +262,6 @@ export default function CourseWrite({data}) {
             alert("코스 등록에 실패했습니다.");
         }
     }
-    
-    // 임시저장 기능
-    const tempSave = () => {
-        alert("아직 못 만들었어염");
-    }
-    
-    // 임시저장 불러오기 기능
-    const tempLoad = () => {
-        setIsTempModalOpen(true);
-    }
-
-    const [isTempModalOpen, setIsTempModalOpen] = useState(false);
 
     // 선택된 세부일정 시작시간들
     const combinedTimes = [
@@ -284,14 +272,6 @@ export default function CourseWrite({data}) {
     return (
         <>
             <div className="course_rightMenu">
-                <button onClick={tempLoad} className="courseWrite_button">임시저장 불러오기</button>
-                <button onClick={tempSave} className="courseWrite_button">임시저장</button>
-
-                <TempModal
-                    isOpen={isTempModalOpen}
-                    onClose={() => setIsTempModalOpen(false)}
-                />
-
                 <table className="courseWrite_table_one">
                     <tbody>
                     <tr className={"courseWrite_tr_subject"}>
