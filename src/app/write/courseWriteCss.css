@@ -146,7 +146,7 @@
 
 /**/
 
-div[class*="Outline"] {
+div[class*="Outline-"] {
     background-color: #CC503B !important;
     height: 8px !important;
     width: 95% !important;
