@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import axios from "axios";
 import {data} from "react-router-dom";
 
@@ -9,6 +9,9 @@ export default function AreaField(){
 
     // 지역태그 리스트 가져오기
     const [areaTag, setAreaTag] = useState([]);
+    const area_cate_idx=useRef(1);
+
+
     const areaTagList = () => {
         axios.get("http://localhost/list_tag_area").then(({data}) => {
             setAreaTag(data?.list_area ?? []);
@@ -54,6 +57,8 @@ export default function AreaField(){
             alert("지역태그 이름을 입력하세요.");
             return;
         }
+
+        // cate_idx : 지역 불러오기
 
         if (selectedCity.trim().length>0 && selectedDist.trim().length>0 && selectedArea.trim().length>0){
             axios.post("http://localhost/adtag_write"
