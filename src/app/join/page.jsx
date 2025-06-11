@@ -31,6 +31,21 @@ export default function JoinPage() {
     const [idChk, setIdChk] = useState(false);
     const [nicknameChk, setNicknameChk] = useState(false);
 
+    // input onChange
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setInput((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+        if (name === 'user_id') {
+            setIdChk(false);
+        }
+        if (name === 'nickname') {
+            setNicknameChk(false);
+        }
+    };
+
     const overlay_id = async () => {
         const { data } = await axios.get(`http://localhost/overlay/id/${input.user_id}`);
         if (data.use) {
@@ -164,6 +179,7 @@ export default function JoinPage() {
                     profilePreview={profilePreview}
                     setProfilePreview={setProfilePreview}
                     setProfileFileName={setProfileFileName}
+                    handleChange={handleChange}
                 />
             )}
             {visible === 'emailCheckPage' && (

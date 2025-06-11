@@ -14,7 +14,8 @@ export default function infoInput({
                                       setProfileImage,
                                       profilePreview,
                                       setProfilePreview,
-                                      setProfileFileName
+                                      setProfileFileName,
+                                      handleChange,
                                   }) {
 
     /* 프로필 사진 업로드 기능*/
@@ -54,15 +55,6 @@ export default function infoInput({
         textAlign: 'center',
         color: 'white',
     }
-
-    // input onChange
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setInput((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
 
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 

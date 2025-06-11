@@ -51,6 +51,10 @@ export default function Update() {
             ...prev,
             [name]: value,
         }));
+        // 닉네임 입력이 변경될 경우 중복 확인 초기화
+        if (name === 'nickname') {
+            setNicknameChk(false);
+        }
     }
 
     // 중복 확인 - 닉네임
@@ -82,24 +86,6 @@ export default function Update() {
         }
 
     }
-
-    // // 중복 확인 - 이메일
-    // const email_overlay = async () => {
-    //     if (info.email === ori_email) {
-    //         alert("변경된 내용이 없습니다.");
-    //         setEmailChk(true);
-    //         return;
-    //     }
-    //     const {data} = await axios.get(`http://localhost/overlay/email/${info.email}`)
-    //     console.log(data);
-    //     if (data.success === false) {
-    //         alert("이미 사용 중인 이메일입니다.");
-    //         setEmailChk(false);
-    //     } else {
-    //         alert("사용 가능한 이메일입니다.");
-    //         setEmailChk(true);
-    //     }
-    // }
 
     // 회원 정보 수정
     const mypage_update = async () => {
