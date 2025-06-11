@@ -66,14 +66,15 @@ export default function DrawResta({leftMenu}){
     return(
         <>
             {/*상단 바*/}
-            <div className={"sort"}>
-                <select name={"sort"} style={{height:"30px"}} onChange={(e)=>drawResta(e)}>
+            <div className={"sort"} style={{position:"relative"}}>
+                <select name={"sort"} style={{height:"30px", position:"absolute", right:"30%", top:"30%"}} onChange={(e)=>drawResta(e)}>
                     <option value={"resta_name"} >식당 이름 순</option>
                     <option value={"address"}>식당별 주소 순</option>
                 </select>
             </div>
             {/*실질적인 식당 리스트가 출력되는 부분*/}
             <div className={"resta-list"}>
+                <br/><br/>
                 {list}
             </div>
             {component}
