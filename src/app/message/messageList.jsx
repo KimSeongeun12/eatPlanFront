@@ -25,8 +25,8 @@ export default function MessageList() {
 
         const endpoint =
             mode === 'inbox'
-                ? `http://localhost/${userId}/recip_msg?page=${page}`
-                : `http://localhost/${userId}/send_msg?page=${page}`;
+                ? `http://192.168.0.120/${userId}/recip_msg?page=${page}`
+                : `http://192.168.0.120/${userId}/send_msg?page=${page}`;
 
         axios
             .get(endpoint, { headers: { Authorization: token } })
@@ -65,8 +65,8 @@ export default function MessageList() {
         const deletePromises = selectedIds.map(msgIdx => {
             const delUrl =
                 mode === 'inbox'
-                    ? `http://localhost/${userId}/${msgIdx}/recip_del`
-                    : `http://localhost/${userId}/${msgIdx}/send_del`;
+                    ? `http://192.168.0.120/${userId}/${msgIdx}/recip_del`
+                    : `http://192.168.0.120/${userId}/${msgIdx}/send_del`;
             return axios.get(delUrl, { headers: { Authorization: token } });
         });
 
@@ -77,8 +77,8 @@ export default function MessageList() {
                 setPage(1);
                 const endpoint =
                     mode === 'inbox'
-                        ? `http://localhost/${userId}/recip_msg?page=1`
-                        : `http://localhost/${userId}/send_msg?page=1`;
+                        ? `http://192.168.0.120/${userId}/recip_msg?page=1`
+                        : `http://192.168.0.120/${userId}/send_msg?page=1`;
                 return axios.get(endpoint, { headers: { Authorization: token } });
             })
             .then(res => {

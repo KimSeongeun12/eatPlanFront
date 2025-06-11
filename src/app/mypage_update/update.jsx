@@ -36,7 +36,7 @@ export default function Update() {
 
     const getInfo = async (id) => {
         try {
-            const { data } = await axios.post('http://localhost/member_list', {
+            const { data } = await axios.post('http://192.168.0.120/member_list', {
                 user_id: id,
             });
             if (data.list && data.list[0]) {
@@ -74,7 +74,7 @@ export default function Update() {
         }
 
         try {
-            const { data } = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`);
+            const { data } = await axios.get(`http://192.168.0.120/overlay/nickname/${info.nickname}`);
             if (data.use === false) {
                 alert("이미 사용 중인 닉네임입니다.");
                 setNicknameChk(false);
@@ -99,7 +99,7 @@ export default function Update() {
         }
 
         try {
-            const { data } = await axios.put('http://localhost/member_update', {
+            const { data } = await axios.put('http://192.168.0.120/member_update', {
                 user_id: userId.current,
                 email: info.email,
                 bio: info.bio,
@@ -138,7 +138,7 @@ export default function Update() {
     useEffect(() => {
         const fetchLocationTags = async () => {
             try {
-                const { data } = await axios.get("http://localhost/list_tag_area");
+                const { data } = await axios.get("http://192.168.0.120/list_tag_area");
                 setLocationTagList(data.list_area);
             } catch (error) {
                 console.error("지역 불러오기 실패:", error);
@@ -151,7 +151,7 @@ export default function Update() {
     const [tags, setTags] = useState([]);
     const member_tagList = async () => {
         try {
-            const { data } = await axios.post('http://localhost/member_tag_list', { user_id: userId.current });
+            const { data } = await axios.post('http://192.168.0.120/member_tag_list', { user_id: userId.current });
             if (data?.tagnames) {
                 setSelectedTags(data.tagnames);
             }
@@ -171,7 +171,7 @@ export default function Update() {
         }
 
         try {
-            const { data } = await axios.delete('http://localhost/member_tag_prefer_delete', {
+            const { data } = await axios.delete('http://192.168.0.120/member_tag_prefer_delete', {
                 data: { user_id: userId.current }
             });
 
@@ -211,7 +211,7 @@ export default function Update() {
             formData.append("user_id", userId.current);
 
             try {
-                const { data } = await axios.put("http://localhost/profile_update", formData, {
+                const { data } = await axios.put("http://192.168.0.120/profile_update", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -240,7 +240,7 @@ export default function Update() {
         }
 
         try {
-            const { data } = await axios.put(`http://localhost/profile_del/${userId.current}`);
+            const { data } = await axios.put(`http://192.168.0.120/profile_del/${userId.current}`);
             if (data.success) {
                 alert("프로필 사진이 삭제되었습니다.");
                 setPreviewUrl(null);
@@ -268,7 +268,7 @@ export default function Update() {
                                 previewUrl
                                     ? previewUrl
                                     : info.img_idx
-                                        ? `http://localhost/imageIdx/${info.img_idx}`
+                                        ? `http://192.168.0.120/imageIdx/${info.img_idx}`
                                         : "/userIcon_default_profile.png"
                             }
                             alt="유저 프로필 이미지"

@@ -47,7 +47,7 @@ export default function ChangePw() {
             return; // 일치하지 않으면 요청 보내지 않음
         }
 
-        const {data} = await axios.put('http://localhost/updatePassword', {
+        const {data} = await axios.put('http://192.168.0.120/updatePassword', {
             user_id: info.user_id,
             pass: info.existing_pass,
         });

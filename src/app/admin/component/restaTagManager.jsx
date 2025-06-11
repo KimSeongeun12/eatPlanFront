@@ -21,13 +21,13 @@ export default function RestaTagManager({tags, resta_idx}) {
 
     //태그 삭제 기능
     const delTag = async (tag_idx) => {
-        let {data} = await axios.get(`http://localhost/restaTagDel/${resta_idx}/${tag_idx}`);
+        let {data} = await axios.get(`http://192.168.0.120/restaTagDel/${resta_idx}/${tag_idx}`);
         drawTags();
     }
     
     // 태그들을 그리는 함수
     const drawTags = async () => {
-        let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`);
+        let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         const tagList = data.tags.map((item)=>{
             return (
                 <div key={item.tag_idx}
@@ -62,7 +62,7 @@ function TagInput({resta_idx, drawTags}) {
     }, [resta_idx]);
 
     const insert = async () => {
-        await axios.post(`http://localhost/addTagtoResta`, {tag_idx: input, resta_idx: resta_idx});
+        await axios.post(`http://192.168.0.120/addTagtoResta`, {tag_idx: input, resta_idx: resta_idx});
         drawTags();
     }
 
@@ -74,7 +74,7 @@ function TagInput({resta_idx, drawTags}) {
     }
 
     const makeOptions = async () => {
-        let {data} = await axios.get(`http://localhost/list_tag`);
+        let {data} = await axios.get(`http://192.168.0.120/list_tag`);
         const list = data.list_tag_whole.map((item) => {
             if (item.isClass === '식당') {
                 return (

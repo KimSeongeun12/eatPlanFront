@@ -10,7 +10,7 @@ export default function HistoryInput({report_idx, drawList}){
 
     //히스토리 추가
     const insert=async ()=>{
-        let {data}=await axios.post(`http://localhost/history_write`, {report_idx: report_idx, user_id: user_id, content: input});
+        let {data}=await axios.post(`http://192.168.0.120/history_write`, {report_idx: report_idx, user_id: user_id, content: input});
         if(data.success){
             drawList();
             setInput('');

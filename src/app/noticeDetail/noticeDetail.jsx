@@ -18,7 +18,7 @@ export default function NoticeDetail() {
     // 상세 데이터 가져오기
     const fetchDetail = async () => {
         try {
-            const res = await axios.get(`http://localhost/notice_detail/${noticeIdx}`);
+            const res = await axios.get(`http://192.168.0.120/notice_detail/${noticeIdx}`);
             setNotice(res.data.detail);
         } catch (err) {
             console.error('[NoticeDetail] fetch error:', err);
@@ -46,7 +46,7 @@ export default function NoticeDetail() {
     // 실제 삭제 요청 함수 (모달에서 '확인'을 눌렀을 때 호출)
     const confirmDelete = async () => {
         try {
-            const res = await axios.delete(`http://localhost/notice_del/${noticeIdx}`);
+            const res = await axios.delete(`http://192.168.0.120/notice_del/${noticeIdx}`);
             if (res.data.success) {
                 alert('삭제되었습니다.');
                 router.push('/noticeList');

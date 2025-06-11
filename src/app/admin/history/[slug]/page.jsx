@@ -24,7 +24,7 @@ export default function HistoryPage(props) {
     }, [idx]);
 
     const loadReport = async () => {
-        let {data} = await axios.get(`http://localhost/report_detail/${idx.current}`);
+        let {data} = await axios.get(`http://192.168.0.120/report_detail/${idx.current}`);
         console.log(data);
         setReport(data.detail);
 
@@ -106,7 +106,7 @@ function Target({reported, isClass, user_id, report_idx}) {
     useEffect(() => {
         const getPost = async () => {
             if (isClass === 'course') {
-                const {data} = await axios.get(`http://localhost/courseDetail`, {
+                const {data} = await axios.get(`http://192.168.0.120/courseDetail`, {
                     params: {post_idx: reported.post_idx}
                 });
 
@@ -117,7 +117,7 @@ function Target({reported, isClass, user_id, report_idx}) {
                     content: data.detail.content.post_cmt
                 });
             } else if (isClass === 'comment') {
-                const {data} = await axios.get(`http://localhost/comment_detail/${reported.comment_idx}`);
+                const {data} = await axios.get(`http://192.168.0.120/comment_detail/${reported.comment_idx}`);
                 setPost({
                     idx: data.comment_idx,
                     date: new Date(data.reg_date).toLocaleDateString('ko-KR'),
@@ -125,7 +125,7 @@ function Target({reported, isClass, user_id, report_idx}) {
                     content: data.content
                 });
             } else if (isClass === 'message') {
-                const {data} = await axios.get(`http://localhost/${user_id}/${reported.msg_idx}/msg_detail`);
+                const {data} = await axios.get(`http://192.168.0.120/${user_id}/${reported.msg_idx}/msg_detail`);
                 setPost({
                     idx: data.message.msg_idx,
                     date: new Date(data.message.msg_date).toLocaleDateString('ko-KR'),
@@ -178,7 +178,7 @@ function History({report_idx}) {
 
     // 리스트 불러오기
     const drawList = async () => {
-        let {data} = await axios.get(`http://localhost/history_list/${report_idx}`);
+        let {data} = await axios.get(`http://192.168.0.120/history_list/${report_idx}`);
         const posts = data.list.map((item) => {
             console.log(item);
             return (

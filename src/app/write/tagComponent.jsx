@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
@@ -29,21 +31,21 @@ export default function TagComponent({selectTag}) {
     // 태그 카테고리 리스트 가져오기
     const [tagCate, setTagCate] = useState([]);
     const tagCateList = async () => {
-        const {data} = await axios.get("http://localhost/list_tagcate");
+        const {data} = await axios.get("http://192.168.0.120/list_tagcate");
         setTagCate(data.list_tagcate);
     }
 
     // 태그 리스트 가져오기
     const [tag, setTag] = useState([]);
     const tagList = async () => {
-        const {data} = await axios.get("http://localhost/list_tag");
+        const {data} = await axios.get("http://192.168.0.120/list_tag");
         setTag(data.list_tag_whole);
     }
 
     // 지역태그 리스트 가져오기
     const [locationTag, setLocationTag] = useState([]);
     const locationTagList = async () => {
-        const {data} = await axios.get('http://localhost/list_tag_area');
+        const {data} = await axios.get('http://192.168.0.120/list_tag_area');
         setLocationTag(data.list_area);
     }
 

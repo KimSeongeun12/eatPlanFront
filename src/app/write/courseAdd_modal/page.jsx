@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import AddStepOne from "./addStepOne";
 import AddStepTwo from "./addStepTwo";

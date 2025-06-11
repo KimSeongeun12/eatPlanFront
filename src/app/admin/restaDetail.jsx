@@ -17,7 +17,7 @@ export default function RestaDetail({resta_idx}) {
 
 
     const getDetail = async ()=>{
-        let {data} = await axios.get(`http://localhost/restaDetail/${resta_idx}`);
+        let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
@@ -32,7 +32,7 @@ export default function RestaDetail({resta_idx}) {
 
                 {/*식당정보 출력 부분*/}
                 <div>
-                    <img src={`http://localhost/imageIdx/${resta.img_idx}`} alt=""/>
+                    <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""/>
                 </div>
                 <div className={"information"}>
                     <div>{resta.resta_name}</div>

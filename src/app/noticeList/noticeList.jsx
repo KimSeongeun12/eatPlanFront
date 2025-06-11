@@ -19,7 +19,7 @@ export default function NoticeList() {
 
     const fetchNotices = async (pageNum) => {
         try {
-            const res = await axios.get(`http://localhost/notice_list/${pageNum}`);
+            const res = await axios.get(`http://192.168.0.120/notice_list/${pageNum}`);
             const data = res.data.noticeList;
 
             // 단일 list 방식: data.list에 필독, 일반 모두 정렬된 상태로 내려온다

@@ -27,7 +27,7 @@ export default function FindPw({ setVisibleComponent }) {
             return;
         }
 
-        const {data} = await axios.post("http://localhost/findPassword", info);
+        const {data} = await axios.post("http://192.168.0.120/findPassword", info);
         console.log(data);
         if (data.success === true) {
             alert('인증되었습니다.'); // 발송이 안되긴 하는데 굳이 발송 안하고 인증만 해도 될 것 같아서....

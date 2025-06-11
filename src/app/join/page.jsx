@@ -48,7 +48,7 @@ export default function JoinPage() {
     };
 
     const overlay_id = async () => {
-        const { data } = await axios.get(`http://localhost/overlay/id/${input.user_id}`);
+        const { data } = await axios.get(`http://192.168.0.120/overlay/id/${input.user_id}`);
         if (data.use) {
             alert("사용 가능한 아이디입니다.");
             setIdChk(true);
@@ -60,7 +60,7 @@ export default function JoinPage() {
     };
 
     const overlay_nickname = async () => {
-        const { data } = await axios.get(`http://localhost/overlay/nickname/${input.nickname}`);
+        const { data } = await axios.get(`http://192.168.0.120/overlay/nickname/${input.nickname}`);
         if (data.use) {
             alert("사용 가능한 닉네임입니다.");
             setNicknameChk(true);
@@ -145,7 +145,7 @@ export default function JoinPage() {
             }
 
             try {
-                const response = await axios.post('http://localhost/joinWithImage', formData, {
+                const response = await axios.post('http://192.168.0.120/joinWithImage', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
 

@@ -36,7 +36,7 @@ export default function ReportDetail() {
         console.log('▶ 보내는 Authorization 헤더:', `Bearer ${token}`);
 
         axios
-            .get(`http://localhost/report_detail/${report_idx}`, {
+            .get(`http://192.168.0.120/report_detail/${report_idx}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(res => {
@@ -73,7 +73,7 @@ export default function ReportDetail() {
         const done = e.target.value === 'true';
         const token = sessionStorage.getItem('token');
         axios
-            .patch(`http://localhost/report_done/${detail.report_idx}`, { done }, {
+            .patch(`http://192.168.0.120/report_done/${detail.report_idx}`, { done }, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(() => {
@@ -143,7 +143,7 @@ export default function ReportDetail() {
                             <th>첨부 이미지</th>
                             <td colSpan={5}>
                                 <img
-                                    src={`http://localhost/image/${photo.new_filename}`}
+                                    src={`http://192.168.0.120/image/${photo.new_filename}`}
                                     alt="신고 첨부파일"
                                     className="report-detail-image"
                                 />

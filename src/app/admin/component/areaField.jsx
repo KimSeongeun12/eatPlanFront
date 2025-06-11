@@ -13,7 +13,7 @@ export default function AreaField(){
 
 
     const areaTagList = () => {
-        axios.get("http://localhost/list_tag_area").then(({data}) => {
+        axios.get("http://192.168.0.120/list_tag_area").then(({data}) => {
             setAreaTag(data?.list_area ?? []);
             console.log('지역태그 리스트 : ',data.list_area);
         })
@@ -61,7 +61,7 @@ export default function AreaField(){
         // cate_idx : 지역 불러오기
 
         if (selectedCity.trim().length>0 && selectedDist.trim().length>0 && selectedArea.trim().length>0){
-            axios.post("http://localhost/adtag_write"
+            axios.post("http://192.168.0.120/adtag_write"
                 ,{cate_name: {cate_name:'지역', cate_idx:1}, tag_area: {city: selectedCity, dist: selectedDist, tag_name: selectedArea}})
                 .then(({data}) => {
                     if (data.success) {
@@ -83,7 +83,7 @@ export default function AreaField(){
         }
         const confirmDelete = window.confirm("대분류에 해당하는 모든 중분류와 지역태그가 삭제됩니다.");
         if (!confirmDelete) return;
-        axios.delete("http://localhost/adtag_del_city", {
+        axios.delete("http://192.168.0.120/adtag_del_city", {
             data: { city: delCity.city }
         })
             .then(({data}) => {
@@ -105,7 +105,7 @@ export default function AreaField(){
         }
         const confirmDelete = window.confirm("대분류에 해당하는 유일한 중분류일 경우 대분류가 삭제됩니다, 해당하는 모든 지역태그가 삭제됩니다.");
         if (!confirmDelete) return;
-        axios.delete("http://localhost/adtag_del_dist", {
+        axios.delete("http://192.168.0.120/adtag_del_dist", {
             data: { dist: delDist.dist }
         })
             .then(({data}) => {
@@ -127,7 +127,7 @@ export default function AreaField(){
         }
         const confirmDelete = window.confirm("중분류에 해당하는 유일한 지역태그일 경우 대분류와 중분류가 모두 삭제됩니다.");
         if (!confirmDelete) return;
-        axios.delete("http://localhost/adtag_del", {
+        axios.delete("http://192.168.0.120/adtag_del", {
             data: { area_tag_idx: delTag.area_tag_idx }
         })
             .then(({data}) => {

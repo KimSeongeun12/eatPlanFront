@@ -15,6 +15,8 @@ export default function SearchResult(){
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    //const url = process.env.NEXT_PUBLIC_BASIC_URL;
+
     // url로 넘어온 검색조건들을 이어붙이고 요청 보내기
     const fetchSearchKeywords = async() => {
         const subject = searchParams.get("subject");
@@ -31,7 +33,7 @@ export default function SearchResult(){
 
         try {
             setIsLoading(true);
-            const {data} = await axios.get('http://localhost/search_course',{
+            const {data} = await axios.get('http://192.168.0.120/search_course',{
                 params,
                 paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })});
             setItems(Array.isArray(data) ? data : []);
@@ -141,7 +143,7 @@ export default function SearchResult(){
                                     <div key={index} className="listItem">
                                         <div className="mainImage">
                                             <img
-                                                src={item.blind ? '/blind.svg' : `http://localhost/image/${item.thumbnail}`}
+                                                src={item.blind ? '/blind.svg' : `http://192.168.0.120/image/${item.thumbnail}`}
                                                 alt="썸네일"
                                             />
                                         </div>

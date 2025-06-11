@@ -9,7 +9,7 @@ export default function CourseSearch(){
     // 태그 카테고리 리스트 가져오기
     const [tagCate, setTagCate] = useState([]);
     const tagCateList = () => {
-        return axios.get("http://localhost/list_tagcate").then(({data}) =>{
+        return axios.get("http://192.168.0.120/list_tagcate").then(({data}) =>{
             setTagCate(data?.list_tagcate ?? []);
             console.log('태그 카테고리 리스트 : ',data.list_tagcate);
         })
@@ -18,7 +18,7 @@ export default function CourseSearch(){
     // 지역태그 리스트 가져오기
     const [areaTag, setAreaTag] = useState([]);
     const areaTagList = () => {
-        return axios.get("http://localhost/list_tag_area").then(({data}) => {
+        return axios.get("http://192.168.0.120/list_tag_area").then(({data}) => {
             setAreaTag(data?.list_area ?? []);
             console.log('지역태그 리스트 : ',data.list_area);
         })
@@ -27,7 +27,7 @@ export default function CourseSearch(){
     // 태그 리스트 가져오기
     const [tag, setTag] = useState([]);
     const tagList = () => {
-        return axios.get("http://localhost/list_tag").then(({data}) => {
+        return axios.get("http://192.168.0.120/list_tag").then(({data}) => {
             setTag(data?.list_tag_whole ?? []);
             console.log('태그 리스트 : ',data.list_tag_whole);
         })

@@ -34,7 +34,7 @@ export default function CourseDetail({post_idx}) {
 
     // 디테일 정보 가져오기
     const getDetail = () => {
-        return axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
+        return axios.get(`http://192.168.0.120/courseDetail?post_idx=${post_idx}`).then(({data}) => {
             console.log(data);
             const d = data.detail;
             const newDetail =
@@ -243,7 +243,7 @@ export default function CourseDetail({post_idx}) {
         if (isAuthenticated && user_id.current === detail.user_id) {
             const confirmDelete = window.confirm("정말로 코스를 삭제하시겠습니까?");
             if (!confirmDelete) return;
-            axios.delete("http://localhost/delete/"
+            axios.delete("http://192.168.0.120/delete/"
                 ,{data:[{post_idx: detail.post_idx}]
                 ,headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
                 if (data.success) {
@@ -266,7 +266,7 @@ export default function CourseDetail({post_idx}) {
     // 좋아요 체크
     const [likedByMe, setLikedByMe] = useState(false);
     const checkLikeStatus = (post_idx) => {
-            axios.get(`http://localhost/like_check?post_idx=${post_idx}&user_id=${user_id.current}`)
+            axios.get(`http://192.168.0.120/like_check?post_idx=${post_idx}&user_id=${user_id.current}`)
                 .then(({data}) => {
                     setLikedByMe(data.liked === true);
                 });
@@ -276,7 +276,7 @@ export default function CourseDetail({post_idx}) {
     // 코스
     const likeToggle = () => {
         if (isAuthenticated) {
-            axios.post("http://localhost/like"
+            axios.post("http://192.168.0.120/like"
                 ,{user_id:user_id.current, isClass:"course", post_idx:detail.post_idx}
                 ,{headers: { Authorization: sessionStorage.getItem('token') || '' }})
                 .then(({data}) => {
@@ -295,7 +295,7 @@ export default function CourseDetail({post_idx}) {
     // 댓글
     const cmtLikeToggle = (comment_idx) => {
         if (isAuthenticated) {
-            axios.post("http://localhost/like"
+            axios.post("http://192.168.0.120/like"
                 ,{user_id:user_id.current, isClass:"comment", cmt_idx:comment_idx, post_idx:post_idx}
                 ,{headers: { Authorization: sessionStorage.getItem('token') || '' }})
                 .then(({data}) => {
@@ -333,7 +333,7 @@ export default function CourseDetail({post_idx}) {
                 alert("별점을 선택해주세요!");
                 return;
             }
-            axios.post("http://localhost/star"
+            axios.post("http://192.168.0.120/star"
                 ,{user_id:user_id.current, post_idx:detail.post_idx, star:selectedStar}
                 ,{headers: { Authorization: sessionStorage.getItem('token') || '' }})
                 .then(({data}) => {
@@ -348,14 +348,14 @@ export default function CourseDetail({post_idx}) {
 
     // 댓글 불러오기
     const cmtList = async (post_idx) => {
-        const { data } = await axios.get(`http://localhost/comment_list?post_idx=${post_idx}&page=${page}`);
+        const { data } = await axios.get(`http://192.168.0.120/comment_list?post_idx=${post_idx}&page=${page}`);
         const comments = Array.isArray(data.list.comments) ? data.list.comments : [];
         setTotalCmtCount(data.totalCount);
 
         const cmtIdxList = comments.map(cmt => cmt.comment_idx);
 
         // 댓글 좋아요 여부 체크
-        const likedMapRes = await axios.post("http://localhost/like_check_cmt", {
+        const likedMapRes = await axios.post("http://192.168.0.120/like_check_cmt", {
             user_id: user_id.current,
             cmt_idx_list: cmtIdxList
         });
@@ -399,7 +399,7 @@ export default function CourseDetail({post_idx}) {
         if (isAuthenticated && user_id.current === item.user_id) {
             const confirmDelete = window.confirm("정말로 댓글을 삭제하시겠습니까?");
             if (!confirmDelete) return;
-            axios.delete(`http://localhost/comment_del?comment_idx=${item.comment_idx}`
+            axios.delete(`http://192.168.0.120/comment_del?comment_idx=${item.comment_idx}`
                 ,{headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
                 if (data.success) {
                     cmtList(post_idx);
@@ -432,7 +432,7 @@ export default function CourseDetail({post_idx}) {
         if (isAuthenticated && user_id.current === item.user_id) {
             const comment_idx= item.comment_idx;
             const user_id = item.user_id;
-            axios.put("http://localhost/comment_update"
+            axios.put("http://192.168.0.120/comment_update"
                 , {comment_idx, user_id, content: editedContent}
                 , {headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
                 if (data.success) {
@@ -456,7 +456,7 @@ export default function CourseDetail({post_idx}) {
                 alert("댓글을 입력해주세요");
                 return;
             }
-            axios.post("http://localhost/comment_insert"
+            axios.post("http://192.168.0.120/comment_insert"
                 ,{user_id:user_id.current, post_idx:detail.post_idx, content:cmtContent}
                 ,{headers: { Authorization: sessionStorage.getItem('token') || '' }})
                 .then(({data}) => {
@@ -480,7 +480,7 @@ export default function CourseDetail({post_idx}) {
             alert("댓글 정보를 찾을 수 없습니다.");
             return;
         }
-        axios.patch(`http://localhost/${cmtInfo.post_idx}/${cmtInfo.comment_idx}/${cmtInfo.user_id}/comment_blind`)
+        axios.patch(`http://192.168.0.120/${cmtInfo.post_idx}/${cmtInfo.comment_idx}/${cmtInfo.user_id}/comment_blind`)
             .then(({data}) => {
                 if (data.success) {
                     alert("댓글의 블라인드 상태가 변경 되었습니다.");

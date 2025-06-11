@@ -31,7 +31,7 @@ export default function MessageWrite() {
 
            // 1) r이 userId 이므로, /member/{userId}로 닉네임 조회
             axios
-                .get(`http://localhost/member/${r}`)
+                .get(`http://192.168.0.120/member/${r}`)
                 .then((res) => {
                     setRecipientNickname(res.data.nickname || '');  // 닉네임 셋
                            setRecipId(r);                                // ID 셋
@@ -52,7 +52,7 @@ export default function MessageWrite() {
     const timeoutId = setTimeout(() => {
         axios
             .get(
-                `http://localhost/member/byNickname/${encodeURIComponent(
+                `http://192.168.0.120/member/byNickname/${encodeURIComponent(
                     recipientNickname.trim()
                 )}`
             )
@@ -69,7 +69,7 @@ export default function MessageWrite() {
     useEffect(() => {
         if (!userId) return;
         axios
-            .get(`http://localhost/member/${userId}`)
+            .get(`http://192.168.0.120/member/${userId}`)
             .then((res) => setSenderNickname(res.data.nickname || ''))
             .catch((err) => {
                 console.warn('[MessageWrite] sender 조회 실패:', err);
@@ -105,7 +105,7 @@ export default function MessageWrite() {
                 content: content.trim(),
             };
 
-            await axios.post(`http://localhost/${userId}/write_msg`, body, {
+            await axios.post(`http://192.168.0.120/${userId}/write_msg`, body, {
                 headers: {
                     Authorization: token,
                     'Content-Type': 'application/json',

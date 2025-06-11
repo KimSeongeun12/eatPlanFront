@@ -16,7 +16,7 @@ export default function ReportHistory(){
 
     // ----------- 처리상태 변경 ------------//
     const toggle=async (idx, done)=>{
-        let {data}=await axios.put(`http://localhost/report_done`, {report_idx:idx, done:!done});
+        let {data}=await axios.put(`http://192.168.0.120/report_done`, {report_idx:idx, done:!done});
         // console.log(data);
         drawList();
     }
@@ -27,7 +27,7 @@ export default function ReportHistory(){
 
 
     const drawList=async () => {
-        let {data} = await axios.get(`http://localhost/report_list/${page.current}`);
+        let {data} = await axios.get(`http://192.168.0.120/report_list/${page.current}`);
         // 리스트에 나와야하는 요소: 체크박스, no, 제목, 신고자, 피신고자, 신고일, 처리여부, 상태변경(select)
         const posts=data.list.map(item=>{
 

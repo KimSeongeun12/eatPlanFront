@@ -37,7 +37,7 @@ export default function ReportWrite() {
         }
 
         setReporterId(id);
-        axios.get(`http://localhost/member/${id}`, {
+        axios.get(`http://192.168.0.120/member/${id}`, {
             headers: { Authorization: token }
         })
             .then(res => setReporterNickname(res.data.nickname))
@@ -55,7 +55,7 @@ export default function ReportWrite() {
         (async () => {
             // 1) user_id 로 시도
             try {
-                const res = await axios.get(`http://localhost/member/${encodeURIComponent(suspectParam)}`);
+                const res = await axios.get(`http://192.168.0.120/member/${encodeURIComponent(suspectParam)}`);
                 console.log('▶ user_id 조회 성공', res.status);
                 setSuspectId(res.data.user_id);
                 setSuspectNickname(res.data.nickname);
@@ -66,7 +66,7 @@ export default function ReportWrite() {
 
             // 2) nickname 으로 재시도
             try {
-                const res2 = await axios.get(`http://localhost/member/byNickname/${encodeURIComponent(suspectParam)}`);
+                const res2 = await axios.get(`http://192.168.0.120/member/byNickname/${encodeURIComponent(suspectParam)}`);
                 console.log('▶ nickname 조회 성공', res2.status);
                 setSuspectId(res2.data.user_id);
                 setSuspectNickname(suspectParam);
@@ -104,7 +104,7 @@ export default function ReportWrite() {
 
         try {
             const res = await axios.post(
-                'http://localhost/report_write',
+                'http://192.168.0.120/report_write',
                 formData,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );

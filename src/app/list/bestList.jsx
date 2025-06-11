@@ -14,14 +14,14 @@ export default function bestList() {
     }, []);
 
     const weekly = async () => {
-        const {data} = await axios.get('http://localhost/weekly_best_list');
+        const {data} = await axios.get('http://192.168.0.120/weekly_best_list');
         console.log("course_img 값들: ", data.list.map(item => item.course_img));
         console.log(data.list);
         setWeeklyList(data.list);
     }
 
     const monthly = async () => {
-        const {data} = await axios.get('http://localhost/monthly_best_list');
+        const {data} = await axios.get('http://192.168.0.120/monthly_best_list');
         console.log("월간 베스트 코스: ", data.list[0].course_img);
         setMonthlyList(data.list);
     }
@@ -36,7 +36,7 @@ export default function bestList() {
                             <div key={item.course.post_idx} className={"best_listItem"}>
                                 <img
                                     className={"mainImage"}
-                                    src={`http://localhost/image/${item.course_img}`}
+                                    src={`http://192.168.0.120/image/${item.course_img}`}
                                     onError={(e) => {
                                         e.target.src = '/no_image.png';
                                     }}
@@ -72,7 +72,7 @@ export default function bestList() {
                             <div key={item.course.post_idx} className={"listItem"}>
                                 <img
                                     className={"mainImage"}
-                                    src={`http://localhost/image/${item.course_img}`}
+                                    src={`http://192.168.0.120/image/${item.course_img}`}
                                     onError={(e) => {
                                         e.target.src = '/no_image.png';
                                     }}

@@ -23,17 +23,17 @@ const JoinTagSelectModal = ({ onClose, onSelect }) => {
     }, []);
 
     const tagCateList = async () => {
-        const { data } = await axios.get("http://localhost/list_tagcate");
+        const { data } = await axios.get("http://192.168.0.120/list_tagcate");
         setTagCate(data.list_tagcate);
     };
 
     const tagList = async () => {
-        const { data } = await axios.get("http://localhost/list_tag");
+        const { data } = await axios.get("http://192.168.0.120/list_tag");
         setTag(data.list_tag_whole);
     };
 
     const locationTagList = async () => {
-        const { data } = await axios.get('http://localhost/list_tag_area');
+        const { data } = await axios.get('http://192.168.0.120/list_tag_area');
         setLocationTag(data.list_area);
     };
 
