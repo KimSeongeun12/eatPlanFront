@@ -112,8 +112,6 @@
     border-radius: 20px;
     width: 205px;
     height: 63px;
-    margin-right: 4px;
-    margin-top: 5px;
     text-align: center;
     float: right;
     font-size: 20px;
@@ -125,6 +123,7 @@
     color: #AE3D29;
     border: 2px solid #CC503B;
     background: #fff;
+    margin-left: auto;
 }
 
 .infoUpdateButton:hover {
@@ -135,14 +134,13 @@
 }
 
 .footer {
-    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    /*justify-content: center;*/
     height: 63px;
 }
 
 .secessionSpan {
-    position: absolute;
-    left: 400px;
-    top: 1000px;
     color: #CC503B;
 }
 

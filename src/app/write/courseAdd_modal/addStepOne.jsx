@@ -8,10 +8,19 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
 
     // 식당 이름 검색 (axios)
     const search = async () => {
-        const { data } = await axios.post('http://localhost/search_resta', formData.searchQuery, {
-            headers: { "Content-Type": "text/plain" },
-        });
-        setResults(data.result);
+        if (!formData.searchQuery || formData.searchQuery.trim() === "") {
+            alert("검색어를 입력해주세요.");
+            return;
+        }
+        try {
+            const { data } = await axios.post('http://localhost/search_resta', formData.searchQuery, {
+                headers: { "Content-Type": "text/plain" },
+            });
+            setResults(data.result);
+        } catch (error) {
+            console.error("검색 실패", error);
+            alert("검색 중 오류가 발생했습니다.");
+        }
     };
 
     const handleSelectRestaurant = (restaurant) => {
@@ -48,7 +57,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
             <div className={"addStep_item"}>
                 {results.length > 0 ? (
                     results.map((item, index) => {
-                        console.log("img_idx:", item.img_idx);  // ✅ console.log는 여기서!
+                        console.log("img_idx:", item.img_idx);
 
                         return (
                             <div
