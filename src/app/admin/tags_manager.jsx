@@ -32,15 +32,15 @@ export default function TagsManager() {
             <div className={"tag tab"}>
                 <div id={'course'}
                      onClick={(e) => toggle(e)}
-                     className={selected==='course'? 'selected':''}
+                     className={selected==='course'? 'selected-':''}
                 >코스 태그 관리</div>
                 <div id={'restaurant'}
                      onClick={(e) => toggle(e)}
-                     className={selected==='restaurant'? 'selected':''}
+                     className={selected==='restaurant'? 'selected-':''}
                 >식당 태그 관리</div>
                 <div id={'restaurant_tags'}
                      onClick={(e) => toggle(e)}
-                     className={selected==='restaurant_tags'? 'selected':''}
+                     className={selected==='restaurant_tags'? 'selected-':''}
                 >식당 별 태그 관리</div>
             </div>
             {component}

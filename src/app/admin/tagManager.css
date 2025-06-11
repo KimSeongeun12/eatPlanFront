@@ -47,11 +47,11 @@ div .tab{
     margin: 5px;
 }
 
-.selected {
+.selected- {
     background-color: white; /* 선택된 항목의 배경을 흰색으로 변경 */
 }
 
-.tag.tab div.selected{
+.tag.tab div.selected-{
     background-color: white;
 }
 

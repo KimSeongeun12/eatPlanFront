@@ -46,7 +46,7 @@ export default function DrawLeftTags({isClass, leftMenu}) {
         const tags = data.list_tagcate.map((item) => {
                 return (
                     <div key={item.cate_idx}
-                         className={`box ${selectedIdx === item.cate_idx ? 'selected' : ''}`}
+                         className={`box ${selectedIdx === item.cate_idx ? 'selected-' : ''}`}
                          onClick={() => {clickCate(item.cate_idx, item.cate_name)}}>
                         {item.cate_name}
                         <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div>
