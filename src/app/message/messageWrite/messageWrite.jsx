@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import './messageWrite.css';
 
-export default function MessageWrite() {
+function FuspMessageWrite () {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -29,41 +29,41 @@ export default function MessageWrite() {
         const r = searchParams.get('recip');
         if (!r) return;
 
-           // 1) r이 userId 이므로, /member/{userId}로 닉네임 조회
-            axios
-                .get(`http://192.168.0.120/member/${r}`)
-                .then((res) => {
-                    setRecipientNickname(res.data.nickname || '');  // 닉네임 셋
-                           setRecipId(r);                                // ID 셋
-                })
-                .catch(() => {
-                          // 혹시 ID로 조회 실패 시 fallback: 입력값 그대로 닉네임으로 간주
-                        setRecipientNickname(r);
-                });
+        // 1) r이 userId 이므로, /member/{userId}로 닉네임 조회
+        axios
+            .get(`http://192.168.0.120/member/${r}`)
+            .then((res) => {
+                setRecipientNickname(res.data.nickname || '');  // 닉네임 셋
+                setRecipId(r);                                // ID 셋
+            })
+            .catch(() => {
+                // 혹시 ID로 조회 실패 시 fallback: 입력값 그대로 닉네임으로 간주
+                setRecipientNickname(r);
+            });
     }, [searchParams]);
 
     // (B) recipientNickname 변경 시 ID 조회 (디바운스)
     // 사용자 직접 수정했다면 recipientNickname은 닉네임이므로 byNickname 호출
     useEffect(() => {
-    if (!recipientNickname.trim()) {
-        setRecipId('');
-        return;
-    }
-    const timeoutId = setTimeout(() => {
-        axios
-            .get(
-                `http://192.168.0.120/member/byNickname/${encodeURIComponent(
-                    recipientNickname.trim()
-                )}`
-            )
-            .then((res) => setRecipId(res.data.user_id || ''))
-            .catch(() => {
-                setRecipId('');
-                console.warn('닉네임으로 사용자 조회 실패');
-            });
-    }, 300);
-    return () => clearTimeout(timeoutId);
-}, [recipientNickname]);
+        if (!recipientNickname.trim()) {
+            setRecipId('');
+            return;
+        }
+        const timeoutId = setTimeout(() => {
+            axios
+                .get(
+                    `http://192.168.0.120/member/byNickname/${encodeURIComponent(
+                        recipientNickname.trim()
+                    )}`
+                )
+                .then((res) => setRecipId(res.data.user_id || ''))
+                .catch(() => {
+                    setRecipId('');
+                    console.warn('닉네임으로 사용자 조회 실패');
+                });
+        }, 300);
+        return () => clearTimeout(timeoutId);
+    }, [recipientNickname]);
 
     // (C) senderNickname 조회
     useEffect(() => {
@@ -195,5 +195,13 @@ export default function MessageWrite() {
                 </div>
             </form>
         </div>
+    );
+}
+
+export default function MessageWrite() {
+    return (
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspMessageWrite/>
+        </Suspense>
     );
 }

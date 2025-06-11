@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import './noticeUpdate.css';
 
-export default function noticeUpdate() {
+function FuspNoticeUpdate(){
     const router = useRouter();
     const params = useSearchParams();
     const noticeIdx = params.get('id');
@@ -192,5 +192,13 @@ export default function noticeUpdate() {
                 </div>
             </form>
         </div>
+    );
+}
+
+export default function noticeUpdate() {
+    return(
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspNoticeUpdate/>
+        </Suspense>
     );
 }

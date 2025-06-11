@@ -2,10 +2,10 @@
 import '../mainCss.css'
 import './myPageCss.css'
 import axios from "axios";
-import {useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import {useRouter, useSearchParams} from "next/navigation";
 
-export default function MyInfo() {
+function FuspMyInFo () {
     const router = useRouter();
     const loginId = useRef('');
     const user_id = useRef('');
@@ -124,5 +124,13 @@ export default function MyInfo() {
                 </div>
             </div>
         </>
+    );
+}
+
+export default function MyInfo() {
+    return(
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspMyInFo/>
+        </Suspense>
     );
 }

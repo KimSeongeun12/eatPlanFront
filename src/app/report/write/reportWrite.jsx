@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import {useState, useEffect, Suspense} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import './reportWrite.css';
 
-export default function ReportWrite() {
+function FuspReportWrite(){
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -222,5 +222,13 @@ export default function ReportWrite() {
                 </div>
             </form>
         </div>
+    );
+}
+
+export default function ReportWrite() {
+    return(
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspReportWrite/>
+        </Suspense>
     );
 }

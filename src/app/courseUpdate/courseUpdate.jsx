@@ -2,7 +2,7 @@
 
 import {useSearchParams} from "next/navigation";
 import Timeline from "@/app/courseDetail/[slug]/timeline";
-import {useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import TagModal from "@/app/courseUpdate/tagModal";
 import "./tagModal.css";
@@ -10,7 +10,7 @@ import CourseAdd_modal from "@/app/write/courseAdd_modal/page";
 import StepModalUpdate from "@/app/courseUpdate/update_modal/page";
 import {CircularProgress} from "@mui/material";
 
-export default function CourseUpdate() {
+function FuspCourseUpdate() {
 
     const searchParams = useSearchParams();
     const post_idx = searchParams.get('post_idx');
@@ -95,15 +95,15 @@ export default function CourseUpdate() {
             }
             setDetail(newDetail);
         })
-        .catch(error => {
-            if (error.response && error.response.status === 404) {
-                alert("존재하지 않는 코스입니다.");
-                location.href = '/list';
-            } else {
-                alert("데이터를 불러오는 중 오류가 발생했습니다. 서버 혹시 키셨나요?");
-                location.href = '/list';
-            }
-        });
+            .catch(error => {
+                if (error.response && error.response.status === 404) {
+                    alert("존재하지 않는 코스입니다.");
+                    location.href = '/list';
+                } else {
+                    alert("데이터를 불러오는 중 오류가 발생했습니다. 서버 혹시 키셨나요?");
+                    location.href = '/list';
+                }
+            });
     };
 
     const user_id = useRef('');
@@ -267,7 +267,7 @@ export default function CourseUpdate() {
             if (!confirmDelete) return;
             axios.delete("http://192.168.0.120/delete/"
                 ,{data:[{post_idx: detail.post_idx}]
-                ,headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
+                    ,headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
                 if (data.success) {
                     location.href = "/list";
                     alert("코스를 삭제 했습니다.")
@@ -598,5 +598,13 @@ export default function CourseUpdate() {
 
             </div>
         </>
+    );
+};
+
+export default function CourseUpdate() {
+    return (
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspCourseUpdate/>
+        </Suspense>
     );
 }

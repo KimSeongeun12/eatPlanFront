@@ -1,12 +1,12 @@
 // File: /app/message/messageDetail/messageDetail.jsx
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import axios from 'axios';
 import {useSearchParams, useRouter} from 'next/navigation';
 import './messageDetail.css';
 
-export default function MessageDetail() {
+function FuspMessageDetail() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const msgIdx = searchParams.get('msgIdx');   // 쪽지 번호
@@ -101,9 +101,9 @@ export default function MessageDetail() {
 
 
     // 목록 버튼 (항상 보이도록)
-     const handleList = () => {
-           router.push('/message');
-        };
+    const handleList = () => {
+        router.push('/message');
+    };
 
     if (!message) {
         return (
@@ -150,8 +150,8 @@ export default function MessageDetail() {
 
             <div className="detail-button-group">
                 <button className="action-btn" onClick={handleList}>
-                            목록
-                           </button>
+                    목록
+                </button>
                 {mode === 'inbox' && (
                     <button className="action-btn" onClick={handleReply}>
                         답장
@@ -184,5 +184,13 @@ export default function MessageDetail() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function MessageDetail() {
+    return (
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspMessageDetail/>
+        </Suspense>
     );
 }

@@ -2,11 +2,11 @@
 'use client';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import axios from 'axios';
 import './reportDetail.css';
 
-export default function ReportDetail() {
+function FuspReportDetail(){
     const router = useRouter();
     const { report_idx } = useParams();
     const searchParams = useSearchParams();
@@ -86,75 +86,83 @@ export default function ReportDetail() {
             });
     };
     return (
-            <div className="report_container">
-                <h2>신고 상세보기</h2>
-                <table className="report_detail_table">
-                    <tbody>
+        <div className="report_container">
+            <h2>신고 상세보기</h2>
+            <table className="report_detail_table">
+                <tbody>
+                <tr>
+                    <th>분류</th>
+                    <td>{categoryText}</td>
+                    <th>작성자</th>
+                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                        {detail.reporter_nickname || detail.reporter_id}
+                    </td>
+                    <th>신고번호</th>
+                    <td>{listIndex ?? detail.report_idx}</td>
+                </tr>
+                <tr>
+                    <th>신고대상자</th>
+                    <td colSpan={3}>
+                        <input
+                            type="text"
+                            value={detail.suspect_nickname || detail.suspect_id}
+                            readOnly
+                        />
+                    </td>
+                    <th>처리여부</th>
+                    <td>
+                        {detail.admin ? /* 만약 detail.admin 필드로 */ (
+                            <select
+                                value={detail.done ? 'true' : 'false'}
+                                onChange={onChangeStatus}
+                            >
+                                <option value="false">미처리</option>
+                                <option value="true">처리완료</option>
+                            </select>
+                        ) : (
+                            <span>{detail.done ? '처리완료' : '미처리'}</span>
+                        )}
+                    </td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td colSpan={5}>
+                        <input type="text" value={detail.subject} readOnly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colSpan={6} className="content-label">내용 *</th>
+                </tr>
+                <tr>
+                    <td colSpan={6}>
+                        <textarea value={detail.content} readOnly />
+                    </td>
+                </tr>
+                {photo && (
                     <tr>
-                        <th>분류</th>
-                        <td>{categoryText}</td>
-                        <th>작성자</th>
-                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                            {detail.reporter_nickname || detail.reporter_id}
-                        </td>
-                        <th>신고번호</th>
-                        <td>{listIndex ?? detail.report_idx}</td>
-                    </tr>
-                    <tr>
-                        <th>신고대상자</th>
-                        <td colSpan={3}>
-                            <input
-                                type="text"
-                                value={detail.suspect_nickname || detail.suspect_id}
-                                readOnly
+                        <th>첨부 이미지</th>
+                        <td colSpan={5}>
+                            <img
+                                src={`http://192.168.0.120/image/${photo.new_filename}`}
+                                alt="신고 첨부파일"
+                                className="report-detail-image"
                             />
                         </td>
-                        <th>처리여부</th>
-                        <td>
-                            {detail.admin ? /* 만약 detail.admin 필드로 */ (
-                                <select
-                                    value={detail.done ? 'true' : 'false'}
-                                    onChange={onChangeStatus}
-                                >
-                                    <option value="false">미처리</option>
-                                    <option value="true">처리완료</option>
-                                </select>
-                            ) : (
-                                <span>{detail.done ? '처리완료' : '미처리'}</span>
-                            )}
-                        </td>
                     </tr>
-                    <tr>
-                        <th>제목</th>
-                        <td colSpan={5}>
-                            <input type="text" value={detail.subject} readOnly />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colSpan={6} className="content-label">내용 *</th>
-                    </tr>
-                    <tr>
-                        <td colSpan={6}>
-                            <textarea value={detail.content} readOnly />
-                        </td>
-                    </tr>
-                    {photo && (
-                        <tr>
-                            <th>첨부 이미지</th>
-                            <td colSpan={5}>
-                                <img
-                                    src={`http://192.168.0.120/image/${photo.new_filename}`}
-                                    alt="신고 첨부파일"
-                                    className="report-detail-image"
-                                />
-                            </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
-                <div className="button-wrapper">
-                    <a href="/report"><button>목록</button></a>
-                </div>
+                )}
+                </tbody>
+            </table>
+            <div className="button-wrapper">
+                <a href="/report"><button>목록</button></a>
             </div>
+        </div>
+    );
+}
+
+export default function ReportDetail() {
+    return(
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspReportDetail/>
+        </Suspense>
     );
 }

@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import './noticeDetail.css';
 
-export default function NoticeDetail() {
+function FuspNoticeDetail(){
     const router = useRouter();
     const searchParams = useSearchParams();
     const noticeIdx = searchParams.get('id');
@@ -141,5 +141,13 @@ export default function NoticeDetail() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function NoticeDetail() {
+    return(
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspNoticeDetail/>
+        </Suspense>
     );
 }

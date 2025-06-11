@@ -3,11 +3,11 @@
 import Link from "next/link";
 import {CircularProgress, Pagination, Popover, Stack} from "@mui/material";
 import {useSearchParams} from "next/navigation";
-import {useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import qs from "qs";
 
-export default function SearchResult(){
+function FuspSearchResult() {
 
     const searchParams = useSearchParams();
     const [page, setPage] = useState(1);
@@ -136,67 +136,67 @@ export default function SearchResult(){
                 </div>
                 <div className="commonList">
                     {isLoading ? (
-                            <CircularProgress />
-                        ) : items.length > 0 ? (
-                            <>
-                                {currentItems.map((item, index) => (
-                                    <div key={index} className="listItem">
-                                        <div className="mainImage">
-                                            <img
-                                                src={item.blind ? '/blind.svg' : `http://192.168.0.120/image/${item.thumbnail}`}
-                                                alt="썸네일"
-                                            />
-                                        </div>
-                                        <span className="courseTitle"
-                                              onClick={item.blind
-                                                  ? ()=>alert("관리자가 블라인드 처리한 코스입니다.")
-                                                  : ()=>courseDetail(item.post_idx)}>
+                        <CircularProgress />
+                    ) : items.length > 0 ? (
+                        <>
+                            {currentItems.map((item, index) => (
+                                <div key={index} className="listItem">
+                                    <div className="mainImage">
+                                        <img
+                                            src={item.blind ? '/blind.svg' : `http://192.168.0.120/image/${item.thumbnail}`}
+                                            alt="썸네일"
+                                        />
+                                    </div>
+                                    <span className="courseTitle"
+                                          onClick={item.blind
+                                              ? ()=>alert("관리자가 블라인드 처리한 코스입니다.")
+                                              : ()=>courseDetail(item.post_idx)}>
                                             {item.subject}
                                         </span>
-                                        <span className="courseComment">[{item.total_comment_count}]</span><br/>
-                                        <span className="courseAuthor" onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>
+                                    <span className="courseComment">[{item.total_comment_count}]</span><br/>
+                                    <span className="courseAuthor" onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>
                                             {item.nickname}
                                         </span>
-                                        <span className="courseViews">조회 {item.b_hit}</span><br/>
-                                        <span className="courseScope">별점 {item.star_average}</span>
-                                        <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
-                                        <span className="courseDate">{item.reg_date?.slice(0, 16).replace('T', ' ')}</span>
-                                    </div>
-                                ))}
-                                <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
-                                    <Pagination
-                                        count={Math.ceil(items.length / itemsPerPage)}
-                                        page={page}
-                                        onChange={(e, value) => setPage(value)}
-                                        variant="outlined"
-                                        shape="rounded"
-                                        siblingCount={1}
-                                        boundaryCount={1}
-                                        showFirstButton
-                                        showLastButton
-                                        sx={{
-                                            '& .MuiPaginationItem-root': {
-                                                color: '#c9c9c9',
-                                                borderColor: '#d29292',
-                                                border: 3,
-                                                borderRadius: '10px',
-                                                minWidth: '50px',
-                                                height: '50px',
-                                                padding: '10px',
-                                                fontSize: '20px',
-                                            },
-                                            '& .Mui-selected': {
-                                                backgroundColor: 'rgba(42,205,175,0.5)',
-                                                color: '#a17070',
-                                                borderColor: '#d29292',
-                                            },
-                                        }}
-                                    />
-                                </Stack>
-                            </>
-                        ) : (
-                            <p className="noResult">검색 결과가 없습니다.</p>
-                        )}
+                                    <span className="courseViews">조회 {item.b_hit}</span><br/>
+                                    <span className="courseScope">별점 {item.star_average}</span>
+                                    <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
+                                    <span className="courseDate">{item.reg_date?.slice(0, 16).replace('T', ' ')}</span>
+                                </div>
+                            ))}
+                            <Stack spacing={2} sx={{ mt: 2 }} className={"courseStack"}>
+                                <Pagination
+                                    count={Math.ceil(items.length / itemsPerPage)}
+                                    page={page}
+                                    onChange={(e, value) => setPage(value)}
+                                    variant="outlined"
+                                    shape="rounded"
+                                    siblingCount={1}
+                                    boundaryCount={1}
+                                    showFirstButton
+                                    showLastButton
+                                    sx={{
+                                        '& .MuiPaginationItem-root': {
+                                            color: '#c9c9c9',
+                                            borderColor: '#d29292',
+                                            border: 3,
+                                            borderRadius: '10px',
+                                            minWidth: '50px',
+                                            height: '50px',
+                                            padding: '10px',
+                                            fontSize: '20px',
+                                        },
+                                        '& .Mui-selected': {
+                                            backgroundColor: 'rgba(42,205,175,0.5)',
+                                            color: '#a17070',
+                                            borderColor: '#d29292',
+                                        },
+                                    }}
+                                />
+                            </Stack>
+                        </>
+                    ) : (
+                        <p className="noResult">검색 결과가 없습니다.</p>
+                    )}
                 </div>
             </div>
             {/*회원 닉네임 누르면 뜨는 팝업창*/}
@@ -271,5 +271,13 @@ export default function SearchResult(){
                 </div>
             </Popover>
         </>
+    );
+}
+
+export default function SearchResult(){
+    return (
+        <Suspense fallback={<div>로딩 중...</div>}>
+            <FuspSearchResult/>
+        </Suspense>
     );
 }
