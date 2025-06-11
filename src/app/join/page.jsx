@@ -78,6 +78,11 @@ export default function JoinPage() {
                 setIsPassConfirmed(true);
             }
 
+            if (!input.tags || input.tags.length === 0) {
+                alert("선호 카테고리는 한 개 이상 선택되어야 합니다.");
+                return;
+            }
+
             const requiredFields = ['user_id', 'pass', 'nickname'];
             const allRequiredFilled = requiredFields.every(key =>
                 typeof input[key] === 'string' && input[key].trim() !== ''

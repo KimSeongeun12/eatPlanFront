@@ -13,7 +13,6 @@ export default function Update() {
     const [ori_email, setOri_email] = useState('');
 
     const [nicknameChk, setNicknameChk] = useState(false);
-    const [emailChk, setEmailChk] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
 
@@ -56,20 +55,32 @@ export default function Update() {
 
     // 중복 확인 - 닉네임
     const nickname_overlay = async () => {
+        if (!info.nickname.trim()) {
+            alert("닉네임을 입력해주세요.");
+            setNicknameChk(false);
+            return;
+        }
+
         if (info.nickname === ori_nickname) {
             alert("변경된 내용이 없습니다.");
             setNicknameChk(true);
             return;
         }
-        const {data} = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`)
-        console.log(data);
-        if (data.use === false) {
-            alert("이미 사용 중인 닉네임입니다.");
-            setNicknameChk(false);
-        } else {
-            alert("사용 가능한 닉네임입니다.");
-            setNicknameChk(true);
+
+        try {
+            const { data } = await axios.get(`http://localhost/overlay/nickname/${info.nickname}`);
+            if (data.use === false) {
+                alert("이미 사용 중인 닉네임입니다.");
+                setNicknameChk(false);
+            } else {
+                alert("사용 가능한 닉네임입니다.");
+                setNicknameChk(true);
+            }
+        } catch (error) {
+            console.error("중복 확인 실패", error);
+            alert("닉네임 중복 확인 중 오류가 발생했습니다.");
         }
+
     }
 
     // // 중복 확인 - 이메일
@@ -92,6 +103,12 @@ export default function Update() {
 
     // 회원 정보 수정
     const mypage_update = async () => {
+        // 닉네임 중복 체크 여부 확인
+        if (!nicknameChk) {
+            alert("닉네임 중복 확인을 진행해주세요.");
+            return;
+        }
+
         // 만약 선택된 태그가 1개 이상 없을 경우 태그를 선택해주세요 라는 alert 창 출력
         if (selectedTags.length === 0) {
             alert("태그를 선택해주세요.");
@@ -110,12 +127,7 @@ export default function Update() {
             alert("회원 정보 수정에 성공했습니다.");
             location.href = './mypage';
         } else {
-            if (nicknameChk === false) {
-                alert("닉네임 중복 확인을 진행해주세요.");
-            }
-            if (emailChk === false) {
-                alert("이메일 중복 확인을 진행해주세요.");
-            }
+            alert("회원 정보 수정에 실패했습니다.");
         }
     }
 

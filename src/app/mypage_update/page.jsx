@@ -1,7 +1,7 @@
 'use client'
 import LeftMenu from "../leftMenu";
 import Update from "./update";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import MyInfo from "@/app/mypage/myInfo";
 import MyList from "@/app/mypage/myList";
 
@@ -15,11 +15,6 @@ export default function Page() {
     // const showMyInfoUpdate = () => {setVisible('mypage_update')}
     const showMyInfo = () => {setVisible('myInfo')}
     const showMyList = () => {setVisible('myList')}
-
-    const spanStyle = {
-        fontWeight: 600,
-        textDecoration: 'underline',
-    }
 
     return (
         <>
