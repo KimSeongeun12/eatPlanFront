@@ -1,3 +1,5 @@
+'use client'
+
 import './myInfo_updateCss.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -41,7 +43,7 @@ export default function ChangePW({onClose}) {
             return;
         }
 
-        const {data} = await axios.put('http://localhost/mypage_updatePassword', {
+        const {data} = await axios.put('http://192.168.0.120/mypage_updatePassword', {
             user_id,
             existing_pass,
             new_pass

@@ -23,13 +23,13 @@ export default function TagInsert({isClass, cate_idx, drawCourseTags, drawRestaT
         // -------------- 지역태그입력 -------------
         if (cate_idx === 1) {
             setTag({...tag, tag_name: ''});
-            let {data} = await axios.post(`http://localhost/addAreaTag`, ); // city, dist, tag_name
+            let {data} = await axios.post(`http://192.168.0.120/addAreaTag`, ); // city, dist, tag_name
             if (tag.isClass === '식당') drawRestaTags();
             else drawCourseTags();
         } else {
             // ------------ 일반태그입력 ---------------
             setTag({...tag, tag_name: ''});
-            let {data} = await axios.post('http://localhost/addTag', tag);
+            let {data} = await axios.post('http://192.168.0.120/addTag', tag);
             if (tag.isClass === '식당') drawRestaTags();
             else drawCourseTags();
         }

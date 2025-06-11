@@ -53,7 +53,7 @@ export default function NoticeWritePage() {
                 content: content,
                 highlight: highlight === 'true',
             };
-            const res = await axios.post('http://localhost/notice_write', payload);
+            const res = await axios.post('http://192.168.0.120/notice_write', payload);
             if (res.data.success) {
                 alert('공지사항이 정상 등록되었습니다.');
                 router.push('/noticeList');

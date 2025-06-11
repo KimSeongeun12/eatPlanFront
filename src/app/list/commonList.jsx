@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 import { Pagination, Stack, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
@@ -16,7 +18,7 @@ export default function CommonList({sort}) {
 
     const renderList = async () => {
         try {
-            const { data } = await axios.get(`http://localhost/course_list/${page}/${sort}`);
+            const { data } = await axios.get(`http://192.168.0.120/course_list/${page}/${sort}`);
             console.log(data);
             setItems(data.list);
             if (data.totalCount) {
@@ -36,7 +38,7 @@ export default function CommonList({sort}) {
                     <div key={item.course.post_idx} className="listItem">
                         <img
                             className={"mainImage"}
-                            src={item.course.blind === true ? '/blind.svg' : `http://localhost/image/${item.course_img}`}
+                            src={item.course.blind === true ? '/blind.svg' : `http://192.168.0.120/image/${item.course_img}`}
                             alt="코스 이미지"
                             onError={(e) => { e.target.src = '/no_image.png'; }}
                         />

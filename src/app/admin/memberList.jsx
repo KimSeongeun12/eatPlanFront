@@ -18,14 +18,14 @@ export default function MemberList({}){
 
     // ----------------- 회원에게 관리자 권한을 부여하는 함수입니다. ---------------//
     const adminClick=(e)=>{
-        axios.get(`http://localhost/admember_admin/${e.target.id}`).then(({data})=>{
+        axios.get(`http://192.168.0.120/admember_admin/${e.target.id}`).then(({data})=>{
             drawlist();
         });
     }
 
     const drawlist=async ()=>{
 
-        let {data}=await axios.get(`http://localhost/admember_list/${align}/${filter}`);
+        let {data}=await axios.get(`http://192.168.0.120/admember_list/${align}/${filter}`);
         const member=data.list.map((item)=>{
             return(
                 <MemberItem key={item.user_id} item={item} adminClick={adminClick}/>

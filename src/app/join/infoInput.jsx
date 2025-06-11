@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useEffect, useState} from "react";
 import JoinTagSelectModal from "@/app/join/joinTagSelectModal";
 import axios from "axios";
@@ -83,7 +85,7 @@ export default function infoInput({
     useEffect(() => {
         const fetchLocationTags = async () => {
             try {
-                const {data} = await axios.get("http://localhost/list_tag_area");
+                const {data} = await axios.get("http://192.168.0.120/list_tag_area");
                 setLocationTagList(data.list_area);
             } catch (error) {
                 console.error("지역 태그 불러오기 실패:", error);

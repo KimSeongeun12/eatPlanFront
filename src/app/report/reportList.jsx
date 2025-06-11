@@ -23,7 +23,7 @@ export default function ReportListPage() {
             const [, payload] = token.split('.');
             const { user_id } = JSON.parse(atob(payload));
             axios
-                .get(`http://localhost/member/${user_id}`)
+                .get(`http://192.168.0.120/member/${user_id}`)
                 .then(res => setIsAdmin(res.data.admin === true))
                 .catch(() => setIsAdmin(false));
         } catch {
@@ -42,7 +42,7 @@ export default function ReportListPage() {
             ? { headers: { Authorization: `Bearer ${token}` } }
             : {};
         axios
-            .get(`http://localhost/report_list/${pageNum}`, config)
+            .get(`http://192.168.0.120/report_list/${pageNum}`, config)
             .then((res) => {
                 setReportList(res.data.list);
                 setTotalPage(res.data.pages);
@@ -55,7 +55,7 @@ export default function ReportListPage() {
     // --- 3) 상태 변경 핸들러 ---
     const onChangeStatus = (reportIdx, value) => {
         axios
-            .patch(`http://localhost/report_done/${reportIdx}`, { done: value === 'true' })
+            .patch(`http://192.168.0.120/report_done/${reportIdx}`, { done: value === 'true' })
             .then(() => fetchReports(page))
             .catch((err) => {
                 console.error('상태 변경 실패', err);

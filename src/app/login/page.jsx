@@ -58,21 +58,21 @@ export default function LoginPage() {
 
     // 정지유저 로그인 차단, true일 시 정지유저
     const block = async () => {
-        let {data} = await axios.get(`http://localhost/${info.user_id}/blockchk`);
+        let {data} = await axios.get(`http://192.168.0.120/${info.user_id}/blockchk`);
         return data.blocked;
     }
 
     // 탈퇴 유저 로그인 제어 포함
     const login = async () => {
         try {
-            const withdraw = await axios.post('http://localhost/withdraw_check', {user_id: info.user_id});
+            const withdraw = await axios.post('http://192.168.0.120/withdraw_check', {user_id: info.user_id});
             console.log(withdraw.data);
             if (withdraw.data.success === true) {
                 alert("이미 탈퇴한 계정입니다. 로그인할 수 없습니다.");
                 return;
             }
 
-            const {data} = await axios.post('http://localhost/login', info);
+            const {data} = await axios.post('http://192.168.0.120/login', info);
             // console.log(data);
 
             if (await block()) {

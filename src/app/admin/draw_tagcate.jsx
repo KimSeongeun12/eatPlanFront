@@ -36,13 +36,13 @@ export default function DrawLeftTags({isClass, leftMenu}) {
 
     // 태그 카테고리 삭제
     const del = async (cate_idx)=>{
-        let {data}= await axios.delete(`http://localhost/adtag_cate_del`, {data: {'cate_idx': cate_idx}});
+        let {data}= await axios.delete(`http://192.168.0.120/adtag_cate_del`, {data: {'cate_idx': cate_idx}});
         // console.log(data);
         await drawList();
     }
 
     const drawList = async () => {
-        let {data} = await axios.get('http://localhost/list_tagcate');
+        let {data} = await axios.get('http://192.168.0.120/list_tagcate');
         const tags = data.list_tagcate.map((item) => {
                 return (
                     <div key={item.cate_idx}

@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
@@ -28,17 +30,17 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
     }, []);
 
     const tagCateList = async () => {
-        const { data } = await axios.get("http://localhost/list_tagcate");
+        const { data } = await axios.get("http://192.168.0.120/list_tagcate");
         setTagCate(data.list_tagcate);
     };
 
     const tagList = async () => {
-        const { data } = await axios.get("http://localhost/list_tag");
+        const { data } = await axios.get("http://192.168.0.120/list_tag");
         setTag(data.list_tag_whole);
     };
 
     const locationTagList = async () => {
-        const { data } = await axios.get('http://localhost/list_tag_area');
+        const { data } = await axios.get('http://192.168.0.120/list_tag_area');
         setLocationTag(data.list_area);
     };
 
@@ -90,7 +92,7 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
 
             const requestBody = { tags: tagsForServer };
 
-            const { data } = await axios.post('http://localhost/member_tag_prefer_insert', requestBody);
+            const { data } = await axios.post('http://192.168.0.120/member_tag_prefer_insert', requestBody);
             console.log(data);
             onSelect(selectedList.map(item => item.value));
             alert('태그 추가에 성공했습니다.');

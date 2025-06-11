@@ -40,7 +40,7 @@ export default function leftMenu() {
     const [userInfo, setUserInfo] = useState({});
     const memberInfo = async (user_id) => {
         try {
-            const {data} = await axios.get(`http://localhost/member/${user_id}`);
+            const {data} = await axios.get(`http://192.168.0.120/member/${user_id}`);
             setUserInfo({
                 user_id: data.user_id,
                 nickname: data.nickname
@@ -53,7 +53,7 @@ export default function leftMenu() {
 
     const [imageInfo, setImageInfo] = useState({});
     const memberImageInfo = async (user_id) => {
-        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
+        const {data} = await axios.post('http://192.168.0.120/member_list', {user_id: user_id});
         // console.log(data);
         setImageInfo(data.list[0]);
     }
@@ -80,7 +80,7 @@ export default function leftMenu() {
                     className="userIcon"
                     src={
                         imageInfo?.img_idx
-                            ? `http://localhost/imageIdx/${imageInfo.img_idx}`
+                            ? `http://192.168.0.120/imageIdx/${imageInfo.img_idx}`
                             : "/userIcon.png"
                     }
                     alt="프로필 사진"

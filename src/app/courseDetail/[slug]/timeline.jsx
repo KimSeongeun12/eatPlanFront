@@ -86,7 +86,7 @@ export default function Timeline({ timelineStart, timelineFinish, resta, noResta
 
                         {restaInfo?.img_idx && (
                             <img
-                                src={`http://localhost/imageIdx/${restaInfo.img_idx}`}
+                                src={`http://192.168.0.120/imageIdx/${restaInfo.img_idx}`}
                                 className="customCardImage"
                                 alt="식당 이미지"
                                 style={{ width: "120px", objectFit: "cover" }}

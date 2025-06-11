@@ -16,7 +16,7 @@ export default function myList_like() {
 
     const makeList = async (p = 1) => {
         const user_id = sessionStorage.getItem("user_id");
-        const {data} = await axios.get(`http://localhost/like_course_list/${user_id}/${p}`)
+        const {data} = await axios.get(`http://192.168.0.120/like_course_list/${user_id}/${p}`)
         console.log(data.list);
 
         const content = data.list.list.map((item) => {

@@ -1,3 +1,5 @@
+'use client'
+
 import './joinCss.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -13,13 +15,13 @@ export default function emailCheckPage({input, setInput, confirmPass, setEmailAu
     const sendEmail=async ()=>{
         console.log(input.email);
         alert("이메일로 인증 코드가 발송되었습니다.");
-        let {data}=await axios.post(`http://localhost/sendNumber`, {'email':input.email});
+        let {data}=await axios.post(`http://192.168.0.120/sendNumber`, {'email':input.email});
         // alert(data.result);
         console.log(data);
     }
     const [num, setNum] = useState(0);
     const checkEmail=async ()=>{
-        let {data}=await axios.get(`http://localhost/checkNumber/${num}`);
+        let {data}=await axios.get(`http://192.168.0.120/checkNumber/${num}`);
         console.log(data);
         if(data.success){
             alert('인증되었습니다.');

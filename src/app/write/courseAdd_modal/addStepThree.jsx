@@ -1,3 +1,5 @@
+'use client'
+
 const AddStepThree = ({ prevStep, formData, onSubmit }) => {
     return (
         <div>

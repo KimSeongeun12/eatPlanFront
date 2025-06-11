@@ -39,7 +39,7 @@ export default function noticeUpdate() {
         // 수정 모드라면 (id가 있다면) 기존 공지 데이터 fetch
         if (noticeIdx) {
             axios
-                .get(`http://localhost/notice_detail/${noticeIdx}`)
+                .get(`http://192.168.0.120/notice_detail/${noticeIdx}`)
                 .then((res) => {
                     const data = res.data.detail;
                     // 기존 공지 데이터를 상태에 세팅
@@ -88,7 +88,7 @@ export default function noticeUpdate() {
                 highlight: highlight === 'true'
             };
 
-            const res = await axios.put(`http://localhost/notice_update`, payload);
+            const res = await axios.put(`http://192.168.0.120/notice_update`, payload);
 
             if (res.data.success) {
                 alert('공지사항이 성공적으로 수정되었습니다.');

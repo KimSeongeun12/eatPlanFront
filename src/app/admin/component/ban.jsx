@@ -27,7 +27,7 @@ export default function Ban({user_id, user_nickname, setOpen}) {
             alert('종료일은 시작일보다 늦어야 합니다.');
             location.reload();
         }
-        let {data} = axios.post(`http://localhost/${user_id}/suspend`, {start: start, end: end});
+        let {data} = axios.post(`http://192.168.0.120/${user_id}/suspend`, {start: start, end: end});
         location.reload();
     }
 

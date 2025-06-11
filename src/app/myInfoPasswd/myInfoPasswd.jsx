@@ -32,7 +32,7 @@ export default function MyInfoPasswd() {
         }
 
         try {
-            const { data } = await axios.post('http://localhost/member_pass', {
+            const { data } = await axios.post('http://192.168.0.120/member_pass', {
                 user_id,
                 pass: password,
             });

@@ -59,7 +59,7 @@ export default function CourseUpdate() {
 
     // 디테일 정보 가져오기
     const getDetail = () => {
-        return axios.get(`http://localhost/courseDetail?post_idx=${post_idx}`).then(({data}) => {
+        return axios.get(`http://192.168.0.120/courseDetail?post_idx=${post_idx}`).then(({data}) => {
             const d = data.detail;
             const newDetail =
                 {
@@ -265,7 +265,7 @@ export default function CourseUpdate() {
         if (isAuthenticated && user_id.current === detail.user_id){
             const confirmDelete = window.confirm("정말로 코스를 삭제하시겠습니까?");
             if (!confirmDelete) return;
-            axios.delete("http://localhost/delete/"
+            axios.delete("http://192.168.0.120/delete/"
                 ,{data:[{post_idx: detail.post_idx}]
                 ,headers: { Authorization: sessionStorage.getItem('token') || '' }}).then(({data}) => {
                 if (data.success) {
@@ -396,7 +396,7 @@ export default function CourseUpdate() {
                 content_detail_cmt_del: deletedDetailCmtIds,
             };
 
-            axios.put(`http://localhost/update/${detail.post_idx}`
+            axios.put(`http://192.168.0.120/update/${detail.post_idx}`
                 , payload
                 , {headers: {Authorization: sessionStorage.getItem('token') || ''}}).then(({data}) => {
                 if (data.success) {

@@ -1,3 +1,5 @@
+'use client'
+
 import axios from "axios";
 import { useState } from "react";
 import './courseAdd_modalCss.css';
@@ -13,7 +15,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
             return;
         }
         try {
-            const { data } = await axios.post('http://localhost/search_resta', formData.searchQuery, {
+            const { data } = await axios.post('http://192.168.0.120/search_resta', formData.searchQuery, {
                 headers: { "Content-Type": "text/plain" },
             });
             setResults(data.result);
@@ -32,7 +34,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
             img_idx: restaurant?.img_idx,
             resta_name: restaurant?.resta_name || null,
             url: restaurant?.url || "",
-            media: restaurant?.img_idx ? `http://localhost/imageIdx/${restaurant.img_idx}` : null,
+            media: restaurant?.img_idx ? `http://192.168.0.120/imageIdx/${restaurant.img_idx}` : null,
         }));
     };
 
@@ -80,7 +82,7 @@ const AddStepOne = ({ onClose, nextStep, formData, setFormData }) => {
                                 <div className={"resta_search_left"}>
                                     <img
                                         className={"resta_img"}
-                                        src={`http://localhost/imageIdx/${item.img_idx}`}
+                                        src={`http://192.168.0.120/imageIdx/${item.img_idx}`}
                                         alt={"이미지 안 뜸"}/>
                                 </div>
                                 <div className={"resta_search_right"}>

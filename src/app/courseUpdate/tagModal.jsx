@@ -15,11 +15,11 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
     const [selectedList, setSelectedList] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost/list_tagcate").then(({data}) =>
+        axios.get("http://192.168.0.120/list_tagcate").then(({data}) =>
             setTagCate(data?.list_tagcate ?? []));
-        axios.get("http://localhost/list_tag_area").then(({data}) =>
+        axios.get("http://192.168.0.120/list_tag_area").then(({data}) =>
             setAreaTag(data?.list_area ?? []));
-        axios.get("http://localhost/list_tag").then(({data}) =>
+        axios.get("http://192.168.0.120/list_tag").then(({data}) =>
             setTag(data?.list_tag_whole ?? []));
     }, []);
 

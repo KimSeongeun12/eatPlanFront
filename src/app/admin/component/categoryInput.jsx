@@ -14,7 +14,7 @@ export default function CategoryInput({drawList}){
     }
 
     const insert = async ()=>{
-        let {data}= await axios.post(`http://localhost/adtag_cate`, {cate_name:cate});
+        let {data}= await axios.post(`http://192.168.0.120/adtag_cate`, {cate_name:cate});
         if(!data.success){
             alert('중복되었거나 유효하지 않은 카테고리입니다.');
         }

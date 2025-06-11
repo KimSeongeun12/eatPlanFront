@@ -32,7 +32,7 @@ export default function MessageDetail() {
         if (!userId || !token || !msgIdx) return;
 
         axios
-            .get(`http://localhost/${userId}/${msgIdx}/msg_detail`, {
+            .get(`http://192.168.0.120/${userId}/${msgIdx}/msg_detail`, {
                 headers: {Authorization: token},
             })
             .then(res => {
@@ -69,8 +69,8 @@ export default function MessageDetail() {
         if (!userId || !token || !msgIdx) return;
         const delUrl =
             mode === 'inbox'
-                ? `http://localhost/${userId}/${msgIdx}/recip_del`
-                : `http://localhost/${userId}/${msgIdx}/send_del`;
+                ? `http://192.168.0.120/${userId}/${msgIdx}/recip_del`
+                : `http://192.168.0.120/${userId}/${msgIdx}/send_del`;
 
         axios
             .get(delUrl, {headers: {Authorization: token}})

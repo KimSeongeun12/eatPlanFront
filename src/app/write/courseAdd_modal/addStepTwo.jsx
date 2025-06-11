@@ -1,3 +1,5 @@
+'use client'
+
 import {useState} from "react";
 
 const AddStepTwo = ({ nextStep, prevStep, formData, setFormData, timelineStart, timelineFinish, combinedTimes }) => {

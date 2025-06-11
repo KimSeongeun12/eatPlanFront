@@ -14,7 +14,7 @@ export default function DrawResta({leftMenu}){
     useEffect(() => {
         sort.current = 'resta_name';
 
-        axios.get(`http://localhost/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+        axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
             const result=data.restaList.list.map((item)=>{
                 // console.log(item);
                 return(
@@ -39,7 +39,7 @@ export default function DrawResta({leftMenu}){
     // --------------------- 식당 리스트를 뽑는 함수 --------------------- //
     const drawResta = (e)=>{
         sortList(e);
-        axios.get(`http://localhost/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+        axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
             const result=data.restaList.list.map((item)=>{
                 // console.log(item);
                 return(
@@ -88,7 +88,7 @@ function tagPopup({resta_name}){
     const [tags,setTags] = useState([]);
 
     const showTags=async ()=>{
-        let {data}=await axios.get(`http://localhost/listRestaTags/${resta_name}`);
+        let {data}=await axios.get(`http://192.168.0.120/listRestaTags/${resta_name}`);
         const list=data.tags.map((item)=>{
             return(
                 <div key={item.tag_name}>{item.tag_name}</div>

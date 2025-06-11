@@ -30,7 +30,7 @@ export default function MypagePasswd() {
             return;
         }
         try {
-            const { data } = await axios.post('http://localhost/member_pass', {
+            const { data } = await axios.post('http://192.168.0.120/member_pass', {
                 user_id,
                 pass: password,
             });
@@ -50,7 +50,7 @@ export default function MypagePasswd() {
         try {
             const user_id = sessionStorage.getItem('user_id');
             await axios.put(
-                'http://localhost/member_secession',
+                'http://192.168.0.120/member_secession',
                 { user_id },
                 { headers: { 'Content-Type': 'application/json' } }
             );

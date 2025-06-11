@@ -168,7 +168,7 @@ export default function CourseWrite({data}) {
 
     // 코스 추가 핸들러
     const handleAddCourse = (formData) => {
-        console.log("모달에서 넘어온 최종 formData:", formData); // media: "http://localhost/imageIdx/1"
+        console.log("모달에서 넘어온 최종 formData:", formData); // media: "http://192.168.0.120/imageIdx/1"
         if (formData.resta_name && formData.resta_name.trim() !== "") {
             // timeline_resta_name 에 값이 존재할 경우
             // timeline_time, timeline_coment, timeline_resta_name, url을 resta 에 저장
@@ -251,7 +251,7 @@ export default function CourseWrite({data}) {
                     end: timelineFinish
                 }
             };
-            const response = await axios.post('http://localhost/regist_write', payload);
+            const response = await axios.post('http://192.168.0.120/regist_write', payload);
             console.log("코스 등록 성공: ", response.data);
             if (response.data.success === true) {
                 alert("코스 등록에 성공했습니다.");

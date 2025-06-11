@@ -39,7 +39,7 @@ export default function MyInfo() {
     }
 
     const memberInfo = async (user_id) => {
-        const {data} = await axios.post('http://localhost/member_list', {user_id: user_id});
+        const {data} = await axios.post('http://192.168.0.120/member_list', {user_id: user_id});
         if (!data.list || data.list.length === 0 || !data.list[0].user_id) {
             alert("해당 회원의 정보가 없습니다.");
             location.href = '/list';
@@ -52,7 +52,7 @@ export default function MyInfo() {
     // 태그 리스트 불러오기
     const [tags, setTags] = useState([]);
     const member_tagList = async () => {
-        const {data} = await axios.post('http://localhost/member_tag_list', {user_id: loginId.current});
+        const {data} = await axios.post('http://192.168.0.120/member_tag_list', {user_id: loginId.current});
         console.log(data.tagnames);
         if (data?.tagnames) {
             setTags(data.tagnames);
@@ -70,7 +70,7 @@ export default function MyInfo() {
                     <div className={"profileTap"}>
                         <img
                             className="userImage"
-                            src={userInfo.img_idx ? `http://localhost/imageIdx/${userInfo.img_idx}` : "/userIcon_default_profile.png"}
+                            src={userInfo.img_idx ? `http://192.168.0.120/imageIdx/${userInfo.img_idx}` : "/userIcon_default_profile.png"}
                             alt="유저 프로필 이미지"
                         /><br/>
                         <label>프로필 사진</label>

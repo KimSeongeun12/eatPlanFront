@@ -11,7 +11,7 @@ export default function MyList_write() {
 
     const makeList = async (p = 1) => {
         const user_id = sessionStorage.getItem("user_id");
-        const {data} = await axios.get(`http://localhost/my_course_list/${user_id}/${p}`)
+        const {data} = await axios.get(`http://192.168.0.120/my_course_list/${user_id}/${p}`)
         console.log(data);
 
         const content = data.list.list.map((item) => {

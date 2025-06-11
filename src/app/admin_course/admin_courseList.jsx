@@ -1,3 +1,5 @@
+'use client'
+
 import {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 import {Pagination, Stack, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
@@ -27,7 +29,7 @@ export default function Admin_courseList({sort}) {
 
     const renderList = async () => {
         try {
-            const {data} = await axios.get(`http://localhost/course_list/${page}/${sort}`);
+            const {data} = await axios.get(`http://192.168.0.120/course_list/${page}/${sort}`);
             console.log(data.list);
             setItems(data.list);
             if (data.totalCount) {
@@ -57,7 +59,7 @@ export default function Admin_courseList({sort}) {
     // 선택 블라인드 기능
     const selectBlind = async () => {
         const blind = selectedCourse.map(post_idx =>
-            axios.patch(`http://localhost/${post_idx}/course_blind`)
+            axios.patch(`http://192.168.0.120/${post_idx}/course_blind`)
         );
         await Promise.all(blind);
         console.log(selectedCourse);
@@ -77,7 +79,7 @@ export default function Admin_courseList({sort}) {
         }
 
         const token = sessionStorage.getItem('token');
-        const {data} = await axios.delete('http://localhost/delete', {
+        const {data} = await axios.delete('http://192.168.0.120/delete', {
             headers: {
                 Authorization: token
             },
@@ -102,7 +104,7 @@ export default function Admin_courseList({sort}) {
                         <div style={{ position: 'relative', display: 'inline-block' }}>
                             <img
                                 className={"mainImage"}
-                                src={item.course.blind === true ? '/blind.svg' : `http://localhost/image/${item.course_img}`}
+                                src={item.course.blind === true ? '/blind.svg' : `http://192.168.0.120/image/${item.course_img}`}
                                 alt="코스 이미지"
                                 onError={(e) => { e.target.src = '/no_image.png'; }}
                             />
