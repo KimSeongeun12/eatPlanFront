@@ -31,6 +31,7 @@ export default function Update() {
         email: '',
         bio: '',
         location: '',
+        img_idx: '',
     });
 
     const getInfo = async (id) => {
@@ -231,6 +232,31 @@ export default function Update() {
         }
     }, [previewUrl, shouldAlert]);
 
+
+    const handleProfileDelete = async () => {
+        if (!info.img_idx) {
+            alert("삭제할 프로필 사진이 없습니다.");
+            return;
+        }
+
+        try {
+            const { data } = await axios.put(`http://localhost/profile_del/${userId.current}`);
+            if (data.success) {
+                alert("프로필 사진이 삭제되었습니다.");
+                setPreviewUrl(null);
+                setInfo((prev) => ({
+                    ...prev,
+                    img_idx: null, // img_idx 초기화
+                }));
+            } else {
+                alert("프로필 사진 삭제에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("프로필 사진 삭제 실패:", error);
+            alert("삭제 중 오류가 발생했습니다.");
+        }
+    };
+
     return (
         <>
             <div>
@@ -254,9 +280,17 @@ export default function Update() {
                             style={{ display: "none" }}
                             onChange={handleFileChange}
                         />
-                        <label htmlFor="profileImageUpload" style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}>
-                            프로필 사진 추가
-                        </label>
+                        <div style={{ marginTop: "10px" }}>
+                            <label htmlFor="profileImageUpload" style={{ cursor: "pointer", color: "blue", textDecoration: "underline", marginRight: "10px" }}>
+                                프로필 사진 추가
+                            </label>
+                            <span
+                                onClick={handleProfileDelete}
+                                style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+                            >
+        프로필 사진 삭제
+    </span>
+                        </div>
                     </div>
                     <table className={"infoTable"}>
                         <tbody>

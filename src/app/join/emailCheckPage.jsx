@@ -43,6 +43,7 @@ export default function emailCheckPage({input, setInput, confirmPass, setEmailAu
     };
 
     useEffect(() => {
+        console.log(input);
         console.log(confirmPass);
     }, [confirmPass]);
 

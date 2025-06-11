@@ -14,8 +14,7 @@ export default function infoInput({
                                       setProfileImage,
                                       profilePreview,
                                       setProfilePreview,
-                                      setProfileFileName,
-                                      handleChange,
+                                      setProfileFileName
                                   }) {
 
     /* 프로필 사진 업로드 기능*/
@@ -55,6 +54,15 @@ export default function infoInput({
         textAlign: 'center',
         color: 'white',
     }
+
+    // input onChange
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setInput((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const [isTagModalOpen, setIsTagModalOpen] = useState(false);
 
@@ -159,23 +167,6 @@ export default function infoInput({
                     <label htmlFor="profile-upload" style={{ cursor: 'pointer' }}>
                         <img className="cameraIcon" src="cameraIcon.png" alt="카메라 아이콘" />
                     </label>
-                    <button
-                        onClick={() => {
-                            if (!profilePreview) {
-                                alert("삭제할 사진이 없습니다.");
-                            } else {
-                                setProfilePreview(null);
-                                setProfileImage(null);
-                                setInput(prev => ({
-                                    ...prev,
-                                    new_filename: null, // on delete cascade 완화
-                                }));
-                            }
-                        }}
-                        className="deleteSpan"
-                    >
-                        사진 삭제
-                    </button>
                 </div>
             </div>
 

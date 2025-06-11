@@ -26,6 +26,7 @@ export default function JoinPage() {
         bio: '',
         location: '',
         tags: [],
+        new_filename: '',
     });
 
     const [idChk, setIdChk] = useState(false);
@@ -82,6 +83,7 @@ export default function JoinPage() {
         if (visible === 'consentPage') {
             showSecond();
         } else if (visible === 'infoInput') {
+
             const confirmPassVal = confirmRef.current?.value;
             if (!isPassConfirmed) {
                 if (input.pass !== confirmPassVal) {
@@ -93,11 +95,6 @@ export default function JoinPage() {
                 setIsPassConfirmed(true);
             }
 
-            if (!input.tags || input.tags.length === 0) {
-                alert("선호 카테고리는 한 개 이상 선택되어야 합니다.");
-                return;
-            }
-
             const requiredFields = ['user_id', 'pass', 'nickname'];
             const allRequiredFilled = requiredFields.every(key =>
                 typeof input[key] === 'string' && input[key].trim() !== ''
@@ -107,12 +104,17 @@ export default function JoinPage() {
                 return;
             }
 
+            if (!input.tags || input.tags.length === 0) {
+                alert("선호 카테고리는 한 개 이상 선택되어야 합니다.");
+                return;
+            }
+
             if (!idChk || !nicknameChk) {
                 alert("아이디와 닉네임 중복 체크를 해주세요.");
                 return;
             }
-
             setVisible('emailCheckPage');
+
         } else if (visible === 'emailCheckPage') {
             if (!emailAuth) {
                 alert('이메일 인증을 진행해주세요.');
