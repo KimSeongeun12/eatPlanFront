@@ -4,11 +4,13 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import './reportHistory.css'
 import Link from "next/link";
+import {Pagination, Stack} from "@mui/material";
 
 export default function ReportHistory(){
 
     const [history, setHistory] = useState([]);
     let page=useRef(1);
+    let totalPages=useRef(1);
 
     useEffect(()=>{
         drawList();
@@ -25,9 +27,14 @@ export default function ReportHistory(){
         return new Date(dateStr).toLocaleDateString('ko-KR').toString();
     }
 
+    const changePage=(e, val)=>{
+        page.current=val
+        drawList();
+    }
 
     const drawList=async () => {
         let {data} = await axios.get(`http://192.168.0.120/report_list/${page.current}`);
+        totalPages.current=data.pages;
         // 리스트에 나와야하는 요소: 체크박스, no, 제목, 신고자, 피신고자, 신고일, 처리여부, 상태변경(select)
         const posts=data.list.map(item=>{
 
@@ -63,6 +70,16 @@ export default function ReportHistory(){
                 <div style={{width:"80px"}}>상태 변경</div>
             </div>
             {history}
+            <Stack spacing={2}>
+                <Pagination
+                    count={totalPages.current}
+                    color={'primary'}
+                    variant={'outlined'}
+                    shape={"rounded"}
+                    siblingCount={2} //현재 페이지 양쪽에 표시할 갯수
+                    onChange={changePage}
+                />
+            </Stack>
         </div>
     );
 }

@@ -3,11 +3,13 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import RestaDetail from "@/app/admin/restaDetail";
+import {Pagination, Stack} from "@mui/material";
 
 export default function DrawResta({leftMenu}){
     const [list,setList] = useState([]); //식당 리스트
     let sort=useRef('resta_name');
     let page=useRef(1);
+    let totalPages=useRef(1);
 
     const [component,setComponent]=useState(null); //식당 디테일 컴포넌트 state
 
@@ -15,8 +17,9 @@ export default function DrawResta({leftMenu}){
         sort.current = 'resta_name';
 
         axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+            totalPages.current=data.restaList.pages;
             const result=data.restaList.list.map((item)=>{
-                // console.log(item);
+                console.log(item);
                 return(
                     <div key={item.resta_idx}
                          style={{padding:"5px", border:"1px solid lightgray", display:'flex', flexDirection:'row'}}>
@@ -34,6 +37,12 @@ export default function DrawResta({leftMenu}){
 
     const openDetail =(idx)=>{
         setComponent(<RestaDetail resta_idx={idx}/>);
+    }
+
+    // ----- 페이지네이션 ---- //
+    const changePage=(e, val)=>{
+        page.current=val
+        drawResta();
     }
 
     // --------------------- 식당 리스트를 뽑는 함수 --------------------- //
@@ -78,6 +87,16 @@ export default function DrawResta({leftMenu}){
                 {list}
             </div>
             {component}
+            <Stack spacing={2}>
+                <Pagination
+                    count={totalPages.current}
+                    color={'primary'}
+                    variant={'outlined'}
+                    shape={"rounded"}
+                    siblingCount={2} //현재 페이지 양쪽에 표시할 갯수
+                    onChange={changePage}
+                />
+            </Stack>
         </>
     );
 }

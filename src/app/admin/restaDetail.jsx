@@ -13,6 +13,10 @@ export default function RestaDetail({resta_idx}) {
 
     useEffect(()=>{
         getDetail();
+    },[]);
+
+    useEffect(()=>{
+        getDetail();
     }, [resta_idx]);
 
 
