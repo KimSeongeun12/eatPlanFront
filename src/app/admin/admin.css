@@ -209,6 +209,16 @@
     cursor: pointer;
 }
 
+ul.area {
+    display: block;
+}
+
+.area li {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
 .button{
     padding:5px;
     border: 1px solid red;

@@ -117,7 +117,7 @@ export default function TagModal({ selectedTags = [], onApply, onCancel }) {
                             )].map(dist => (
                                 <li
                                     key={dist}
-                                    className={(dist === selectedDist ? "active " : "")}
+                                    className={(dist === selectedDist ? "activeModal " : "")}
                                     onClick={() => setSelectedDist(dist)}
                                 >{dist}</li>
                             ))}

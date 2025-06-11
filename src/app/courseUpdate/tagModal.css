@@ -43,7 +43,7 @@
 }
 
 .applyBtn {
-    background-color: #2acdaf;
+    background-color: #ce6113;
     color: white;
     font-weight: bold;
 }
@@ -107,7 +107,7 @@
 
 .selectedList span {
     display: inline-block;
-    background: #2acdaf;
+    background: #CC503B;
     color: white;
     padding: 6px 12px;
     border-radius: 16px;
@@ -118,7 +118,7 @@
 
 .resetBtn {
     padding: 6px 12px;
-    background-color: #f08080;
+    background-color: #ce6113;
     color: white;
     border: none;
     border-radius: 8px;
@@ -164,6 +164,10 @@ ul.area {
     overflow-y: auto;
 }
 
+ul.area {
+    margin-top: 68px;
+}
+
 .city li,
 .dist li,
 .area li,
@@ -177,13 +181,13 @@ ul.area {
 
 /* 선택 상태 */
 .activeModal {
-    background: #2acdaf;
+    background: #CC503B;
     color: white;
     font-weight: bold;
 }
 
 .activeArea {
-    background: #2acdaf;
+    background: #CC503B;
     color: white;
     font-weight: bold;
 }
@@ -233,9 +237,9 @@ ul.area {
 }
 
 .activeTag {
-    background: #f08080;
+    background: #CC503B;
     color: white;
-    border-color: #f08080;
+    border-color: #CC503B;
     font-weight: bold;
 }
 

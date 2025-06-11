@@ -212,7 +212,7 @@ export default function AreaField(){
                                 .map(at => (
                                     <li
                                         key={at.area_tag_idx}
-                                        className={(selectedArea.includes(at.tag_name) ? "activeArea " : "noneActiveArea ") +
+                                        className={(selectedArea === at.tag_name ? "activeArea " : "noneActiveArea ") +
                                             (at.city === selectedCity ? "" : "hidden")}
                                         onClick={() => toggleArea(at.tag_name)}
                                     >{at.tag_name}</li>
