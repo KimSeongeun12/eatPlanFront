@@ -17,9 +17,15 @@ export default function Ban({user_id, user_nickname, setOpen}) {
         setPeriod(calDuration(start, end));
     }
 
+    // 정지 요청을 보내는 코드
     const suspend = async () => {
-        if(user_id === sessionStorage.getItem("user_id")){
+        if (user_id === sessionStorage.getItem("user_id")) {
             alert('본인 계정은 정지할 수 없습니다.');
+            location.reload();
+        }
+        if (period < 0) {
+            alert('종료일은 시작일보다 늦어야 합니다.');
+            location.reload();
         }
         let {data} = axios.post(`http://localhost/${user_id}/suspend`, {start: start, end: end});
         location.reload();
