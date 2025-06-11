@@ -7,16 +7,18 @@ import {Pagination, Stack} from "@mui/material";
 
 export default function DrawResta({leftMenu}){
     const [list,setList] = useState([]); //식당 리스트
-    let sort=useRef('resta_name');
+    const [sort,setSort]=useState('');
     let page=useRef(1);
     let totalPages=useRef(1);
 
     const [component,setComponent]=useState(null); //식당 디테일 컴포넌트 state
 
-    useEffect(() => {
-        sort.current = 'resta_name';
+    useEffect(()=>{
+        setSort('resta_name');
+    }, []);
 
-        axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+    useEffect(() => {
+        axios.get(`http://192.168.0.120/adtag_restaList/1/resta_name`).then(({data})=>{
             totalPages.current=data.restaList.pages;
             const result=data.restaList.list.map((item)=>{
                 console.log(item);
@@ -32,7 +34,6 @@ export default function DrawResta({leftMenu}){
             });
             setList(result);
         })
-
     }, [leftMenu]);
 
     const openDetail =(idx)=>{
@@ -47,10 +48,11 @@ export default function DrawResta({leftMenu}){
 
     // --------------------- 식당 리스트를 뽑는 함수 --------------------- //
     const drawResta = (e)=>{
-        sortList(e);
-        axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort.current}`).then(({data})=>{
+        if(e){
+            setSort(e.target.options[e.target.selectedIndex].value);
+        }
+        axios.get(`http://192.168.0.120/adtag_restaList/${page.current}/${sort}`).then(({data})=>{
             const result=data.restaList.list.map((item)=>{
-                // console.log(item);
                 return(
                     <div key={item.resta_idx}
                          style={{padding:"5px", border:"1px solid lightgray", display:'flex', flexDirection:'row'}}>
@@ -62,12 +64,12 @@ export default function DrawResta({leftMenu}){
                 );
             });
             setList(result);
-        })
+        });
 
     }
 
     const sortList=(e)=>{
-        sort.current=(e.target.options[e.target.selectedIndex].value);
+        setSort(e.target.options[e.target.selectedIndex].value);
     }
 
     // #페이징처리 필요
@@ -76,7 +78,10 @@ export default function DrawResta({leftMenu}){
         <>
             {/*상단 바*/}
             <div className={"sort"} style={{position:"relative"}}>
-                <select name={"sort"} style={{height:"30px", position:"absolute", right:"30%", top:"30%"}} onChange={(e)=>drawResta(e)}>
+                <select name={"sort"}
+                        style={{height:"30px", position:"absolute", right:"30%", top:"30%"}}
+                        value={sort}
+                        onChange={(e)=>drawResta(e)}>
                     <option value={"resta_name"} >식당 이름 순</option>
                     <option value={"address"}>식당별 주소 순</option>
                 </select>
@@ -101,24 +106,3 @@ export default function DrawResta({leftMenu}){
     );
 }
 
-// --------------------마우스오버하면 뜨는 태그창  --------------------//
-function tagPopup({resta_name}){
-
-    const [tags,setTags] = useState([]);
-
-    const showTags=async ()=>{
-        let {data}=await axios.get(`http://192.168.0.120/listRestaTags/${resta_name}`);
-        const list=data.tags.map((item)=>{
-            return(
-                <div key={item.tag_name}>{item.tag_name}</div>
-            )
-        });
-        setTags(list);
-    }
-
-    return(
-        <div style={{border:"1px solid red", padding:"5px", backgroundColor:"lightyellow"}}>
-            {tags}
-        </div>
-    );
-}

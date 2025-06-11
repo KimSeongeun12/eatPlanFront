@@ -66,12 +66,6 @@ function TagInput({resta_idx, drawTags}) {
         drawTags();
     }
 
-    // ----------------- 귀찮으니 엔터로 해결! -------------//
-    const enterHandler = (e) => {
-        if (e.key === 'Enter') {
-            insert();
-        }
-    }
 
     const makeOptions = async () => {
         let {data} = await axios.get(`http://192.168.0.120/list_tag`);
@@ -91,7 +85,7 @@ function TagInput({resta_idx, drawTags}) {
             {/*select문으로 받을예정*/}
             <select style={{height: '30px'}}
                     name={"tags"}
-                    onKeyUp={() => enterHandler()}
+                    value={input}
                     onChange={(e) => setInput(e.target.options[e.target.selectedIndex].value)}>
                 {options}
             </select>
