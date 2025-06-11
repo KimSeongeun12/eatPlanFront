@@ -45,7 +45,7 @@ export default function DrawLeftTags({isClass, leftMenu}) {
                     <div key={item.cate_idx} className={"box"}
                          onClick={() => {clickCate(item.cate_idx, item.cate_name)}}>
                         {item.cate_name}
-                        {item.cate_name!=='지역' ? <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div> : null}
+                        <div style={{cursor:"pointer", color:"red", width:"15px"}} onClick={()=>del(item.cate_idx)}>X</div>
                     </div>
                 );
         })
