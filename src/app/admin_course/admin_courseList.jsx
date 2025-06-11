@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from 'react';
 import axios from "axios";
-import {Pagination, Stack, Select, MenuItem, FormControl, InputLabel} from '@mui/material';
+import {Pagination, Stack, Select, MenuItem, FormControl, InputLabel, Popover} from '@mui/material';
 import Link from "next/link";
 
 export default function Admin_courseList({sort}) {
@@ -15,6 +15,38 @@ export default function Admin_courseList({sort}) {
     const [info, setInfo] = useState({
         user_id: '',
     });
+
+    const user_id = useRef('');
+
+    // 작성자에게 쪽지보내기, 작성자 정보보기 팝업
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedUser, setSelectedUser] = useState({ user_id: '', nickname: '' });
+
+    const handleAuthorClick = (event, user_id, nickname) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedUser({ user_id, nickname });
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const memberInfo = (selectedUser) => {
+        location.href = `/mypage?user_id=${selectedUser.user_id}`
+    }
+    const sendMsg = (selectedUser) => {
+        if (typeof window !== 'undefined') {
+            user_id.current = sessionStorage.getItem('user_id');
+            if (!user_id.current) {
+                alert('로그인이 필요한 서비스입니다.');
+            } else {
+                location.href = `/message/messageWrite?recip=${selectedUser.user_id}&nickname=${selectedUser.nickname}`
+            }
+        }
+    };
 
     useEffect(() => {
         const user_id = sessionStorage.getItem('user_id');
@@ -130,7 +162,7 @@ export default function Admin_courseList({sort}) {
                             </Link>
                         </span>
                         <span className="courseComment">[{item.cmt_cnt}]</span><br/>
-                        <span className="courseAuthor">{item.nickname}</span>
+                        <span className="courseAuthor" onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}>{item.nickname}</span>
                         <span className="courseViews">조회 {item.course?.b_hit}</span><br/>
                         <span className="courseScope">별점 {item.star_avg}</span>
                         <span className="courseLike">좋아요 {item.total_like_count}</span><br/>
@@ -175,7 +207,77 @@ export default function Admin_courseList({sort}) {
                 <button onClick={selectBlind} className={"admin_button"}>선택 블라인드 / 블라인드 해제</button>
                 <button onClick={selectDelete} className={"admin_button_delete"}>선택 삭제</button>
             </div>
-
+            {/*회원 닉네임 누르면 뜨는 팝업창*/}
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <div style={{
+                    padding: '12px',
+                    minWidth: '145px', // 기존 대비 약 10% 증가
+                    backgroundColor: '#f9f9f9',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    fontFamily: 'Segoe UI, Noto Sans KR, Roboto, Helvetica, Arial, sans-serif',
+                    color: '#222',
+                    textAlign: 'left', // 전체 텍스트 기본 왼쪽 정렬
+                    border: '1px solid #ddd'
+                }}>
+                    <p style={{
+                        margin: '0 0 12px 0',
+                        fontWeight: '600',
+                        fontSize: '12px',
+                        color: '#111'
+                    }}>
+                        <b>{selectedUser.nickname}</b> 님
+                    </p>
+                    <button
+                        onClick={() => memberInfo(selectedUser)}
+                        style={{
+                            width: '100%',
+                            padding: '7px',
+                            marginBottom: '4px',  // 간격 절반으로 줄임
+                            backgroundColor: '#CC503B',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '10px',
+                            letterSpacing: '0.3px',
+                            transition: 'background-color 0.3s ease'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#b64532'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = '#CC503B'}
+                    >
+                        회원정보 보기
+                    </button>
+                    <button
+                        onClick={() => sendMsg(selectedUser)}
+                        style={{
+                            width: '100%',
+                            padding: '7px',
+                            backgroundColor: '#CC503B',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '10px',
+                            letterSpacing: '0.3px',
+                            transition: 'background-color 0.3s ease'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#b64532'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = '#CC503B'}
+                    >
+                        쪽지 보내기
+                    </button>
+                </div>
+            </Popover>
         </>
     );
 }
