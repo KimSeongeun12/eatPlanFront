@@ -38,7 +38,10 @@ export default function RestaDetail({resta_idx}) {
 
                 {/*식당정보 출력 부분*/}
                 <div>
-                    {resta.img_idx === null ? <img src={`http://192.168.0.120/upload/no_image.png`} alt=""/> : <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""/>}
+                    {resta.img_idx === null ? <img src={`http://192.168.0.120/upload/no_image.jpg`} alt=""/> :
+                        <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""
+                             style={{width: "200px", height: "200px", padding: "10px"}}
+                        />}
                 </div>
                 <div className={"information"}>
                     <div>{resta.resta_name}</div>
@@ -46,8 +49,6 @@ export default function RestaDetail({resta_idx}) {
                     <div>{resta.url}</div>
                     <div>{resta.resta_bio}</div>
                 </div>
-                {/*닫기버튼*/}
-                {/*<div style={{color:"red", position:"absolute", right:"5%", fontSize:"large", cursor:"pointer"}}>X</div>*/}
             </div>
             <RestaTagManager tags={tags} resta_idx={resta.resta_idx} />
         </>
