@@ -9,6 +9,10 @@ export default function RestaDetail({resta_idx}) {
 
     const [resta, setResta]=useState({});    // 식당세부정보 state
     const [tags,setTags]=useState([]);      // 해당 식당의 태그정보 state
+
+    //test
+
+    const [img, setImg]=useState(null);
     // ▲ {tag_idx:'', tag_name:''}
 
     useEffect(()=>{
@@ -16,15 +20,16 @@ export default function RestaDetail({resta_idx}) {
     },[]);
 
     useEffect(()=>{
+        console.log('changed resta_idx');
         getDetail();
-        console.log('image_idx: ', resta.img_idx);
     }, [resta_idx]);
-
 
 
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
+        setImg(<img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""
+                    style={{width: "200px", height: "200px", padding: "10px"}}/>);
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
         });
@@ -38,10 +43,7 @@ export default function RestaDetail({resta_idx}) {
 
                 {/*식당정보 출력 부분*/}
                 <div>
-                    {resta.img_idx === null ? <img src={`http://192.168.0.120/upload/no_image.jpg`} alt=""/> :
-                        <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""
-                             style={{width: "200px", height: "200px", padding: "10px"}}
-                        />}
+                    {img}
                 </div>
                 <div className={"information"}>
                     <div>{resta.resta_name}</div>
