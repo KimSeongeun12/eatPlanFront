@@ -11,14 +11,14 @@ export default function RestaDetail({resta_idx}) {
     const [tags,setTags]=useState([]);      // 해당 식당의 태그정보 state
     const [compHtml,setCompHtml]=useState();
 
+    const [idx, setIndex]=useState(0);
+
+    const [isLoading, setIsLoading] = useState(true);
+
     //test
 
     const [img, setImg]=useState(null);
     // ▲ {tag_idx:'', tag_name:''}
-
-    useEffect(()=>{
-        getDetail();
-    },[]);
 
     useEffect(()=>{
         getDetail();
@@ -28,6 +28,8 @@ export default function RestaDetail({resta_idx}) {
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
+        setIndex(data.detail.resta_idx);
+        console.log('idx?: ', idx);
         setImg(<img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt="" style={{width: "200px", height: "200px", padding: "10px"}}/>);
         setCompHtml( <div className={"information"}>
             <div>{resta.resta_name}</div>
@@ -38,21 +40,16 @@ export default function RestaDetail({resta_idx}) {
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
         });
         setTags(taglist);  // 2. 태그 정보 저장
+        setIsLoading(false);
     }
 
     return(
         <>
-            <div style={{backgroundColor:"white", border:"1px solid lightgray", marginTop:"1rem"
-                , display:"flex", justifyContent:"left"}}>
-
+            <div style={{backgroundColor:"white", border:"1px solid lightgray", marginTop:"1rem", display:"flex", justifyContent:"left"}}>
                 {/*식당정보 출력 부분*/}
-                <div>
-                    {img}
-                </div>
-                {compHtml}
-
+                {isLoading ? <div>로딩중...</div> : <div><div>{img}</div>{compHtml}</div>}
             </div>
-            <RestaTagManager tags={tags} resta_idx={resta.resta_idx} />
+            {isLoading ? null : <RestaTagManager tags={tags} resta_idx={idx}/>}
         </>
 
     );
