@@ -40,7 +40,7 @@ export default function TagComponent({selectTag}) {
     const [tag, setTag] = useState([]);
     const tagList = async () => {
         const {data} = await axios.get("http://192.168.0.120/list_tag");
-        setTag(data.list_tag_whole);
+        setTag(data.list_tag_whole.filter(tag => tag.isClass === 'course'));
     };
 
     // 지역태그 리스트 가져오기
@@ -71,7 +71,7 @@ export default function TagComponent({selectTag}) {
     const toggleArea = (areaObj) => {
         const totalSelected = selectedArea.length + selectedTag.length;
 
-        const isSelected = selectedArea.some(a => a.area_tag_idx === areaObj.area_tag_idx);
+        const isSelected = selectedArea.some(a => a.idx === areaObj.area_tag_idx);
 
         if (!isSelected && totalSelected > 5) {
             alert("태그는 최대 5개까지 선택할 수 있습니다.");
@@ -80,7 +80,7 @@ export default function TagComponent({selectTag}) {
 
         setSelectedArea(prev =>
             isSelected
-                ? prev.filter(a => a.area_tag_idx !== areaObj.area_tag_idx)
+                ? prev.filter(a => a.idx !== areaObj.area_tag_idx)
                 : [...prev, {
                     idx: areaObj.area_tag_idx,
                     isClass: 'area_tag',
@@ -90,7 +90,7 @@ export default function TagComponent({selectTag}) {
 
         setSelectedList(prev =>
             isSelected
-                ? prev.filter(entry => !(entry.type === 'area' && entry.area_tag_idx === areaObj.area_tag_idx))
+                ? prev.filter(entry => !(entry.type === 'area' && entry.idx === areaObj.area_tag_idx))
                 : [...prev, {
                     type: 'area',
                     idx: areaObj.area_tag_idx,
@@ -104,7 +104,7 @@ export default function TagComponent({selectTag}) {
     const toggleTag = (tagObj) => {
         const totalSelected = selectedArea.length + selectedTag.length;
 
-        const isSelected = selectedTag.some(t => t.tag_idx === tagObj.tag_idx);
+        const isSelected = selectedTag.some(t => t.idx === tagObj.tag_idx);
 
         if (!isSelected && totalSelected >= 5) {
             alert("태그는 최대 5개까지 선택할 수 있습니다.");
@@ -113,7 +113,7 @@ export default function TagComponent({selectTag}) {
 
         setSelectedTag(prev =>
             isSelected
-                ? prev.filter(t => t.tag_idx !== tagObj.tag_idx)
+                ? prev.filter(t => t.idx !== tagObj.tag_idx)
                 : [...prev, {
                     idx: tagObj.tag_idx,
                     isClass: 'course',
@@ -123,7 +123,7 @@ export default function TagComponent({selectTag}) {
 
         setSelectedList(prev =>
             isSelected
-                ? prev.filter(entry => !(entry.type === 'tag' && entry.tag_idx === tagObj.tag_idx))
+                ? prev.filter(entry => !(entry.type === 'tag' && entry.idx === tagObj.tag_idx))
                 : [...prev, {
                     type: 'tag',
                     idx: tagObj.tag_idx,

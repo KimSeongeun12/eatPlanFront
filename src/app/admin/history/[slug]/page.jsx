@@ -24,8 +24,11 @@ export default function HistoryPage(props) {
     }, [idx]);
 
     const loadReport = async () => {
-        let {data} = await axios.get(`http://192.168.0.120/report_detail/${idx.current}`);
-        console.log(data);
+        const token = sessionStorage.getItem("token");
+        console.log('idx?: ', idx.current);
+        let {data} = await axios.get(`http://192.168.0.120/report_detail/${idx.current}`, {
+            headers: { Authorization: `Bearer ${token}` }});
+        console.log('loadReport_data: ', data);
         setReport(data.detail);
 
         if (data.detail.isClass === 'course') {

@@ -69,11 +69,9 @@ export default function bestList() {
                             <div key={item.course.post_idx} className={"best_listItem"}>
                                 <img
                                     className={"mainImage"}
-                                    src={`http://192.168.0.120/image/${item.course_img}`}
-                                    onError={(e) => {
-                                        e.target.src = '/no_image.png';
-                                    }}
+                                    src={item.course.blind === true ? '/blind.svg' : `http://192.168.0.120/image/${item.course_img}`}
                                     alt="코스 이미지"
+                                    onError={(e) => { e.target.src = '/no_image.png'; }}
                                 />
                                 <span className="courseTitle">
                                     <Link className={"courseTitle_link"} href={`/courseDetail/${item.course.post_idx}`}>
@@ -105,11 +103,9 @@ export default function bestList() {
                             <div key={item.course.post_idx} className={"listItem"}>
                                 <img
                                     className={"mainImage"}
-                                    src={`http://192.168.0.120/image/${item.course_img}`}
-                                    onError={(e) => {
-                                        e.target.src = '/no_image.png';
-                                    }}
+                                    src={item.course.blind === true ? '/blind.svg' : `http://192.168.0.120/image/${item.course_img}`}
                                     alt="코스 이미지"
+                                    onError={(e) => { e.target.src = '/no_image.png'; }}
                                 />
                                 <span className="courseTitle">
                                     <Link className={"courseTitle_link"} href={`/courseDetail/${item.course.post_idx}`}>

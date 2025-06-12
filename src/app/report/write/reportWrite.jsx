@@ -50,26 +50,38 @@ function FuspReportWrite(){
     // (2) **새로 추가하는** 한 개의 훅
     useEffect(() => {
         const suspectParam = searchParams.get('suspect') || '';
-        if (!suspectParam) return;
+        if (!suspectParam) {
+            return;
+        }
 
         (async () => {
-            // 1) user_id 로 시도
             try {
                 const res = await axios.get(`http://192.168.0.120/member/${encodeURIComponent(suspectParam)}`);
                 console.log('▶ user_id 조회 성공', res.status);
-                setSuspectId(res.data.user_id);
-                setSuspectNickname(res.data.nickname);
-                return;   // ← 이 return이 핵심! 성공 시 아래로 내려가지 않도록 막아줍니다.
+                console.log("유저이이디 ", suspectParam);
+
+                if (res.data.user_id) {
+                    // user_id 있으면 정상 처리 후 끝
+                    setSuspectId(res.data.user_id);
+                    setSuspectNickname(res.data.nickname);
+                    console.log("서스펙트 닉네임", res.data.nickname);
+                    console.log("서스펙트 아이디", res.data.user_id);
+                    return;  // → 이때만 return!
+                } else {
+                    console.log("▶ user_id 조회 성공했지만 user_id 없음 → 닉네임으로 재시도");
+                }
             } catch (err) {
                 console.log('▶ user_id 조회 실패', err.response?.status);
             }
 
-            // 2) nickname 으로 재시도
+            // nickname 으로 재시도
             try {
                 const res2 = await axios.get(`http://192.168.0.120/member/byNickname/${encodeURIComponent(suspectParam)}`);
                 console.log('▶ nickname 조회 성공', res2.status);
                 setSuspectId(res2.data.user_id);
                 setSuspectNickname(suspectParam);
+                console.log("서스펙트 닉네임2", suspectParam);
+                console.log("서스펙트 아이디2", res2.data.user_id);
             } catch (err2) {
                 console.error('▶ 닉네임 조회도 실패', err2.response?.status);
                 alert('해당 사용자가 존재하지 않습니다.');
@@ -85,6 +97,7 @@ function FuspReportWrite(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!reporterId || !suspectId || !subject.trim() || !content.trim()) {
+            console.log("sdgsdngksndgknsdkgn",reporterId, suspectId);
             alert('필수 항목을 모두 입력해주세요.');
             return;
 
