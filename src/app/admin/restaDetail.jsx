@@ -17,7 +17,9 @@ export default function RestaDetail({resta_idx}) {
 
     useEffect(()=>{
         getDetail();
+        console.log('image_idx: ', resta.img_idx);
     }, [resta_idx]);
+
 
 
     const getDetail = async ()=>{
@@ -36,7 +38,7 @@ export default function RestaDetail({resta_idx}) {
 
                 {/*식당정보 출력 부분*/}
                 <div>
-                    <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""/>
+                    {resta.img_idx === null ? <img src={`http://192.168.0.120/upload/no_image.png`} alt=""/> : <img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""/>}
                 </div>
                 <div className={"information"}>
                     <div>{resta.resta_name}</div>

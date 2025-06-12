@@ -24,7 +24,6 @@ export default function MemberList({}){
     }
 
     const drawlist=async ()=>{
-
         let {data}=await axios.get(`http://192.168.0.120/admember_list/${align}/${filter}`);
         const member=data.list.map((item)=>{
             return(
