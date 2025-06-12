@@ -86,7 +86,7 @@ function TagInput({resta_idx, drawTags}) {
     const makeOptions = async () => {
         let {data} = await axios.get(`http://192.168.0.120/list_tag`);
         const list = data.list_tag_whole.map((item) => {
-            if (item.isClass === '식당') {
+            if (item.isClass === 'restaurant') {
                 return (
                     // value는 tag_idx로 받음
                     <option value={item.tag_idx}>{item.tag_name}</option>

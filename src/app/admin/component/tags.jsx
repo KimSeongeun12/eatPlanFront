@@ -23,7 +23,7 @@ export default function Tags({idx, isClass}) {
     const drawCourseTags = async () => {
         let {data} = await axios.get(`http://192.168.0.120/list_tag/${idx}`);
         const tags = data.list_tag.map((item) => {
-            if (item.isClass === '코스') {
+            if (item.isClass === 'course') {
                 // console.log('코스: ', data);
                 return (
                     <div key={item.tag_idx}>
@@ -40,7 +40,7 @@ export default function Tags({idx, isClass}) {
     const drawRestaTags=async () => {
         let {data} = await axios.get(`http://192.168.0.120/list_tag/${idx}`);
         const tags = data.list_tag.map((item) => {
-            if (item.isClass === '식당') {
+            if (item.isClass === 'restaurant') {
                 // console.log('식당: ', data);
                 return (
                     <div key={item.tag_idx}>
@@ -77,11 +77,11 @@ function Tag({name, isClass, drawCourseTags, drawRestaTags}) {
         // #태그 지우는 delete 요청 추가
         console.log('del clicked', name);
         if(isClass==='course') {
-            let {data}= await axios.post(`http://192.168.0.120/delTag`, {tag_name:name, isClass:'코스'});
+            let {data}= await axios.post(`http://192.168.0.120/delTag`, {tag_name:name, isClass:'course'});
             drawCourseTags();
         }
         else{
-            let {data}=await axios.post('http://192.168.0.120/delTag', {tag_name:name, isClass:'식당'});
+            let {data}=await axios.post('http://192.168.0.120/delTag', {tag_name:name, isClass:'restaurant'});
             drawRestaTags();
         }
     }

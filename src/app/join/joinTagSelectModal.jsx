@@ -118,7 +118,7 @@ const JoinTagSelectModal = ({ onClose, onSelect }) => {
             {/* 태그 카테고리 */}
             <div>
                 {tagCate
-                    .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "지역")
+                    .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "area_tag")
                     .map(cate => {
                         const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx);
                         return (

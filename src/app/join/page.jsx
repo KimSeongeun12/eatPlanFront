@@ -133,7 +133,7 @@ export default function JoinPage() {
 
             const tags = input.tags.map(tag => ({
                 idx: tag.value.tag_idx ?? tag.value.area_tag_idx,
-                isClass: tag.type === 'tag' ? '일반' : '지역',
+                isClass: tag.type === 'tag' ? 'tag' : 'area_tag',
                 user_id: input.user_id,
             }));
 

@@ -86,7 +86,7 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
             const tagsForServer = selectedList.map(tag => ({
                 idx: tag.idx, // idx가 없다면 따로 관리 필요
                 // isClass: tag.type === 'area' ? 'area_tag' : 'tag',
-                isClass: tag.type === 'area' ? '지역' : '일반',
+                isClass: tag.type === 'area' ? 'area_tag' : 'tag',
                 user_id: user_id
             }));
 
@@ -121,7 +121,7 @@ export default function MypageTagSelectModal({ onClose, onSelect }) {
             {/* 태그 카테고리 */}
             <div>
                 {tagCate
-                    .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "지역") // 임시
+                    .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "area_tag") // 임시
                     // .filter(cate => cate.cate_idx !== 1 && cate.cate_name !== "area_tag") // 임시
                     .map(cate => {
                         const tagsForCate = tag.filter(t => t.cate_idx === cate.cate_idx);
