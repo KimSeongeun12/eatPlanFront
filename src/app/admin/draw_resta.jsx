@@ -36,7 +36,7 @@ export default function DrawResta({leftMenu}) {
     }, []);
 
     const openDetail = (idx) => {
-        console.log('openDetail idx(O):', idx);
+        // console.log('openDetail idx(O):', idx);
         setComponent(<RestaDetail resta_idx={idx}/>);
     }
 

@@ -21,21 +21,20 @@ export default function RestaDetail({resta_idx}) {
     // ▲ {tag_idx:'', tag_name:''}
 
     useEffect(()=>{
-        console.log('RestaDetail idx(X):', resta_idx);
+        // console.log('RestaDetail idx(O):', resta_idx);
         getDetail();
     }, [resta_idx]);
 
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
-        setResta(data.detail);   // 1. 식당 정보 저장
-        // setIndex(data.detail.resta_idx);
+        setResta(data.detail);
         setCompHtml(
             <div className={"information"}>
-                <div>{resta.resta_name}</div>
-                <div>{resta.address}</div>
-                <div>{resta.url}</div>
+                <div>{data.detail.resta_name}</div>
+                <div>{data.detail.address}</div>
+                <div>{data.detail.url}</div>
             </div>);
-        setImg(<img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt="" style={{width: "200px", height: "200px", padding: "10px"}}/>);
+        setImg(<img src={`http://192.168.0.120/imageIdx/${data.detail.img_idx}`} alt="" style={{width: "200px", height: "200px", padding: "10px"}}/>);
 
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
