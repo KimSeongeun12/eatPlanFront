@@ -57,7 +57,7 @@ export default function DrawResta({leftMenu}) {
                     <div key={item.resta_idx}
                          style={{padding: "5px", border: "1px solid lightgray", display: 'flex', flexDirection: 'row'}}>
                         {/*식당 이름*/}
-                        <div style={{width: "200px", cursor: "pointer"}}
+                        <div style={{width: "200px", cursor: "pointer", color: 'red', fontWeight: 'bold'}}
                              onClick={() => openDetail(item.resta_idx)}>{item.resta_name}</div>
                         {/*식당 주소*/}
                         <div style={{position: "relative", right: "-10%"}}>{item.address}</div>
@@ -84,6 +84,7 @@ export default function DrawResta({leftMenu}) {
                 </select>
             </div>
             {/*실질적인 식당 리스트가 출력되는 부분*/}
+            <br/>
             <div className={"resta-list"} style={{ display: 'flex', width: '100%' }}>
                 <div style={{ width: '50%', paddingRight: '20px' }}>
                     {list}

@@ -97,16 +97,44 @@ function TagInput({resta_idx, drawTags}) {
     }
 
     return (
-        <div style={{display: "flex", alignItems: "center"}}>
-            {/*select문으로 받을예정*/}
-            <select style={{height: '30px'}}
-                    name={"tags"}
-                    value={input}
-                    onChange={(e) => setInput(e.target.options[e.target.selectedIndex].value)}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+            {/* Select 옵션 */}
+            <select
+                style={{
+                    height: "35px",
+                    padding: "5px 10px",
+                    fontSize: "16px",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    backgroundColor: "#f9f9f9",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                }}
+                name={"tags"}
+                value={input}
+                onChange={(e) => setInput(e.target.options[e.target.selectedIndex].value)}
+            >
                 {options}
             </select>
-            <div style={{border: "1px solid red", padding: "5px", cursor: "pointer", margin: "5px"}}
-                 onClick={() => insert()}>
+
+            {/* 추가 버튼 */}
+            <div
+                style={{
+                    border: "1px solid #ff1b00", // 버튼 테두리 색상
+                    backgroundColor: "#ff8383",  // 버튼 배경색
+                    color: "white",  // 텍스트 색상
+                    padding: "8px 16px", // 버튼 크기 조정
+                    fontSize: "16px", // 텍스트 크기
+                    borderRadius: "5px", // 둥근 테두리
+                    cursor: "pointer", // 마우스 포인터를 손가락 모양으로
+                    transition: "all 0.3s ease", // 부드러운 효과
+                    margin: "5px", // 여백
+                    display: "inline-block",
+                }}
+                onClick={() => insert()}
+                onMouseOver={(e) => e.target.style.backgroundColor = "#ff1b00"} // hover 시 배경색 변경
+                onMouseOut={(e) => e.target.style.backgroundColor = "#ff8383"} // hover 끝나면 원래 색상으로 복귀
+            >
                 추가
             </div>
         </div>
