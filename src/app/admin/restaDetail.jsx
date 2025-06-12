@@ -21,15 +21,14 @@ export default function RestaDetail({resta_idx}) {
     // ▲ {tag_idx:'', tag_name:''}
 
     useEffect(()=>{
-        console.log('useEffect idx: ', resta_idx);
+        console.log('RestaDetail idx(X):', resta_idx);
         getDetail();
     }, [resta_idx]);
 
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
-        setIndex(data.detail.resta_idx);
-        console.log('getDetail idx: ', data.detail.resta_idx);
+        // setIndex(data.detail.resta_idx);
         setCompHtml(
             <div className={"information"}>
                 <div>{resta.resta_name}</div>
@@ -52,7 +51,7 @@ export default function RestaDetail({resta_idx}) {
                 {/*식당정보 출력 부분*/}
                 {isLoading ? <div>로딩중...</div> : <div><div>{img}</div>{compHtml}</div>}
             </div>
-            {isLoading ? null : <RestaTagManager tags={tags} resta_idx={idx}/>}
+            {isLoading ? null : <RestaTagManager tags={tags} resta_idx={resta_idx}/>}
         </>
 
     );
