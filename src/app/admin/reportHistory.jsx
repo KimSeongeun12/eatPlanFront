@@ -4,7 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import './reportHistory.css'
 import Link from "next/link";
-import {Pagination, Stack} from "@mui/material";
+import {Box, Pagination, Stack} from "@mui/material";
 
 export default function ReportHistory(){
 
@@ -70,6 +70,13 @@ export default function ReportHistory(){
                 <div style={{width:"80px"}}>상태 변경</div>
             </div>
             {history}
+            <Box
+                sx={{
+                    display: 'flex',           // Flexbox 사용
+                    justifyContent: 'center',  // 수평 중앙 정렬
+                    alignItems: 'center',      // 수직 중앙 정렬
+                }}
+            >
             <Stack spacing={2}>
                 <Pagination
                     count={totalPages.current}
@@ -80,6 +87,7 @@ export default function ReportHistory(){
                     onChange={changePage}
                 />
             </Stack>
+            </Box>
         </div>
     );
 }

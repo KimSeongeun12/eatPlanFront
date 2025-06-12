@@ -31,9 +31,23 @@ export default function RestaTagManager({tags, resta_idx}) {
         const tagList = data.tags.map((item)=>{
             return (
                 <div key={item.tag_idx}
-                     style={{border: "1px solid lightblue", padding: "3px", margin: "3px", width: "100px"}}>
+                     style={{
+                         border: "1px solid gray",
+                         padding: "3px",
+                         margin: "3px",
+                         width: "100px",
+                         borderRadius: "5px",
+                         position: "relative"
+                     }}>
                     {item.tag_name}
-                    <span style={{color: "red", cursor:"pointer"}} onClick={() => delTag(item.tag_idx)}>X</span>
+                    <span style={{
+                        color: "red",
+                        cursor: "pointer",
+                        position: "absolute", // absolute로 배치하여 오른쪽에 고정
+                        right: "5px", // 오른쪽으로 5px 떨어지게 설정
+                        top: "50%", // 세로 중앙에 배치
+                        transform: "translateY(-50%)" // 정확히 세로 중앙 정렬
+                    }}  onClick={() => delTag(item.tag_idx)}>X</span>
                 </div>
             );
         })
@@ -43,7 +57,10 @@ export default function RestaTagManager({tags, resta_idx}) {
     return (
         <div>
             {/*태그 출력 부분*/}
-            <div>{list}</div>
+            <div style={{
+                display: 'flex',           // Flexbox 레이아웃을 사용
+                flexWrap: 'wrap'            // 자동 줄바꿈
+            }}>{list}</div>
             <TagInput resta_idx={resta_idx} drawTags={drawTags} />
         </div>
     );
@@ -65,7 +82,6 @@ function TagInput({resta_idx, drawTags}) {
         await axios.post(`http://192.168.0.120/addTagtoResta`, {tag_idx: input, resta_idx: resta_idx});
         drawTags();
     }
-
 
     const makeOptions = async () => {
         let {data} = await axios.get(`http://192.168.0.120/list_tag`);

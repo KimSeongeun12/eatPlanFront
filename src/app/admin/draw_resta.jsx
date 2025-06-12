@@ -3,7 +3,7 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import RestaDetail from "@/app/admin/restaDetail";
-import {Pagination, Stack} from "@mui/material";
+import {Box, Pagination, Stack} from "@mui/material";
 
 export default function DrawResta({leftMenu}) {
     const [list, setList] = useState([]); //식당 리스트
@@ -16,6 +16,7 @@ export default function DrawResta({leftMenu}) {
     useEffect(() => {
         axios.get(`http://192.168.0.120/adtag_restaList/1/resta_name`).then(({data}) => {
             totalPages.current = data.restaList.pages;
+            console.log(totalPages.current);
             const result = data.restaList.list.map((item) => {
                 // console.log(item);
                 return (
@@ -36,6 +37,7 @@ export default function DrawResta({leftMenu}) {
 
 
     const openDetail = (idx) => {
+        console.log('openDetail idx:', idx);
         setComponent(<RestaDetail resta_idx={idx}/>);
     }
 
@@ -59,17 +61,13 @@ export default function DrawResta({leftMenu}) {
                         <div style={{width: "200px", cursor: "pointer"}}
                              onClick={() => openDetail(item.resta_idx)}>{item.resta_name}</div>
                         {/*식당 주소*/}
-                        <div style={{position: "relative", right: "-20%"}}>{item.address}</div>
+                        <div style={{position: "relative", right: "-10%"}}>{item.address}</div>
                     </div>
                 );
             });
             setList(result);
         });
 
-    }
-
-    const sortList = (e) => {
-        setSort(e.target.options[e.target.selectedIndex].value);
     }
 
     // #페이징처리 필요
@@ -79,7 +77,7 @@ export default function DrawResta({leftMenu}) {
             {/*상단 바*/}
             <div className={"sort"} style={{position: "relative"}}>
                 <select name={"sort"}
-                        style={{height: "30px", position: "absolute", right: "30%", top: "30%"}}
+                        style={{ position: 'absolute', right: '30%', height: "30px", top: "-25px"}}
                         value={sort}
                         onChange={(e) => drawResta(e)}>
                     <option value={"resta_name"}>식당 이름 순</option>
@@ -87,21 +85,32 @@ export default function DrawResta({leftMenu}) {
                 </select>
             </div>
             {/*실질적인 식당 리스트가 출력되는 부분*/}
-            <div className={"resta-list"}>
-                <br/><br/>
-                {list}
+            <div className={"resta-list"} style={{ display: 'flex', width: '100%' }}>
+                <div style={{ width: '50%', paddingRight: '20px' }}>
+                    {list}
+                </div>
+                <div style={{ width: '40%' }}>
+                    {component}
+                </div>
             </div>
-            {component}
-            <Stack spacing={2}>
-                <Pagination
-                    count={totalPages.current}
-                    color={'primary'}
-                    variant={'outlined'}
-                    shape={"rounded"}
-                    siblingCount={2} //현재 페이지 양쪽에 표시할 갯수
-                    onChange={changePage}
-                />
-            </Stack>
+            <Box
+                sx={{
+                    display: 'flex',           // Flexbox 사용
+                    justifyContent: 'center',  // 수평 중앙 정렬
+                    alignItems: 'center',      // 수직 중앙 정렬
+                }}
+            >
+                <Stack spacing={2}>
+                    <Pagination
+                        count={totalPages.current}
+                        color={'primary'}
+                        variant={'outlined'}
+                        shape={"rounded"}
+                        siblingCount={2}
+                        onChange={changePage}
+                    />
+                </Stack>
+            </Box>
         </>
     );
 }
