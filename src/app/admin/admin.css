@@ -55,7 +55,7 @@
     width: 200px !important;
 }
 
-.searchContainer{
+.searchContainer-{
     box-sizing: border-box;
     margin: 0;
     width: 100%; /* 또는 width: 100% */
