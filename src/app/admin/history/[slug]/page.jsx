@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from "react";
 import './history.css'
 import axios from "axios";
 import HistoryInput from "@/app/admin/component/historyInput";
+import {setRequestMeta} from "next/dist/server/request-meta";
 
 export default function HistoryPage(props) {
 
@@ -37,6 +38,7 @@ export default function HistoryPage(props) {
             setReported(data.reported_cmt);
         } else if (data.detail.isClass === 'message') { // reported(신고된 글)
             setReported(data.reported_msg);
+            console.log('message reported? : ', reported);
         }
         setLoading(false); // 모두 완료 후 false
     };
@@ -104,9 +106,12 @@ export default function HistoryPage(props) {
 // 해당 게시글/댓글/쪽지 내용 (course, comment, message)
 // 공통: idx, 글작성일, 제목, 작성자, 내용(content),
 function Target({reported, isClass, user_id, report_idx}) {
+
     const [post, setPost] = useState({});
+    const msgInfo=useRef(reported);
 
     useEffect(() => {
+
         const getPost = async () => {
             if (isClass === 'course') {
                 const {data} = await axios.get(`http://192.168.0.120/courseDetail`, {
@@ -128,12 +133,14 @@ function Target({reported, isClass, user_id, report_idx}) {
                     content: data.content
                 });
             } else if (isClass === 'message') {
-                const {data} = await axios.get(`http://192.168.0.120/${user_id}/${reported.msg_idx}/msg_detail`);
+                console.log('setMsgInfo: ', msgInfo.current);
+                // const {data} = await axios.get(`http://192.168.0.120/${user_id}/${reported.msg_idx}/msg_detail`);
+
                 setPost({
-                    idx: data.message.msg_idx,
-                    date: new Date(data.message.msg_date).toLocaleDateString('ko-KR'),
-                    subject: data.message.subject,
-                    content: data.message.content
+                    idx: msgInfo.current.msg_idx,
+                    date: new Date(msgInfo.current.msg_date).toLocaleDateString('ko-KR'),
+                    subject: msgInfo.current.subject,
+                    content: msgInfo.current.content
                 });
             }
         };
