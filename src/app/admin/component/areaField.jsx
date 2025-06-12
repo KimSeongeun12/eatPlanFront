@@ -142,7 +142,7 @@ export default function AreaField(){
 
     return (
         <>
-            <div className="searchContainer">
+            <div className="searchContainer-">
                 <div className={"tagAreaWrapper-"}>
                     {/*도시 리스트*/}
                     <div className={"cityWrapper"}>
