@@ -1,7 +1,7 @@
 'use client'
 
 // 식당 idx를 받아옴
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import RestaTagManager from "@/app/admin/component/restaTagManager";
 
@@ -9,6 +9,7 @@ export default function RestaDetail({resta_idx}) {
 
     const [resta, setResta]=useState({});    // 식당세부정보 state
     const [tags,setTags]=useState([]);      // 해당 식당의 태그정보 state
+    const [compHtml,setCompHtml]=useState();
 
     //test
 
@@ -20,7 +21,6 @@ export default function RestaDetail({resta_idx}) {
     },[]);
 
     useEffect(()=>{
-        console.log('changed resta_idx');
         getDetail();
     }, [resta_idx]);
 
@@ -28,8 +28,12 @@ export default function RestaDetail({resta_idx}) {
     const getDetail = async ()=>{
         let {data} = await axios.get(`http://192.168.0.120/restaDetail/${resta_idx}`);
         setResta(data.detail);   // 1. 식당 정보 저장
-        setImg(<img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt=""
-                    style={{width: "200px", height: "200px", padding: "10px"}}/>);
+        setImg(<img src={`http://192.168.0.120/imageIdx/${resta.img_idx}`} alt="" style={{width: "200px", height: "200px", padding: "10px"}}/>);
+        setCompHtml( <div className={"information"}>
+            <div>{resta.resta_name}</div>
+            <div>{resta.address}</div>
+            <div>{resta.url}</div>
+        </div>);
         const taglist=data.tags.map((item)=>{
             return {tag_idx: item.tag_idx, tag_name:item.tag_name};
         });
@@ -45,12 +49,8 @@ export default function RestaDetail({resta_idx}) {
                 <div>
                     {img}
                 </div>
-                <div className={"information"}>
-                    <div>{resta.resta_name}</div>
-                    <div>{resta.address}</div>
-                    <div>{resta.url}</div>
-                    <div>{resta.resta_bio}</div>
-                </div>
+                {compHtml}
+
             </div>
             <RestaTagManager tags={tags} resta_idx={resta.resta_idx} />
         </>
