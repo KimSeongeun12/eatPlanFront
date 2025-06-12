@@ -73,7 +73,7 @@ export default function TagComponent({selectTag}) {
 
         const isSelected = selectedArea.some(a => a.area_tag_idx === areaObj.area_tag_idx);
 
-        if (!isSelected && totalSelected >= 5) {
+        if (!isSelected && totalSelected > 5) {
             alert("태그는 최대 5개까지 선택할 수 있습니다.");
             return;
         }
@@ -82,7 +82,7 @@ export default function TagComponent({selectTag}) {
             isSelected
                 ? prev.filter(a => a.area_tag_idx !== areaObj.area_tag_idx)
                 : [...prev, {
-                    area_tag_idx: areaObj.area_tag_idx,
+                    idx: areaObj.area_tag_idx,
                     isClass: 'area_tag',
                     tagName: areaObj.tag_name
                 }]
@@ -93,7 +93,7 @@ export default function TagComponent({selectTag}) {
                 ? prev.filter(entry => !(entry.type === 'area' && entry.area_tag_idx === areaObj.area_tag_idx))
                 : [...prev, {
                     type: 'area',
-                    area_tag_idx: areaObj.area_tag_idx,
+                    idx: areaObj.area_tag_idx,
                     isClass: 'area_tag',
                     tagName: areaObj.tag_name
                 }]
@@ -115,7 +115,7 @@ export default function TagComponent({selectTag}) {
             isSelected
                 ? prev.filter(t => t.tag_idx !== tagObj.tag_idx)
                 : [...prev, {
-                    tag_idx: tagObj.tag_idx,
+                    idx: tagObj.tag_idx,
                     isClass: 'course',
                     tagName: tagObj.tag_name
                 }]
@@ -126,7 +126,7 @@ export default function TagComponent({selectTag}) {
                 ? prev.filter(entry => !(entry.type === 'tag' && entry.tag_idx === tagObj.tag_idx))
                 : [...prev, {
                     type: 'tag',
-                    tag_idx: tagObj.tag_idx,
+                    idx: tagObj.tag_idx,
                     isClass: 'course',
                     tagName: tagObj.tag_name
                 }]
@@ -171,7 +171,7 @@ export default function TagComponent({selectTag}) {
                             <div
                                 key={at.area_tag_idx}
                                 onClick={() => toggleArea(at)}
-                                className={`tag-item ${selectedArea.some(a => a.area_tag_idx === at.area_tag_idx) ? "tagSelected" : "not_tagSelected"}`}
+                                className={`tag-item ${selectedArea.some(a => a.idx === at.area_tag_idx) ? "tagSelected" : "not_tagSelected"}`}
                             ># {at.tag_name}</div>
                         ))}
                 </div>
@@ -191,7 +191,7 @@ export default function TagComponent({selectTag}) {
                                         <div
                                             key={t.tag_idx}
                                             onClick={() => toggleTag(t)}
-                                            className={`tag-item ${selectedTag.some(sel => sel.tag_idx === t.tag_idx) ? "tagSelected" : "not_tagSelected"}`}
+                                            className={`tag-item ${selectedTag.some(sel => sel.idx === t.tag_idx) ? "tagSelected" : "not_tagSelected"}`}
                                         ># {t.tag_name}</div>
                                     ))
                                     : <div className="empty">태그가 없습니다.</div>
