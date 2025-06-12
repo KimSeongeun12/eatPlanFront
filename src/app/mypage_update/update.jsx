@@ -11,9 +11,10 @@ export default function Update() {
     const [ori_nickname, setOri_nickname] = useState('');
     const [ori_email, setOri_email] = useState('');
 
-    const [nicknameChk, setNicknameChk] = useState(false);
+    const [nicknameChk, setNicknameChk] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedTags, setSelectedTags] = useState([]);
+
 
     useEffect(() => {
         const storedUserId = sessionStorage.getItem('user_id');
@@ -74,6 +75,7 @@ export default function Update() {
         }
 
         try {
+            // 닉네임 중복확ㅇs
             const { data } = await axios.get(`http://192.168.0.120/overlay/nickname/${info.nickname}`);
             if (data.use === false) {
                 alert("이미 사용 중인 닉네임입니다.");
