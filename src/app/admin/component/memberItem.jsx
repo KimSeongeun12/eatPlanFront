@@ -3,17 +3,17 @@ import {useState} from "react";
 import Ban from "@/app/admin/component/ban";
 import {Popover} from "@mui/material";
 
-export default function MemberItem({item, adminClick}){
+export default function MemberItem({item, adminClick}) {
 
-    const [open, setOpen] =  useState(false);
+    const [open, setOpen] = useState(false);
 
     // 작성자에게 쪽지보내기, 작성자 정보보기 팝업
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedUser, setSelectedUser] = useState({ user_id: '', nickname: '' });
+    const [selectedUser, setSelectedUser] = useState({user_id: '', nickname: ''});
 
     const handleAuthorClick = (event, user_id, nickname) => {
         setAnchorEl(event.currentTarget);
-        setSelectedUser({ user_id, nickname });
+        setSelectedUser({user_id, nickname});
     };
 
     const handleClose = () => {
@@ -37,20 +37,44 @@ export default function MemberItem({item, adminClick}){
         }
     };
 
-    return(
+    return (
         <>
-            <div className={"member list"}>
+            <div className={"member list"} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center' }}>
                 <span>{item.user_id}</span>
-                {/*아래에 유저 페이지 이동*/}
-                <span onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)} style={{ color: 'red' , cursor:'pointer'}}>{item.nickname}</span>
+                {/* 아래에 유저 페이지 이동 */}
+                <span
+                    onClick={(e) => handleAuthorClick(e, item.user_id, item.nickname)}
+                    style={{color: 'red', cursor: 'pointer'}}
+                >
+        {item.nickname}
+    </span>
                 <span className={"long"}>{item.email}</span>
                 <span className={"long"}>{item.reg_date}</span>
-                <div className={"buttons"} >
-                    <div className={'member button'} onClick={()=>setOpen(!open)}>정지</div>
-                    {open ? <Ban user_id={item.user_id} user_nickname={item.nickname} setOpen={setOpen}/>:null}
-                    <div id={item.user_id} className={item.admin ? 'member button admin':'member button'} onClick={(e)=>adminClick(e)}>관리자 부여</div>
+
+                {/* 버튼을 flex로 동일 라인에 배치 */}
+                <div className={""} style={{ display: 'flex', gap: '10px', alignItems: 'center', marginLeft: 'auto' }}>
+                    <div
+                        className={'button'}
+                        onClick={() => setOpen(!open)}
+                        style={{flexShrink: 0}}
+                    >
+                        정지
+                    </div>
+                    {open ? (
+                        <Ban user_id={item.user_id} user_nickname={item.nickname} setOpen={setOpen}/>
+                    ) : null}
+                    <div
+                        id={item.user_id}
+                        className={item.admin ? 'member button admin' : 'member button'}
+                        onClick={(e) => adminClick(e)}
+                        style={{flexShrink: 0}}
+                    >
+                        관리자 부여
+                    </div>
                 </div>
             </div>
+
+
             {/*회원 닉네임 누르면 뜨는 팝업창*/}
             <Popover
                 id={id}

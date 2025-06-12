@@ -30,7 +30,7 @@ export default function RestaDetail({resta_idx}) {
         setResta(data.detail);
         setCompHtml(
             <div className={"information"}>
-                <div>{data.detail.resta_name}</div>
+                <div style={{ color: 'red', fontWeight: 'bold' }}>{data.detail.resta_name}</div>
                 <div>{data.detail.address}</div>
                 <div>{data.detail.url}</div>
             </div>);
@@ -46,13 +46,12 @@ export default function RestaDetail({resta_idx}) {
 
     return(
         <>
-            <div style={{backgroundColor:"white", border:"1px solid lightgray", marginTop:"1rem", display:"flex", justifyContent:"left"}}>
+            <div style={{backgroundColor:"white", border:"1px solid lightgray", display:"flex", justifyContent:"left", padding:"10px"}}>
                 {/*식당정보 출력 부분*/}
                 {isLoading ? <div>로딩중...</div> : <div><div>{img}</div>{compHtml}</div>}
             </div>
             {isLoading ? null : <RestaTagManager tags={tags} resta_idx={resta_idx}/>}
         </>
-
     );
 }
 
